@@ -1,5 +1,5 @@
 module.exports = {
-  title: `SOSO.io`,
+  title: `SOSOLOG`,
   description: `Blog posted about ...`,
   author: `SO_YOUNG`,
   introduction: `📝 소소하게 끄적이는 개발로그`,

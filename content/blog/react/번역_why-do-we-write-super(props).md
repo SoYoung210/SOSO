@@ -1,6 +1,6 @@
 ---
 title: 번역_Why Do We Write super(props)?
-date: 2019-07-01 09:07:20
+date: 2018-12-11 09:07:20
 category: react
 ---
 
