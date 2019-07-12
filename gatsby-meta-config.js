@@ -13,14 +13,14 @@ module.exports = {
   icon: `content/assets/favicon.png`, // Add your favicon
   keywords: [`blog`],
   comment: {
-    disqusShortName: 'SOYOUNG', // Your disqus-short-name. check disqus.com.
+    disqusShortName: '', // Your disqus-short-name. check disqus.com.
     utterances: 'SoYoung210/SOSO', // Your repository for archive comment
   },
   configs: {
     countOfInitialPost: 10, // Config your initial count of post
   },
   sponsor: {
-    buyMeACoffeeId: 'jbee',
+    buyMeACoffeeId: 'soso',
   },
   share: {
     facebookAppId: '', // Add facebookAppId for using facebook share feature v3.2
