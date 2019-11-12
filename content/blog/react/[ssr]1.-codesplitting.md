@@ -155,3 +155,8 @@ localhost환경임을 감안하면, 그렇게 크지 않은 것 같습니다.
 Code Splitting에서 이러한 사실을 간과하고 무작정 나누기만 하는 것은 오히려 UX를 안좋게 하는 방향일 수 있습니다. 초기 페이지 load는 빨라질 수 있으나 이후 route변경에서 js를 추가적으로 Load해야하기 때문입니다. 굉장히 작은 컴포넌트를 splitting할 경우 네트워크 요청에 드는 비용(DNS Resolve, SSL handShake, download time, etc.)이 Code Splitting의 장점을 능가할 수 있습니다. 
 
 Silver Bullet은 없습니다. 어떤 것을 분할해야 하는지는 WebpackBundleAnalyzer등의 번들 분석기를 보면서 ‘적절히’ 나누는 것이 필요합니다. 
+
+## 참고글 
+[꽤 재밌었다고 (?) 느꼈던 react-loadable 이 리액트 매뉴얼에서 사라진 이야기](https://velog.io/@velopert/nomore-react-loadable)
+https://itnext.io/tips-tricks-for-smaller-bundles-in-react-apps-58d1b20c9c0
+https://medium.com/@minoo/react-typescript-ssr-code-splitting-%ED%99%98%EA%B2%BD%EC%84%A4%EC%A0%95%ED%95%98%EA%B8%B0-d8cec9567871
