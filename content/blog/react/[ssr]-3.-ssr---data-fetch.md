@@ -1,13 +1,13 @@
 ---
 title: '[SSR] 3. SSR - Data Fetch'
-date: 2019-11-12 21:11:15
+date: 2099-11-12 21:11:15
 category: react
 ---
 
 ![image-thumbnail](./images/thumbnail.png)
 이  글에 대한 전체코드는 [GitHub - PR](https://github.com/SoYoung210/react-ssr-code-splitting/pull/16)에서 확인하실 수 있습니다. 
 
-## react-router-config로 변경 
+## 다룰 내용
 이번 포스트에서 할 일은 다음과 같습니다.
 1. Client 내부 컴포넌트에서 ‘필요한 비즈니스 로직에 대한 **행위**’를 명시합니다. 
 2. Server에서 1번에 정의된 행위를 읽어 동작을 수행합니다. 

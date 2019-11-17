@@ -1,6 +1,6 @@
 ---
 title: '[SSR] 4. UX관점에서의 SSR'
-date: 2019-11-13 23:11:00
+date: 2099-11-13 23:11:00
 category: react
 ---
 
