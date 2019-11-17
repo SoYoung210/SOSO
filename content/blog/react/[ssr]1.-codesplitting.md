@@ -165,7 +165,9 @@ Slow3G환경에서 측정했습니다. 첫 페이지 로드 시 `/Test`를 그�
 Slow3G를 적용했음에도 `/Test`페이지가 빠르게 렌더되는 것을 볼 수 있습니다. 첫 페이지 로드시에 Test페이지를 그리는데에 필요한 번들까지 가져온 상태이므로, 추가적인 네트워크 요청 없이 페이지를 보여줄 수 있는 것입니다. 
 
 #### 정리
-Silver Bullet은 없습니다. 어떤 것을 분할해야 하는지는 WebpackBundleAnalyzer등의 번들 분석기를 보면서 ‘적절히’ 나누는 것이 필요합니다. 
+Silver Bullet은 없습니다. 어떤 것을 분할해야 하는지는 WebpackBundleAnalyzer등의 번들 분석기를 보면서 ‘적절히’ 나누는 것이 필요합니다.
+
+이 튜토리얼에 대한 전체 코드는 [여기](https://github.com/SoYoung210/react-ssr-code-splitting/pull/1)에서 확인하실 수 있습니다.
 
 ## 참고글 
 [꽤 재밌었다고 (?) 느꼈던 react-loadable 이 리액트 매뉴얼에서 사라진 이야기](https://velog.io/@velopert/nomore-react-loadable)
