@@ -1,6 +1,6 @@
 ---
 title: '[SSR] 0. 들어가면서'
-date: 2019-11-13 23:11:09
+date: 2019-11-17 16:00:09
 category: react
 ---
 
@@ -29,7 +29,7 @@ React에 SSR을 도입한다면, [Next.js](https://nextjs.org/)도 좋은 선택
 
 ## Table of Contents
 
-### 1. Code Splitting
+### [1. Code Splitting](https://so-so.dev/react/[ssr]1.-codesplitting/)
 - 라이브러리 선택
 - 들어가기 전, Template HTML설정
 - HtmlWebpackPlugin
