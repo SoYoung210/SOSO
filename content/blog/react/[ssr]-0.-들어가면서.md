@@ -6,7 +6,7 @@ category: react
 
 ![image-thumbnail](./images/thumbnail.png)
 
-이 튜토리얼은 React와 ServerSideRendering, 그리고 Code Splitting을 적용하는 과정을 순서대로 소개합니다.
+이 튜토리얼은 React에 ServerSideRendering, 그리고 Code Splitting을 적용하는 과정을 소개합니다.
 
 > 모든 코드는 [GitHub](https://github.com/soYoung210/react-ssr-code-splitting) 에 있으니 **각 단계별 branch에서 코드를 살펴보세요!**
 

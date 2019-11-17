@@ -16,25 +16,25 @@ Code Splitting은 기본적으로 React에서 [지원](https://reactjs.org/docs/
 
 선택할 수 있는 SSR용 라이브러리는 몇 가지 있습니다.
 
-### [react-loadable](https://github.com/jamiebuilds/react-loadable)
+### 1. [react-loadable](https://github.com/jamiebuilds/react-loadable)
 
 과거에 많이 사용했던 라이브러리가 되었습니다. SSR관련 아티클을 검색해보면 2번에서 소개할 라이브러리보다 react-loadable로 구성된 아티클이 많습니다. 
 하지만, [이런 이슈](https://velog.io/@velopert/nomore-react-loadable)때문인지 react공식문서에서도 사라졌고 저장소는 Issue도 닫고 유지보수도 적극적으로 이루어지고 있지 않습니다. 
 ![issue](./images/react-loadable-issue.png)
 
-### [@loadable/components](https://github.com/smooth-code/loadable-components)
+### 2. [@loadable/components](https://github.com/smooth-code/loadable-components)
 
 react-loadable이 React공식문서에서 빠질 때, 그 자리를 대체하게 된 라이브러리입니다.
 [공식문서](https://www.smooth-code.com/open-source/loadable-components/docs/getting-started/)가 굉장히 잘 지원되어 있습니다.
 > 이 튜토리얼에서 사용하는 라이브러리입니다.
 
-### [react-universal component](https://github.com/faceyspacey/react-universal-component)
+### 3. [react-universal component](https://github.com/faceyspacey/react-universal-component)
 
 react ssr에서 많이 사용되는 또 하나의 라이브러리입니다. 다양한 기능을 지원하고 있으나 본 튜토리얼에서는 선택하지 않았습니다. 
 
 ## 🕸 Template html설정
 
-실제 Product환경에서는 html이 아닌, pug나 ejs등 template html문법을 사용할 수 도 있습니다. 이 경우 Code Splitting을 어떻게 적용해야 할까요?
+실제 프로젝트에서는 html이 아닌, pug나 ejs등 template html을 사용할 수 도 있습니다. 이 경우 Code Splitting을 어떻게 적용해야 할까요?
 
 Code Splitting을 한다는 것은 bundle이 나눠진다는 뜻인데, 어떤 페이지에서 어떤 bundle.js가 필요한지 어떻게 작성할 수 있을까요?  
 
