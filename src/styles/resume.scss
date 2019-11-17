@@ -14,7 +14,10 @@ $c-heading: $c-base-dark;
 // Type
 $enable-fontSmoothing: true;
 $b-fontSize: 1.6rem;
-$b-fontFamily: Lato, Helvetica, Arial, sans-serif;
+$b-fontFamily: Lato,
+Helvetica,
+Arial,
+sans-serif;
 $b-fontWeight: normal;
 $b-letterSpacing: 0.008em;
 $b-lineHeight: 1.5;
@@ -36,6 +39,7 @@ $Footer-gap: unitSize(2);
 //
 
 @at-root {
+
   *,
   *:before,
   *:after {
@@ -53,11 +57,13 @@ $Footer-gap: unitSize(2);
 //
 
 .u-cf {
+
   &:before,
   &:after {
     content: ' ';
     display: table;
   }
+
   &:after {
     clear: both;
   }
@@ -73,6 +79,7 @@ $Footer-gap: unitSize(2);
 
 .u-keyline {
   position: relative;
+
   &:before {
     content: '';
     position: absolute;
@@ -87,22 +94,19 @@ $Footer-gap: unitSize(2);
   display: inline-block;
   margin-top: 14px;
   position: relative;
-  background-image: linear-gradient(
-    to bottom,
-    lighten($c-primary, 10) 0,
-    lighten($c-primary, 10) 100%
-  );
+  background-image: linear-gradient(to bottom,
+      lighten($c-primary, 10) 0,
+      lighten($c-primary, 10) 100%);
   background-position: 0 100%;
   background-repeat: repeat-x;
   background-size: 2px 2px;
   border-bottom: 0;
   text-decoration: none;
+
   &:hover {
-    background-image: linear-gradient(
-      to bottom,
-      lighten($c-secondary, 10) 0,
-      lighten($c-secondary, 10) 100%
-    );
+    background-image: linear-gradient(to bottom,
+        lighten($c-secondary, 10) 0,
+        lighten($c-secondary, 10) 100%);
   }
 
   &.zero {
@@ -114,13 +118,14 @@ $Footer-gap: unitSize(2);
 .u-shadow {
   text-shadow: $b-shadowSize $b-shadowSize 0 $c-primary;
   transition: text-shadow $b-animSpeed $b-animType;
+
   @at-root a:hover #{&} {
     text-shadow: (-$b-shadowSize) (-$b-shadowSize) 0 $c-secondary;
   }
 }
 
 a {
-  color: $c-link;
+  // color: $c-link;
 }
 
 ul {
@@ -151,6 +156,7 @@ ul {
 .l-Header {
   margin-top: 51px;
   margin-bottom: unitSize(4);
+
   &-col {
     margin-top: unitSize(4);
     margin-bottom: unitSize(4);
@@ -163,9 +169,11 @@ ul {
 
 .l-Section {
   margin-top: unitSize(8);
-  + .l-Section {
+
+  +.l-Section {
     position: relative;
     border-top: 1px solid $c-keyline;
+
     &:before {
       content: '';
 
@@ -186,8 +194,9 @@ ul {
   > :first-child {
     margin-top: 0;
   }
-  > p:first-child,
-  > ul:first-child {
+
+  >p:first-child,
+  >ul:first-child {
     margin-top: 0.3rem;
   }
 }
@@ -203,16 +212,20 @@ ul {
   justify-content: space-between;
   margin: unitSize(16) ($Footer-gap / -2) unitSize(4);
   padding-top: unitSize(4);
+
   a {
     text-decoration: none;
     display: inline-block;
+
     &:not(:last-child) {
       margin-right: $Footer-gap;
     }
+
     &:hover {
       color: $c-base-dark;
     }
   }
+
   &-col {
     padding-left: $Footer-gap / 2;
     padding-right: $Footer-gap / 2;
@@ -232,6 +245,7 @@ ul {
   display: inline-block;
   padding-left: unitSize(1);
   padding-right: unitSize(1);
+
   &:before {
     content: '';
     position: absolute;
@@ -246,6 +260,7 @@ ul {
     background-color: rgba($c-primary, 0.5);
     transition: all 0.8s 0.4s $b-animType;
   }
+
   &:hover {
     &:before {
       transform: scale(1.05, 2.4);
