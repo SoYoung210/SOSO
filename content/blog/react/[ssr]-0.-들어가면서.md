@@ -31,10 +31,10 @@ React에 SSR을 도입한다면, [Next.js](https://nextjs.org/)도 좋은 선택
 
 ### [1. Code Splitting](https://so-so.dev/react/[ssr]1.-codesplitting/)
 - 라이브러리 선택
-- 들어가기 전, Template HTML설정
-- HtmlWebpackPlugin
+- Template HTML설정
 - Config설정
 - View코드 작성
+- 몇 가지 생각
 
 ### 2. SSR - Basic
 - 구조 정리

@@ -102,9 +102,9 @@ module.exports = (env, options) => {
 }
 ```
 
+### View 
 이제 기본 설정을 완료했으니 실제 Code Splitting을 진행해 봅시다.
 
-### View 
 #### 1. CodeSplitting으로 나눠질 컴포넌트를 `export default` 로 변경합니다. 
 ```tsx
 // As-is
