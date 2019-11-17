@@ -8,9 +8,9 @@ category: react
 
 이 튜토리얼은 React와 ServerSideRendering, 그리고 Code Splitting을 적용하는 과정을 순서대로 소개합니다.
 
-모든 코드는 [GitHub](https://github.com/soYoung210/react-ssr-code-splitting) 에 있으니 **각 단계별 branch에서 코드를 살펴보세요!**
+> 모든 코드는 [GitHub](https://github.com/soYoung210/react-ssr-code-splitting) 에 있으니 **각 단계별 branch에서 코드를 살펴보세요!**
 
-React에 SSR을 도입한다면, [Next.js](https://nextjs.org/)도 좋은 선택일 수 있습니다. 하지만, 이 글은 프레임워크가 아닌 순수하게 React에 SSR과 CodeSplitting을 얹어가는 과정을 다룹니다.
+React에 SSR을 도입한다면, [Next.js](https://nextjs.org/)도 좋은 선택일 수 있습니다. 하지만, 이 글은 프레임워크가 아닌 순수하게 React에 CodeSplitting과 SSR을 얹어가는 과정을 다룹니다.
 
 이 시리즈는 다음 버전을 기반으로 작성되었습니다.
 
@@ -27,16 +27,27 @@ React에 SSR을 도입한다면, [Next.js](https://nextjs.org/)도 좋은 선택
 }
 ```
 
-## Table of ContentsoC
+## Table of Contents
 
-1. Code Splitting
-
+### 1. Code Splitting
 - 라이브러리 선택
 - 들어가기 전, Template HTML설정
 - HtmlWebpackPlugin
 - Config설정
 - View코드 작성
 
-2. SSR - Basic
-3. SSR - Data Fetch
-4. UX관점에서의 SSR
+### 2. SSR - Basic
+- 구조 정리
+- server에서 Rendering
+- 확인
+
+### 3. SSR - Data Fetch
+- react-router-config로의 변경 
+- server/app.tsx 수정
+- Client에 초기 store값 전달 
+- Server에서 받아온 데이터를 이용해서 Store초기화 하기
+
+### 4. UX관점에서의 SSR
+- 사용자 관점
+- 단점만 있는 것은 아니다.
+- 이 튜토리얼을 끝마치며
