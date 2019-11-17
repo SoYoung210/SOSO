@@ -10,7 +10,7 @@ category: react
 ## 들어가기에 앞서
 본 글에서는 CSR과 SSR의 차이나 기본 원리에 대해서 자세히 다루지 않습니다. 
 
-총 2개의 Route중에서 `/org` 페이지의 헤더 영역을 ServerSide에서 렌더링하게 됩
+총 2개의 Route중에서 `/org 페이지의 헤더 영역`을 ServerSide에서 렌더링하게 됩
 니다. 
 
 기본적인 원리는 우리가 사용하고 있는 `express`에서 React코드를 해석하여 컨텐츠를 그리고, 이를 client에게 전달하는 방식입니다. 
@@ -23,8 +23,10 @@ category: react
 앞으로 진행될 튜토리얼에서는 더 많은 장치가 필요하지만, 개념적으로 이 두 가지가 가장 중요한 요소입니다. 
 
 ## 구조 정리
-먼저, 서버와 클라이언트 모두 공통적인 라이브러리가 필요하니, 두 개의 모듈로 나누어서 관리하던 것을 통합하겠습니다. client와 server폴더 각각에있던 package.json의 devDependencies와 dependencies를 root위치로 옮겨주세요. 
-그리고 이 package.json의 scripts영역을 수정합니다. 
+먼저, 서버와 클라이언트 모두 공통적인 라이브러리가 필요하니, 두 개의 모듈로 나누어서 관리하던 것을 통합하겠습니다. 
+
+client와 server의 package.json의 내용을 모두 root위치로 옮겨주세요. 
+그리고 이 package.json의 `scripts`영역을 수정합니다. 
 ```json
 "scripts": {
     "start": "npm run build:server && npm run build:client && node ./static/server.bundle.js",
@@ -32,7 +34,7 @@ category: react
     "build:client": "webpack --config ./webpack.client.js"
   },
 ```
- `start` 명령어는 각각의 webpack파일로 build하는 명령을 수행합니다. 
+ `start` 명령어는 각각의 webpack파일로 build후 node서버를 동작시키는 명령을 수행합니다. 
 server와 client에게 각각의 webpack file을 만들어주도록 하겠습니다. 
 > 두 개로 나누는 이유는, 하나의 설정파일에서 너무 많은 분기가 들어가는 것이 복잡하다고 생각해서 입니다. 
 
