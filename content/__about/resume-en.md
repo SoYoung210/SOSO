@@ -110,12 +110,19 @@ I think it is possible to reduce the same mistakes by repeating the process of c
 
 <h2 class='u-link zero'>Presentation</h2>
 
-### GDG WebTech LightningTalk
+### 헌집줄게, 새집다오 - FEConf2019
 
-> https://speakerdeck.com/soyoung210/inteonsangryugjagjeon
+> https://speakerdeck.com/soyoung210/heonjibjulge-saejibdao-riaegteu-peurojegteu-gujojojeong
 
-_[2019.02.19]_
-This is a lightning talk about WebTech. As a first developer, I shared my experience of how I was interning and how I was adapting to my company.
+_[2019.10.26]_
+Introduce the reason why the new structure was introduced and the process so far.
+
+### Clean Architecture in Banksalad - XXIT Tech Talk
+
+> https://speakerdeck.com/soyoung210/clean-architecture-in-banksalad
+
+_[2019.10.05]_
+It introduces the structure of how clean architecture was interpreted and used.
 
 ### ConSalad - 4th Technical Conference in Rainist
 
@@ -123,6 +130,15 @@ This is a lightning talk about WebTech. As a first developer, I shared my experi
 
 _[2019.06.15]_
 This is the fourth technical conference of Reynist. After the internship process, I shared my concerns about good collaboration.
+
+### 인턴상륙작전 - GDG WebTech LightningTalk
+
+> https://speakerdeck.com/soyoung210/inteonsangryugjagjeon
+
+_[2019.02.19]_
+This is a lightning talk about WebTech. As a first developer, I shared my experience of how I was interning and how I was adapting to my company.
+
+
 
 <h2 class='u-link zero'>Communities</h2>
 
