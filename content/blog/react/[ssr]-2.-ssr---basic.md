@@ -5,17 +5,22 @@ category: react
 ---
 
 ![image-thumbnail](./images/thumbnail.png)
-모든 코드는 [GitHub](https://github.com/soYoung210/react-ssr-code-splitting)에서 보실 수 있습니다. 
-총 2개의 Route중에서 `/org` 페이지의 헤더 영역을 ServerSide에서 렌더링하게 됩
-니다. 본 글에서는 CSR과 SSR의 차이나 기본 원리에 대해서 자세히 다루지 않습니다. 
+이 튜토리얼에 대한 전체 코드는 [여기](https://github.com/SoYoung210/react-ssr-code-splitting/pull/12)에서 보실 수 있습니다. 
 
-기본적인 원리는, 우리가 사용하고 있는 `express`에서 React코드를 해석하여 컨텐츠를 그리고 이를 client에게 전달하는 방식입니다. 
-> 혹시 이에 대해 더 알고싶으시다면 아래 링크를 확인해주세요! 
-server에서 React코드를 해석할 수 있도록 하기 위해서는 어떤 것들이 필요할까요?
+## 들어가기에 앞서
+본 글에서는 CSR과 SSR의 차이나 기본 원리에 대해서 자세히 다루지 않습니다. 
+
+총 2개의 Route중에서 `/org` 페이지의 헤더 영역을 ServerSide에서 렌더링하게 됩
+니다. 
+
+기본적인 원리는 우리가 사용하고 있는 `express`에서 React코드를 해석하여 컨텐츠를 그리고, 이를 client에게 전달하는 방식입니다. 
+> 혹시 이에 대해 더 알고싶으시다면 아래의 참고자료 링크를 확인해주세요.
+
+서버에서 React코드를 해석할 수 있도록 하기 위해서는 어떤 것들이 필요할까요?
 * library (react, react-router-dom, etc.)
 * webpack loader(html, css, etc.)
 
-앞으로 진행될 튜토리얼에서는 더 많은 장치가 필요하지만, 개념적으로 두 가지가 가장 중요한 요소입니다. 
+앞으로 진행될 튜토리얼에서는 더 많은 장치가 필요하지만, 개념적으로 이 두 가지가 가장 중요한 요소입니다. 
 
 ## 구조 정리
 먼저, 서버와 클라이언트 모두 공통적인 라이브러리가 필요하니, 두 개의 모듈로 나누어서 관리하던 것을 통합하겠습니다. client와 server폴더 각각에있던 package.json의 devDependencies와 dependencies를 root위치로 옮겨주세요. 
