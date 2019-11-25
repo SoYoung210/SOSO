@@ -1,7 +1,7 @@
 ---
 title: 'about'
 date: 2019-11-25 16:21:13
-lang: 'en'
+lang: 'ko'
 ---
 
 <article class="l-Wrapper">
@@ -41,8 +41,8 @@ React를 주로 다루며, 문서화와 UX에 관심이 많습니다.
 |              |                                                         |
 | -----------: | ------------------------------------------------------- |
 |       period | 18.12 ~ Current                                         |
-| **position** | FrontEnd Engineer                                       |
-|  description | Develop Web UI of Rainist services.                     |
+| **position** | 웹 프론트엔드 개발자 |
+|  description | 뱅크샐러드 웹뷰, PC서비스, CMS개발      |
 | **projects** | CMS, TTI 개선, Static Web Generator, Project Generator |
 
 <div class="l-Header">
