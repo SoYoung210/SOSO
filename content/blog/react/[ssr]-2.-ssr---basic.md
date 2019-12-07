@@ -20,6 +20,7 @@ category: react
 기본적인 원리는 우리가 사용하고 있는 `express`에서 React코드를 해석하여 컨텐츠를 그리고, 이를 client에게 전달하는 방식입니다. 
 
 서버에서 React코드를 해석할 수 있도록 하기 위해서는 어떤 것들이 필요할까요?
+
 * library: react, react-router-dom, etc.
 * webpack loader(html, css, etc.)
 
