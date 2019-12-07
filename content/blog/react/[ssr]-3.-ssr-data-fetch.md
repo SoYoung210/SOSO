@@ -14,12 +14,12 @@ category: react
 
 이번 포스트에서 할 일은 다음과 같습니다.
 
-1. Client의 Route파일에서 ‘필요한 비즈니스 로직에 대한 **행위**’를 명시합니다.
-2. Server에서 1번에 정의된 행위를 읽어 동작을 수행합니다.
+1. Client에서 필요한 비즈니스 로직을 명시합니다.
+2. Server에서 1번에 정의된 동작을 수행합니다.
 3. 2번의 결과를 client에 전달해줍니다.
 4. Client에서는 받아온 데이터를 이용해서 store를 초기화 합니다.
 
-## 1. <Router> To react-router-config
+## 1. react-router-config
 
 client에서 수행하던 행동에 대한 정의가 server에게 공유되어야하기 때문에 기존에 route를 정의하는 방식을 변경하겠습니다. 먼저, 아래와 같이 `RouteBranch`인터페이스를 선언합니다.
 
@@ -34,7 +34,7 @@ export interface RouteBranch {
 ```
 
 route를 구성하는데에 필요한 요소들(path, component 등)을 정의하고 이 route에서 수행해야하는 **작업**을 loadData라는  함수로 명시했습니다.
-> 추후 이 함수를 통해 서버에서 비즈니스 로직을 수행합니다.
+> 추후 이 함수를 통해 server에서 비즈니스 로직을 수행합니다.
 
 이제 이 프로젝트의 `route`를 모두 명시해줍니다.
 
@@ -67,7 +67,7 @@ export const routes: Array<RouteBranch> = [
 
 `/user`route는 SSR로 렌더링 하지 않을것이고, 당연히 server에서 DataFetch할 작업도 없기때문에 loadData를 적어주지 않았습니다.
 
-`/org`route의 설정을 살펴보면 **store**를 받아서 action을 dispatch하게 됩니다.
+`/org`route 설정을 살펴보면 **store**를 받아서 action을 dispatch 합니다.
 > 이 프로젝트에서 모든 비즈니스 로직은 action dispatch -> middleware -> store로 처리하고 있기 때문에 같은 방식으로 맞춰주었습니다.
 
 이 **store**는 server로부터 전달받게 됩니다.
@@ -103,12 +103,11 @@ const handleRender =(req, res) => {
 app.get('*', handleRender);
 ```
 
-loadBranchData, getStore와 같은 함수는 별도로 만든 함수입니다. 우선 다른 부분을 먼저 살펴보겠습니다.
 handleRenderer에서는 2가지 케이스를 다룹니다.
 
 #### 1. Client에 명시된 비즈니스 로직이 없는 경우
 
-이 경우 rendering만 완료해서 client에 넘겨주면 됩니다. 비즈니스 로직이 없는 경우는, `if (data.every((data) => data === null)` 이 구문을 통해 검사하게 됩니다.
+이 경우 rendering만 완료해서 client에 넘겨주면 됩니다. 비즈니스 로직이 없는 경우는, `if (data.every((data) => data === null)` 구문을 통해 검사하게 됩니다.
 
 `loadData`에서 수행할 작업이 없을시에 null을 반환하게 했습니다. 그러므로, `loadData에서` 결과가 모두 null일때는 **수행할 작업이 없는 것으로 판단**하고 `res.send`를 통해 html을 반환합니다.
 
@@ -154,9 +153,9 @@ const handleRender = (req, res) => {
 
 이 코드를 몇 가지 단계로 설명해보면 다음과 같습니다.
 
-1. action dispatch후, 실제 데이터가 올 때 까지 기다리도록(store의 변화를 알 수 있도록 store를 구독합니다.
+1. action dispatch후, 실제 데이터가 올 때 까지 기다리도록(store의 변화를 알 수 있도록 **store를 구독합니다.**
 2. fetchState를 저장하는 배열을 만들고, store의 finalState로 부터 가져온 loading reducer상태가  `HttpStatusCode.LOADING`가 아닐경우 true를 저장합니다.
-3. 2번에서 만든 배열에 모두 **true**값이 채워진 경우 store를 `unsubscribe`해주고 html을 반환합니다.
+3. 2번에서 만든 배열에 **모두 true**값이 채워진 경우 store를 `unsubscribe`해주고 html을 반환합니다.
 
 이 프로젝트에서는 [loading reducer](https://github.com/soYoung210/react-ssr-code-splitting/blob/master/client/src/store/_modules/loading.ts)를 따로 두어서 위와같이 코드를 작성했습니다. 구조에 맞게 fetchState를 검사하는 로직을 추가하면 됩니다.
 
@@ -288,4 +287,4 @@ npm start
 
 이 단계까지 수행하고 나면, ‘로더 없이 바로 그려지는 상황이 과연 좋은 UX인가’에 대한 의문이 들 수 있습니다.
 
-그래서, 이 튜토리얼의 마지막 글에서는 UX관점에서의 SSR에 대한 정리를 해보겠습니다.
+그래서, **이 튜토리얼의 마지막 글에서는 UX관점에서의 SSR에 대한 정리를 해보겠습니다.**
