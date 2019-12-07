@@ -1,5 +1,5 @@
 ---
-title: '[ssr] 3. SSR - Data Fetch'
+title: '[SSR] 3. SSR - Data Fetch'
 date: 2019-12-07 14:12:97
 category: react
 ---
