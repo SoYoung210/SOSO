@@ -13,17 +13,17 @@ lang: 'ko'
     </h1>
   </div>
 
-<div align="center" style="padding: 15px 0 0 0;">
-웹 프론트엔드 개발자 이소영입니다.
+<br/>
 
-React를 주로 다루며, 문서화와 UX에 관심이 많습니다.
-</div>
+웹 프론트엔드 개발자 이소영입니다.  
+React를 주로 다루며, 문서화와 구조, 그리고 UX에 관심이 많습니다.
 
-`#TypeScript` `#React` `#RxJS` `#Redux` `#Documentation` `#Clean Architecture`
+`#TypeScript` `#React` `#RxJS` `#Redux` `#Documentation` `#Architecture`
 
 |            |                              |
 | :--------: | ---------------------------- |
 | **GitHub** | https://github.com/SoYoung210 |
+| **Blog** | https://so-so.dev |
 | **E-mail** | ethdud1@gmail.com            |
 
   </div>
@@ -40,10 +40,9 @@ React를 주로 다루며, 문서화와 UX에 관심이 많습니다.
 
 |              |                                                         |
 | -----------: | ------------------------------------------------------- |
-|       period | 18.12 ~ Current                                         |
+|   **period** | 18.12 ~ Current                                         |
 | **position** | 웹 프론트엔드 개발자 |
-|  description | 뱅크샐러드 웹뷰, PC서비스, CMS개발      |
-| **projects** | CMS, TTI 개선, Static Web Generator, Project Generator |
+| **projects** | 8주 안정화 프로젝트, CMS, Static Web Generator, Project Generator |
 
 <div class="l-Header">
   <h1 class="Title">
@@ -53,23 +52,47 @@ React를 주로 다루며, 문서화와 UX에 관심이 많습니다.
   </h1>
 </div>
 
+## 8주 안정화 프로젝트
+
+전사적으로 기술 부문의 안정화 프로젝트를 진행했고, Web팀에서 다음과 같은 일을 맡아서 진행했습니다.
+
+* TTI개선(19.08 ~ 19.11)
+  * LightHouse기준(Slow 4G)40점에서 87점까지 향상.
+  * Round Trip을 고려한 Code Splitting Guide수립.
+  * SSR이 필요한 프로젝트 예시와 예시 코드를 통한 React에서의 SSR 가이드 수립.
+  > 관련 저장소: https://github.com/SoYoung210/react-ssr-code-splitting
+
+* Web팀용 iac관련 가이드 수립
+  * k8s, nginx등 현재 팀의 웹서비스가 어떤 구조로 운영되고 있고, 어떻게 변경되는지 도식화 하여 문서 작성
+  * 웹서비스에 사용하고 있던 legacy설정 파일을 수정하고, 불필요하게 사용하고 있던 reverse proxy제거
+
 ## CMS
 
-- 고객정보를 관리하는 CMS입니다. 
-- 프론트엔드 개발과 함께, 디자인과 기획을 진행했습니다.
-- TypeScript, Webpack, React, Redux, Redux-observable을 사용했고 **기존에 사용하던 클린아키텍처를 개선했던 첫 번째 프로젝트입니다.**
+* 19.03~ 19.06
+* *TypeScript*, *React*, *Redux*, *redux-observable*
+* [기존에 사용하던 구조](https://speakerdeck.com/soyoung210/clean-architecture-in-banksalad)가 수정에 용이하지 않다는 문제를 인식하고, redux를 도입한 [새로운 구조](https://speakerdeck.com/soyoung210/heonjibjulge-saejibdao-riaegteu-peurojegteu-gujojojeong)도입.
+  * 불필요한 의존성 주입 구조 개선
+
+* 기획, 디자인, 개발 진행
+  * 기획: End User인 cm팀과 협업하여 상담에 편리한 cms기획
+  * 디자인: [ant.desing](https://ant.design/)을 활용하여 디자인
+  * 개발: 팀내에서 사용해보지 않았던 redux와 redux-middleware를 도입하고 해당 내용을 공유
 
 ## Project Generator
 
-- React 프로젝트 셋업을 도와주는 Vanila JS로 만들어진 도구입니다.
-- cli로 여러가지 옵션을 받아서, standard구조를 기반으로 Redux등의 추가 옵션을 선택할 수 있도록 했습니다.
-- Webpack과 babel설정을 비롯해, Open Api를 이용해서, api call을 바탕으로 컴포넌트를 구성하는 단계까지 한번에 셋팅할 수 있습니다. 
-- 
+웹 프로젝트에 필요한 webpack, babel등의 설정파일을 포함한 프로젝트 전체 구조를 스캐폴딩 할 수 있는 도구.
+
+* cli를 통해 standard, standard - redux등 원하는 구조 선택.
+  * 프로젝트 빌드에 소요되는 시간을 5초로 단축
+  * 신규 입사자를 위한 구조 설명 도구로 활용
+
 ## Static Web Generator(CMS)
 
-- Static HTML을 만들어주는 도구입니다. 
-- S3에 이미지를 업로드하고, 버튼의 위치를 입력하면 HTML이 생성됩니다.
-- 기획자가 개발자의 도움없이 이벤트 페이지를 생성할 수 있도록 했습니다.
+이미지와 버튼으로 구성된 HTML을 만들어주는 도구.
+
+* S3 Image Upload
+* title, button position등 필요한 정보 입력
+* [UI](https://speakerdeck.com/soyoung210/jeolmang-deuribeun-seongjang-hamgge-ilhago-sipeun-gaebaljaga-doegiggaji?slide=44)
 
 <div class="l-Header">
   <h1 class="Title">
