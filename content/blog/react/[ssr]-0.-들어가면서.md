@@ -30,24 +30,28 @@ React에 SSR을 도입한다면, [Next.js](https://nextjs.org/)도 좋은 선택
 ## Table of Contents
 
 ### [1. Code Splitting](https://so-so.dev/react/[ssr]1.-codesplitting/)
+
 - 라이브러리 선택
 - Template HTML설정
 - Config설정
 - View코드 작성
 - 몇 가지 생각
 
-### 2. SSR - Basic
+### [2. SSR - Basic](https://so-so.dev/react/[ssr]-2.-ssr---basic/)
+
 - 구조 정리
 - server에서 Rendering
 - 확인
 
-### 3. SSR - Data Fetch
-- react-router-config로의 변경 
+### [3. SSR - Data Fetch](https://so-so.dev/react/[ssr]-3.-ssr-data-fetch/)
+
+- react-router-config로의 변경
 - server/app.tsx 수정
-- Client에 초기 store값 전달 
+- Client에 초기 store값 전달
 - Server에서 받아온 데이터를 이용해서 Store초기화 하기
 
-### 4. UX관점에서의 SSR
+### [4. UX관점에서의 SSR](https://so-so.dev/react/[ssr]-4.-ux관점에서의-ssr/)
+
 - 사용자 관점
 - 단점만 있는 것은 아니다.
 - 이 튜토리얼을 끝마치며

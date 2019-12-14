@@ -96,30 +96,28 @@ React를 주로 다루며, 문서화와 UX에 관심이 많습니다.
 
 <h2 class='u-link zero'>Presentation</h2>
 
-### 헌집줄게, 새집다오 - FEConf2019
+### [절망 드리븐 성장: 함께 일하고 싶은 개발자가 되기까지](https://speakerdeck.com/soyoung210/jeolmang-deuribeun-seongjang-hamgge-ilhago-sipeun-gaebaljaga-doegiggaji)
 
-> https://speakerdeck.com/soyoung210/heonjibjulge-saejibdao-riaegteu-peurojegteu-gujojojeong
+_[2019.12.13]_
+'2019 한빛 데브그라운드 주니어' 행사에서 발표한 내용입니다.
+웹 공부를 시작할때부터 인턴, 그리고 지금까지 겪었던 절망과 그 절망에서 얻었던 성장을 공유합니다.
+
+### [헌집줄게, 새집다오 - FEConf2019](https://speakerdeck.com/soyoung210/heonjibjulge-saejibdao-riaegteu-peurojegteu-gujojojeong)
 
 _[2019.10.26]_
 기존에 사용하던 구조에서 벗어나 새로운 구조를 도입하는 과정에 대한 과정을 소개합니다.
 
-### Clean Architecture in Banksalad - XXIT Tech Talk
-
-> https://speakerdeck.com/soyoung210/clean-architecture-in-banksalad
+### [Clean Architecture in Banksalad - XXIT Tech Talk](https://speakerdeck.com/soyoung210/clean-architecture-in-banksalad)
 
 _[2019.10.05]_
 'Clean Architecture in Banksalad'에 대한 발표입니다.
 
-### ConSalad - 4th Technical Conference in Rainist
-
-> https://speakerdeck.com/soyoung210/susuggeggiro-sugseongdoen-banana
+### [ConSalad - 4th Technical Conference in Rainist](https://speakerdeck.com/soyoung210/susuggeggiro-sugseongdoen-banana)
 
 _[2019.06.15]_
 Rainist의 기술 컨퍼런스에서 발표한 내용입니다. 인턴 과정 이후 좋은 협업에 대해 고민한 내용을 공유합니다.
 
-### 인턴상륙작전 - GDG WebTech LightningTalk
-
-> https://speakerdeck.com/soyoung210/inteonsangryugjagjeon
+### [인턴상륙작전 - GDG WebTech LightningTalk](https://speakerdeck.com/soyoung210/inteonsangryugjagjeon)
 
 _[2019.02.19]_
 학부생에서 어떻게 처음 인턴개발자로 상륙했는지에 대한 내용을 공유합니다.
