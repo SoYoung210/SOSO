@@ -34,13 +34,11 @@ api call이 오래 걸릴 경우 사용자가 흰 화면을 보는 시간은 그
 
 ![user—no-cache](./images/user-ssr-no-cache.png)
 
-server에서 api요청을 처리하는 방법으로 구현할 시에는, Client에서 받는 것은 완성된 html이므로 App에서 캐싱이 적용되지 않습니다.
-
-> WK WebView 캐싱에 대해 좀더 조사해서 아티클을 걸거나 설명을 추가하기
+server에서 api요청을 처리하는 방법으로 구현할 시에는, Client에서 받는 것은 완성된 html이므로 캐싱이 적용되지 않습니다.
 
 ![user—cache](./images/user--cache.png)
 
-두 번째 방식으로 진행 시 client rendering에 필요한 일부 bundle을 받아오는 작업이 캐싱될 수 있습니다.(WK WebView default설정) 당연히, express에서 bundle을 받는것보다 빠르게 진행될 수 있습니다.
+두 번째 방식으로 진행 시 client rendering에 필요한 일부 bundle을 받아오는 작업이 캐싱될 수 있습니다. 당연히, express에서 bundle을 받는것보다 빠르게 진행될 수 있습니다.
 
 ## 단점만 있는 것은 아니다
 
