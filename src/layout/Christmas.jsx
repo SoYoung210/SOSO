@@ -13,8 +13,7 @@ export const ChristmasTheme = ({ children }) => {
 
     function onResize() {
       ctx.fillStyle = '#FFF'
-      canvasNode.width = width
-      canvasNode.height = height
+
       requestAnimFrame(update)
     }
 
@@ -80,11 +79,16 @@ export const ChristmasTheme = ({ children }) => {
     })()
 
     onResize()
-  }, [canvasRef, window])
+  }, [canvasRef])
 
   return (
     <>
-      <canvas className="snowflakes" ref={canvasRef} />
+      <canvas
+        className="snowflakes"
+        width={window.innerWidth}
+        height={window.innerHeight}
+        ref={canvasRef}
+      />
       {children}
     </>
   )
