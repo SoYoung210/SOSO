@@ -13,8 +13,8 @@ export const ChristmasTheme = ({ children }) => {
 
     function onResize() {
       ctx.fillStyle = '#FFF'
-      canvas.width = width
-      canvas.height = height
+      canvasNode.width = width
+      canvasNode.height = height
       requestAnimFrame(update)
     }
 
