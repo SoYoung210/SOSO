@@ -33,11 +33,12 @@ export const ChristmasTheme = ({ children }) => {
       this.vy = 1 + Math.random() * 3
       this.vx = 0.5 - Math.random()
       this.r = 1 + Math.random() * 2
-      this.o = 0.5 + Math.random() * 0.5
+      this.opacity = 0.5 + Math.random() * 0.5
     }
 
-    let snowflakes = [],
-      snowflake
+    let snowflakes = []
+    let snowflake
+
     for (i = 0; i < COUNT; i++) {
       snowflake = new Snowflake()
       snowflake.reset()
@@ -52,7 +53,7 @@ export const ChristmasTheme = ({ children }) => {
         snowflake.y += snowflake.vy
         snowflake.x += snowflake.vx
 
-        ctx.globalAlpha = snowflake.o
+        ctx.globalAlpha = snowflake.opacity
         ctx.beginPath()
         ctx.arc(snowflake.x, snowflake.y, snowflake.r, 0, Math.PI * 2, false)
         ctx.closePath()
@@ -80,7 +81,6 @@ export const ChristmasTheme = ({ children }) => {
     onResize()
   }, [canvasRef])
 
-  // masthead.appendChild(canvas)
   return (
     <>
       <canvas
