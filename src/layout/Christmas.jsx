@@ -8,8 +8,10 @@ export const ChristmasTheme = ({ children }) => {
     const canvasNode = canvasRef.current
     const ctx = canvasNode.getContext('2d')
     let i = 0
-    const width = window.innerWidth
-    const height = window.innerHeight
+    const width = document.documentElement.offsetWidth
+    const height = document.documentElement.offsetHeight
+    canvasNode.width = width;
+    canvasNode.height = height;
 
     function onResize() {
       ctx.fillStyle = '#FFF'
@@ -79,14 +81,17 @@ export const ChristmasTheme = ({ children }) => {
     })()
 
     onResize()
+    window.addEventListener('resize', onResize, false);
+
+    return () => {
+      window.removeEventListener('resize', onResize);
+    }
   }, [canvasRef])
 
   return (
     <>
       <canvas
         className="snowflakes"
-        width={window.innerWidth}
-        height={window.innerHeight}
         ref={canvasRef}
       />
       {children}
