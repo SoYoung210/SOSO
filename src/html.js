@@ -1,4 +1,4 @@
-import React, {forwardRef} from 'react'
+import React from 'react'
 import PropTypes from 'prop-types'
 
 export default class HTML extends React.Component {
@@ -17,18 +17,11 @@ export default class HTML extends React.Component {
         <body {...this.props.bodyAttributes}>
           {this.props.preBodyComponents}
           <noscript>You need to enable JavaScript to run this app.</noscript>
-          {
-            forwardRef( ({children}, ref) => {
-              return forwardRef((props, ref) => (
-                <div
-                  key={`body`}
-                  id="___gatsby"
-                  dangerouslySetInnerHTML={{ __html: this.props.body }}
-                />
-              ))
-            } 
-            )
-          }
+          <div
+            key={`body`}
+            id="___gatsby"
+            dangerouslySetInnerHTML={{ __html: this.props.body }}
+          />
           {this.props.postBodyComponents}
         </body>
       </html>
