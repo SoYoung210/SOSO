@@ -66,7 +66,7 @@ export const ChristmasTheme = ({ children }) => {
     // window.addEventListener('resize', onResize, false)
 
     return () => {
-      window.removeEventListener('resize', onResize)
+      window.removeEventListener('resize', throttle(onResize))
     }
   }, [canvasRef])
 
