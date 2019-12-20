@@ -6,7 +6,7 @@ export const ChristmasTheme = ({ children }) => {
   useEffect(() => {
     let snowflakes = []
     let snowflake
-    const COUNT = 300
+    const COUNT = 700
     const canvasNode = canvasRef.current
     const ctx = canvasNode.getContext('2d')
     let i = 0
@@ -26,8 +26,9 @@ export const ChristmasTheme = ({ children }) => {
       }
     }
 
-    const onResize = () => {
+    const init = () => {
       ctx.fillStyle = '#FFF'
+
       for (i = 0; i < COUNT; i++) {
         snowflake = reset()
         snowflakes.push(snowflake)
@@ -62,12 +63,7 @@ export const ChristmasTheme = ({ children }) => {
       requestAnimationFrame(update)
     }
 
-    onResize()
-    // window.addEventListener('resize', onResize, false)
-
-    return () => {
-      window.removeEventListener('resize', throttle(onResize))
-    }
+    init()
   }, [canvasRef])
 
   return (
