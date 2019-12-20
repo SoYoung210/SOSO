@@ -4,50 +4,43 @@ export const ChristmasTheme = ({ children }) => {
   const canvasRef = useRef(null)
 
   useEffect(() => {
+    let snowflakes = []
+    let snowflake
     const COUNT = 300
     const canvasNode = canvasRef.current
     const ctx = canvasNode.getContext('2d')
     let i = 0
     const width = document.documentElement.offsetWidth
     const height = document.documentElement.offsetHeight
-    canvasNode.width = width;
-    canvasNode.height = height;
+    canvasNode.width = width
+    canvasNode.height = height
 
-    function onResize() {
+    const reset = () => {
+      return {
+        x: Math.random() * width,
+        y: Math.random() * -height,
+        vy: 1 + Math.random() * 3,
+        vx: 0.5 - Math.random(),
+        r: 1 + Math.random() * 2,
+        opacity: 0.5 + Math.random() * 0.5,
+      }
+    }
+
+    const onResize = () => {
       ctx.fillStyle = '#FFF'
-
-      requestAnimFrame(update)
+      for (i = 0; i < COUNT; i++) {
+        snowflake = reset()
+        snowflakes.push(snowflake)
+      }
+      requestAnimationFrame(update)
     }
-
-    let Snowflake = function() {
-      this.x = 0
-      this.y = 0
-      this.vy = 0
-      this.vx = 0
-      this.r = 0
-
-      this.reset()
-    }
-
-    Snowflake.prototype.reset = function() {
-      this.x = Math.random() * width
-      this.y = Math.random() * -height
-      this.vy = 1 + Math.random() * 3
-      this.vx = 0.5 - Math.random()
-      this.r = 1 + Math.random() * 2
-      this.opacity = 0.5 + Math.random() * 0.5
-    }
-
-    let snowflakes = []
-    let snowflake
 
     for (i = 0; i < COUNT; i++) {
-      snowflake = new Snowflake()
-      snowflake.reset()
+      snowflake = reset()
       snowflakes.push(snowflake)
     }
 
-    function update() {
+    const update = () => {
       ctx.clearRect(0, 0, width, height)
 
       for (i = 0; i < COUNT; i++) {
@@ -62,38 +55,24 @@ export const ChristmasTheme = ({ children }) => {
         ctx.fill()
 
         if (snowflake.y > height) {
-          snowflake.reset()
+          snowflake = reset()
         }
       }
 
-      requestAnimFrame(update)
+      requestAnimationFrame(update)
     }
 
-    window.requestAnimFrame = (() => {
-      return (
-        window.requestAnimationFrame ||
-        window.webkitRequestAnimationFrame ||
-        window.mozRequestAnimationFrame ||
-        function(callback) {
-          window.setTimeout(callback, 1000 / 60)
-        }
-      )
-    })()
-
     onResize()
-    window.addEventListener('resize', onResize, false);
+    // window.addEventListener('resize', onResize, false)
 
     return () => {
-      window.removeEventListener('resize', onResize);
+      window.removeEventListener('resize', onResize)
     }
   }, [canvasRef])
 
   return (
     <>
-      <canvas
-        className="snowflakes"
-        ref={canvasRef}
-      />
+      <canvas className="snowflakes" ref={canvasRef} />
       {children}
     </>
   )
