@@ -93,9 +93,7 @@ spec:
 
 `kubectl get svc`를 실행해 봅니다.
 
-| NAME           | TYPE      | CLUSTER-IP | EXTERNAL-IP | PORT(S)  | SELECTOR       |
-| :------------- | :-------- | :--------- | :---------- | :------- | :------------- |
-| service-python | ClusterIP | 1.1.10.1   | <none>      | 3000/TCP | run=pod-python |
+![image-6](./images/image_6.png)
 
 ## NodePort
 
