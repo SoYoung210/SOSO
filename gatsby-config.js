@@ -83,61 +83,9 @@ module.exports = {
         pathToConfigModule: `src/utils/typography`,
       },
     },
-    {
-      resolve: 'gatsby-plugin-feed',
-      options: {
-        query: `
-          {
-            site {
-              siteMetadata {
-                title
-                description
-                author
-              }
-            }
-          }
-        `,
-        feeds: [{
-          serialize: ({
-              query: {
-                allMarkdownRemark
-              }
-            }) =>
-            allMarkdownRemark.edges.map(edge =>
-              Object.assign({}, edge.node.frontmatter, {
-                category: edge.node.frontmatter.category,
-                date: edge.node.frontmatter.date,
-                slug: edge.node.fields.slug,
-              })
-            ),
-          query: `
-              {
-                allMarkdownRemark(
-                  limit: 1000,
-                  sort: { order: DESC, fields: [frontmatter___date] }
-                ) {
-                  edges {
-                    node {
-                      html
-                      fields {
-                        slug
-                      }
-                      frontmatter {
-                        title
-                        date
-                        category
-                      }
-                    }
-                  }
-                }
-              }
-            `,
-          output: '/rss.xml',
-        }, ],
-      },
-    },
     `gatsby-transformer-sharp`,
     `gatsby-plugin-sharp`,
+    `gatsby-plugin-feed`,
     `gatsby-plugin-offline`,
     `gatsby-plugin-react-helmet`,
     `gatsby-plugin-sass`,
