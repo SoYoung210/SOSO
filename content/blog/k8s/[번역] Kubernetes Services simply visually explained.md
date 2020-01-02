@@ -6,7 +6,7 @@ category: k8s
 
 ![image-thumbnail](./images/thumbnail.jpeg)
 
-이 글은 원작자의 허락하에 [원문](https://medium.com/swlh/kubernetes-services-simply-visually-explained-2d84e58d70e5)을 번역한 글입니다.
+이 글은 원작자의 허락을 받고 [원문](https://medium.com/swlh/kubernetes-services-simply-visually-explained-2d84e58d70e5)을 번역한 글입니다.
 
 ## Parts
 
@@ -137,3 +137,6 @@ Running kubectl get svc shows the same cluster ip. Just the different type and a
 모든 외부 Node IP에 요청을 분배하는(round robin같은 방법을 사용해서) 단일 IP를 원할 경우 LoadBalancer service를 사용합니다. 따라서 NodePort service 위에 구축됩니다.
 
 ![image-11](./images/image_11.png)
+
+Imagine that a LoadBalancer service creates a NodePort service which creates a ClusterIP service. The changed yaml for LoadBalancer as opposed to the NodePort before is simply:
+LoadBalancer service가 ClusterIP service를 생성하는 NodePort service를 생성한다고 이해하시면 됩니다. 이 설정(ClusterIP -> LoadBalancer)의 변경된 yaml은 다음과 같습니다.
