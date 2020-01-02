@@ -97,4 +97,43 @@ spec:
 
 ## NodePort
 
-Now we would like to make the ClusterIP service available from the outside and for this we convert it into a NodePort one. In our example we convert the service-python with just two simple yaml changes:
+이제 ClusterIP service를 외부에서 사용가능 하게 하기 위해 NodePort로 변경할 것입니다. 이 예제에서는 yaml 파일에서 두 가지를 변경하여서 `service-python`을 변경해보겠습니다.
+
+```yaml
+apiVersion: v1
+kind: Service
+metadata:
+  name: service-python
+spec:
+  ports:
+    - port: 3000
+      protocol: TCP
+      targetPort: 443
+      nodePort: 30080
+  selector:
+    run: pod-python
+  type: NodePort
+```
+
+![image-7](./images/image_7.png)
+
+이것은 `service-python`에 `30080` port를 통해 모든 내부 node및 외부 IP 주소에서 접근 할 수 있음을 의미합니다.
+
+![image-8](./images/image_8.png)
+
+cluster내부의 pod또한 30080port를 통해 내부 node IP에 연결할 수 있습니다.
+
+![image-9](./images/image_9.png)
+
+Running kubectl get svc shows the same cluster ip. Just the different type and additional node port:
+`kubectl get svc`를 실행하면 동일한 Cluster IP가 표시됩니다. `TYPE`이 NodePort로 변경되었고, `PORT`에 30080이 추가되었습니다.
+
+![image-10](./images/image_10.png)
+
+내부적으로 NodePort service는 여전히 이전에 ClusterIP service 역할을 합니다. 추가 ClusterIP 객체가 없어도 NodePort service가 ClusterIP service를 생성한다고 이해하면 됩니다.
+
+## LoadBalancer
+
+모든 외부 Node IP에 요청을 분배하는(round robin같은 방법을 사용해서) 단일 IP를 원할 경우 LoadBalancer service를 사용합니다. 따라서 NodePort service 위에 구축됩니다.
+
+![image-11](./images/image_11.png)
