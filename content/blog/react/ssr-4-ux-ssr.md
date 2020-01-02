@@ -14,7 +14,7 @@ SSR을 이용해서 두 가지 상황을 구현해보았습니다. 두 번째 �
 
 ### Server에서 Data Fetch
 
-[3. SSR - Data Fetch](https://so-so.dev/react/[ssr]-3.-ssr-data-fetch/)의 방법으로 요청했을 때 어떤 일이 벌어지는지 그림으로 살펴봅시다.
+[3. SSR - Data Fetch](https://so-so.dev/react/ssr-3-ssr-data-fetch/)의 방법으로 요청했을 때 어떤 일이 벌어지는지 그림으로 살펴봅시다.
 
 ![user-ssr-data-fetch](./images/user-ssr-data-fetch.png)
 사용자의 요청이 express에게 전달되고, api fetch후 contents를 그린 html을 Client에게 내려주기 전까지 **사용자는 흰 화면만 보게 됩니다.**
@@ -26,7 +26,7 @@ api call이 오래 걸릴 경우 사용자가 흰 화면을 보는 시간은 그
 
 ### Server에서 빠르게 전달
 
-[2. SSR - Basic](https://so-so.dev/react/[ssr]-2.-ssr---basic/)의 방법으로 변경해봅니다.  
+[2. SSR - Basic](https://so-so.dev/react/ssr-2-ssr---basic/)의 방법으로 변경해봅니다.  
 server에서는 api호출을 수행하지 않고 client의 `Loader` 혹은 `header`영역만 그려서 빠르게 전달해줍니다. 이후 로직 처리는 client에 위임합니다.
 
 ![user-ssr-no-data-fetch](./images/user-ssr-no-data-fetch.png)
@@ -51,12 +51,12 @@ server에서 api요청을 처리하는 방법으로 구현할 시에는, Client�
 
 하지만, 마냥 단점만 있는것은 아닙니다. 위 상항을 다르게 이야기 해보면, Client에서는 **늘 express의 상황에만 의존하게 된다는 것입니다.** 한번, `Low tier 디바이스`의 상황을 가정해봅시다.
 
-***Full Contents를 내려받는 방식***
+**_Full Contents를 내려받는 방식_**
 
 모든 요청과 api call이 express에서 이루어지므로, 유저가 컨텐츠를 받는 속도에서 변수는 오직 `네트워크 환경`과 express의 스펙입니다.(서버의 CPU등)  
 express의 CPU보다 좋지 않은 CPU를 가진 디바이스에서는 기존의 방식보다 빠르게 컨텐츠가 로드 될 수 있습니다.
 
-***SSR + CSR***
+**_SSR + CSR_**
 
 컨텐츠를 내려 받는 속도에서 중요한 요소는 유저가 연결된 네트워크 환경과 디바이스 스펙입니다.  
 저사양의 디바이스에서는 두 가지 요소 모두 좋지 않으니 컨텐츠 로딩 속도가 매우 느립니다. 이 경우 express에서 모든 컨텐츠를 내려받는것이 좋습니다.
