@@ -138,5 +138,40 @@ Running kubectl get svc shows the same cluster ip. Just the different type and a
 
 ![image-11](./images/image_11.png)
 
-Imagine that a LoadBalancer service creates a NodePort service which creates a ClusterIP service. The changed yaml for LoadBalancer as opposed to the NodePort before is simply:
 LoadBalancer service가 ClusterIP service를 생성하는 NodePort service를 생성한다고 이해하시면 됩니다. 이 설정(ClusterIP -> LoadBalancer)의 변경된 yaml은 다음과 같습니다.
+
+```yaml{13}
+apiVersion: v1
+kind: Service
+metadata:
+  name: service-python
+spec:
+  ports:
+    - port: 3000
+      protocol: TCP
+      targetPort: 443
+      nodePort: 30080
+  selector:
+    run: pod-python
+  type: LoadBalancer
+```
+
+All a LoadBalancer service does is it creates a NodePort service. In addition it sends a message to the provider who hosts the Kubernetes cluster asking for a loadbalancer to be setup pointing to all external node IPs and specific nodePort. If the provider doesn’t support the request message, well then nothing happens and the LoadBalancer would be equal to a NodePort service.
+
+LoadBalancer가 하는 일은 NodePort service를 만드는 것이 전부입니다. Kubernetes cluster를 hosting하는 `provider`에 모든 외부 node IP 및 특정 nodePort를 가리키는 LoadBalancer를 설정하도록 요청하는 메세지를 보냅니다.
+
+만약 이 `provider`가 위와 같은 요청을 지원하지 않는다면, 아무 일도 일어나지 않을 것이며 LoadBalancer는 NodePort service의 역할과 같은 역할을 할것입니다.
+
+`kubectl get svc`을 수행하면 `EXTERNAL-IP`이 다른 type으로 추가된 것을 볼 수 있습니다.
+
+![image-12](./images/image_12.png)
+
+LoadBalancer service는 외부, 내부 node에 대해 30080 port를 엽니다. 그리고 여전히 ClusterIP service처럼 작동합니다.
+
+## External Name
+
+마지막으로 살펴볼 것은 ExternalName이라는 service인데, 이전에 살펴본 3개의 서비스와는 조금 다릅니다.
+즉, 이 서비스는 endpoint가 DNS name을 가리키는 내부 서비스를 생성합니다.
+
+Taking our early example we now assume that the pod-nginx is already in our shiny new Kubernetes cluster. But the python api is still outside:
+https://medium.com/swlh/kubernetes-services-simply-visually-explained-2d84e58d70e5
