@@ -15,13 +15,12 @@ category: k8s
 
 ## TL;DR
 
-FIXME
 ClusterIP의 근간이 되는 4개의 서비스가 있습니다.
 ![image-0](./images/image_0.png)
 
 NodePort서비스를 생성하면 ClusterIP도 생성된다고 상상해봅시다. 그리고, LoadBalancer를 생성하면 NodePort가 생성되고 ClusterIP가 생성됩니다.
 
-이렇게 하면, k8s는 쉬워집니다. 본 글에서는 위 문장에 대한 과정을 차례대로 소개합니다.
+이렇게 이해 하면, k8s는 쉬워집니다. 본 글에서는 위 문장에 대한 과정을 차례대로 소개합니다.
 
 ## Service and Pods
 
@@ -41,10 +40,9 @@ Service는 labels를 이용해서 pod을 선택합니다. 이 방법은 매우 �
 
 ![image-2](./images/image_2.png)
 
-// FIXME: 여기 첫 번째 문장 좀 많은 의역인것 같군.
-`node-1`에 속하는 `pod-nginx`를 추가합니다. 이것은 연결(connectivity)에 아무 문제가 안됩니다. k8s에선 모든 pod들이 어떤 node에서 돌아가고 있는지 여부에 관계 없이 내부 ip주소로 서로 통신할 수 있습니다.
+`node-1`에 속하는 `pod-nginx`를 추가합니다. 이 과정은 연결(connectivity)에 아무 문제가 되지 않습니다. k8s에선 모든 pod들이 어떤 node에서 돌아가고 있는지 여부에 관계 없이 내부 ip주소로 서로 통신할 수 있습니다.
 
-이것은 `pod-nginx`가 내부주소 `1.1.1.3`을 이용해서 `pod-python`에게 ping을 보내거나 다른 연결을 할 수 있다는 것을 의미합니다.
+`pod-nginx`가 내부주소 `1.1.1.3`을 이용해서 `pod-python`에게 ping을 보내거나 다른 연결을 할 수 있다는 것을 의미합니다.
 
 ![image-3](./images/image_3.png)
 
@@ -69,7 +67,7 @@ Service는 labels를 이용해서 pod을 선택합니다. 이 방법은 매우 �
 
 예제를 확장해서, 3개의 python pod을 추가하겠습니다.
 
-cluster의 모든 pod들은 _http://1.1.10.1:3000_ 혹은 _1.1.10.1:3000_ 을 통해서 443port의 443port를 가진`python-pod`에 접근 가능합니다. Cluster IP(service-python)은 랜덤하게 혹은 round-robin규칙에 따라 요청을 분산시킵니다.
+cluster의 모든 pod들은 `http://1.1.10.1:3000` 혹은 `http://service-python:3000`을 통해서 `python-pod`의 443port로 접근 가능합니다. Cluster IP(service-python)는 랜덤하게 혹은 round-robin규칙에 따라 요청을 분산시킵니다.
 
 > 덧붙임: 이미지에는 표현되어 있지 않지만, ClusterIP service에서 `selector: pod-python`으로 설정되어 있기 때문에 pod-python에 접근할 수 있습니다.
 
@@ -99,7 +97,7 @@ spec:
 
 이제 ClusterIP service를 외부에서 사용가능 하게 하기 위해 NodePort로 변경할 것입니다. 이 예제에서는 yaml 파일에서 두 가지를 변경하여서 `service-python`을 변경해보겠습니다.
 
-```yaml
+```yaml{10,13}
 apiVersion: v1
 kind: Service
 metadata:
@@ -117,7 +115,7 @@ spec:
 
 ![image-7](./images/image_7.png)
 
-이것은 `service-python`에 `30080` port를 통해 모든 내부 node및 외부 IP 주소에서 접근 할 수 있음을 의미합니다.
+모든 내부 node및 외부 IP 주소에서 30080 port를 통해 내부 서비스인 `service-python`에 접근 할 수 있습니다.
 
 ![image-8](./images/image_8.png)
 
@@ -125,7 +123,6 @@ cluster내부의 pod또한 30080port를 통해 내부 node IP에 연결할 수 �
 
 ![image-9](./images/image_9.png)
 
-Running kubectl get svc shows the same cluster ip. Just the different type and additional node port:
 `kubectl get svc`를 실행하면 동일한 Cluster IP가 표시됩니다. `TYPE`이 NodePort로 변경되었고, `PORT`에 30080이 추가되었습니다.
 
 ![image-10](./images/image_10.png)
@@ -162,7 +159,7 @@ LoadBalancer가 하는 일은 NodePort service를 만드는 것이 전부입니�
 
 만약 이 `provider`가 위와 같은 요청을 지원하지 않는다면, 아무 일도 일어나지 않을 것이며 LoadBalancer는 NodePort service의 역할과 같은 역할을 할것입니다.
 
-`kubectl get svc`을 수행하면 `EXTERNAL-IP`이 다른 type으로 추가된 것을 볼 수 있습니다.
+`kubectl get svc`을 수행하면 `EXTERNAL-IP`가 다른 type으로 추가된 것을 볼 수 있습니다.
 
 ![image-12](./images/image_12.png)
 
@@ -178,7 +175,8 @@ LoadBalancer service는 외부, 내부 node에 대해 30080 port를 엽니다. �
 ![image-13](./images/image_13.png)
 
 But soon we would like to integrate that python api into the cluster and till then, we can create an ExternalName service:
-`pod-nginx`는 `http://remote.server.url.com`에 연결되어야 합니다. `python api`는 cluster내부에 통합되어야 하고, 그렇게 해야만 `ExternalName` service를 만들 수 있습니다.
+
+`pod-nginx`는 _http://remote.server.url.com_ 에 연결되어야 합니다. `python api`는 cluster내부에 통합되어야 하고, 그렇게 해야만 `ExternalName` service를 만들 수 있습니다.
 
 ![image-14](./images/image_14.png)
 
