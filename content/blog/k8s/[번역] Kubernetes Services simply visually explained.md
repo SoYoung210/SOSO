@@ -173,5 +173,41 @@ LoadBalancer service는 외부, 내부 node에 대해 30080 port를 엽니다. �
 마지막으로 살펴볼 것은 ExternalName이라는 service인데, 이전에 살펴본 3개의 서비스와는 조금 다릅니다.
 즉, 이 서비스는 endpoint가 DNS name을 가리키는 내부 서비스를 생성합니다.
 
-Taking our early example we now assume that the pod-nginx is already in our shiny new Kubernetes cluster. But the python api is still outside:
-https://medium.com/swlh/kubernetes-services-simply-visually-explained-2d84e58d70e5
+앞선 예제에서 본것처럼, `pod-nginx`는 이미 새로운 Kubernetes cluster내부에 있습니다. 하지만 `python` api는 여전히 외부에 있습니다.
+
+![image-13](./images/image_13.png)
+
+But soon we would like to integrate that python api into the cluster and till then, we can create an ExternalName service:
+`pod-nginx`는 `http://remote.server.url.com`에 연결되어야 합니다. `python api`는 cluster내부에 통합되어야 하고, 그렇게 해야만 `ExternalName` service를 만들 수 있습니다.
+
+![image-14](./images/image_14.png)
+
+위 상황은 yaml로 다음과 같이 표현됩니다.
+
+```yaml
+kind: Service
+apiVersion: v1
+metadata:
+  name: service-python
+spec:
+  ports:
+  - port: 3000
+    protocol: TCP
+    targetPort: 443
+  type: ExternalName
+  externalName: remote.server.url.com
+```
+
+Now pod-nginx can simply connect to http://service-python:3000, just like with a ClusterIP service. When we finally decide to migrate the python api as well in our beautiful stunning Kubernetes cluster, we only have to change the service to a ClusterIP one with the correct labels set:
+
+이제 `pod-nginx`는 ClusterIP service처럼 쉽게 `http://service-python:3000`에 연결할 수 있습니다. python api를 Kubernetes cluster로 마이그레이션 하기로 결정한 경우, 올바른 label이 설정된 ClusterIP service로 변경하기만 하면 됩니다.
+
+![image-15](./images/image_15.png)
+
+ExternalName service를 사용할 때 가장 큰 장점은 일부 서비스가 외부에 있더라도 k8s 인프라를 구축하고 service와 IP를 기반으로 규칙과 제한을 적용할 수 있다는 점입니다.
+
+## Recap
+
+> 마지막 문장은 원작자의 문장을 번역하지 않았습니다.
+
+Today is not the day for much of a recap, I do fear so fellow reader.
