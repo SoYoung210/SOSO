@@ -22,6 +22,10 @@ blockquote {
   color: $blockquote-text-color;
 }
 
+code {
+  font-weight: 500 !important;
+}
+
 code[class*='language-'],
 pre[class*='language-'] {
   color: #e0e0e0;
@@ -61,16 +65,18 @@ pre[class*='language-'] {
   border-radius: 0.6em;
 }
 
-:not(pre) > code[class*='language-'],
+:not(pre)>code[class*='language-'],
 pre[class*='language-'] {
   background: #212121;
 }
 
 /* Inline code */
-:not(pre) > code[class*='language-'] {
-  padding: 0.1em 0.6em;
-  border-radius: 0.2em;
+:not(pre)>code[class*='language-'] {
+  padding: .11em .3em;
+  margin: 0 .1em;
+  border-radius: .3em;
   white-space: normal;
+  border: 1.2px solid $inline-text-color;
   background: $inline-dimmed-color;
   color: $inline-text-color;
 }
@@ -137,6 +143,7 @@ pre[class*='language-'] {
 .token.bold {
   font-weight: bold;
 }
+
 .token.italic {
   font-style: italic;
 }
