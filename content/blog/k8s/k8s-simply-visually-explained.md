@@ -131,10 +131,10 @@ cluster내부의 pod또한 30080port를 통해 내부 node IP에 연결할 수 �
 
 ### 덧붙임
 
-Node의 IP가 무엇이던, 30080port를 통해 pod-python으로 접근할 수 있습니다.
+모든 Node는 30080port를 통해 `pod-python`에 접근할 수 있습니다.
 
-k8s cluster에는 무수히 많은 서비스가 있을텐데, NodePort의 port번호가 유니크하도록 관리하는것은 쉬운 일이 아니게 되겠죠?  
-그래서, 실제로는 NodePort보다는 `ClusterIP + ingress` 조합으로 많이 사용한다고 합니다.
+NodePort의 port번호를 지정하지 않으면, 30000-32767 대역에서 적절하게 할당해줍니다.  
+하지만 이렇게 관리하게 되면 어떤 **서비스가 어떤 Port에 할당되어 있는지 명시적이지 않습니다.** 또한, 보안상 취약한 부분이 존재하는 등 여러가지 측면에서 LoadBalancer Type을 사용하는 것이 좋기 때문에 LoadBalancer라는 개념이 존재하지 않는 on-premise 환경이 아닌 이상 굳이 사용하지 않는다고 합니다.
 
 ## LoadBalancer
 
