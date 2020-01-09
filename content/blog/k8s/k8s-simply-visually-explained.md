@@ -26,7 +26,7 @@ NodePort서비스를 생성하면 ClusterIP도 생성된다고 상상해봅시�
 
 Service는 pod들을 가리킵니다. Service는 **developments나 레플리카셋을 가리키지 않습니다.**
 
-Service는 labels를 이용해서 pod을 선택합니다. 이 방법은 매우 유연함을 가지는데, pod을 생성한 다른 요소에 의해 구애 받지 않기 때문입니다.
+Service는 labels를 이용해서 pod을 선택합니다. 이 방법은 매우 유연한 방법입니다. pod을 생성한 다른 요소에 의해 구애 받지 않기 때문입니다.
 
 단계별로 각 Service 타입이 어떻게 구성되는지 예제로 살펴보겠습니다.
 
@@ -42,7 +42,7 @@ Service는 labels를 이용해서 pod을 선택합니다. 이 방법은 매우 �
 
 `node-1`에 속하는 `pod-nginx`를 추가합니다. 이 과정은 연결(connectivity)에 아무 문제가 되지 않습니다. k8s에선 모든 pod들이 어떤 node에서 돌아가고 있는지 여부에 관계 없이 내부 ip주소로 서로 통신할 수 있습니다.
 
-`pod-nginx`가 내부주소 `1.1.1.3`을 이용해서 `pod-python`에게 ping을 보내거나 다른 연결을 할 수 있다는 것을 의미합니다.
+이 말은, `pod-nginx`가 내부주소 `1.1.1.3`을 이용해서 `pod-python`에게 ping을 보내거나 다른 연결을 할 수 있다는 것을 의미합니다.
 
 ![image-3](./images/image_3.png)
 
@@ -59,9 +59,9 @@ Service는 labels를 이용해서 pod을 선택합니다. 이 방법은 매우 �
 
 이전과 같은 상황이지만, `Cluster IP`service가 생겼습니다. service는 pod처럼 특정 node에서 수행되지 않습니다.
 
-> 본 글에서는 `service`란, 전체 cluster에서 접근 가능하다고 가정하겠습니다.
+> 본 글에서는 `service`는 전체 cluster에서 접근 가능하다고 가정하겠습니다.
 
-`pod-nginx`는 언제나 안전하게 1.1.10.1이나 `service-python`이라는 dns name에 연결할 수 있고 살아있는 python pod으로 redirect됩니다.
+`pod-nginx`는 언제나 안전하게 1.1.10.1이나 `service-python`이라는 dns name에 연결할 수 있고, 살아있는 python pod으로 redirect됩니다.
 
 ![image-5](./images/image_5.png)
 
@@ -129,13 +129,20 @@ cluster내부의 pod또한 30080port를 통해 내부 node IP에 연결할 수 �
 
 내부적으로 NodePort service는 여전히 이전에 ClusterIP service 역할을 합니다. 추가 ClusterIP 객체가 없어도 NodePort service가 ClusterIP service를 생성한다고 이해하면 됩니다.
 
+### 덧붙임
+
+Node의 IP가 무엇이던, 30080port를 통해 pod-python으로 접근할 수 있습니다.
+
+k8s cluster에는 무수히 많은 서비스가 있을텐데, NodePort의 port번호가 유니크하도록 관리하는것은 쉬운 일이 아니게 되겠죠?  
+그래서, 실제로는 NodePort보다는 `ClusterIP + ingress` 조합으로 많이 사용한다고 합니다.
+
 ## LoadBalancer
 
 모든 외부 Node IP에 요청을 분배하는(round robin같은 방법을 사용해서) 단일 IP를 원할 경우 LoadBalancer service를 사용합니다. 따라서 NodePort service 위에 구축됩니다.
 
 ![image-11](./images/image_11.png)
 
-LoadBalancer service가 ClusterIP service를 생성하는 NodePort service를 생성한다고 이해하시면 됩니다. 이 설정(ClusterIP -> LoadBalancer)의 변경된 yaml은 다음과 같습니다.
+LoadBalancer service가 ClusterIP service를 생성하는 NodePort service를 생성한다고 이해하시면 됩니다. 이 설정(ClusterIP → LoadBalancer)의 변경된 yaml은 다음과 같습니다.
 
 ```yaml{13}
 apiVersion: v1
@@ -153,9 +160,12 @@ spec:
   type: LoadBalancer
 ```
 
-All a LoadBalancer service does is it creates a NodePort service. In addition it sends a message to the provider who hosts the Kubernetes cluster asking for a loadbalancer to be setup pointing to all external node IPs and specific nodePort. If the provider doesn’t support the request message, well then nothing happens and the LoadBalancer would be equal to a NodePort service.
-
 LoadBalancer가 하는 일은 NodePort service를 만드는 것이 전부입니다. Kubernetes cluster를 hosting하는 `provider`에 모든 외부 node IP 및 특정 nodePort를 가리키는 LoadBalancer를 설정하도록 요청하는 메세지를 보냅니다.
+
+> 덧붙임: LoadBalancer는 각 provider에 따라 세부 구현이 다릅니다.
+
+> 💡 **Provider란?**  
+> aws나 gcp같은 서비스를 말하며, aws에서 운영되는 k8s에 LoadBalancer타입 서비스를 생성하게 되면 aws ELB리소스가 생성됩니다.
 
 만약 이 `provider`가 위와 같은 요청을 지원하지 않는다면, 아무 일도 일어나지 않을 것이며 LoadBalancer는 NodePort service의 역할과 같은 역할을 할것입니다.
 
@@ -174,8 +184,6 @@ LoadBalancer service는 외부, 내부 node에 대해 30080 port를 엽니다. �
 
 ![image-13](./images/image_13.png)
 
-But soon we would like to integrate that python api into the cluster and till then, we can create an ExternalName service:
-
 `pod-nginx`는 _http://remote.server.url.com_ 에 연결되어야 합니다. `python api`는 cluster내부에 통합되어야 하고, 그렇게 해야만 `ExternalName` service를 만들 수 있습니다.
 
 ![image-14](./images/image_14.png)
@@ -189,14 +197,12 @@ metadata:
   name: service-python
 spec:
   ports:
-  - port: 3000
-    protocol: TCP
-    targetPort: 443
+    - port: 3000
+      protocol: TCP
+      targetPort: 443
   type: ExternalName
   externalName: remote.server.url.com
 ```
-
-Now pod-nginx can simply connect to http://service-python:3000, just like with a ClusterIP service. When we finally decide to migrate the python api as well in our beautiful stunning Kubernetes cluster, we only have to change the service to a ClusterIP one with the correct labels set:
 
 이제 `pod-nginx`는 ClusterIP service처럼 쉽게 `http://service-python:3000`에 연결할 수 있습니다. python api를 Kubernetes cluster로 마이그레이션 하기로 결정한 경우, 올바른 label이 설정된 ClusterIP service로 변경하기만 하면 됩니다.
 
@@ -209,3 +215,9 @@ ExternalName service를 사용할 때 가장 큰 장점은 일부 서비스가 �
 > 마지막 문장은 원작자의 문장을 번역하지 않았습니다.
 
 Today is not the day for much of a recap, I do fear so fellow reader.
+
+## Thanks To
+
+이 글은 번역과정에서 저의 질문에 답변해주신 [정겨울](https://github.com/JungWinter)님 덕분에 완성되었습니다.
+
+감사 드립니다.
