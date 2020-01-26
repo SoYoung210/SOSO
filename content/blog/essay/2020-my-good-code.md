@@ -62,9 +62,9 @@ let Directions = {
 
 ### 🤓 한번 util로 만들어 두면 쓰는 곳에서는 계속 편하게 쓸 수 있지 않을까?
 
-redux-middleware관련 util을 만들 때 많이 하는 생각이다. `async action`들은 하는 일이 비슷했고, 매번 중복으로 적어주는 일이 꽤나 귀찮아졌다.
+redux-middleware관련 util을 만들 때 많이 했던 생각이다. 비동기 로직을 처리하는 각각의 middleware들은 action의 type만 다를 뿐 다른 로직은 거의 비슷했다. 매번 모든 코드를 중복으로 적어주는 일이 꽤나 귀찮아졌다.
 
-`fetchMiddleware`라는 이름의 middleware유틸을 만들었다.
+그래서 `fetchMiddleware`라는 이름의 middleware유틸을 만들었다.
 
 ```ts
 // fetchMiddleware.ts
@@ -73,29 +73,29 @@ const fetchMiddleware = (action, fn?: (...args: any) => any) => {
 }
 ```
 
-그리고 팀원들에게 전파한다. “Async Action처리를 하나의 함수로 처리했으니 가져다 쓰시기만 하면 돼요! 여러가지 처리를 하느라 내부는 조금 복잡합니다.”
-이 util을 처음 전달하는 순간에는 괜찮을 수 있다. **하지만 아예 프로젝트의 담당자가 바뀐다면 어떻게 될까?** 에러 상황에 대한 디버깅이나 근본적인 구조를 건드려야 하는 일이 생긴다면 동료는 필연적으로 내가 만든 `fetchMiddleware`도 읽어보게 될것이다.
+그리고 팀원들에게 전파한다. "middleware로직을 하나의 함수로 처리했으니 가져다 쓰시기만 하면 됩니다! 여러가지 처리를 하느라 내부는 조금 복잡합니다."
+이 util을 처음 전달하는 순간에는 괜찮을 수 있다. **하지만 아예 프로젝트의 담당자가 바뀐다면 어떻게 될까?** 에러 상황에 대한 디버깅이나 근본적인 구조를 건드려야 하는 일이 생긴다면 동료는 필연적으로 내가 만든 `fetchMiddleware`도 살펴보게 될것이다.
 
-긴 시간을 들여야만 이 util이 이해된다면, 프로젝트 전체를 파악하는데에 있어서 그만큼의 시간이 더 소요된다는 뜻이다. **Product는 팀의 코드가 되어야 한다.**라는 관점에서 이 프로젝트는 건강하지 않다.
+긴 시간을 들여야만 이 util이 이해된다는 것은 프로젝트 전체를 파악하는데에 있어서 그만큼의 시간이 더 소요된다는 뜻이다. **Product는 팀의 코드가 되어야 한다.**라는 관점에서 이 코드와 프로젝트는 건강하지 못하다.
 
-“내부가 조금 복잡해도 가져다 쓸 때 편하다.” 라는 말은 읽기 어려운 코드에 대한 성급한 합리화이다.
+"내부가 조금 복잡해도 가져다 쓸 때 편하다." 라는 말은 읽기 어려운 코드에 대한 합리화이다.
 
 ### 😈 더 간결한 표현은 없을까?
 
 이 문장은 늘 생각해야 하면서도, 경계해야 하는 문장이다.
-10줄짜리 코드를 한줄로 표현할 때 느끼는 희열은 쉽게 빠질 수 있는 함정이다. 조금 극단적인 예시를 들자면, 가독성만 놓고 봤을 때 map이나 forEach를 통해 해결하는 것보다 그 자료를 그대로 나열하는 것이 더 좋을수도 있다.
-
-> 하지만 나도 대부분의 반복은 forEach나 map을 선호한다.
+열줄짜리 코드를 한줄로 표현할 때 느끼는 희열은 쉽게 빠질 수 있는 함정이다. 조금 극단적으로 표현 해보자면 가독성만 놓고 봤을 때 map이나 forEach를 통해 해결하는 것보다 그 자료를 그대로 나열하는 것이 더 좋을수도 있다는 뜻이다.
 
 극강의 간결함을 추구하기 위해 코드를 줄여가는데에만 초점을 맞추다보면 가독성 관점을 쉽게 포기한다. **간결하다고 무조건 좋은 코드가 아니다.**
 '바보도 이해할 수 있으면서 개발자의 피곤한 중복은 줄일 수 있는' 중도의 코드에 초점을 맞추어야 한다.
 
 ## 적당한 함수 합성
 
-슬랙 메세지 Block을 생성하는 상황을 생각해 보자.
+함수의 연산 결과를 항상 값으로만 다루던 고정관념을 깨본 경험도 좋은 코드에 대해 좀더 많은 고민을 할 수 있게된 계기라고 생각한다.
+
+코드 설명에 대한 예시로 슬랙 메세지 Block을 생성하는 상황을 생각해 보자.
 
 - 특정 api의 검사 결과가 false일때만 Image Message가 필요하다.
-- 슬랙 Message를 생성하는 함수는 createSlackMessage이고, 보내는 함수는 sendSlackMessage이다.
+- 슬랙 Message를 생성하는 함수는 `createSlackMessage`이고, 보내는 함수는 `sendSlackMessage`이다.
 
 맨 처음 작성했던 코드는 이런식이었다.
 
@@ -115,9 +115,11 @@ const createSlackMessage = (
 }
 ```
 
-무슨 일을 하는지는 알겠는데, slack Message를 생성하는 두 가지 경우가 하나의 함수에서 처리되고 있다. 역할을 분리하는 것은 성급한 추상화도 아니고 간결한 표현을 추구하는 것도 아닌, **더 나은 패턴에 대한 고민**이었다.
+slack Message를 생성하는 두 가지 경우가 하나의 함수에서 처리되고 있다. 함수가 한 가지 이상의 일을 하고 있다는 뜻이고, 역할이 분리될 필요가있다.
 
-이미지 block을 추가하는 것은 option이고, 이 상황에는 title과 message가 사용되지 않는다. imageBlock을 다루는 함수를 분리하고, `createSlackMessage`내부에서 삼항연산자로 분리하도록 리팩토링 했다.
+여기서 짚고 넘어갈 점은, 역할을 분리하는 것은 성급한 추상화도 아니고 극강의 간결한 표현을 추구하는 것도 아니다. **더 나은 패턴에 대한 고민**이다.
+
+ImageBlock을 추가하는 것은 optional이고, 이 상황에는 title과 message가 사용되지 않는다. ImageBlock을 다루는 함수를 분리하고, `createSlackMessage`내부에서 삼항연산자로 분리하도록 리팩토링 했다.
 
 ```ts
 const createSlackMessage = (
@@ -131,10 +133,10 @@ const createSlackMessage = (
 }
 ```
 
-Image Block을 concat하는 부분을 분리하니 `createSlackMessage`자체의 가독성은 좋아졌다. 하지만 아직 문제가 더 남았다.
+ImageBlock을 concat하는 부분을 분리하니 `createSlackMessage`함수의 가독성은 좋아졌다. 하지만 아직 문제가 남았다.
 
-`createSlackMessage`함수는 `imageUrl`이 필요 없더라도 파라미터를 명시하고 이를 optional로 전달받도록 되어있다. 아직 역할의 분리가 완벽히 이루어지지는 않았다는 뜻이다.
-필요없는 정보는 전달하지 않고, Image Block이 필요한 한 단계 상위함수에서 결정되도록 변경하였다.
+`createSlackMessage`함수는 `imageUrl`이 필요 없더라도 파라미터를 optional로 명시하고 내부에서 분기문으로 다뤄지고 있다. 아직 역할의 분리가 완벽히 이루어지지는 않았다는 뜻이다.
+필요없는 정보는 아예 전달하지 않고, `createSlackMessage`에서 다루던 ImageBlock에 대한 분기문을 한 단계 상위함수에서 처리하도록 했다.
 
 ```ts
 const createSlackMessage = (title: string, message: string) => {}
@@ -142,11 +144,15 @@ const createSlackMessage = (title: string, message: string) => {}
 
 ## 적당한 자료형
 
-좋은 함수를 작성하는 데에서 어쩌면 가장 중요한 것은, **자료형을 잘 다루는 것이다.** 다음 상황을 가정해보자.
+좋은 함수를 작성하는 데에서 어쩌면 가장 중요한 것은, **자료형을 잘 다루는 것이다.**
 
-- file이름의 배열을 받고, answers값을 통해 fileList에서 적당한 값들을 정규표현식을 이용해 치환한다.
-- 정규표현식 치환은 `convertTemplateString`을 통해 수행된다.
-- `generateFiles` 의 결과값은 최종적으로 각각 File Write된다.
+다음 상황을 가정해보자.
+
+- fileList라는 이름의 배열을 받고, answers값을 통해 fileList의 내용에서 필요한 값을 치환한다.
+- 치환은 `convertTemplateString`을 통해 수행된다.
+- `generateFiles`의 결과값은 최종적으로 각각 File Write된다.
+
+제일 처음에는 하나의 object가 return되도록 작성하였다.
 
 ```js
 const generateFiles = (fileList, answers) => {
@@ -159,11 +165,8 @@ const generateFiles = (fileList, answers) => {
     return acc
   }, {})
 }
-```
 
-이 함수의 최종 형태는 하나의 object다.
-
-```js
+// generateFiles Result
 const fileList = {
   file1: 'file Body1',
   file2: 'file Body2',
@@ -184,12 +187,12 @@ Object.keys(fileList).forEach(fileName => {
 })
 ```
 
-파악해야 하는 점이 많은 코드다. object를 순회하기 위해 `Object.keys`를 이용했고, object인 constants에서 알맞은 함수를 실행시키기 위해 `constnats[fileName](USER..)`와 같은 표현이 필요했다.
+파악해야 하는 점이 많은 코드다. object를 순회하기 위해 `Object.keys`를 이용했고, object인 `constants`에서 알맞은 함수를 실행시키기 위해 `constants[fileName](USER..)`와 같은 표현이 필요하다.
 
 **이렇게 어렵게 작성하지 않아도 된다.**.
-fileList를 object가 아닌 배열로 다룰 경우 `Object.keys`작업 없이 바로 순회가 가능하다. `generateFiles`를 작성할때 가졌던 '재활용'에 대한 강박을 마저 버리기로 했다.
+fileList를 object가 아닌 배열로 다룰 경우 `Object.keys`없이 바로 순회가 가능하다.
 
-> 여기에서만 사용되는 함수라고 생각하니 다시 작성하는데에 있어 부담감이 덜해졌다.
+`generateFiles`를 처음 작성할때 자료형에 대한 고민이 부족했고, file을 유동적으로 받을 수 있는데에만 집중해서 다른 부분을 놓쳤다.
 
 ```js
 const generateFiles = (fileList, answers) =>
@@ -227,4 +230,4 @@ fileList.forEach(file => {
 
 ## Special Thanks to
 
-여러가지 리팩토링에 도움을 주신 http://joeun.dev/ 님과 이 글 전반에 도움을 주신 [Home | JBEE.io](https://jbee.io/)님께 감사드립니다.
+여러가지 리팩토링에 도움을 주신 [joeun](http://joeun.dev/)님과 이 글 전반에 도움을 주신 [Jbee](https://jbee.io/)님께 감사드립니다.
