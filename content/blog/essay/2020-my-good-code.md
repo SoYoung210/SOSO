@@ -6,11 +6,11 @@ category: essay
 
 ![image-thumbnail](./images/thumbnail-good-code.png)
 
-작년 [발표](https://speakerdeck.com/soyoung210/jeolmang-deuribeun-seongjang-hamgge-ilhago-sipeun-gaebaljaga-doegiggaji?slide=58)에서 '아는 것이 많다고 해서 반드시 좋은 코드를 쓸 수 있는 것은 아니다.'라고 했다. 물론 아는 것이 많아지면 좋은 코드를 작성할 확률이 높아질 수 는 있지만, '좋은 코드'라는 단어는 지식 말고도 고려해야 할 점이 많은 단어이다.
+작년 [발표](https://speakerdeck.com/soyoung210/jeolmang-deuribeun-seongjang-hamgge-ilhago-sipeun-gaebaljaga-doegiggaji?slide=58)에서 '아는 것이 많다고 해서 반드시 좋은 코드를 쓸 수 있는 것은 아니다.'라고 했다. 물론 아는 것이 많아지면 좋은 코드를 작성할 확률이 높아질 수는 있지만, '좋은 코드'라는 단어는 지식 말고도 고려해야 할 점이 많은 단어이다.
 
 ## 적당한 추상화
 
-함수를 새로 작성할때 이런 고민에 부딪힌다.
+함수를 새로 작성할 때 이런 고민에 부딪힌다.
 
 - 🤔 이 함수, 어디에선가 다시 쓸 수도 있지 않을까?
 - 🤓 한번 util로 만들어 두면 쓰는 곳에서는 계속 편하게 쓸 수 있지 않을까?
@@ -33,7 +33,7 @@ export const padZero = (num: number, width: number) => {
 }
 ```
 
-`padZero(2, 4)`와 같이 사용하면 '0002'를 return하는 함수이다.
+`padZero(2, 4)`와 같이 사용하면 '0002'를 return 하는 함수이다.
 이런 기능은 어떤 Domain에서 사용될까?  
 결론은 '쉽게 추측할 수 없다.'이다. 숫자에 padding을 넣는 작업은 꼭 지금 만들고 있는 View가 아니더라도 많이 일어날 수 있는 일이다.
 
@@ -55,10 +55,10 @@ let Directions = {
 // 출처: https://overreacted.io/goodbye-clean-code
 ```
 
-위 예시는 Dan Abramov의 [GoodBye Clean Code](https://overreacted.io/goodbye-clean-code)에서 가져온 예시이다.  
+위 예시는 Dan Abramov의 [Goodbye, Clean Code](https://overreacted.io/goodbye-clean-code)에서 가져온 예시이다.  
 `Directions.top`은 '도형의 가장자리를 드래그하여 크기를 조절할 수 있게 해주는 기능'을 위해 만들어진 함수이다. 지금은 네 가지 방향밖에 없지만 혹시 더 늘어날 수 있지 않을까?
 
-하지만, 이 함수의 추상화 레벨을 높일때 고민해야 한다. '언젠가는 사용되지 않을까'라는 희망으로 부터 비롯된 성급한 추상화는 현재 이 기능을 리뷰할 동료에게 고민과 이해의 시간을 갖게 만든다. **Domain이 드러날 수록 재활용 여지는 낮아진다.**
+하지만, 이 함수의 추상화 레벨을 높일 때 고민해야 한다. '언젠가는 사용되지 않을까'라는 희망으로부터 비롯된 성급한 추상화는 현재 이 기능을 리뷰할 동료에게 고민과 이해의 시간을 갖게 만든다. **Domain이 드러날수록 재활용 여지는 낮아진다.**
 
 ### 🤓 한번 util로 만들어 두면 쓰는 곳에서는 계속 편하게 쓸 수 있지 않을까?
 
@@ -73,31 +73,31 @@ const fetchMiddleware = (action, fn?: (...args: any) => any) => {
 }
 ```
 
-그리고 팀원들에게 전파한다. "middleware로직을 하나의 함수로 처리했으니 가져다 쓰시기만 하면 됩니다! 여러가지 처리를 하느라 내부는 조금 복잡합니다."
-이 util을 처음 전달하는 순간에는 괜찮을 수 있다. **하지만 아예 프로젝트의 담당자가 바뀐다면 어떻게 될까?** 에러 상황에 대한 디버깅이나 근본적인 구조를 건드려야 하는 일이 생긴다면 동료는 필연적으로 내가 만든 `fetchMiddleware`도 살펴보게 될것이다.
+그리고 팀원들에게 전파한다. "middleware로직을 하나의 함수로 처리했으니 가져다 쓰시기만 하면 됩니다! 여러 가지 처리를 하느라 내부는 조금 복잡합니다."
+이 util을 처음 전달하는 순간에는 괜찮을 수 있다. **하지만 아예 프로젝트의 담당자가 바뀐다면 어떻게 될까?** 에러 상황에 대한 디버깅이나 근본적인 구조를 건드려야 하는 일이 생긴다면 동료는 필연적으로 내가 만든 `fetchMiddleware`도 살펴보게 될 것이다.
 
-긴 시간을 들여야만 이 util이 이해된다는 것은 프로젝트 전체를 파악하는데에 있어서 그만큼의 시간이 더 소요된다는 뜻이다. **Product는 팀의 코드가 되어야 한다.**라는 관점에서 이 코드와 프로젝트는 건강하지 못하다.
+긴 시간을 들여야만 이 util이 이해된다는 것은 프로젝트 전체를 파악하는 데에 있어서 그만큼의 시간이 더 소요된다는 뜻이다. **Product는 팀의 코드가 되어야 한다.**라는 관점에서 이 코드와 프로젝트는 건강하지 못하다.
 
-"내부가 조금 복잡해도 가져다 쓸 때 편하다." 라는 말은 읽기 어려운 코드에 대한 합리화이다.
+"내부가 조금 복잡해도 가져다 쓸 때 편하다."라는 말은 읽기 어려운 코드에 대한 합리화이다.
 
 ### 😈 더 간결한 표현은 없을까?
 
 이 문장은 늘 생각해야 하면서도, 경계해야 하는 문장이다.
-열줄짜리 코드를 한줄로 표현할 때 느끼는 희열은 쉽게 빠질 수 있는 함정이다. 조금 극단적으로 표현 해보자면 가독성만 놓고 봤을 때 map이나 forEach를 통해 해결하는 것보다 그 자료를 그대로 나열하는 것이 더 좋을수도 있다는 뜻이다.
+열 줄짜리 코드를 한 줄로 표현할 때 느끼는 희열은 쉽게 빠질 수 있는 함정이다. 조금 극단적으로 표현해보자면 가독성만 놓고 봤을 때 map이나 forEach를 통해 해결하는 것보다 그 자료를 그대로 나열하는 것이 더 좋을수도 있다는 뜻이다.
 
-극강의 간결함을 추구하기 위해 코드를 줄여가는데에만 초점을 맞추다보면 가독성 관점을 쉽게 포기한다. **간결하다고 무조건 좋은 코드가 아니다.**
+극강의 간결함을 추구하기 위해 코드를 줄여가는 데에만 초점을 맞추다 보면 가독성 관점을 쉽게 포기한다. **간결하다고 무조건 좋은 코드가 아니다.**
 '바보도 이해할 수 있으면서 개발자의 피곤한 중복은 줄일 수 있는' 중도의 코드에 초점을 맞추어야 한다.
 
 ## 적당한 함수 합성
 
-함수의 연산 결과를 항상 값으로만 다루던 고정관념을 깨본 경험도 좋은 코드에 대해 좀더 많은 고민을 할 수 있게된 계기라고 생각한다.
+함수의 연산 결과를 항상 값으로만 다루던 고정관념을 깨본 경험도 좋은 코드에 대해 좀 더 많은 고민을 할 수 있게 된 계기라고 생각한다.
 
 코드 설명에 대한 예시로 슬랙 메세지 Block을 생성하는 상황을 생각해 보자.
 
-- 특정 api의 검사 결과가 false일때만 Image Message가 필요하다.
+- 특정 api의 검사 결과가 false일 때만 Image Message가 필요하다.
 - 슬랙 Message를 생성하는 함수는 `createSlackMessage`이고, 보내는 함수는 `sendSlackMessage`이다.
 
-맨 처음 작성했던 코드는 이런식이었다.
+맨 처음 작성했던 코드는 이런 식이었다.
 
 ```ts
 const createSlackMessage = (
@@ -115,11 +115,11 @@ const createSlackMessage = (
 }
 ```
 
-slack Message를 생성하는 두 가지 경우가 하나의 함수에서 처리되고 있다. 함수가 한 가지 이상의 일을 하고 있다는 뜻이고, 역할이 분리될 필요가있다.
+slack Message를 생성하는 두 가지 경우가 하나의 함수에서 처리되고 있다. 함수가 한 가지 이상의 일을 하고 있다는 뜻이고, 역할이 분리될 필요가 있다.
 
 여기서 짚고 넘어갈 점은, 역할을 분리하는 것은 성급한 추상화도 아니고 극강의 간결한 표현을 추구하는 것도 아니다. **더 나은 패턴에 대한 고민**이다.
 
-ImageBlock을 추가하는 것은 optional이고, 이 상황에는 title과 message가 사용되지 않는다. ImageBlock을 다루는 함수를 분리하고, `createSlackMessage`내부에서 삼항연산자로 분리하도록 리팩토링 했다.
+ImageBlock을 추가하는 것은 optional이고, 이 상황에는 title과 message가 사용되지 않는다. ImageBlock을 다루는 함수를 분리하고, `createSlackMessage`내부에서 삼항연산자로 분리하도록 리팩토링했다.
 
 ```ts
 const createSlackMessage = (
@@ -136,7 +136,7 @@ const createSlackMessage = (
 ImageBlock을 concat하는 부분을 분리하니 `createSlackMessage`함수의 가독성은 좋아졌다. 하지만 아직 문제가 남았다.
 
 `createSlackMessage`함수는 `imageUrl`이 필요 없더라도 파라미터를 optional로 명시하고 내부에서 분기문으로 다뤄지고 있다. 아직 역할의 분리가 완벽히 이루어지지는 않았다는 뜻이다.
-필요없는 정보는 아예 전달하지 않고, `createSlackMessage`에서 다루던 ImageBlock에 대한 분기문을 한 단계 상위함수에서 처리하도록 했다.
+필요 없는 정보는 아예 전달하지 않고, `createSlackMessage`에서 다루던 ImageBlock에 대한 분기문을 한 단계 상위 함수에서 처리하도록 했다.
 
 ```ts
 const createSlackMessage = (title: string, message: string) => {}
@@ -192,7 +192,7 @@ Object.keys(fileList).forEach(fileName => {
 **이렇게 어렵게 작성하지 않아도 된다.**.
 fileList를 object가 아닌 배열로 다룰 경우 `Object.keys`없이 바로 순회가 가능하다.
 
-`generateFiles`를 처음 작성할때 자료형에 대한 고민이 부족했고, file을 유동적으로 받을 수 있는데에만 집중해서 다른 부분을 놓쳤다.
+`generateFiles`를 처음 작성할 때 자료형에 대한 고민이 부족했고, file을 유동적으로 받을 수 있는 데에만 집중해서 다른 부분을 놓쳤다.
 
 ```js
 const generateFiles = (fileList, answers) =>
@@ -219,7 +219,7 @@ fileList.forEach(file => {
 })
 ```
 
-목적에 맞는 자료형으로 변경하는것 만으로도 코드가 훨씬 읽기 쉬워진다.
+목적에 맞는 자료형으로 변경하는 것만으로도 코드가 훨씬 읽기 쉬워진다.
 함수가 return하는 값을 최종적으로 사용되는 곳에서 어떻게 다루어질 것인가를 생각하며 작성해야 한다.
 
 ## 이 글을 마치며
@@ -230,4 +230,4 @@ fileList.forEach(file => {
 
 ## Special Thanks to
 
-여러가지 리팩토링에 도움을 주신 [joeun](http://joeun.dev/)님과 이 글 전반에 도움을 주신 [Jbee](https://jbee.io/)님께 감사드립니다.
+여러 가지 리팩토링에 도움을 주신 [joeun](http://joeun.dev/)님과 이 글 전반에 도움을 주신 [Jbee](https://jbee.io/)님께 감사드립니다.
