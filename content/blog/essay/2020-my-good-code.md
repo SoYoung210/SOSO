@@ -123,9 +123,9 @@ slack Message를 생성하는 두 가지 경우가 하나의 함수에서 처리
 
 여기서 짚고 넘어갈 점은, 역할을 분리하는 것은 성급한 추상화도 아니고 극강의 간결한 표현을 추구하는 것도 아니다. **더 나은 패턴에 대한 고민**이다.
 
-ImageBlock을 추가하는 것은 optional이고, 이 상황에는 title과 message가 사용되지 않는다. ImageBlock을 다루는 함수를 분리하고, `createSlackMessage`내부에서 삼항연산자로 분리하도록 리팩토링했다.
+ImageBlock을 추가하는 것은 optional이고, 이 상황에는 title과 message가 사용되지 않는다. ImageBlock을 다루는 함수를 분리하고, `createSlackMessage`내부에서 삼항연산자로 처리하도록 리팩토링했다.
 
-```ts
+```ts{8}
 const createSlackMessage = (
   title: string,
   message: string,
