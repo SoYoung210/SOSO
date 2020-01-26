@@ -10,14 +10,4 @@
   box-shadow: none;
   text-decoration: none;
   color: inherit;
-
-  &::after {
-    background: url('../../../content/assets/christmas-wreath.png');
-    display: inline-block;
-    width: 39px;
-    background-size: contain;
-    height: 39px;
-    content: "";
-    margin-left: 6px;
-  }
 }
