@@ -6,11 +6,11 @@ category: essay
 
 ![image-thumbnail](./images/thumbnail-good-code.png)
 
-[절망 드리븐 성장: 함께 일하고 싶은 개발자가 되기까지](https://speakerdeck.com/soyoung210/jeolmang-deuribeun-seongjang-hamgge-ilhago-sipeun-gaebaljaga-doegiggaji?slide=58)에서 ‘아는 것이 많다고 해서 반드시 좋은 코드를 쓸 수 있는 것은 아니다.’라는 말을 했다. 물론 아는 것이 많아지면 좋은 코드를 작성할 확률이 높아질 수 는 있지만, ‘좋은 코드’라는 단어는 지식 말고도 고려해야 할 점이 많다.
+작년 [발표](https://speakerdeck.com/soyoung210/jeolmang-deuribeun-seongjang-hamgge-ilhago-sipeun-gaebaljaga-doegiggaji?slide=58)에서 '아는 것이 많다고 해서 반드시 좋은 코드를 쓸 수 있는 것은 아니다.'라고 했다. 물론 아는 것이 많아지면 좋은 코드를 작성할 확률이 높아질 수 는 있지만, '좋은 코드'라는 단어는 지식 말고도 고려해야 할 점이 많은 단어이다.
 
 ## 적당한 추상화
 
-나는 늘 함수를 새로 작성할때 이런 고민에 부딪힌다.
+함수를 새로 작성할때 이런 고민에 부딪힌다.
 
 - 🤔 이 함수, 어디에선가 다시 쓸 수도 있지 않을까?
 - 🤓 한번 util로 만들어 두면 쓰는 곳에서는 계속 편하게 쓸 수 있지 않을까?
@@ -20,7 +20,7 @@ category: essay
 
 ### 🤔 이 함수, 어디에선가 다시 쓸 수도 있지 않을까?
 
-결론부터 말하자면, 많이 사용될 util과 1회성 util을 착각하지 않아야 한다. 기본적인 Data를 다루는 util일수록 재사용할 확률이 높고, Component에서 필요해서 만든 util일수록 1회성으로 사용될 확률이 높다.
+결론부터 말하자면, **범용적 util과 일회성 util을 착각하지 않아야 한다.** 기본적인 Data를 다루는 util일수록 재사용할 확률이 높고, Component에서 필요해서 만든 util일수록 일회성으로 사용될 확률이 높다.
 
 ```ts
 export const padZero = (num: number, width: number) => {
@@ -33,9 +33,9 @@ export const padZero = (num: number, width: number) => {
 }
 ```
 
-`padZero(2, 4)`와 같이 사용하면 ’0002’를 return하는 함수이다.
+`padZero(2, 4)`와 같이 사용하면 '0002'를 return하는 함수이다.
 이런 기능은 어떤 Domain에서 사용될까?  
-내 결론은 ‘쉽게 추측할 수 없다.’이다. number에 padding을 넣는 작업은 꼭 지금 내가 만들고 있는 View가 아니더라도 많이 일어날 수 있는 일이다.
+결론은 '쉽게 추측할 수 없다.'이다. 숫자에 padding을 넣는 작업은 꼭 지금 만들고 있는 View가 아니더라도 많이 일어날 수 있는 일이다.
 
 ```js
 let Directions = {
@@ -55,10 +55,10 @@ let Directions = {
 // 출처: https://overreacted.io/goodbye-clean-code
 ```
 
-위 예시는 Dan Abramov의 ‘GoodBye Clean Code’에서 가져온 예시다.  
-`Directions.top`은 ‘형의 가장자리를 드래그하여 크기를 조절할 수 있게 해주는 기능’을 위해 만들어진 함수이다. 사용하고자 한다면, 다른곳에서도 충분히 재활용 할 수 있도록 추상화되었다.
+위 예시는 Dan Abramov의 [GoodBye Clean Code](https://overreacted.io/goodbye-clean-code)에서 가져온 예시이다.  
+`Directions.top`은 '도형의 가장자리를 드래그하여 크기를 조절할 수 있게 해주는 기능'을 위해 만들어진 함수이다. 지금은 네 가지 방향밖에 없지만 혹시 더 늘어날 수 있지 않을까?
 
-하지만, 이 함수의 추상화 레벨을 높일때 고민해야 한다. ‘언젠가는 사용되지 않을까’라는 희망으로 부터 비롯된 성급한 추상화는 현재 이 기능을 리뷰할 동료에게 고민과 이해의 시간을 갖게 만든다. **Domain이 드러날 수록 재활용 여지는 낮아진다.**
+하지만, 이 함수의 추상화 레벨을 높일때 고민해야 한다. '언젠가는 사용되지 않을까'라는 희망으로 부터 비롯된 성급한 추상화는 현재 이 기능을 리뷰할 동료에게 고민과 이해의 시간을 갖게 만든다. **Domain이 드러날 수록 재활용 여지는 낮아진다.**
 
 ### 🤓 한번 util로 만들어 두면 쓰는 곳에서는 계속 편하게 쓸 수 있지 않을까?
 
@@ -88,7 +88,7 @@ const fetchMiddleware = (action, fn?: (...args: any) => any) => {
 > 하지만 나도 대부분의 반복은 forEach나 map을 선호한다.
 
 극강의 간결함을 추구하기 위해 코드를 줄여가는데에만 초점을 맞추다보면 가독성 관점을 쉽게 포기한다. **간결하다고 무조건 좋은 코드가 아니다.**
-‘바보도 이해할 수 있으면서 개발자의 피곤한 중복은 줄일 수 있는’ 중도의 코드에 초점을 맞추어야 한다.
+'바보도 이해할 수 있으면서 개발자의 피곤한 중복은 줄일 수 있는' 중도의 코드에 초점을 맞추어야 한다.
 
 ## 적당한 함수 합성
 
@@ -142,9 +142,15 @@ const createSlackMessage = (title: string, message: string) => {}
 
 ## 적당한 자료형
 
+좋은 함수를 작성하는 데에서 어쩌면 가장 중요한 것은, **자료형을 잘 다루는 것이다.** 다음 상황을 가정해보자.
+
+- file이름의 배열을 받고, answers값을 통해 fileList에서 적당한 값들을 정규표현식을 이용해 치환한다.
+- 정규표현식 치환은 `convertTemplateString`을 통해 수행된다.
+- `generateFiles` 의 결과값은 최종적으로 각각 File Write된다.
+
 ```js
 const generateFiles = (fileList, answers) => {
-  return deployFileList.reduce((acc, value, index, arr) => {
+  return fileList.reduce((acc, value, index, arr) => {
     acc[value] = _this.convertTemplateString(
       constants[value](USER_FOLDER_NAME),
       answers
@@ -154,3 +160,71 @@ const generateFiles = (fileList, answers) => {
   }, {})
 }
 ```
+
+이 함수의 최종 형태는 하나의 object다.
+
+```js
+const fileList = {
+  file1: 'file Body1',
+  file2: 'file Body2',
+}
+```
+
+`fileList`를 다루는 쪽에서는 다음과 같이 작성되어야 한다.
+
+```js
+const fileList = generateFiles(['FILE1', 'FILE2'], answers)
+
+Object.keys(fileList).forEach(fileName => {
+  fs.writeFileSync(
+    constants[fileName](USER_FOLDER_NAME),
+    fileList[fileName],
+    'utf-8'
+  )
+})
+```
+
+파악해야 하는 점이 많은 코드다. object를 순회하기 위해 `Object.keys`를 이용했고, object인 constants에서 알맞은 함수를 실행시키기 위해 `constnats[fileName](USER..)`와 같은 표현이 필요했다.
+
+**이렇게 어렵게 작성하지 않아도 된다.**.
+fileList를 object가 아닌 배열로 다룰 경우 `Object.keys`작업 없이 바로 순회가 가능하다. `generateFiles`를 작성할때 가졌던 '재활용'에 대한 강박을 마저 버리기로 했다.
+
+> 여기에서만 사용되는 함수라고 생각하니 다시 작성하는데에 있어 부담감이 덜해졌다.
+
+```js
+const generateFiles = (fileList, answers) =>
+  fileList.map(fileName => ({
+    name: fileName,
+    body: convertTemplateString(
+      joinPath(answers[QUESTION_CATEGORY.PROJECT_NAME], fileName),
+      answers
+    ),
+  }))
+```
+
+최종 자료형이 `name`과 `body`를 가진 배열로 완성되도록 변경하였다.
+
+```js
+const fileList = [
+  { name: 'file1', body: 'FILE1' },
+  { name: 'file2', body: 'FILE2' },
+]
+
+// constants 로직도 joinPath를 사용하는 것으로 변경
+fileList.forEach(file => {
+  fs.writeFileSync(joinPath(projectName, file.name), file.body, 'utf-8')
+})
+```
+
+목적에 맞는 자료형으로 변경하는것 만으로도 코드가 훨씬 읽기 쉬워진다.
+함수가 return하는 값을 최종적으로 사용되는 곳에서 어떻게 다루어질 것인가를 생각하며 작성해야 한다.
+
+## 이 글을 마치며
+
+'좋은 코드'에는 정답이 없다. 이 글에서 다룬 모든 문장은 2020년 1월의 내가 생각한 좋은 코드일 뿐이다. 충분히 다른 답이 있을 수 있고, 나의 답 또한 변할 수 있다.
+
+변하지 않는 답이 있다면, 좋은 코드란 무엇일지 항상 고민하는 사람이 작성한 사람의 코드가 앞으로 더 좋아질 가능성이 높다는 것 정도가 아닐까?
+
+## Special Thanks to
+
+여러가지 리팩토링에 도움을 주신 http://joeun.dev/ 님과 이 글 전반에 도움을 주신 [Home | JBEE.io](https://jbee.io/)님께 감사드립니다.
