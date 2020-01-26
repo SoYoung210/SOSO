@@ -139,8 +139,21 @@ ImageBlock을 concat하는 부분을 분리하니 `createSlackMessage`함수의 
 필요 없는 정보는 아예 전달하지 않고, `createSlackMessage`에서 다루던 ImageBlock에 대한 분기문을 한 단계 상위 함수에서 처리하도록 했다.
 
 ```ts
-const createSlackMessage = (title: string, message: string) => {}
+export const sendSlackForError = async () =>
+  // ...arg
+  {
+    // some variable
+
+    return await sendSlackMessage(
+      TARGET_URL,
+      addImageBlock(createSlackMessage(ERROR_TITLE, 'message'), imageUrl)
+    )
+  }
 ```
+
+의식하지 않았을 때는 잘 쓰지 못하던 패턴이다. `createSlackMessage`의 값을 별도의 상수에 담아 처리할 수 도 있었으나, 이렇게 합성으로 처리하는 것이 더 깔끔하다고 생각했다.
+
+하나의 함수를 리팩토링 하는 과정 이었지만, 사용하지 않던 패턴에 대해 익혀볼 수 있었다.
 
 ## 적당한 자료형
 
