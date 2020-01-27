@@ -8,7 +8,9 @@ category: essay
 
 작년 [발표](https://speakerdeck.com/soyoung210/jeolmang-deuribeun-seongjang-hamgge-ilhago-sipeun-gaebaljaga-doegiggaji?slide=58)에서 '지식이 많다고 해서 반드시 좋은 코드를 쓸 수 있는 것은 아니다.'라고 했다. 물론 아는 것이 많아지면 좋은 코드를 작성할 확률이 높아질 수는 있다.
 
-하지만, **'좋은 코드'**라는 단어는 지식 말고도 고려해야 할 점이 많은 단어이다.
+하지만, **'좋은 코드'**라는 단어는 지식 말고도 고려해야 할 점이 많은 단어이다.  
+이 글은 내가 생각해본 좋은 코드에 대해 소개하는 글이다.
+'좋다'라는 문장에서 알 수 있듯, 주관적 생각일 뿐이다. 시간이 지나면 변할 수 있는 생각이기 때문에 '2020version'이라고 소개한다.
 
 ## 적당한 추상화
 
@@ -98,7 +100,7 @@ const fetchMiddleware = (action, fn?: (...args: any) => any) => {
 
 ## 적당한 함수 합성
 
-함수의 연산 결과를 항상 값으로만 다루던 고정관념을 깨본 경험도 좋은 코드에 대해 더 많은 고민을 할 수 있게 된 계기라고 생각한다.
+함수의 연산 결과를 항상 값으로만 다루는 것이 아니라 합성으로 다뤄보는 것도 좋은 표현이다.
 
 코드 설명에 대한 예시로 슬랙 메세지 Block을 생성하는 상황을 생각해 보자.
 
@@ -126,7 +128,7 @@ const createSlackMessage = (
 
 slack Message를 생성하는 두 가지 경우가 하나의 함수에서 처리되고 있다. 함수가 한 가지 이상의 일을 하고 있다는 뜻이고, 역할이 분리될 필요가 있다.
 
-여기서 짚고 넘어갈 점은, 역할을 분리하는 것은 성급한 추상화도 아니고 극강의 간결한 표현을 추구하는 것도 아니다. **더 나은 패턴에 대한 고민**이다.
+> 여기서 짚고 넘어갈 점은, 역할을 분리하는 것은 성급한 추상화도 아니고 극강의 간결한 표현을 추구하는 것도 아니다. **더 나은 패턴에 대한 고민**이다.
 
 ImageBlock을 추가하는 것은 optional이고, 이 상황에는 title과 message가 사용되지 않는다. ImageBlock을 다루는 함수를 분리하고, `createSlackMessage`내부에서 삼항연산자로 처리하도록 리팩토링했다.
 
@@ -144,8 +146,8 @@ const createSlackMessage = (
 
 ImageBlock을 concat하는 부분을 분리하니 `createSlackMessage`함수의 가독성은 좋아졌다. 하지만 아직 문제가 남았다.
 
-`createSlackMessage`함수는 `imageUrl`이 필요 없더라도 파라미터를 optional로 명시하고 내부에서 분기문으로 다뤄지고 있다. 아직 역할의 분리가 완벽히 이루어지지는 않았다는 뜻이다.
-필요 없는 정보는 아예 전달하지 않고, `createSlackMessage`에서 다루던 ImageBlock에 대한 분기문을 한 단계 상위 함수에서 처리하도록 했다.
+`createSlackMessage`함수는 `imageUrl`이 필요 없더라도 파라미터를 optional로 명시하고 내부에서 분기문으로 처리하고 있다. 아직 역할의 분리가 완벽히 이루어지지는 않았다는 뜻이다.
+필요 없는 정보는 아예 전달하지 않고, `createSlackMessage`에서 다루던 ImageBlock에 대한 분기문을 한 단계 상위 함수에서 처리하도록 변경했다.
 
 ```ts
 export const sendSlackForError = async () =>
@@ -162,8 +164,6 @@ export const sendSlackForError = async () =>
 
 의식하지 않았을 때는 잘 쓰지 못하던 패턴이다. `createSlackMessage`의 값을 별도의 상수에 담아 처리할 수도 있었으나, 이렇게 합성으로 처리하는 것이 더 깔끔하다고 생각했다.
 
-하나의 함수를 리팩토링 하는 과정이었지만, 사용하지 않던 패턴에 대해 익혀볼 수 있었다.
-
 ## 적당한 자료형
 
 좋은 함수를 작성하는 데에서 어쩌면 가장 중요한 것은, **자료형을 잘 다루는 것이다.**
@@ -174,13 +174,13 @@ export const sendSlackForError = async () =>
 - 치환은 `convertTemplateString`을 통해 수행된다.
 - `generateFiles`의 결과값은 최종적으로 각각 File Write된다.
 
-제일 처음에는 하나의 object가 return되도록 작성하였다.
+처음에는 하나의 object가 return되도록 작성하였다.
 
 ```js
 const generateFiles = (fileList, answers) => {
   return fileList.reduce((acc, value, index, arr) => {
     acc[value] = _this.convertTemplateString(
-      constants[value](USER_FOLDER_NAME),
+      fn[value](USER_FOLDER_NAME),
       answers
     )
 
@@ -189,9 +189,19 @@ const generateFiles = (fileList, answers) => {
 }
 
 // generateFiles Result
-const fileList = {
-  file1: 'file Body1',
-  file2: 'file Body2',
+const fileListResult = {
+  FILE1: 'file Body1',
+  FILE2: 'file Body2',
+}
+
+// fn
+const fn = {
+  FILE1: USER_FOLDER_NAME => {
+    /* some logic */
+  },
+  FILE2: USER_FOLDER_NAME => {
+    /* some logic */
+  },
 }
 ```
 
@@ -201,15 +211,11 @@ const fileList = {
 const fileList = generateFiles(['FILE1', 'FILE2'], answers)
 
 Object.keys(fileList).forEach(fileName => {
-  fs.writeFileSync(
-    constants[fileName](USER_FOLDER_NAME),
-    fileList[fileName],
-    'utf-8'
-  )
+  fs.writeFileSync(fn[fileName](USER_FOLDER_NAME), fileList[fileName], 'utf-8')
 })
 ```
 
-파악해야 하는 점이 많은 코드다. object를 순회하기 위해 `Object.keys`를 이용했고, object인 `constants`에서 알맞은 함수를 실행시키기 위해 `constants[fileName](USER..)`와 같은 표현이 필요하다.
+파악해야 하는 점이 많은 코드다. object를 순회하기 위해 `Object.keys`를 이용했고, `fn`에서 알맞은 함수를 실행시키기 위해 `fn[fileName](USER..)`와 같은 표현이 필요하다.
 
 **이렇게 어렵게 작성하지 않아도 된다.**.
 fileList를 object가 아닌 배열로 다룰 경우 `Object.keys`없이 바로 순회가 가능하다.
@@ -230,23 +236,23 @@ const generateFiles = (fileList, answers) =>
 최종 자료형이 `name`과 `body`를 가진 배열로 완성되도록 변경하였다.
 
 ```js
-const fileList = [
+const fileListResult = [
   { name: 'file1', body: 'FILE1' },
   { name: 'file2', body: 'FILE2' },
 ]
 
-// constants 로직도 joinPath를 사용하는 것으로 변경
+// fn 로직도 joinPath를 사용하는 것으로 변경
 fileList.forEach(file => {
   fs.writeFileSync(joinPath(projectName, file.name), file.body, 'utf-8')
 })
 ```
 
 목적에 맞는 자료형으로 변경하는 것만으로도 코드가 훨씬 읽기 쉬워진다.
-함수가 return하는 값을 최종적으로 사용되는 곳에서 어떻게 다루어질 것인가를 생각하며 작성해야 한다.
+함수가 return하는 값이 최종적으로 사용되는 곳에서 어떻게 다루어질 것인가를 생각하며 작성해야 한다.
 
 ## 이 글을 마치며
 
-'좋은 코드'에는 정답이 없다. 이 글에서 다룬 모든 문장은 2020년 1월의 내가 생각한 좋은 코드일 뿐이다. 충분히 다른 답이 있을 수 있고, 나의 답 또한 변할 수 있다.
+'좋은 코드'에는 정답이 없다. 이 글에서 다룬 모든 문장은 지금 시점에서 생각한 좋은 코드일 뿐이다. 충분히 다른 답이 있을 수 있고, 나의 답 또한 변할 수 있다.
 
 변하지 않는 답이 있다면, 좋은 코드란 무엇일지 항상 고민하는 사람이 작성한 사람의 코드가 앞으로 더 좋아질 가능성이 높다는 것 정도가 아닐까?
 
