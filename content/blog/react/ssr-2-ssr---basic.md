@@ -17,6 +17,7 @@ category: react
 ## 들어가기에 앞서
 
 아래 빨간 네모 박스 영역인 `/org 페이지의 헤더 영역`을 ServerSide에서 렌더링하게 됩니다.
+
 ![ssr-area](./images/ssr-area.png)
 
 기본적인 원리는 우리가 사용하고 있는 `express`에서 React코드를 해석하여 컨텐츠를 그리고, 이를 client에게 전달하는 방식입니다.
@@ -52,7 +53,7 @@ server와 client에게 각각의 webpack file을 만들어주도록 하겠습니
 
 [첫 번째 튜토리얼](https://so-so.dev/react/ssr-1-codesplitting/)에서 만들었던 `server/webpack.config.js` 의 내용을 기반으로 `/webpack.server.js`를 만들어 봅시다.
 
-```js{2,9,22,34}
+```js{2,9,22,35}
 const pathResolve = require('path').resolve
 const babelConfig = require('./babelrc.server')
 const nodeExternals = require('webpack-node-externals')
@@ -97,7 +98,7 @@ module.exports = {
 
 SSR에 필요한 설정을 담은 `/babelrc.server.js`를 만들어 봅시다.
 
-```js{4,7}
+```js{3}
 module.exports = {
   presets: ['@babel/typescript', '@babel/react'],
   plugins: ['@loadable/babel-plugin'],
