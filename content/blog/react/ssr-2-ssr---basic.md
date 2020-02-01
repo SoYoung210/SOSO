@@ -17,6 +17,7 @@ category: react
 ## 들어가기에 앞서
 
 아래 빨간 네모 박스 영역인 `/org 페이지의 헤더 영역`을 ServerSide에서 렌더링하게 됩니다.
+
 ![ssr-area](./images/ssr-area.png)
 
 기본적인 원리는 우리가 사용하고 있는 `express`에서 React코드를 해석하여 컨텐츠를 그리고, 이를 client에게 전달하는 방식입니다.
