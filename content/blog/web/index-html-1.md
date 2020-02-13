@@ -36,7 +36,7 @@ lang과 **charset**도 빼는것으로. TL;DR(TooLon, Didnt Read를 추가하는
 
 옵션에 따라 다른 리소스보다 먼저 로드 되거나 미리 연결을 맺게 할 수 있습니다.
 
-### **preload**
+### preload
 
 `<link rel="preload">`는 현재 해당 리소스가 필요하며, 가능한 빠르게 가져오도록 설정하는 것입니다.
 
@@ -74,7 +74,7 @@ Rendering트리 생성 이후 바로 보여져야 하는 컨텐츠의 경우 위
 <link rel="preload" as="font" crossorigin="crossorigin" type="font/woff2" href="myfont.woff2">
 ```
 
-### **preconnect**
+### preconnect
 
 `<link rel="preconnect">` 는 HTTP요청이 server에 전달되기 전에 미리 연결을 맺어둡니다.
 
@@ -106,7 +106,7 @@ preconnect를 이용하면 round trip을 제거할 수 있고, 이 결과로 소
 
 Google CSS요청과 동시에 font요청을 처리할 수 있어, 결과적으로 3개의 Round Trip을 제거했습니다.
 
-### **prefetch**
+### prefetch
 
 `<link rel="prefetch">` 는 우선순위가 높은 리소스들을 모두 요청한 후 나머지 리소스들을 idle time에 가져와서 브라우저 캐시에 저장합니다.
 
