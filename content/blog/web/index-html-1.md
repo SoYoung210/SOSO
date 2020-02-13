@@ -29,8 +29,10 @@ lang과 **charset**도 빼는것으로. TL;DR(TooLon, Didnt Read를 추가하는
 
 기본 속성 외에 `media` 속성을 추가로 정의할 수 있습니다. 미디어 조건을 만족하는 경우에만 css를 불러옵니다.
 
-    <link href="print.css" rel="stylesheet" media="print">
-    <link href="mobile.css" rel="stylesheet" media="screen and (max-width: 600px)">
+```html
+<link href="print.css" rel="stylesheet" media="print">
+<link href="mobile.css" rel="stylesheet" media="screen and (max-width: 600px)">
+```
 
 옵션에 따라 다른 리소스보다 먼저 로드 되거나 미리 연결을 맺게 할 수 있습니다.
 
@@ -57,8 +59,10 @@ Rendering트리 생성 이후 바로 보여져야 하는 컨텐츠의 경우 위
 
 이런 이유로, 필수적으로 사용되는 리소스는 preload를 통해 요청함으로서 우선순위를 높여야 합니다. CSSOM 생성이 완료되는 것을 기다리지 않고 font를 요청합니다.
 
-    <link rel="preload" as="script" href="super-important.js">
-    <link rel="preload" as="style" href="critical.css">
+```html
+<link rel="preload" as="script" href="super-important.js">
+<link rel="preload" as="style" href="critical.css">
+```
 
 `super-important.js` 와 `critical.css` 는 필수 리소스로 해석됩니다. 이 방식을 통해 가져온 리소스를 3초 이내로 사용하지 않을 경우 Chrome Dev Tools에서는 다음과 같은 경고를 보여줍니다. 
 
@@ -66,7 +70,9 @@ Rendering트리 생성 이후 바로 보여져야 하는 컨텐츠의 경우 위
 
 추가적인 대표적인 사용 사례는 font가 있습니다.
 
-    <link rel="preload" as="font" crossorigin="crossorigin" type="font/woff2" href="myfont.woff2">
+```html
+<link rel="preload" as="font" crossorigin="crossorigin" type="font/woff2" href="myfont.woff2">
+```
 
 ### **preconnect**
 
@@ -74,7 +80,9 @@ Rendering트리 생성 이후 바로 보여져야 하는 컨텐츠의 경우 위
 
 다른 Domain에 리소스를 요청하는데, 해당 서버의 상태가 빠른지 보장할 수 없고 특히 보안 연결이 필요할 경우 데이터를 받아오는 것보다 DNS Lookup, Redirection, TCP Handshake 등 connection을 맺는 것이 더 오래 걸릴 수 있습니다. preconnect는 이런 연결을 **미리 맺어 둔다**는 뜻입니다. 사용법은 다음과 같습니다.
 
-    <link rel="preconnect" href="https://example.com">
+```html
+<link rel="preconnect" href="https://example.com">
+```
 
 실제로는 다음 동작들이 수행됩니다.
 
@@ -120,10 +128,12 @@ link로 연결된 리소스가 필요할 때 DNS Lookup에 소요되는 시간�
 
 사용 방법은 다음과 같습니다.
 
-    <!-- Prefetch DNS for external assets -->
-    <link rel="dns-prefetch" href="//fonts.googleapis.com">
-    <link rel="dns-prefetch" href="//www.google-analytics.com">
-    <link rel="dns-prefetch" href="//cdn.domain.com">
+```html
+<!-- Prefetch DNS for external assets -->
+<link rel="dns-prefetch" href="//fonts.googleapis.com">
+<link rel="dns-prefetch" href="//www.google-analytics.com">
+<link rel="dns-prefetch" href="//cdn.domain.com">
+```
 
 3**. Prerendering**
 
@@ -181,17 +191,19 @@ Client Side Rendering을 하는 SPA는 JS Parsing을 통해 화면을 Rendering�
 - external.js: 외부 module
 - app.js: `src` 폴더 하위의 JS파일(화면을 그리기 위한 용도)
 
-    <!DOCTYPE html>
-    <html lang="ko">
-    <head>
-      <title>SPA - script</title>
-    </head>
-    <body>
-      <div id="wrap"></div>
-      <script src="external.js"></script>
-      <script src="app.js"></script>
-    </body>
-    </html>
+```html
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <title>SPA - script</title>
+</head>
+<body>
+  <div id="wrap"></div>
+  <script src="external.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
+```
 
 **async**
 
