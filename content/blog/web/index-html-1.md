@@ -205,17 +205,17 @@ Client Side Rendering을 하는 SPA는 JS Parsing을 통해 화면을 Rendering�
 </html>
 ```
 
-**async**
+#### async
 
 `external.js`를 요청한 후 바로 `app.js`를 요청합니다. `external.js`에 대한 로드가 완료되면 즉시 실행되고 HTML Parsing이 중단됩니다.`app.js`역시 로드가 완료되었을 때 HTML Parsing이 끝나지 않았다면 중단되고 script가 실행됩니다.
 
 이렇게 두 가지 이상의 스크립트를 요청할 때 async는 순서가 보장되지 않으므로 DOM제어와 관련없는 스크립트에 대해서만 사용하는 것이 좋습니다.
 
-**defer**
+#### defer
 
 위에 언급한대로, defer역시 두 가지 스크립트를 비동기로 요청합니다. 다만, defer의 경우는 `vendor.js`와 `app.js`를 비동기로 요청하지만, 실행 순서는 보장됩니다.
 
-**언제 써야 할까?**
+#### 언제 써야 할까?
 
 `defer`나 `async`를 사용하면 스크립트 요청 시간을 줄일 수 있습니다. 하지만, SPA에서는 HMTL Parsing 자체에는 많은 시간이 소요되지 않습니다. 따라서, 위 두가지를 사용한다고 해서 비약적인 성능개선을 기대하기는 어려울 수도 있습니다. 
 
@@ -225,20 +225,20 @@ Client Side Rendering을 하는 SPA는 JS Parsing을 통해 화면을 Rendering�
 
 ## Reference
 
-[https://developer.mozilla.org/ko/docs/Web/HTML/Element/link](https://developer.mozilla.org/ko/docs/Web/HTML/Element/link)
+- [https://developer.mozilla.org/ko/docs/Web/HTML/Element/link]()
 
-[https://medium.com/@pakss328/resource-hint-8fb4e56ee042](https://medium.com/@pakss328/resource-hint-8fb4e56ee042)
+- [https://medium.com/@pakss328/resource-hint-8fb4e56ee042](https://medium.com/@pakss328/resource-hint-8fb4e56ee042)
 
-[https://www.keycdn.com/blog/resource-hints](https://www.keycdn.com/blog/resource-hints)
+- [https://www.keycdn.com/blog/resource-hints](https://www.keycdn.com/blog/resource-hints)
 
-[https://www.smashingmagazine.com/2019/04/optimization-performance-resource-hints/](https://www.smashingmagazine.com/2019/04/optimization-performance-resource-hints/)
+- [https://www.smashingmagazine.com/2019/04/optimization-performance-resource-hints/](https://www.smashingmagazine.com/2019/04/optimization-performance-resource-hints/)
 
-[https://www.smashingmagazine.com/2016/02/preload-what-is-it-good-for/](https://www.smashingmagazine.com/2016/02/preload-what-is-it-good-for/)
+- [https://www.smashingmagazine.com/2016/02/preload-what-is-it-good-for/](https://www.smashingmagazine.com/2016/02/preload-what-is-it-good-for/)
 
-[https://developers.google.com/web/fundamentals/performance/optimizing-content-efficiency/webfont-optimization#optimizing_loading_and_rendering](https://developers.google.com/web/fundamentals/performance/optimizing-content-efficiency/webfont-optimization#optimizing_loading_and_rendering)
+- [https://developers.google.com/web/fundamentals/performance/optimizing-content-efficiency/webfont-optimization#optimizing_loading_and_rendering](https://developers.google.com/web/fundamentals/performance/optimizing-content-efficiency/webfont-optimization#optimizing_loading_and_rendering)
 
-[https://blog.asamaru.net/2017/05/04/script-async-defer/](https://blog.asamaru.net/2017/05/04/script-async-defer/)
+- [https://blog.asamaru.net/2017/05/04/script-async-defer/](https://blog.asamaru.net/2017/05/04/script-async-defer/)
 
-[https://flaviocopes.com/javascript-async-defer/](https://flaviocopes.com/javascript-async-defer/)
+- [https://flaviocopes.com/javascript-async-defer/](https://flaviocopes.com/javascript-async-defer/)
 
-[https://medium.com/@DivyaGupta26/when-to-async-when-to-defer-while-using-javascript-frameworks-28a7cf101ca4](https://medium.com/@DivyaGupta26/when-to-async-when-to-defer-while-using-javascript-frameworks-28a7cf101ca4)
+- [https://medium.com/@DivyaGupta26/when-to-async-when-to-defer-while-using-javascript-frameworks-28a7cf101ca4](https://medium.com/@DivyaGupta26/when-to-async-when-to-defer-while-using-javascript-frameworks-28a7cf101ca4)
