@@ -57,14 +57,14 @@ font 요청의 경우, preload 없이 요청할 경우 텍스트 렌더링이 �
 2. 브라우저가 HTML 응답 파싱과 DOM 구성을 시작합니다.
 3. 브라우저가 CSS, JS 및 기타 리소스를 발견하고 요청을 발송합니다.
 4. 브라우저가 모든 CSS 콘텐츠가 수신된 후 CSSOM을 생성하고 이를 DOM 트리와 결합하여 렌더링 트리를 생성합니다.
-    - 렌더링 트리가 페이지에 지정된 텍스트를 렌더링 하는 데 필요한 font가 무엇인지 나타내면 font 요청이 시작됩니다.
+    - 렌더링 트리가 필요한 font가 무엇인지 확인하고, font 요청이 시작됩니다.
 5. 브라우저가 레이아웃 작업을 수행하고 콘텐츠를 화면에 Paint 합니다.
 
 Rendering 트리 생성 이후 바로 보여야 하는 컨텐츠의 경우 위 상황으로 인해 font가 늦게 적용되어 보일 수 있습니다.
 
 > 브라우저마다 구현 방식이 다릅니다. 자세한 내용은 [Web Font Optimization](https://developers.google.com/web/fundamentals/performance/optimizing-content-efficiency/webfont-optimization#%EB%B8%8C%EB%9D%BC%EC%9A%B0%EC%A0%80_%EB%8F%99%EC%9E%91) 을 참고해주세요.
 
-이런 이유로, 필수적으로 사용되는 리소스는 preload를 통해 요청함으로써 우선순위를 높여야 합니다. font를 `preload`로 요청할 경우 CSSOM 생성이 완료되는 것을 기다리지 않고 font를 요청합니다.
+이런 이유로, 필수적으로 사용되는 리소스는 preload를 통해 요청함으로써 **우선순위를 높여야 합니다.** font를 `preload`로 요청할 경우 CSSOM 생성이 완료되는 것을 기다리지 않고 font를 요청합니다.
 
 만약 `preload`를 통해 가져온 리소스를 3초 이내로 사용하지 않을 경우 Chrome Dev Tools에서는 다음과 같은 경고를 보여줍니다.
 
