@@ -66,7 +66,7 @@ Rendering트리 생성 이후 바로 보여져야 하는 컨텐츠의 경우 위
 
 `<link rel="preconnect">` 는 HTTP요청이 server에 전달되기 전에 미리 연결을 맺어두도록 설정하는 것입니다.
 
-다른 Domain에 리소스를 요청하는 상황에서는 해당 서버의 상태가 빠른지 보장할 수 없습니다. 특히, 보안 연결이 필요할 경우 데이터를 받아오는 작업보다 DNS Lookup, Redirection, TCP Handshake 등 connection을 맺는 작업이 더 오래 걸릴 수 있습니다.
+다른 Domain에 리소스를 요청하는 상황에서는 해당 서버의 응답 속도를 보장할 수 없습니다. 특히, 보안 연결이 필요할 경우 데이터를 받아오는 작업보다 DNS Lookup, Redirection, TCP Handshake 등 connection을 맺는 작업이 더 오래 걸릴 수 있습니다.
 
 `preconnect`는 이런 연결을 **미리 맺어 둔다**는 뜻입니다. 사용법은 다음과 같습니다.
 
@@ -92,9 +92,7 @@ preconnect를 이용하면 round trip을 제거할 수 있고, 이 결과로 소
 
 ![preconnect-vs](./images/fourth.png)
 
-위 사진은 Google Font를 preconnect를 통해 요청한 사진입니다.
-
-Google CSS요청과 font요청을 동시에 처리할 수 있어, 결과적으로 3개의 Round Trip을 제거할 수 있습니다.
+같은 도메인의 Google CSS와 font를 동시에 요청할 수 있어, 결과적으로 3개의 Round Trip을 제거할 수 있습니다.
 
 ### prefetch
 
@@ -114,7 +112,7 @@ Google CSS요청과 font요청을 동시에 처리할 수 있어, 결과적으�
 
 > “This technique has the potential to speed up many interactive sites, but won’t work everywhere. For some sites, it’s just too difficult to guess what the user might do next. For others, the data might get stale if it’s fetched too soon. It’s also important to be careful not to prefetch files too soon, or you can slow down the page the user is already looking at. - Google Developers”
 
-어떤 자원을 사전에 요청해야 할지 판단해서 사용해야 한다고 말하고 있습니다. 무분별하게 사용하면 현재 사용자의 페이지가 느려질 수 있고 브라우저 지원 범위를 확인해서 사용해야 합니다.
+어떤 자원을 `prefetch`로 요청해야 할지 판단해서 사용해야 한다고 말하고 있습니다. 무분별하게 사용하면 현재 사용자의 페이지가 느려질 수 있고, [브라우저 지원 범위](https://caniuse.com/#search=prefetch)를 확인해서 사용해야 합니다.
 
 **2. DNS Prefetching**
 
@@ -133,9 +131,9 @@ Google CSS요청과 font요청을 동시에 처리할 수 있어, 결과적으�
 
 **3. Prerendering**
 
-prerendering은 필요할 수도 있는 리소스를 미리 요청한다는 점에서 prefetch와 같습니다.
+`prerendering`은 필요할 수도 있는 리소스를 미리 요청한다는 점에서 prefetch와 같습니다.
 
-차이점은, preredering의 경우 **실제로 전체 페이지를 백그라운드에서 렌더링**한다는 점입니다.
+차이점은 `preredering`은 **실제로 전체 페이지를 백그라운드에서 렌더링**한다는 점입니다.
 
 ![font](./images/sixth.png)
 
@@ -143,7 +141,7 @@ prerendering은 필요할 수도 있는 리소스를 미리 요청한다는 점�
 
 **Note. crossorigin**
 
-외부 리소스를 요청할 때, `crossorigin` 항목이 없다면 로드된 font를 무시하고 새로 가져온 다른 속성이 적용됩니다. 외부 도메인에서 요청시 필요한 정보이며 가능한 값은 다음과 같습니다.
+외부 리소스를 요청할 때, `crossorigin` 항목이 없다면 로드된 리소스를 무시하고 새로 가져온 다른 속성이 적용됩니다. 외부 도메인에서 요청시 필요한 정보이며 가능한 값은 다음과 같습니다.
 
 - anonymous: cors요청 시 별도의 요청 값이 필요하지 않다는 뜻입니다.
 - user-credentials:  쿠키, 인증 서 등의 증명이 성공하면 cross-origin요청이 수행됩니다.
@@ -152,7 +150,7 @@ prerendering은 필요할 수도 있는 리소스를 미리 요청한다는 점�
 
 HTML을 parsing하는 과정에서 script tag를 만나면 해당 작업이 block됩니다. css는 화면 렌더링에 필수적인 요소일 가능성이 높기 때문에 `head`에 위치시키지만, '동작'과 관련된 JavaScript를 load하느라 Rendering을 지연시키는 것은 좋은 사용자 경험이라고 할 수 없습니다.
 
-이런 이유로 대부분 script tag를 `</body>`바로 앞에 선언 합니다. 하지만 이렇게 사용하는 것 말고도, [async]([https://www.w3schools.com/tags/att_script_async.asp](https://www.w3schools.com/tags/att_script_async.asp))나 [defer]([https://www.w3schools.com/tags/att_script_defer.asp](https://www.w3schools.com/tags/att_script_defer.asp))를 사용하는 방법도 있습니다.
+이런 이유로 대부분 script tag를 `</body>`바로 앞에 선언 합니다. 하지만 이렇게 사용하는 것 말고도, [async](https://www.w3schools.com/tags/att_script_async.asp)나 [defer](https://www.w3schools.com/tags/att_script_defer.asp)를 사용하는 방법도 있습니다.
 
 ### 일반적인 사용
 
@@ -160,15 +158,16 @@ HTML을 parsing하는 과정에서 script tag를 만나면 해당 작업이 bloc
 
 위 그림에서 알 수 있듯 script tag는 HTML Parsing을 block합니다.
 
-사용자가 흰 화면을 보는 시간이 늘어나고, 이를 막기 위해 body tag제일 하단에 위치 시킵니다.
+따라서, head에 script tag를 위치시킬 경우 사용자가 흰 화면을 보는 시간이 늘어나게 됩니다. 이를 막기 위해 body tag제일 하단에 위치 시킵니다.
 
-- async와 defer를 지원하지 않는 브라우저에서 이 방법으로 대응 합니다.
+> async와 defer를 지원하지 않는 브라우저에서 이 방법으로 대응 합니다.
 
 ### async
 
 ![async-script](./images/9.png)
 
-async속성은 `head`에 위치하지 않으면 아무 의미가 없습니다. (사용하지 않은것과 똑같게 동작)
+async속성은 `head`에 위치하지 않으면 아무 의미가 없습니다.
+> 사용하지 않은것과 똑같이 동작
 
 script를 비동기로 요청하고 fetch가 완료되면 HTML Parsing을 중지하고 script를 실행합니다. 실행이 완료된 후 다시 Parsing 작업이 진행됩니다.
 
@@ -176,7 +175,7 @@ script를 비동기로 요청하고 fetch가 완료되면 HTML Parsing을 중지
 
 ![defer-script](./images/10.png)
 
-async와 같이 script를 비동기로 가져오고 HTML Parsing이후에 실행됩니다. HTML의 parsing을 막지 않아서, 화면이 빠르게 표현될 수 있습니다.
+async와 같이 script를 비동기로 가져오고 HTML Parsing이후에 실행됩니다. HTML의 parsing을 막지 않아서, 화면이 빠르게 렌더링 될 수 있습니다.
 
 방금 살펴 본 두 속성은 Single Page Application(이하 SPA)에서는 어떻게 적용될까요?
 
@@ -209,7 +208,7 @@ Client Side Rendering을 하는 SPA는 JS Parsing을 통해 화면을 Rendering�
 
 #### defer
 
-위에 언급한대로, defer역시 두 가지 스크립트를 비동기로 요청합니다. 다만, defer의 경우는 `vendor.js`와 `app.js`를 비동기로 요청하지만, 실행 순서는 보장됩니다.
+defer역시 두 가지 스크립트를 비동기로 요청합니다. 다만, `defer`는 `vendor.js`와 `app.js`를 비동기로 요청하지만, 실행 순서는 보장됩니다.
 
 #### 언제 써야 할까?
 
