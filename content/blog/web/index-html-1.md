@@ -17,6 +17,15 @@ React, Vue, Angular같은 Library 혹은 Framework로 개발할 경우 빌드 �
 
 ## TL;DR
 
+- link tag
+  - preload: 현재 화면에 필요한 리소스=
+  - prefetch: 현재화면에 필요한 것❌, 이후 페이지에 필요한 리소스
+  - preconnect: 같은 도메인에 여러개의 리소스를 요청할 때
+- script tag
+  - async: DOM제어와 관련 없는 스크립트
+  - defer: DOM제어와 관련 있는 스크립트
+  - SPA의 bundle.js에 대해서는 요청 시간 단축 효과를 기대하기 어려울 수 있음
+
 ## link - preload / prefetch / preconnect
 
 `link` tag는 웹 페이지와 외부 리소스의 관계를 나타냅니다. css를 가져올 때 많이 사용하지만, 사이트 아이콘, sitemap 그리고 script를 가져올 때도 사용됩니다.
