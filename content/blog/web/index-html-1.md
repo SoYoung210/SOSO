@@ -51,7 +51,8 @@ React, Vue, Angular 같은 Library 혹은 Framework로 개발할 경우 빌드 �
 <link rel="preload" as="font" crossorigin="crossorigin" type="font/woff2" href="myfont.woff2">
 ```
 
-font 요청의 경우, preload 없이 요청할 경우 텍스트 렌더링이 지연될 수 있습니다. font요청은 DOM, CSSOM 트리 생성 이후에 시작되기 때문입니다.
+preload 없이 font를 요청할 경우 텍스트 렌더링이 지연될 수 있습니다. font요청은 DOM, CSSOM 트리 생성 이후에 시작되기 때문입니다.
+브라우저가 화면을 그리는 순서는 다음과 같습니다.
 
 1. 브라우저가 HTML 파일을 요청합니다.
 2. 브라우저가 HTML 응답 파싱과 DOM 구성을 시작합니다.
@@ -85,15 +86,15 @@ Rendering 트리 생성 이후 바로 보여야 하는 컨텐츠의 경우 위 �
 
 실제로는 다음 동작들이 수행됩니다.
 
-1. href 속성으로 URL을 해석, URL이 유효한 URL 인지 해석하여 error 처리, HTTP/HTTPS 인지 판단
+1. href 속성으로 URL을 해석, URL이 유효한지 해석하여 유효하지 않을 경우 error 처리를 하고 HTTP/HTTPS 인지 판단
 
 2. 유효할 경우 이 URL을 origin으로 판단
 
-3. cors에 대한 상태를 대상 엘리먼트의 crossOrigin 속성에 할당합니다.
+3. cors에 대한 상태를 대상 Element의 crossOrigin 속성에 할당합니다.
 
-4. cors의 속성의 값이 anonymous 이거나 credentials이 false가 아닐 경우 연결을 시도
+4. cors의 속성의 값이 anonymous 이거나 credential이 false가 아닐 경우 연결을 시도
 
-5. http의 경우 (DNS+TCP), https의 경우 (DNS+TCP+TLS)를 수행, 이후 커넥션을 열어두게 되며, 얼마나 많은 연결을 하게 될지는 user agent가 결정합니다.
+5. http의 경우 (DNS+TCP), https의 경우 (DNS+TCP+TLS)를 수행, 이후 connection을 열어두게 되며, 얼마나 많은 연결을 하게 될지는 user agent가 결정합니다.
 
 ![preconnect](./images/third.png)
 
@@ -117,15 +118,17 @@ preconnect를 이용하면 round trip을 제거할 수 있고, 이 결과로 소
 
 ![prefetch](./images/fifth.png)
 
-위에서 설명한 대로, `link prefetching`은 리소스를 fetch 하고 그 결과를 cache에 저장합니다.
+위에서 설명한 대로, `prefetching`은 리소스를 fetch 하고 그 결과를 브라우저 캐시에 저장합니다.
 
 > “This technique has the potential to speed up many interactive sites, but won’t work everywhere. For some sites, it’s just too difficult to guess what the user might do next. For others, the data might get stale if it’s fetched too soon. It’s also important to be careful not to prefetch files too soon, or you can slow down the page the user is already looking at. - Google Developers”
 
-어떤 자원을 `prefetch`로 요청해야 할지 판단해서 사용해야 한다고 말하고 있습니다. 무분별하게 사용하면 현재 사용자의 페이지가 느려질 수 있고, [브라우저 지원 범위](https://caniuse.com/#search=prefetch)를 확인해서 사용해야 합니다.
+어떤 자원을 `prefetch`로 요청해야 할지 판단해서 사용해야 한다고 말하고 있습니다. 무분별하게 사용하면 현재 사용자가 보고 있는 페이지가 느려질 수 있기 때문입니다.
+
+또한, [브라우저 지원 범위](https://caniuse.com/#search=prefetch)도 확인해서 사용해야 합니다.
 
 **2. DNS Prefetching**
 
-사용자가 페이지를 탐색하는 동안 백그라운드에서 [DNS Lookup]([https://developer.mozilla.org/en-US/docs/Glossary/DNS](https://developer.mozilla.org/en-US/docs/Glossary/DNS))을 수행하는 것입니다.
+백그라운드에서 [DNS Lookup]([https://developer.mozilla.org/en-US/docs/Glossary/DNS](https://developer.mozilla.org/en-US/docs/Glossary/DNS))을 수행하는 것입니다.
 
 리소스가 필요할 때 DNS Lookup에 소요되는 시간을 없앰으로써 리소스를 더 빠르게 가져올 수 있습니다.
 
@@ -163,7 +166,8 @@ HTML을 parsing 하는 과정에서 script tag를 만나면 해당 작업이 blo
 
 ### 일반적인 사용
 
-![normal-script](./images/8.png)
+![without-defer-async-head](./images/without-defer-async-head.png)
+![without-defer-async-body](./images/without-defer-async-body.png)
 
 위 그림에서 알 수 있듯 script tag는 HTML Parsing을 block 합니다.
 
@@ -173,7 +177,7 @@ HTML을 parsing 하는 과정에서 script tag를 만나면 해당 작업이 blo
 
 ### async
 
-![async-script](./images/9.png)
+![with-async](./images/with-async.png)
 
 async 속성은 `head`에 위치하지 않으면 아무 의미가 없습니다.
 > 사용하지 않은 것과 똑같이 동작
@@ -182,7 +186,7 @@ script를 비동기로 요청하고 fetch가 완료되면 HTML Parsing을 중지
 
 ### defer
 
-![defer-script](./images/10.png)
+![with-defer](./images/with-defer.png)
 
 async와 같이 script를 비동기로 가져오고 HTML Parsing 이후에 실행됩니다. HTML의 parsing을 막지 않아서, 화면이 빠르게 렌더링 될 수 있습니다.
 
