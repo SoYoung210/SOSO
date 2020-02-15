@@ -36,7 +36,7 @@ export function Head({
               },
               {
                 property: `og:image`,
-                content: thumbnail
+                content: `${data.site.siteMetadata.siteUrl}${thumbnail}`
               },
               {
                 property: `og:description`,
@@ -100,6 +100,7 @@ const detailsQuery = graphql`
         title
         description
         author
+        siteUrl
       }
     }
   }
