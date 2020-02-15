@@ -2,6 +2,7 @@
 title: 2020년 내가 생각한 좋은코드
 date: 2020-01-25 17:01:21
 category: essay
+thumbnail: ./images/thumbnail-good-code.png
 ---
 
 ![image-thumbnail](./images/thumbnail-good-code.png)

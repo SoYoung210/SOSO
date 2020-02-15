@@ -2,6 +2,7 @@
 title: '[SSR] 0. 들어가면서'
 date: 2019-11-17 16:00:09
 category: react
+thumbnail: ./images/thumbnail.png
 ---
 
 ![image-thumbnail](./images/thumbnail.png)

@@ -2,6 +2,7 @@
 title: '[SSR] 3. SSR - Data Fetch'
 date: 2019-12-07 14:12:97
 category: react
+thumbnail: ./images/thumbnail.png
 ---
 
 ![image-thumbnail](./images/thumbnail.png)

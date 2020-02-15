@@ -2,6 +2,7 @@
 title: 공식문서에서 시작하기
 date: 2019-03-04 00:07:08
 category: etc
+thumbnail: ./images/image-0.png
 ---
 
 ![image-thumbnail](./images/image-0.png)

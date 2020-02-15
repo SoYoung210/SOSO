@@ -2,6 +2,7 @@
 title: '[서평] 심플 소프트웨어'
 date: 2019-11-19 20:11:22
 category: essay
+thumbnail: ./images/simple_software.jpg
 ---
 
 ![image-thumbnail](./images/simple_software.jpg)

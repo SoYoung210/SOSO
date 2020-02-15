@@ -29,7 +29,11 @@ export default ({ data, pageContext, location }) => {
 
   return (
     <Layout location={location} title={title}>
-      <Head title={post.frontmatter.title} description={post.excerpt} />
+      <Head
+        title={post.frontmatter.title}
+        description={post.excerpt}
+        
+      />
       <PostTitle title={post.frontmatter.title} />
       <PostContainer html={post.html} />
       <SocialShare title={post.frontmatter.title} author={author} />
