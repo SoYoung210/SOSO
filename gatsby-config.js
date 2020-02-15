@@ -27,11 +27,7 @@ module.exports = {
       resolve: `gatsby-transformer-remark`,
       options: {
         plugins: [{
-            resolve: `gatsby-remark-images`,
-            options: {
-              maxWidth: 590,
-              linkImagesToOriginal: false,
-            },
+            resolve: `gatsby-remark-images`
           },
           {
             resolve: `gatsby-remark-images-medium-zoom`,
