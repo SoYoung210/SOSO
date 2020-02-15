@@ -2,6 +2,7 @@
 title: 구글링 잘하기
 date: 2019-04-23 00:07:47
 category: etc
+thumbnail: './images/googling/00.jpg'
 ---
 
 ![image-thumbnail](./images/googling/00.jpg)

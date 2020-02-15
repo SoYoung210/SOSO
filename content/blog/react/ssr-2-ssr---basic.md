@@ -2,6 +2,7 @@
 title: '[SSR] 2. SSR - Basic'
 date: 2019-11-25 00:05:07
 category: react
+thumbnail: './images/thumbnail.png'
 ---
 
 ![image-thumbnail](./images/thumbnail.png)

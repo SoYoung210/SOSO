@@ -2,6 +2,7 @@
 title: 150일동안 내가 배운 것들 -1
 date: 2019-05-24 00:07:63
 category: essay
+thumbnail: './images/what-i-learn-150/first_title.png'
 ---
 
 2018년 7월 17일 React 온라인 강의를 시작으로 FrontEnd에 첫 발을 떼고, 2018년 12월 26일 인턴 입사 후 150일 간의 기록을 정리했습니다.

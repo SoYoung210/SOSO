@@ -29,7 +29,11 @@ export default ({ data, pageContext, location }) => {
 
   return (
     <Layout location={location} title={title}>
-      <Head title={post.frontmatter.title} description={post.excerpt} />
+      <Head
+        title={post.frontmatter.title}
+        description={post.excerpt}
+        thumbnail={post.frontmatter.thumbnail.childImageSharp.fixed.src}
+      />
       <PostTitle title={post.frontmatter.title} />
       <PostContainer html={post.html} />
       <SocialShare title={post.frontmatter.title} author={author} />
@@ -75,6 +79,14 @@ export const pageQuery = graphql`
       frontmatter {
         title
         date(formatString: "MMMM DD, YYYY")
+        thumbnail {
+          childImageSharp {
+            fixed(width: 800) {
+              src
+              srcSet
+            }
+          }
+        }
       }
     }
   }

@@ -2,6 +2,7 @@
 title: Deploy 2018
 date: 2018-12-31 00:07:57
 category: essay
+thumbnail: './images/image-20181231-0.png'
 ---
 
 ![image-201812311498](./images/image-20181231-0.png)

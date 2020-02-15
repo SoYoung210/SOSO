@@ -2,6 +2,7 @@
 title: 'about'
 date: 2019-11-25 16:21:13
 lang: 'ko'
+thumbnail: ''
 ---
 
 <article class="l-Wrapper">
