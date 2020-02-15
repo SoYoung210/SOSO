@@ -2,7 +2,7 @@
 title: Deploy 2019
 date: 2019-12-30 17:12:76
 category: essay
-thumbnail: ./images/carbon.png
+thumbnail: './images/carbon.png'
 ---
 
 ![image-0](./images/carbon.png)

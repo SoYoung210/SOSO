@@ -2,7 +2,7 @@
 title: '[SSR] 1. CodeSplitting'
 date: 2019-11-17 18:00:46
 category: react
-thumbnail: ./images/thumbnail.png
+thumbnail: './images/thumbnail.png'
 ---
 
 ![image-thumbnail](./images/thumbnail.png)

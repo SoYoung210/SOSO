@@ -2,7 +2,7 @@
 title: '[SSR] 4. UX관점에서의 SSR'
 date: 2019-12-13 22:12:74
 category: react
-thumbnail: ./images/thumbnail.png
+thumbnail: './images/thumbnail.png'
 ---
 
 ![image-thumbnail](./images/thumbnail.png)

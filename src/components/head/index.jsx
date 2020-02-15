@@ -8,8 +8,10 @@ export function Head({
   lang,
   meta,
   keywords,
-  title
+  title,
+  thumbnail
 }) {
+  console.log(thumbnail)
   return (
     <StaticQuery
       query={detailsQuery}
@@ -31,6 +33,10 @@ export function Head({
               {
                 property: `og:title`,
                 content: title,
+              },
+              {
+                property: `og:image`,
+                content: thumbnail
               },
               {
                 property: `og:description`,
