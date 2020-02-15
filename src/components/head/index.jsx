@@ -36,7 +36,7 @@ export function Head({
               },
               {
                 property: `og:image`,
-                content: `https://deploy-preview-36--friendly-bose-75c3ce.netlify.com${thumbnail}`
+                content: `${data.site.siteMetadata.siteUrl}{${thumbnail}`
               },
               {
                 property: `og:description`,
