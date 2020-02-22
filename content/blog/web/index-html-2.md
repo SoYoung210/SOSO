@@ -1,6 +1,6 @@
 ---
 title: '되돌아보는 index.html - Part 2'
-date: 2020-02-13 16:00:09
+date: 2020-02-22 16:00:09
 category: web
 thumbnail: './images/thumbnail.png'
 ---
