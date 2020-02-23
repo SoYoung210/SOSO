@@ -102,7 +102,7 @@ head에는 꼭 눈에 띄는 정보들만 표현되는 것은 아닙니다. 오�
 
 ![charset-1](./images/charset-1.png)
 
-만약 (라틴어 사용을 위해) `ISO-8859-1`로 설정한다면, 위 사진의 페이지가 올바르게 표현되지 않습니다.
+만약 라틴어 사용을 위해 `ISO-8859-1`로 설정한다면, 위 사진의 페이지가 올바르게 표현되지 않습니다.
 
 ![charset-2](./images/charset-2.png)
 
@@ -119,7 +119,7 @@ lang 속성을 정확히 명시하여 폰트 설정에 이슈가 없도록 하�
 보통 `lang`속성은 `<html>`에 명시하는 것이 일반적이나,(HTML의 최 상단) 특정 tag에서만 다른 lang이 필요한 경우 다음과 같이 사용할 수 있습니다.
 
 ```html
-  <p>Japanese example: <span lang="jp">ご飯が熱い。</span>.</p>
+<p>Japanese example: <span lang="jp">ご飯が熱い。</span>.</p>
 ```
 
 ### 📝[TIP] Facebook, Twitter thumbnail
@@ -129,11 +129,11 @@ lang 속성을 정확히 명시하여 폰트 설정에 이슈가 없도록 하�
 확인하고 싶은 링크가 어떤 형태로 표현되는 지는 다음 사이트에서 미리 확인할 수 있습니다.
 
 - [Facebook debugger](https://developers.facebook.com/tools/debug/)
-- [twitter validator](https://cards-dev.twitter.com/validator)
+- [Twitter validator](https://cards-dev.twitter.com/validator)
 
 ### Facebook
 
-페이스북은 두 가지 형태의 thumbnail을 지원합니다.
+Facebook은 두 가지 형태의 thumbnail을 지원합니다.
 > [페이스북의 이미지 요구사항](https://developers.facebook.com/docs/sharing/webmasters/images#requirements), [페이스북 링크공유 FAQ](https://developers.facebook.com/docs/sharing/webmasters/faq?locale=ko_KR) 참고
 
 - large(600 x 315픽셀 이상의 이미지)
@@ -144,22 +144,18 @@ lang 속성을 정확히 명시하여 폰트 설정에 이슈가 없도록 하�
 
 만약, 의도하지 않게 thumbnail이 `small`로 표현될 경우, 개발자 도구에서 `og:image`의 content로 명시되어 있는 이미지를 직접 다운로드 해서 확인해봐야 합니다. **압축 설정 등의 이유로 600이하로 설정되어 있을것입니다.**
 
-사실, facebook은 `og:image`속성이 없어도 링크의 첫 이미지를 thumbnail로 표현 해주는 경우도 있습니다.
-
-> 하지만, 정확하게 커스텀 하고 싶다면 og tag속성을 넣어주는 것이 좋습니다.
-
 ### Twitter
 
-트위터는 페이스북과 다르게 **og:image 속성이 없다면 절대로 thumbnail을 표현하지 않습니다.**
-
-- card
-![twitter-empty-card](./images/twitter-empty-card.png)
-
-위 예시는 `og:image`는 없고, meta tag정보만 있는 상태입니다. **Twitter는 두 가지 설정**이 필요합니다.
+Twitter는 Card형태로 Thumbnail을 지원합니다. 그래서, `og:image`설정과 함께 Twitter용 meta tag도 설정해주어야 합니다.
 
 1. 어떤 사진을 thumbnail로 넣을지(og:image)
 2. 카드 형태로 표현하는 설정(meta tag)
 [트위터 card 가이드](https://developer.twitter.com/en/docs/tweets/optimize-with-cards/guides/getting-started)를 살펴보면 `<meta name="twitter:card" content="summary"></meta>`이 meta tag가 필수로 있어야 한다는 점을 알 수 있습니다.
+
+![twitter-empty-card](./images/twitter-empty-card.png)
+
+위 예시는 `og:image`는 없고, meta tag정보만 있는 상태입니다.
+> Facebook이나 KakaoTalk등의 매체에서는 _og:image_정보가 누락되어도 '알아서' 표현해주기도 하지만, Twitter는 **og:image 속성이 없다면 절대로 thumbnail을 표현하지 않습니다.**
 
 - large(summary_large_image)
 ![twitter-large](./images/twitter-large.png)
@@ -169,7 +165,7 @@ lang 속성을 정확히 명시하여 폰트 설정에 이슈가 없도록 하�
 - small(summary)
 ![twitter-small](./images/twitter-small.png)
 
-`twitter:card`의 content를 `summary`로 설정되어 있으면 위와 같이 작게 표현됩니다.
+`twitter:card`의 content가 `summary`로 설정되어 있으면 위와 같이 작게 표현됩니다.
 
 ## Ref
 
