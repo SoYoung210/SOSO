@@ -25,19 +25,19 @@ OpenGraph Protocol(이하 og)이란, Facebook에서 정의한 _HTML문서의 메
 
 ### Title
 
-'되돌아보는 index.html - Part 1' 부분은 문서의 `<meta property="og:title"/>`의 content 입니다. [링크](https://so-so.dev/web/index-html-1/)로 접속해서 개발자 도구를 살펴보면 아래와 같은 내용을 확인할 수 있습니다.
+'되돌아보는 index.html - Part 1' 부분은 문서의 `<meta property="og:title">`의 content 입니다. [링크](https://so-so.dev/web/index-html-1/)로 접속해서 개발자 도구를 살펴보면 아래와 같은 내용을 확인할 수 있습니다.
 
 ![title_example](./images/title_example.png)
 
 ### description
 
-`<meta property="og:description" />`의 content입니다. 위 사진에서는 description의 내용이 길어 말줄임표 처리 된것입니다.
+`<meta property="og:description">`의 content입니다. 위 사진에서는 description의 내용이 길어 말줄임표 처리 된것입니다.
 
 ![description_example](./images/description_example.png)
 
 ### thumbnail(og:image)
 
-`<meta property="og:image" />`의 content입니다. `og:image`에서 주의 해야할 점은, content에 Bot이 파악해야 하는 정보를 정확히 적어 주어야 한다는 점입니다.
+`<meta property="og:image">`의 content입니다. `og:image`에서 주의 해야할 점은, content에 Bot이 파악해야 하는 정보를 **정확히** 적어 주어야 한다는 점입니다.
 
 ```html
 <!-- ❌ 이미지를 절대경로로 적으면 og:image정보가 올바르지 않다고 판단 -->
@@ -65,7 +65,7 @@ Chrome으로 봤을 때 현재 페이지 title옆에 작은 아이콘이 있는 
 `ico`혹은 `png` 확장자의 아이콘 파일을 추가하고, 다음과 같이 적어 주면 웹 사이트에 favicon을 적용할 수 있습니다.
 
 ```html
-  <link rel="shortcut icon" href="favicon.ico" type="image/x-icon">
+<link rel="shortcut icon" href="favicon.ico" type="image/x-icon">
 ```
 
 > IE를 대응 한다면 반드시 _ico_포맷을 사용해야 합니다.
@@ -150,7 +150,7 @@ Twitter는 Card형태로 Thumbnail을 지원합니다. 그래서, `og:image`설�
 
 1. 어떤 사진을 thumbnail로 넣을지(og:image)
 2. 카드 형태로 표현하는 설정(meta tag)
-[트위터 card 가이드](https://developer.twitter.com/en/docs/tweets/optimize-with-cards/guides/getting-started)를 살펴보면 `<meta name="twitter:card" content="summary"></meta>`이 meta tag가 필수로 있어야 한다는 점을 알 수 있습니다.
+[트위터 card 가이드](https://developer.twitter.com/en/docs/tweets/optimize-with-cards/guides/getting-started)를 살펴보면 `<meta name="twitter:card" content="summary">`tag가 필수로 있어야 한다는 점을 알 수 있습니다.
 
 ![twitter-empty-card](./images/twitter-empty-card.png)
 
