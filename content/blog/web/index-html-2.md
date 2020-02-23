@@ -2,7 +2,7 @@
 title: '되돌아보는 index.html - Part 2'
 date: 2020-02-22 16:00:09
 category: web
-thumbnail: './images/thumbnail.png'
+thumbnail: './images/thumbnail2.png'
 ---
 
 ![image-thumbnail](./images/thumbnail2.png)
