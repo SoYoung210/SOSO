@@ -11,7 +11,6 @@ export function Head({
   title,
   thumbnail
 }) {
-  console.log(thumbnail)
   return (
     <StaticQuery
       query={detailsQuery}

@@ -72,7 +72,6 @@ Rendering 트리 생성 이후 바로 보여야 하는 컨텐츠의 경우 위 �
 
 ![warning](./images/second.png)
 
-
 ### preconnect
 
 `<link rel="preconnect">` 는 HTTP 요청이 server에 전달되기 전에 미리 연결을 맺어두도록 설정하는 것입니다.
@@ -225,7 +224,7 @@ Client Side Rendering을 하는 SPA는 JS Parsing을 통해 화면을 Rendering 
 
 defer 역시 두 가지 스크립트를 비동기로 요청합니다. 다만, `defer`는 `vendor.js`와 `app.js`를 비동기로 요청하지만, 실행 순서는 보장됩니다.
 
-#### 언제 써야 할까?
+#### 언제 써야 할까
 
 `defer`나 `async`를 사용하면 스크립트 요청 시간을 줄일 수 있습니다. 하지만, SPA에서는 HMTL Parsing 자체에는 많은 시간이 소요되지 않습니다. 따라서, 위 두 가지를 사용한다고 해서 비약적인 성능 개선을 기대하기는 어려울 수도 있습니다.
 
