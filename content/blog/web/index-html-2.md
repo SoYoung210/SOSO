@@ -23,17 +23,19 @@ OpenGraph Protocol(이하 og)이란, Facebook에서 정의한 HTML문서의 메�
 
 이 정보들은 각각 어디서 온 것일까요?
 
-1. Title
+### Title
+
 '되돌아보는 index.html - Part 1' 부분은 문서의 `<meta property="og:title" />`의 content 내용입니다. 위 링크로 접속해서 개발자 도구를 통해 살펴보면 아래와 같은 내용이 표현되어 있습니다.
 
 ![title_example](./images/title_example.png)
 
-2. description
+### description
+
 `<meta property="og:description" />`의 content입니다. 위 사진에서는 description의 내용이 길어 말줄임표 처리 된것입니다.
 
 ![description_example](./images/description_example.png)
 
-3. thumbnail(og:image)
+### thumbnail(og:image)
 
 `<meta property="og:image" />`의 content입니다. `og:image`에서 주의 해야할 점은, `content="/static/image.png`처럼 절대 경로로 사용하면 안된다는 것이다. Bot이 가져가야 하는 정보를 정확히 적어 주는 것이 중요합니다.
 
@@ -44,7 +46,7 @@ OpenGraph Protocol(이하 og)이란, Facebook에서 정의한 HTML문서의 메�
 
 ![search_result](./images/search_result.png)
 
-### Favicon
+## 🤖 Favicon
 
 Chrome으로 봤을 때 현재 페이지 title옆에 작은 아이콘이 있는 것을 확인할 수 있습니다.
 
@@ -81,11 +83,11 @@ so-so.dev에는 `apple-touch-icon`이라는 이름으로 많은 파일들이 적
 
 ![apple_touch_tag](./images/apple_touch_tag.png)
 
-### 보이지 않지만 문서를 이루는 중요한 요소
+## 👻 보이지 않지만 문서를 이루는 중요한 요소
 
 head에는 꼭 눈에 띄는 정보들만 표현되는 것은 아닙니다. 오히려, 겉으로 표현되지 않지만 중요한 요소들이 있습니다.
 
-#### charset
+### charset
 
 웹 페이지에서 허용하는 인코딩 방식에 대한 것입니다. 대부분은 `utf-8`로 되어 있는데, 그 이유는 `utf-8`이 한국어, 영어, 일본어 등 많은 문자를 포함하기 때문입니다.
 
@@ -95,7 +97,7 @@ head에는 꼭 눈에 띄는 정보들만 표현되는 것은 아닙니다. 오�
 
 ![charset-2](./images/charset-2.png)
 
-#### lang
+### lang
 
 `lang`은 언어를 지정하는 속성입니다. 아래 사진은 각각 default, ko, ja(일본어), zh(중국어)설정입니다. 같은 Sans-serif font이지만 언어별로 표현되는 모양이 상이합니다.
 
