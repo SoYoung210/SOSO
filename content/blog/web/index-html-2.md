@@ -5,9 +5,9 @@ category: web
 thumbnail: './images/thumbnail.png'
 ---
 
-![image-thumbnail](./images/thumbnail.png)
+![image-thumbnail](./images/thumbnail2.png)
 
-[Part 1](https://so-so.dev/web/index-html-1/)에서는 link tag와 script tag에 대해 알아보았습니다. 이번 편에서는 OpenGraph(이하 og), html lang에 대해 알아봅니다.
+[Part 1](https://so-so.dev/web/index-html-1/)에서는 link tag와 script tag에 대해 알아보았습니다. 이번 편에서는 OpenGraph(이하 og), favicon, charset, lang에 대해 알아봅니다.
 
 ## OpenGraph Protocol
 
@@ -42,9 +42,7 @@ OpenGraph Protocol(이하 og)이란, Facebook에서 정의한 HTML문서의 메�
 
 이렇게 페이지 관련 정보를 적어주는 것은 url공유 시에 정보를 표현하기 위함도 있지만, SEO점수를 높이는 데에도 활용 됩니다.
 
-- title과 description정보가 아래 사진과 같이 검색 결과에 노출됩니다. **되돌아보는~ 으로 곧 고치기**
-
-![https://s3-us-west-2.amazonaws.com/secure.notion-static.com/55bf98d0-c746-47d1-81f4-05d14acec033/Untitled.png](https://s3-us-west-2.amazonaws.com/secure.notion-static.com/55bf98d0-c746-47d1-81f4-05d14acec033/Untitled.png)
+![search_result](./images/search_result.png)
 
 ### Favicon
 
@@ -87,7 +85,8 @@ so-so.dev에는 `apple-touch-icon`이라는 이름으로 많은 파일들이 적
 
 head에는 꼭 눈에 띄는 정보들만 표현되는 것은 아닙니다. 오히려, 겉으로 표현되지 않지만 중요한 요소들이 있습니다.
 
-**charset**
+#### charset
+
 웹 페이지에서 허용하는 인코딩 방식에 대한 것입니다. 대부분은 `utf-8`로 되어 있는데, 그 이유는 `utf-8`이 한국어, 영어, 일본어 등 많은 문자를 포함하기 때문입니다.
 
 ![charset-1](./images/charset-1.png)
@@ -96,7 +95,8 @@ head에는 꼭 눈에 띄는 정보들만 표현되는 것은 아닙니다. 오�
 
 ![charset-2](./images/charset-2.png)
 
-**lang**
+#### lang
+
 `lang`은 언어를 지정하는 속성입니다. 아래 사진은 각각 default, ko, ja(일본어), zh(중국어)설정입니다. 같은 Sans-serif font이지만 언어별로 표현되는 모양이 상이합니다.
 
 ![lang](./images/lang.png)
