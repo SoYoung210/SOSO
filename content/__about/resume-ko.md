@@ -53,19 +53,19 @@ React를 주로 다루며, 문서화와 구조, 그리고 UX에 관심이 많습
   </h1>
 </div>
 
-## 8주 안정화 프로젝트
+## 뱅크샐러드 8주 안정화 프로젝트
 
 전사적으로 기술 부문의 안정화 프로젝트를 진행했고, Web팀에서 다음과 같은 일을 맡아서 진행했습니다.
 
-* TTI개선(19.08 ~ 19.11)
+* Android / iOS 앱 내 웹뷰 [TTI](https://web.dev/interactive/) 개선(19.08 ~ 19.11)
   * LightHouse기준(Slow 4G)40점에서 87점까지 향상.
-  * Round Trip을 고려한 Code Splitting Guide수립.
+  * Round Trip을 고려한 Code Splitting Guide 수립.
   * SSR이 필요한 프로젝트 예시와 예시 코드를 통한 React에서의 SSR 가이드 수립.
   > 관련 저장소: https://github.com/SoYoung210/react-ssr-code-splitting
 
-* Web팀용 iac관련 가이드 수립
-  * k8s, nginx등 현재 팀의 웹서비스가 어떤 구조로 운영되고 있고, 어떻게 변경되는지 도식화 하여 문서 작성
-  * 웹서비스에 사용하고 있던 legacy설정 파일을 수정하고, 불필요하게 사용하고 있던 reverse proxy제거
+* 웹 기반 서비스 [IaC](https://en.wikipedia.org/wiki/Infrastructure_as_code) 관련 가이드 수립
+  * Kubernetes, Nginx 등 뱅크샐러드의 웹 기반 서비스들이 어떤 구조로 운영되고 있고, 어떻게 변경/개선 되는지 도식화 하여 문서 작성
+  * 웹 서비스에 사용하고 있던 legacy 설정 파일을 수정하고, 불필요하게 사용하고 있던 reverse proxy 세팅 제거
 
 ## CMS
 
