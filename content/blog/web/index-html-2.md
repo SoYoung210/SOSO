@@ -150,7 +150,7 @@ Twitter는 Card형태로 Thumbnail을 지원합니다. 그래서, `og:image`설�
 
 1. 어떤 사진을 thumbnail로 넣을지(og:image)
 2. 카드 형태로 표현하는 설정(meta tag)
-[트위터 card 가이드](https://developer.twitter.com/en/docs/tweets/optimize-with-cards/guides/getting-started)를 살펴보면 `<meta name="twitter:card" content="summary">`tag가 필수로 있어야 한다는 점을 알 수 있습니다.
+[트위터 card 가이드](https://developer.twitter.com/en/docs/tweets/optimize-with-cards/guides/getting-started)를 살펴보면 `<meta name="twitter:card">`tag가 필수로 있어야 한다는 점을 알 수 있습니다.
 
 ![twitter-empty-card](./images/twitter-empty-card.png)
 
