@@ -13,7 +13,7 @@ thumbnail: './images/thumbnail.png'
 
 ![og-logo](./images/og-image.png)
 
-OpenGraph Protocol(이하 og)이란, Facebook에서 정의한 HTML문서의 메타 데이터 정보를 적는 방식에 대한 규약입니다. url공유시 표현되는 title, thumbnail등은 해당 사이트의 Bot이 og정보를 기반으로 파악하여 표현하는 것입니다.
+OpenGraph Protocol(이하 og)이란, Facebook에서 정의한 _HTML문서의 메타 데이터 정보_를 적는 방식에 대한 규약입니다. url공유시 표현되는 title, thumbnail등은 해당 사이트의 Bot이 og정보를 기반으로 파악하여 표현하는 것입니다.
 
 ## 🖼 URL을 표현하는 정보
 
@@ -25,7 +25,7 @@ OpenGraph Protocol(이하 og)이란, Facebook에서 정의한 HTML문서의 메�
 
 ### Title
 
-'되돌아보는 index.html - Part 1' 부분은 문서의 `<meta property="og:title" />`의 content 내용입니다. 위 링크로 접속해서 개발자 도구를 통해 살펴보면 아래와 같은 내용이 표현되어 있습니다.
+'되돌아보는 index.html - Part 1' 부분은 문서의 `<meta property="og:title"/>`의 content 입니다. [링크](https://so-so.dev/web/index-html-1/)로 접속해서 개발자 도구를 살펴보면 아래와 같은 내용을 확인할 수 있습니다.
 
 ![title_example](./images/title_example.png)
 
@@ -37,12 +37,20 @@ OpenGraph Protocol(이하 og)이란, Facebook에서 정의한 HTML문서의 메�
 
 ### thumbnail(og:image)
 
-`<meta property="og:image" />`의 content입니다. `og:image`에서 주의 해야할 점은, `content="/static/image.png`처럼 절대 경로로 사용하면 안된다는 것이다. Bot이 가져가야 하는 정보를 정확히 적어 주는 것이 중요합니다.
+`<meta property="og:image" />`의 content입니다. `og:image`에서 주의 해야할 점은, content에 Bot이 파악해야 하는 정보를 정확히 적어 주어야 한다는 점입니다.
 
-> 이 블로그에서는 `siteUrl`을 이용해서 [이렇게]([https://github.com/SoYoung210/SOSO/blob/0321ca7b6fa8edf6965faead85ea9953b942ffad/src/components/head/index.jsx#L39](https://github.com/SoYoung210/SOSO/blob/0321ca7b6fa8edf6965faead85ea9953b942ffad/src/components/head/index.jsx#L39)) 적어 주었습니다.
+```html
+<!-- ❌ 이미지를 절대경로로 적으면 og:image정보가 올바르지 않다고 판단 -->
+<meta property="og:image" content="/static/image.png">
+
+<!-- ⭕️ 올바른 예시 -->
+<meta property="og:image" content="https://so-so.dev/static/image.png">
+```
+
+> 이 블로그에서는 _siteUrl_을 이용해서 [이렇게]([https://github.com/SoYoung210/SOSO/blob/0321ca7b6fa8edf6965faead85ea9953b942ffad/src/components/head/index.jsx#L39](https://github.com/SoYoung210/SOSO/blob/0321ca7b6fa8edf6965faead85ea9953b942ffad/src/components/head/index.jsx#L39)) 적어 주었습니다.
 > ![thumbnail_tag_example](./images/thumbnail_tag_example.png)
 
-이렇게 페이지 관련 정보를 적어주는 것은 url공유 시에 정보를 표현하기 위함도 있지만, SEO점수를 높이는 데에도 활용 됩니다.
+이렇게 페이지 관련 정보를 적어주는 것은 url공유 시에 정보를 표현하기 위함도 있지만, 검색결과 반영, SEO점수를 높이는 데에도 활용 됩니다.
 
 ![search_result](./images/search_result.png)
 
@@ -54,21 +62,22 @@ Chrome으로 봤을 때 현재 페이지 title옆에 작은 아이콘이 있는 
 
 ![favicon_example](./images/favicon_example.png)
 
-`.ico`나 `png` 확장자의 아이콘 파일을 추가하고, 다음과 같이 적어 주면 웹 사이트에 favicon을 적용할 수 있습니다.
-> IE를 대응 한다면 반드시 `ico`포맷을 사용해야 합니다.
+`ico`혹은 `png` 확장자의 아이콘 파일을 추가하고, 다음과 같이 적어 주면 웹 사이트에 favicon을 적용할 수 있습니다.
 
 ```html
   <link rel="shortcut icon" href="favicon.ico" type="image/x-icon">
 ```
 
-ico favicon은 multiple sizes를 지원하기에 하나의 ico 파일에 여러 사이즈의 아이콘을 넣어 두고 이를 활용할 수 있지만 png favicon은 이것이 불가능합니다. 따라서, 각각의 필요한 사이즈를 아래와 같이 모두 선언해야 합니다.
+> IE를 대응 한다면 반드시 _ico_포맷을 사용해야 합니다.
+
+ico favicon은 multiple sizes를 지원하기 때문에, 하나의 ico 파일에 여러 사이즈의 아이콘을 넣어 두고 이를 활용할 수 있지만 png favicon은 불가능합니다. 따라서, 필요한 사이즈를 아래와 같이 모두 선언해야 합니다.
 
 ```html
-    <link rel="icon" href="favicon-16.png" sizes="16x16">
-    <link rel="icon" href="favicon-32.png" sizes="32x32">
-    <link rel="icon" href="favicon-48.png" sizes="48x48">
-    <link rel="icon" href="favicon-64.png" sizes="64x64">
-    <link rel="icon" href="favicon-128.png" sizes="128x128">
+<link rel="icon" href="favicon-32.png" sizes="32x32">
+<link rel="icon" href="favicon-16.png" sizes="16x16">
+<link rel="icon" href="favicon-48.png" sizes="48x48">
+<link rel="icon" href="favicon-64.png" sizes="64x64">
+<link rel="icon" href="favicon-128.png" sizes="128x128">
 ```
 
 png favicon 사용 시 브라우저 별로 사용하는 favicon은 다음과 같습니다.
@@ -85,7 +94,7 @@ so-so.dev에는 `apple-touch-icon`이라는 이름으로 많은 파일들이 적
 
 ## 👻 보이지 않지만 문서를 이루는 중요한 요소
 
-head에는 꼭 눈에 띄는 정보들만 표현되는 것은 아닙니다. 오히려, 겉으로 표현되지 않지만 중요한 요소들이 있습니다.
+head에는 꼭 눈에 띄는 정보들만 표현되는 것은 아닙니다. 오히려, 드러나지 않지만 중요한 요소들이 있습니다.
 
 ### charset
 
