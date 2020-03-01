@@ -130,7 +130,7 @@ export function* watchIncrementAsync() {
 
 redux까지 포함하면 다음과 같은 Flow로 표현할 수 있습니다.
 
-![redux-saga-flow](./images/redux-saga-flow.png)
+![redux-saga-flow](./images/redux_saga_flow.png)
 
 `Saga`는 `INCREMENT_ASYNC` action을 listen하고 delay와 put이라는 effect를 yield합니다. Saga는 Effect를 yield하고, **JavaScript 객체를 return하게 됩니다.** Middleware가 이 Effect를 받아서 처리하게 됩니다. 위 예시 에서는 첫 번째 yield delay가 중단되고, 1초가 지날때  까지 대기하게 됩니다. 
 
@@ -140,7 +140,7 @@ redux까지 포함하면 다음과 같은 Flow로 표현할 수 있습니다.
 
 위에서 언급한 것처럼, **Saga는 Effect를 yield하고 JavaScript객체를 return합니다.** 아래 코드는 redux-saga의 internal effect 코드입니다.
 
-```js
+```js{14,20,24}
 // redux-saga/internal/effect.js
 const makeEffect = (type, payload) => ({
   [IO]: true,
@@ -176,7 +176,7 @@ export function race(effects) {
 
 redux-saga는 직접적인 로직 수행은 하지 않고, Action과 State사이에서 Flow를 관장하는 Orchestrator역할을 수행합니다.
 
-```js
+```js{8,9}
 function sagaMiddleware({ getState, dispatch }) {
   // Initialize Saga
 
@@ -191,11 +191,12 @@ function sagaMiddleware({ getState, dispatch }) {
   }
 }
 ```
+
 Saga를 통하는 모든 action은 Reducer에 먼저 dispatch되고, `channel` 이라고 하는 saga의 커뮤니케이션 통로를 통해 action이 dispatch되었음을 Saga에게 알려줍니다.
 
 같은 이벤트가 연속적으로 올 때, Saga는 Event를 어떻게 Orchestration할 수 있을까요? Saga/effect에서는 [takeLatest]([https://redux-saga.js.org/docs/api](https://redux-saga.js.org/docs/api/)#takelatestpattern-saga-args)라는 api를 제공합니다.
 
-```js
+```js{9,12,17}
 export default function takeLatest(patternOrChannel, worker, ...args) {
   const yTake = { done: false, value: take(patternOrChannel) }
   const yFork = ac => ({ done: false, value: fork(worker, ...args, ac) })
@@ -250,37 +251,38 @@ export function* fetchHelloWorld() {
 
 코드에서 `yield`부분이 있는 곳을 `Step`으로 바라보고, 테스트 코드를 작성하겠습니다.
 
-```js
+```js{11}
 describe('HelloWorldsaga', () => {
   it('should dispatch success action', async () => {
-// Given
-const testRequest = {};
-const testResult ={
-  data: {
-text: 'Mock Text'
-  },
-};
+    // Given
+    const testRequest = {};
+    const testResult ={
+      data: {
+        text: 'Mock Text'
+      },
+    };
 
-const gen = fetchHelloWorld(); // 0
-// Then
-expect(gen.next().value).toEqual(select(helloSelector.text)); // 1
-expect(gen.next(testRequest).value).toEqual(
-  call(getHello, testRequest)
-); // 2
-expect(gen.next(testResult).value).toEqual(
-  put(helloWorldActions.success(testResult.data))
-); // 3
-expect(gen.next().done).toBeTruthy(); // 4
+    const gen = fetchHelloWorld(); // 0
+    // Then
+    expect(gen.next().value).toEqual(select(helloSelector.text)); // 1
+    expect(gen.next(testRequest).value).toEqual(
+      call(getHello, testRequest)
+    ); // 2
+    expect(gen.next(testResult).value).toEqual(
+      put(helloWorldActions.success(testResult.data))
+    ); // 3
+    expect(gen.next().done).toBeTruthy(); // 4
   });
 });
 ```
 
-- Step 0.  `fetchHelloWorld`라는 saga를 `gen`으로 정의했습니다.
-- Step 1. `select(helloSelector.text)` effect와 gen의 next 단계가 일치하는 지 검사합니다.
-- Step 2.  다음  yield단계는 `call`을 수행하는 부분입니다. call에는 `fn`과 `args`를 받도록 되어 있으니, `gen.next(call단계)`에 testRequest값을 함께 넘겨줍니다. 그리고 이 결과가 실제로 `call(getHello, testRequest)`와 같은 지 비교합니다.
-- Step 3. call로 수행된 결과를 success action으로 dispatch하는 부분입니다. 이 부분 역시 미리 mocking해둔 `testResult`를 `gen.next`의 인자로 넘겨줍니다.
-- Step 4. `fetchHelloWorld` saga에서 더 이상의 yield가 없으므로, 이 단계에서 `next()`의  값은 `done`입니다.
-- 더 자세한 내용은 [https://redux-saga.js.org/docs/advanced/Testing.html](https://redux-saga.js.org/docs/advanced/Testing.html) 과 [https://jbee.io/react/testing-3-react-testing/](https://jbee.io/react/testing-3-react-testing/) 를 참고 해주세요.
+- **Step 0.**  `fetchHelloWorld`라는 saga를 `gen`으로 정의했습니다.
+- **Step 1.** `select(helloSelector.text)` effect와 gen의 next 단계가 일치하는 지 검사합니다.
+- **Step 2.**  다음  yield단계는 `call`을 수행하는 부분입니다. call에는 `fn`과 `args`를 받도록 되어 있으니, `gen.next(call단계)`에 testRequest값을 함께 넘겨줍니다. 그리고 이 결과가 실제로 `call(getHello, testRequest)`와 같은 지 비교합니다.
+- **Step 3.** call로 수행된 결과를 success action으로 dispatch하는 부분입니다. 이 부분 역시 미리 mocking해둔 `testResult`를 `gen.next`의 인자로 넘겨줍니다.
+- **Step 4.** `fetchHelloWorld` saga에서 더 이상의 yield가 없으므로, 이 단계에서 `next()`의  값은 `done`입니다.
+
+> 더 자세한 내용은 [redux-saga:testing](https://redux-saga.js.org/docs/advanced/Testing.html)과 [Jbee님의 Store와 비즈니스 로직 테스트](https://jbee.io/react/testing-3-react-testing/)글을 참고 해주세요.
 
 ## 정리
 
