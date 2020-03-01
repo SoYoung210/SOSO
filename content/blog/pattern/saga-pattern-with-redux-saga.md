@@ -111,7 +111,7 @@ Orchestration Saga는 다음과 같은 다양한 장점이 있습니다.
 
 아래 예시를 통해 살펴보겠습니다. 
 
-- [redux-saga's Beginner Tutorial](https://redux-saga.js.org/docs/introduction/BeginnerTutorial.html) 코드입니다.
+> [redux-saga's Beginner Tutorial](https://redux-saga.js.org/docs/introduction/BeginnerTutorial.html) 코드입니다.
 
 ```js
 import { put, takeEvery, delay } from 'redux-saga/effects'
@@ -134,7 +134,7 @@ redux까지 포함하면 다음과 같은 Flow로 표현할 수 있습니다.
 
 `Saga`는 `INCREMENT_ASYNC` action을 listen하고 delay와 put이라는 effect를 yield합니다. Saga는 Effect를 yield하고, **JavaScript 객체를 return하게 됩니다.** Middleware가 이 Effect를 받아서 처리하게 됩니다. 위 예시 에서는 첫 번째 yield delay가 중단되고, 1초가 지날때  까지 대기하게 됩니다. 
 
-- Note. redux-saga는 blocking effect와 non-blocking effect로 구분됩니다. blocking effect는 처리가 완료될 때까지 기다리도록 하는 것이고, non-blocking effect는 완료를 기다리지 않고 진행하는 것입니다. 대표적인 blocking effect로는 call이 있고, non-blocking effect에는 fork가 있습니다.
+> **Note.** redux-saga는 blocking effect와 non-blocking effect로 구분됩니다. blocking effect는 처리가 완료될 때까지 기다리도록 하는 것이고, non-blocking effect는 완료를 기다리지 않고 진행하는 것입니다. 대표적인 blocking effect로는 call이 있고, non-blocking effect에는 fork가 있습니다.
 
 ### Effect
 
