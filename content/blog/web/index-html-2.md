@@ -114,7 +114,7 @@ head에는 꼭 눈에 띄는 정보들만 표현되는 것은 아닙니다. 오�
 
 lang 속성을 정확히 명시하여 폰트 설정에 이슈가 없도록 하는 것이 좋습니다.
 
-> 출처: [글로벌 서비스를 하게 되면 겪게 될 폰트 렌더링 문제]([https://drive.google.com/file/d/1abjV5imziJNg62ZE5dH5LS4VJK0f3nZf/view](https://drive.google.com/file/d/1abjV5imziJNg62ZE5dH5LS4VJK0f3nZf/view))
+> 출처: [글로벌 서비스를 하게 되면 겪게 될 폰트 렌더링 문제](https://drive.google.com/file/d/1abjV5imziJNg62ZE5dH5LS4VJK0f3nZf/view)
 
 보통 `lang`속성은 `<html>`에 명시하는 것이 일반적이나,(HTML의 최 상단) 특정 tag에서만 다른 lang이 필요한 경우 다음과 같이 사용할 수 있습니다.
 
