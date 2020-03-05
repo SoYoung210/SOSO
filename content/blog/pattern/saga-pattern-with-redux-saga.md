@@ -197,7 +197,9 @@ function sagaMiddleware({ getState, dispatch }) {
 
 Saga를 통하는 모든 action은 Reducer에 먼저 dispatch되고, `channel` 이라고 하는 saga의 커뮤니케이션 통로를 통해 action이 dispatch되었음을 Saga에게 알려줍니다.
 
-같은 이벤트가 연속적으로 올 때, Saga는 Event를 어떻게 Orchestration할 수 있을까요? Saga/effect에서는 [takeLatest]([https://redux-saga.js.org/docs/api](https://redux-saga.js.org/docs/api/#takelatestpattern-saga-args)라는 api를 제공합니다.
+### Cancel
+
+같은 이벤트가 연속적으로 올 때, Saga는 Event를 어떻게 Orchestration할 수 있을까요? Saga/effect에서는 [takeLatest](https://redux-saga.js.org/docs/api/#takelatestpattern-saga-args)라는 api를 제공합니다.
 
 ```js{9,12,17}
 export default function takeLatest(patternOrChannel, worker, ...args) {
