@@ -7,19 +7,19 @@ thumbnail: './images/thumbnail.png'
 
 ![image-thumbnail](./images/thumbnail.png)
 
-Side Effect를 처리하는 Redux Middleware 중 redux-saga를 많이 사용하고 있습니다.
+상태 관리 라이브러리, [redux](https://redux.js.org/)를 사용하다가 비동기 처리를 위해 redux-thunk나 redux-saga를 사용해보신 적이 있으신가요? 그 중 [redux-saga](https://redux-saga.js.org/)에 대해 알아보려고 합니다. redux-saga 라이브러리는 Side Effect를 어떻게 처리할까요?
 
 > The mental model is that a saga is like a separate thread in your application that's solely responsible for side effects. redux-saga is a redux middleware, which means this thread can be started, paused and cancelled from the main application with normal redux actions, it has access to the full redux application state and it can dispatch redux actions as well.
 
-redux-saga는 Side Effect를 별도의 스레드로 분리해서 관리할 수 있고, redux action으로 스레드를 시작, 중지, 취소시킬 수 있으며 store에 접근할 수 있고, redux action을 dispatch할 수 있다고 말하고 있습니다.
+redux-saga는 Side Effect를 별도의 스레드로 분리하여 처리합니다. 그리고 이 스레드를 Redux의 Action을 통해 시작, 중지, 취소시킬 수 있습니다. 또한 Redux에서 관리되는 store에 접근할 수 있고, Action을 dispatch 할 수 있습니다.
 
-이 말을 완전히 이해하려면, redux-saga의 mental model인 `Saga Pattern`에 대한 이해가 필요합니다.
+이 말을 완전히 이해하려면, redux-saga의 mental model인 [Saga Pattern](https://blog.couchbase.com/saga-pattern-implement-business-transactions-using-microservices-part/)에 대한 이해가 필요합니다.
 
 ## Saga
 
-Saga Pattern은 마이크로 서비스의 등장과 함께  각광받기 시작했습니다. Saga Pattern에 대해서는 다양한 해석이 존재하는데, [MSDN](https://docs.microsoft.com/en-us/previous-versions/msp-n-p/jj591569(v=pandp.10)?redirectedfrom=MSDN)에서는 Saga를 [CQRS](https://justhackem.wordpress.com/2016/09/17/what-is-cqrs/) Pattern의 Process Manager로 보고 있습니다. Saga의 기본 개념은 분산 transaction의 필요성을 제거하고, 각 transaction마다 보상 transaction을 정의하는 것입니다.
+Saga Pattern은 마이크로 서비스의 등장과 함께  각광받기 시작했습니다. Saga Pattern에 대해서는 다양한 해석이 존재하는데, [MSDN](https://docs.microsoft.com/en-us/previous-versions/msp-n-p/jj591569(v=pandp.10)?redirectedfrom=MSDN)에서는 Saga를 [CQRS](https://justhackem.wordpress.com/2016/09/17/what-is-cqrs/) Pattern의 Process Manager로 보고 있습니다. Saga의 기본 개념은 분산 transaction의 필요성을 제거하고, 각 transaction마다 [Compensating transaction(보상 transaction)](https://en.wikipedia.org/wiki/Compensating_transaction)을 정의하는 것입니다.
 
-> compensating transaction(보상 transaction): 각 transaction에서 오류가 발생했을 때 수행할 transaction
+> Compensating transaction(보상 transaction)란 각 transaction에서 오류가 발생했을 때 수행되는 transaction을 말합니다.
 
 예를 들어 아래와 같은 서비스가 있다고 가정해 봅시다.
 
@@ -33,8 +33,8 @@ Saga Pattern은 마이크로 서비스의 등장과 함께  각광받기 시작�
 
 Saga Transaction을 구현하는 방법에는 많은 방법이 있지만 대표적으로 두 가지 방법이 있습니다.
 
-- **Events/Choreography:** 흐름을 관리하는 매니저가 없고, 각 서비스가 event생성, 구독(listen)하며 동작 여부를 결정하는 형태 입니다.
-- **Command/Orchestration:** 흐름을 관리하는 매니저가 있으며, 이 매니저의 역할은 비즈니스 로직을 집중화 하여 처리해야 할 필요가 있을 때 채택합니다.
+- **Events/Choreography:** 이벤트 흐름을 관리하는 매니저가 없고, 각 서비스가 event생성, 구독(listen)하며 동작 여부를 결정하는 형태 입니다.
+- **Command/Orchestration:** 이벤트 흐름을 관리하는 매니저가 있으며, 이 매니저의 역할은 비즈니스 로직을 집중화 하여 처리해야 할 필요가 있을 때 채택합니다.
 
 ### Events/Choreography
 
@@ -103,9 +103,9 @@ Orchestration Saga는 다음과 같은 다양한 장점이 있습니다.
 
 `Command/Orchestration`구조는 서비스 간에 많은 이벤트나 context를 공유하는 경우, Event Routing이 복잡할 경우 용이합니다.
 
-전체 Service의 규모가 작고 Event간의 종속성이 많지 않은 경우 Orchestrator를 따로 관리해야 하는 부담이 없는 `Events/Choreography`를 선택하는 것이 좋습니다.
+`Events/Choreography`는 Orchestrator에 대한 관리 부담이 없기 때문에 전체 Service의 규모가 작고 Event 간의 종속성이 많지 않은 경우에 선택하는 것이 좋습니다.
 
-> **Event Routing:** 하나의 이벤트에 대해 어떤 Service에게 전달되어야 하고, 이후 어떤 이벤트가 진행되어야 하는 지 나타낸 것
+> **Event Routing**이란 이벤트가 어떤 Service에게 전달되어야 하고, 이후 어떤 이벤트가 진행되어야 하는지 나타낸 것입니다.
 
 ## redux-saga
 
@@ -133,9 +133,11 @@ redux까지 포함하면, 다음과 같은 Flow로 표현할 수 있습니다.
 
 ![redux-saga-flow](./images/redux_saga_flow.png)
 
-`Saga`는 `INCREMENT_ASYNC` action을 listen하고 delay와 put이라는 effect를 yield합니다. Saga는 Effect를 yield하고, **JavaScript 객체를 return하게 됩니다.** Middleware가 이 Effect를 받아서 처리하게 됩니다. 위 예시 에서는 첫 번째 yield delay가 중단되고, 1초가 지날때  까지 대기하게 됩니다.ㄴ
+`Saga`는 `INCREMENT_ASYNC` action을 listen하고 delay와 put이라는 effect를 yield합니다. Saga는 Effect를 yield하고, **JavaScript 객체를 반환하게하게 됩니다.** Middleware가 이 Effect를 받아서 처리하게 됩니다. 위 예시 에서는 첫 번째 yield delay가 중단되고, 1초가 지날때  까지 대기하게 됩니다.
 
-> **Note.** redux-saga는 blocking effect와 non-blocking effect로 구분됩니다. blocking effect는 처리가 완료될 때까지 기다리도록 하는 것이고, non-blocking effect는 완료를 기다리지 않고 진행하는 것입니다. 대표적인 blocking effect로는 call이 있고, non-blocking effect에는 fork가 있습니다.
+> **Note.** redux-saga의 Effect는 blocking effect와 non-blocking effect로 구분됩니다.
+Blocking Effect는 처리가 완료될 때까지 기다리며 Non-blocking Effect는 완료를 기다리지 않고 진행합니다.
+대표적인 Blocking eEffect로는 call이 있고, Non-blocking Effect에는 fork가 있습니다.
 
 ### Effect
 
@@ -171,11 +173,11 @@ export function race(effects) {
 }
 ```
 
-공통적으로, 마치 redux의 action객체처럼 `makeEffect(...)`의 결과로 만들어진 객체를 return하는 것을 확인할 수 있습니다. 이렇게 redux-saga에서 어떤 작업을 수행하는지에 대한 정보를 담고 있는 effect객체를 return하면, 실질적인 logic수행은 middleware에서 이루어지게 됩니다.
+redux-saga의 effect들은 마치 [액션 생성 함수(action creator function)](https://redux.js.org/basics/actions/#action-creators)처럼 `makeEffect(...)`함수의 결과로 만들어진 객체를 반환합니다. 이렇게 **어떤 작업을 수행하는지에 대한 정보**를 담고 있는 effect객체를 return하면, 실질적인 로직 수행은 middleware에서 이루어지게 됩니다
 
 ### Orchestrator
 
-redux-saga는 직접적인 로직 수행은 하지 않고, Action과 State사이에서 Flow를 관장하는 Orchestrator역할을 수행합니다.
+즉, redux-saga는 발생하는 Action과 관리되는 State사이에서 흐름을 관리하는 **Orchestrator** 로서 존재합니다.
 
 ```js{8,9}
 function sagaMiddleware({ getState, dispatch }) {
@@ -195,7 +197,7 @@ function sagaMiddleware({ getState, dispatch }) {
 
 Saga를 통하는 모든 action은 Reducer에 먼저 dispatch되고, `channel` 이라고 하는 saga의 커뮤니케이션 통로를 통해 action이 dispatch되었음을 Saga에게 알려줍니다.
 
-같은 이벤트가 연속적으로 올 때, Saga는 Event를 어떻게 Orchestration할 수 있을까요? Saga/effect에서는 [takeLatest]([https://redux-saga.js.org/docs/api](https://redux-saga.js.org/docs/api/)#takelatestpattern-saga-args)라는 api를 제공합니다.
+같은 이벤트가 연속적으로 올 때, Saga는 Event를 어떻게 Orchestration할 수 있을까요? Saga/effect에서는 [takeLatest]([https://redux-saga.js.org/docs/api](https://redux-saga.js.org/docs/api/#takelatestpattern-saga-args)라는 api를 제공합니다.
 
 ```js{9,12,17}
 export default function takeLatest(patternOrChannel, worker, ...args) {
@@ -224,11 +226,11 @@ export default function takeLatest(patternOrChannel, worker, ...args) {
 }
 ```
 
-`q1`을 시작으로, 동일한 Event가 발생하면 이전 Event를  Cacel(yCancel)하고 nextState에 fork로 전달합니다. Orchestrator Pattern에서 command를 통해 Rollback을 구현 했던 것처럼, Saga에서는 Cancel을 통해 effect를 관리하고 있습니다.
+`q1`을 시작으로, 동일한 Event가 발생하면 이전 Event를  Cancel(yCancel)하고 nextState에 fork로 전달합니다. Orchestrator Pattern에서 command를 통해 Rollback을 구현 했던 것처럼, Saga에서는 Cancel을 통해 effect를 관리하고 있습니다.
 
 ### Test
 
-redux-saga는 Effect를 통해 Side Effect를 관리하기 때문에  Test Code작성이 용이합니다. 마치 **각 단계를 하나씩 진행해주는 것처럼** Test  Code를 작성할 수 있습니다.
+redux-saga는 Effect를 통해 Side Effect를 관리하기 때문에 테스트 코드 작성이 용이합니다. 마치 **각 단계를 하나씩 진행해주는 것처럼** 테스트 코드를 작성할 수 있습니다.
 
 아래의 코드를 예시로 들어 보겠습니다.
 
