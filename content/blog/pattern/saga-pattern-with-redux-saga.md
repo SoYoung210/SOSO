@@ -109,8 +109,27 @@ Orchestration Saga는 다음과 같은 다양한 장점이 있습니다.
 
 ## redux-saga
 
-앞서 살펴 본 `Saga`는 redux-saga와 어떻게 이어질까요?
-아래 예시를 통해 살펴보겠습니다.
+앞서 살펴 본 `Saga`는 redux-saga와 어떻게 이어질까요? redux-saga는 발생하는 Action과 관리되는 State사이에서 흐름을 관리하는 **Orchestrator** 로서 존재합니다.
+
+```js{8,9}
+function sagaMiddleware({ getState, dispatch }) {
+  // Initialize Saga
+
+  return next => action => {
+    if (sagaMonitor && sagaMonitor.actionDispatched) {
+      sagaMonitor.actionDispatched(action)
+    }
+    const result = next(action) // Reducer에 dispatch
+    channel.put(action) // Saga에게 action이 dispatch되었음을 알리기
+
+    return result
+  }
+}
+```
+
+Saga를 통하는 모든 action은 Reducer에 먼저 dispatch되고, `channel` 이라고 하는 saga의 커뮤니케이션 통로를 통해 action이 dispatch되었음을 Saga에게 알려줍니다.
+
+아래 예시를 통해 좀 더 자세히 살펴보겠습니다.
 
 > [redux-saga's Beginner Tutorial](https://redux-saga.js.org/docs/introduction/BeginnerTutorial.html) 코드입니다.
 
@@ -174,28 +193,6 @@ export function race(effects) {
 ```
 
 redux-saga의 effect들은 마치 [액션 생성 함수(action creator function)](https://redux.js.org/basics/actions/#action-creators)처럼 `makeEffect(...)`함수의 결과로 만들어진 객체를 반환합니다. 이렇게 **어떤 작업을 수행하는지에 대한 정보**를 담고 있는 effect객체를 return하면, 실질적인 로직 수행은 middleware에서 이루어지게 됩니다
-
-### Orchestrator
-
-즉, redux-saga는 발생하는 Action과 관리되는 State사이에서 흐름을 관리하는 **Orchestrator** 로서 존재합니다.
-
-```js{8,9}
-function sagaMiddleware({ getState, dispatch }) {
-  // Initialize Saga
-
-  return next => action => {
-    if (sagaMonitor && sagaMonitor.actionDispatched) {
-      sagaMonitor.actionDispatched(action)
-    }
-    const result = next(action) // Reducer에 dispatch
-    channel.put(action) // Saga에게 action이 dispatch되었음을 알리기
-
-    return result
-  }
-}
-```
-
-Saga를 통하는 모든 action은 Reducer에 먼저 dispatch되고, `channel` 이라고 하는 saga의 커뮤니케이션 통로를 통해 action이 dispatch되었음을 Saga에게 알려줍니다.
 
 ### Cancel
 
