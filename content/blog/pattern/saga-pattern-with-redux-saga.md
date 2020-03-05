@@ -229,7 +229,7 @@ export default function takeLatest(patternOrChannel, worker, ...args) {
 
 ### Test
 
-redux-saga는 Effect를 통해 Side Effect를 관리하기 때문에 테스트 코드 작성이 용이합니다. 마치 **각 단계를 하나씩 진행해주는 것처럼** 테스트 코드를 작성할 수 있습니다.
+redux-saga는 Effect 객체를 통해 Side Effect를 관리하기 때문에 테스트 코드 작성이 용이합니다. 마치 **각 단계를 하나씩 진행해주는 것처럼** 테스트 코드를 작성할 수 있습니다.
 
 아래의 코드를 예시로 들어 보겠습니다.
 
@@ -287,6 +287,10 @@ describe('HelloWorldsaga', () => {
 > 더 자세한 내용은 [redux-saga:testing](https://redux-saga.js.org/docs/advanced/Testing.html)과 [Jbee님의 Store와 비즈니스 로직 테스트](https://jbee.io/react/testing-3-react-testing/)글을 참고 해주세요.
 
 ## 정리
+
+이번 글에서 Saga Pattern과 redux-saga에 대해서 정리해봤습니다. redux-saga는 `Command/Orchestration`구조처럼 서비스 간에 많은 이벤트나 context와 복잡한 Event Routing을 관리하는 데에 있어 좋은 선택이 될 수 있습니다.
+
+미들웨어는 saga에게 오직 `yield`값을 받아서 동작을 수행하는 구조이기 때문에, [Test](https://so-so.dev/pattern/saga-pattern-with-redux-saga/#test)단락에서 언급한 것처럼 Test작성에 용이합니다. 또, **Saga는 명령을 내리는 역할만 하고, 실제 어떤 직접적인 동작은 미들웨어가 처리할 수 있습니다.** [dispatch](https://redux.js.org/api/store#dispatchaction)를 인자로 받아 직접 비즈니스 로직을 처리하는 redux-thunk와의 가장 큰 차이점입니다.
 
 ## Reference
 
