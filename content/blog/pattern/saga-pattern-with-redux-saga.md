@@ -194,11 +194,11 @@ export function race(effects) {
 }
 ```
 
-redux-saga의 effect들은 마치 [액션 생성 함수(action creator function)](https://redux.js.org/basics/actions/#action-creators)처럼 `makeEffect(...)`함수의 결과로 만들어진 객체를 반환합니다. 이렇게 **어떤 작업을 수행하는지에 대한 정보**를 담고 있는 effect객체를 return하면, 실질적인 로직 수행은 middleware에서 이루어지게 됩니다
+redux-saga의 effect들은 마치 [액션 생성 함수(action creator function)](https://redux.js.org/basics/actions/#action-creators)처럼 `makeEffect(...)`함수의 결과로 만들어진 객체를 반환합니다. 이렇게 **어떤 작업을 수행하는지에 대한 정보**를 담고 있는 effect객체를 반환하면, 실질적인 로직 수행은 middleware에서 이루어집니다.
 
 ### Cancel
 
-같은 이벤트가 연속적으로 올 때, Saga는 Event를 어떻게 Orchestration할 수 있을까요? Saga/effect에서는 [takeLatest](https://redux-saga.js.org/docs/api/#takelatestpattern-saga-args)라는 api를 제공합니다.
+같은 이벤트가 연속적으로 올 때, Saga는 Event를 어떻게 Orchestration할 수 있을까요? redux-saga에서는 [takeLatest](https://redux-saga.js.org/docs/api/#takelatestpattern-saga-args) api를 제공합니다.
 
 ```js{9,12,17}
 export default function takeLatest(patternOrChannel, worker, ...args) {
@@ -227,7 +227,7 @@ export default function takeLatest(patternOrChannel, worker, ...args) {
 }
 ```
 
-`q1`을 시작으로, 동일한 Event가 발생하면 이전 Event를  Cancel(yCancel)하고 nextState에 fork로 전달합니다. Orchestrator Pattern에서 command를 통해 Rollback을 구현 했던 것처럼, Saga에서는 Cancel을 통해 effect를 관리하고 있습니다.
+`q1`을 시작으로, 동일한 Event가 발생하면 이전 Event를  Cancel(_yCancel_)하고 nextState에 fork로 전달합니다. Orchestrator Pattern에서 command를 통해 Rollback을 구현 했던 것처럼, Saga에서는 Cancel을 통해 effect를 관리하고 있습니다.
 
 ### Test
 
@@ -283,8 +283,8 @@ describe('HelloWorldsaga', () => {
 - **Step 0.**  `fetchHelloWorld`라는 saga를 `gen`으로 정의했습니다.
 - **Step 1.** `select(helloSelector.text)` effect와 gen의 next 단계가 일치하는 지 검사합니다.
 - **Step 2.**  다음  yield단계는 `call`을 수행하는 부분입니다. call에는 `fn`과 `args`를 받도록 되어 있으니, `gen.next(call단계)`에 testRequest값을 함께 넘겨줍니다. 그리고 이 결과가 실제로 `call(getHello, testRequest)`와 같은 지 비교합니다.
-- **Step 3.** call로 수행된 결과를 success action으로 dispatch하는 부분입니다. 이 부분 역시 미리 mocking해둔 `testResult`를 `gen.next`의 인자로 넘겨줍니다.
-- **Step 4.** `fetchHelloWorld` saga에서 더 이상의 yield가 없으므로, 이 단계에서 `next()`의  값은 `done`입니다.
+- **Step 3.** call로 수행된 결과를 success action으로 dispatch하는 부분입니다. 이 부분 역시 미리 mocking해둔 testResult를 `gen.next`의 인자로 넘겨줍니다.
+- **Step 4.** `fetchHelloWorld` saga에서 더 이상의 yield가 없으므로, 이 단계에서 next()의  값은 done입니다.
 
 > 더 자세한 내용은 [redux-saga:testing](https://redux-saga.js.org/docs/advanced/Testing.html)과 [Jbee님의 Store와 비즈니스 로직 테스트](https://jbee.io/react/testing-3-react-testing/)글을 참고 해주세요.
 
@@ -292,7 +292,9 @@ describe('HelloWorldsaga', () => {
 
 이번 글에서 Saga Pattern과 redux-saga에 대해서 정리해봤습니다. redux-saga는 `Command/Orchestration`구조처럼 서비스 간에 많은 이벤트나 context와 복잡한 Event Routing을 관리하는 데에 있어 좋은 선택이 될 수 있습니다.
 
-미들웨어는 saga에게 오직 `yield`값을 받아서 동작을 수행하는 구조이기 때문에, [Test](https://so-so.dev/pattern/saga-pattern-with-redux-saga/#test)단락에서 언급한 것처럼 Test작성에 용이합니다. 또, **Saga는 명령을 내리는 역할만 하고, 실제 어떤 직접적인 동작은 미들웨어가 처리할 수 있습니다.** [dispatch](https://redux.js.org/api/store#dispatchaction)를 인자로 받아 직접 비즈니스 로직을 처리하는 redux-thunk와의 가장 큰 차이점입니다.
+미들웨어는 saga에게 오직 `yield`값을 받아서 동작을 수행하는 구조이기 때문에, [Test](https://so-so.dev/pattern/saga-pattern-with-redux-saga/#test)단락에서 언급한 것처럼 Test작성에 용이합니다.
+
+**Saga는 명령을 내리는 역할만 하고, 실제 어떤 직접적인 동작은 미들웨어가 처리할 수 있습니다.** [dispatch](https://redux.js.org/api/store#dispatchaction)를 인자로 받아 직접 비즈니스 로직을 처리하는 redux-thunk와의 가장 큰 차이점입니다.
 
 ## Reference
 
