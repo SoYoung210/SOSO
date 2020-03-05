@@ -7,17 +7,18 @@ thumbnail: './images/thumbnail.png'
 
 ![image-thumbnail](./images/thumbnail.png)
 
-상태 관리 라이브러리, [redux](https://redux.js.org/)를 사용하다가 비동기 처리를 위해 redux-thunk나 redux-saga를 사용해보신 적이 있으신가요? 그 중 [redux-saga](https://redux-saga.js.org/)에 대해 알아보려고 합니다. redux-saga 라이브러리는 Side Effect를 어떻게 처리할까요?
+[redux](https://redux.js.org/)를 사용하다가 비동기 처리를 위해 [redux-thunk](https://github.com/reduxjs/redux-thunk)나 [redux-saga](https://redux-saga.js.org/)를 사용해보신 적이 있으신가요? 그 중 redux-saga에 대해 알아보려고 합니다. redux-saga 라이브러리는 Side Effect를 어떻게 처리할까요?
 
-> The mental model is that a saga is like a separate thread in your application that's solely responsible for side effects. redux-saga is a redux middleware, which means this thread can be started, paused and cancelled from the main application with normal redux actions, it has access to the full redux application state and it can dispatch redux actions as well.
+> The mental model is that a saga is like a separate thread in your application that's solely responsible for side effects. redux-saga is a redux middleware, which means this thread can be started, paused and cancelled from the main application with normal redux actions, it has access to the full redux application state and it can dispatch redux actions as well.  
+> _출처: [redux-saga 공식 문서](https://redux-saga.js.org/)_
 
-redux-saga는 Side Effect를 별도의 스레드로 분리하여 처리합니다. 그리고 이 스레드를 Redux의 Action을 통해 시작, 중지, 취소시킬 수 있습니다. 또한 Redux에서 관리되는 store에 접근할 수 있고, Action을 dispatch 할 수 있습니다.
+공식문서에 따르면, redux-saga는 Side Effect를 별도의 스레드로 분리하여 처리합니다. 그리고 이 스레드를 Redux의 Action을 통해 시작, 중지, 취소시킬 수 있습니다. 또한 Redux에서 관리되는 store에 접근할 수 있고, Action을 dispatch 할 수 있습니다.
 
 이 말을 완전히 이해하려면, redux-saga의 mental model인 [Saga Pattern](https://blog.couchbase.com/saga-pattern-implement-business-transactions-using-microservices-part/)에 대한 이해가 필요합니다.
 
 ## Saga
 
-Saga Pattern은 마이크로 서비스의 등장과 함께  각광받기 시작했습니다. Saga Pattern에 대해서는 다양한 해석이 존재하는데, [MSDN](https://docs.microsoft.com/en-us/previous-versions/msp-n-p/jj591569(v=pandp.10)?redirectedfrom=MSDN)에서는 Saga를 [CQRS](https://justhackem.wordpress.com/2016/09/17/what-is-cqrs/) Pattern의 Process Manager로 보고 있습니다. Saga의 기본 개념은 분산 transaction의 필요성을 제거하고, 각 transaction마다 [Compensating transaction(보상 transaction)](https://en.wikipedia.org/wiki/Compensating_transaction)을 정의하는 것입니다.
+Saga Pattern은 마이크로 서비스의 등장과 함께 각광받기 시작했습니다. Saga Pattern에 대해서는 다양한 해석이 존재하는데, [MSDN](https://docs.microsoft.com/en-us/previous-versions/msp-n-p/jj591569(v=pandp.10)?redirectedfrom=MSDN)에서는 Saga를 [CQRS](https://justhackem.wordpress.com/2016/09/17/what-is-cqrs/) Pattern의 Process Manager로 보고 있습니다. Saga의 기본 개념은 분산 transaction의 필요성을 제거하고, 각 transaction마다 [Compensating transaction(보상 transaction)](https://en.wikipedia.org/wiki/Compensating_transaction)을 정의하는 것입니다.
 
 > Compensating transaction(보상 transaction)란 각 transaction에서 오류가 발생했을 때 수행되는 transaction을 말합니다.
 
@@ -29,12 +30,12 @@ Saga Pattern은 마이크로 서비스의 등장과 함께  각광받기 시작�
 
 ![sample_service_sequence.png](./images/sample_service_sequence.png)
 
-`Saga`는 각 trasaction이 각 서비스에서 데이터를 업데이트 하는 일련의 local transaction입니다. 첫 번째 transaction은 외부 요청에 의해 시작되고, 다음 단계의 transaction은 이전 작업이 완료되면 시작됩니다.
+`Saga`는 각 trasaction이 각 서비스에서 데이터를 업데이트 하는 일련의 local transaction입니다. 첫 번째 transaction은 외부 요청에 의해 시작되고, 다음 단계의 transaction은 이전 작업이 완료된 후 시작됩니다.
 
 Saga Transaction을 구현하는 방법에는 많은 방법이 있지만 대표적으로 두 가지 방법이 있습니다.
 
 - **Events/Choreography:** 이벤트 흐름을 관리하는 매니저가 없고, 각 서비스가 event생성, 구독(listen)하며 동작 여부를 결정하는 형태 입니다.
-- **Command/Orchestration:** 이벤트 흐름을 관리하는 매니저가 있으며, 이 매니저의 역할은 비즈니스 로직을 집중화 하여 처리해야 할 필요가 있을 때 채택합니다.
+- **Command/Orchestration:** 이벤트 흐름을 관리하는 매니저가 있으며, 이 매니저는 비즈니스 로직을 집중화 하여 처리합니다.
 
 ### Events/Choreography
 
@@ -42,9 +43,9 @@ Saga Transaction을 구현하는 방법에는 많은 방법이 있지만 대표�
 
 위 예시에서 Event흐름은 다음과 같습니다.
 
-1. Order Service 새 주문을 받고, 주문의 상태를 *pending* 으로 변경합니다. 그리고 **ORDER\_CREATED\_EVENT** 이벤트를 발생 시킵니다.
-2. Payment Service 는 **ORDER\_CREATED\_EVENT**이벤트가 발생하면, 고객에게 요금을  청구하고 **BILLED\_ORDER\_EVENT** 이벤트를 발생 시킵니다..
-3. Stock Service 는 **BILLED\_ORDER\_EVENT**이벤트가 발생하면, 재고를 업데이트 하고 주문한 상품을 준비시킨 다음, **ORDER_PREPARED\_EVENT**이벤트를 발생 시킵니다.
+1. Order Service는 새로운 주문을 받고, 주문의 상태를 *pending* 으로 변경합니다. 그리고 **ORDER\_CREATED\_EVENT** 이벤트를 발생 시킵니다.
+2. Payment Service 는 **ORDER\_CREATED\_EVENT**이벤트가 발생하면, 고객에게 요금을  청구하고 **BILLED\_ORDER\_EVENT** 이벤트를 발생 시킵니다.
+3. Stock Service 는 **BILLED\_ORDER\_EVENT**이벤트가 발생하면, 재고를 업데이트 하고 주문한 상품을 준비시킨 다음, **ORDER\_PREPARED\_EVENT**이벤트를 발생 시킵니다.
 4. Delivery Service는 **ORDER\_PREPARED\_EVENT**이벤트가 발생하면, 제품을 발송시키고 **ORDER\_DELIVERED\_EVENT**이벤트를 발생 시킵니다.
 5. 마지막으로, Order Service는 **ORDER\_DELIVERED\_EVENT**이벤트가 발생하면 주문의 상태를 *concluded*로 변경합니다.
 
@@ -54,10 +55,10 @@ Saga Transaction을 구현하는 방법에는 많은 방법이 있지만 대표�
 
 `Event/Choreography`방법에서 Rollback은 다음과 같은 단계로 진행됩니다.
 
-1. Stock Service가 **PRODUCT\_OUT_OF_STOCK\_EVENT**를 발생 시킵니다.
+1. Stock Service가 **PRODUCT\_OUT\_OF\_STOCK\_EVENT**를 발생 시킵니다.
 2. Order Service와 Payment Service는 두 가지 작업을 진행 합니다:
-    - Payment Service 는 환불 작업을 합니다.
-    - Order Service 는 주문 상태를 '실패'로 변경합니다.
+    - Payment Service는 처리되고 있던 주문을 환불 처리 합니다.
+    - Order Service는 주문 상태를 '실패'로 변경합니다.
 
 > Note. 각 transaction은 id를 가지고 있어, 모든 리스너가 발생한 transaction을 즉시 알 수 있습니다.
 
@@ -69,14 +70,14 @@ Saga Transaction을 구현하는 방법에는 많은 방법이 있지만 대표�
 
 ![saga_orchestration](./images/saga_orchestration.png)
 
-1. Order Service는 주문을 저장하고, Order Saga Orchestrator(OSO)에게 주문 transaction을 생성하도록 요청합니다.
-2. *OSO*는 Payment Service에게 **Execute Payment** command를 전달하고, Payment Service는 **Payment Executed** 응답을 전송합니다.
+1. Order Service는 주문을 저장하고, Order Saga Orchestrator(이하 OSO)에게 주문 transaction을 생성하도록 요청합니다.
+2. OSO는 Payment Service에게 **Execute Payment** command를 전달하고, Payment Service는 **Payment Executed** 응답을 전송합니다.
 3. Stock Service 에게 **Prepare Order** command를 전달하고, Stock Service는 **Order Prepared** 응답을 전송합니다.
 4. 마지막으로, Delivery Service에게 **Deliver Order** command를 전달하고 , Delivery Service는 **Order Delivered** 응답을 전송합니다.
 
-Order Saga Orchestrator는 **주문을 처리하는 데에 필요한 모든 transaction을 관리합니다.** 문제가 발생하면 각 Service에게 command를 전달해서 Rollback을 수행하게 합니다.
+OSO는 **주문을 처리하는 데에 필요한 모든 transaction을 관리합니다.** 문제가 발생하면 각 Service에게 command를 전달해서 Rollback을 수행하게 합니다.
 
-Saga Orchestrator를 구현하는 표준 방법은, 각 command에 해당하는 상태를 관리하는 `State Machine`으로 구현하는 것입니다.
+Saga Orchestrator를 구현하는 방법은, 각 command에 해당하는 상태를 관리하는 `State Machine`으로 구현하는 것입니다.
 
 ### [Rollback] Command/Orchestration
 
@@ -88,10 +89,11 @@ Saga Orchestrator를 구현하는 표준 방법은, 각 command에 해당하는 
 
 ### Command/Orchestration 정리
 
-Orchestration Saga는 다음과 같은 다양한 장점이 있습니다.
+Orchestration Saga는 다음과 같은 장점이 있습니다.
 
 - Orchestrator Saga만 다른 Service를 호출할 수 있는 단방향 구조이므로, Service간에  종속성이 생기는 것을 피할 수 있습니다.
-- command/reply 형태로 관리하기 때문에 Service의 복잡성이 줄어듭니다. (Event/Choreography에서는 dispatch/listen 형태)
+- command/reply 형태로 관리하기 때문에 Service의 복잡성이 줄어듭니다.
+  - Event/Choreography 패턴에서는 각 서비스가 필요한 이벤트를 파악해서 구독하고 있어야 하기 때문에, 복잡성이 높습니다.
 - 동일한 값을 변경하는 요청이 있을 경우 Orchestrator에서 요청의 우선순위를 판단하여 처리할 수 있습니다.
 
 그러나, 단점도 있습니다.
@@ -103,9 +105,9 @@ Orchestration Saga는 다음과 같은 다양한 장점이 있습니다.
 
 `Command/Orchestration`구조는 서비스 간에 많은 이벤트나 context를 공유하는 경우, Event Routing이 복잡할 경우 용이합니다.
 
-`Events/Choreography`는 Orchestrator에 대한 관리 부담이 없기 때문에 전체 Service의 규모가 작고 Event 간의 종속성이 많지 않은 경우에 선택하는 것이 좋습니다.
-
 > **Event Routing**이란 이벤트가 어떤 Service에게 전달되어야 하고, 이후 어떤 이벤트가 진행되어야 하는지 나타낸 것입니다.
+
+`Events/Choreography`는 Orchestrator에 대한 관리 부담이 없기 때문에 전체 Service의 규모가 작고 Event 간의 종속성이 많지 않은 경우에 선택하는 것이 좋습니다.
 
 ## redux-saga
 
@@ -127,7 +129,7 @@ function sagaMiddleware({ getState, dispatch }) {
 }
 ```
 
-Saga를 통하는 모든 action은 Reducer에 먼저 dispatch되고, `channel` 이라고 하는 saga의 커뮤니케이션 통로를 통해 action이 dispatch되었음을 Saga에게 알려줍니다.
+Saga를 통하는 모든 action은 Reducer에 먼저 dispatch되고, [channel](https://redux-saga.js.org/docs/advanced/Channels.html)이라고 하는 saga의 커뮤니케이션 통로를 통해 action이 dispatch되었음을 Saga에게 알려줍니다.
 
 아래 예시를 통해 좀 더 자세히 살펴보겠습니다.
 
@@ -152,7 +154,9 @@ redux까지 포함하면, 다음과 같은 Flow로 표현할 수 있습니다.
 
 ![redux-saga-flow](./images/redux_saga_flow.png)
 
-`Saga`는 `INCREMENT_ASYNC` action을 listen하고 delay와 put이라는 effect를 yield합니다. Saga는 Effect를 yield하고, **JavaScript 객체를 반환하게하게 됩니다.** Middleware가 이 Effect를 받아서 처리하게 됩니다. 위 예시 에서는 첫 번째 yield delay가 중단되고, 1초가 지날때  까지 대기하게 됩니다.
+`Saga`는 INCREMENT\_ASYNC action을 listen하고 delay와 put이라는 effect를 yield합니다. Saga는 Effect를 yield하고, **JavaScript 객체를 반환하게하게 됩니다.**
+
+Middleware는 이 Effect를 받아서 처리합니다. 위 예시에서는 첫 번째 yield delay가 중단되고, 1초가 지날때  까지 대기하게 됩니다.
 
 > **Note.** redux-saga의 Effect는 blocking effect와 non-blocking effect로 구분됩니다.
 Blocking Effect는 처리가 완료될 때까지 기다리며 Non-blocking Effect는 완료를 기다리지 않고 진행합니다.
@@ -160,14 +164,12 @@ Blocking Effect는 처리가 완료될 때까지 기다리며 Non-blocking Effec
 
 ### Effect
 
-위에서 언급한 것처럼, **Saga는 Effect를 yield하고 JavaScript객체를 return합니다.** 아래 코드는 redux-saga의 internal effect 코드입니다.
+위에서 언급한 것처럼, **Saga는 Effect를 yield하고 JavaScript객체를 반환합니다.** 아래 코드는 redux-saga의 internal effect 코드입니다.
 
 ```js{14,20,24}
 // redux-saga/internal/effect.js
 const makeEffect = (type, payload) => ({
   [IO]: true,
-  // this property makes all/race distinguishable in generic manner from other effects
-  // currently it's not used at runtime at all but it's here to satisfy type systems
   combinator: false,
   type,
   payload,
