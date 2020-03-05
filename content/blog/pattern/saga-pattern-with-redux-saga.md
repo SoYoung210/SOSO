@@ -290,11 +290,9 @@ describe('HelloWorldsaga', () => {
 
 ## 정리
 
-이번 글에서 Saga Pattern과 redux-saga에 대해서 정리해봤습니다. redux-saga는 `Command/Orchestration`구조처럼 서비스 간에 많은 이벤트나 context와 복잡한 Event Routing을 관리하는 데에 있어 좋은 선택이 될 수 있습니다.
+이번 글에서 Saga Pattern과 redux-saga에 대해서 정리해봤습니다. Saga는 명령을 내리는 역할만 하고, 실제 어떤 직접적인 동작은 미들웨어가 처리하는 `Command/Orchestration`구조로 서비스 간에 많은 이벤트나 context와 복잡한 Event Routing을 관리하는 데에 있어 좋은 선택이 될 수 있습니다.
 
-미들웨어는 saga에게 오직 `yield`값을 받아서 동작을 수행하는 구조이기 때문에, [Test](https://so-so.dev/pattern/saga-pattern-with-redux-saga/#test)단락에서 언급한 것처럼 Test작성에 용이합니다.
-
-**Saga는 명령을 내리는 역할만 하고, 실제 어떤 직접적인 동작은 미들웨어가 처리할 수 있습니다.** [dispatch](https://redux.js.org/api/store#dispatchaction)를 인자로 받아 직접 비즈니스 로직을 처리하는 redux-thunk와의 가장 큰 차이점입니다.
+또한, 미들웨어는 saga에게 오직 `yield`값을 받아서 동작을 수행하는 구조이기 때문에, [Test](https://so-so.dev/pattern/saga-pattern-with-redux-saga/#test)단락에서 언급한 것처럼 Test작성에 용이합니다.
 
 ## Reference
 
