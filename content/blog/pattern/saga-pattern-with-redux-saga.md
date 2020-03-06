@@ -7,7 +7,7 @@ thumbnail: './images/thumbnail.png'
 
 ![image-thumbnail](./images/thumbnail.png)
 
-[redux](https://redux.js.org/)를 사용하다가 비동기 처리를 위해 [redux-thunk](https://github.com/reduxjs/redux-thunk)나 [redux-saga](https://redux-saga.js.org/)를 사용해보신 적이 있으신가요? 그 중 redux-saga에 대해 알아보려고 합니다. redux-saga 라이브러리는 Side Effect를 어떻게 처리할까요?
+[redux](https://redux.js.org/)를 사용하다가 비동기 처리를 위해 [redux-thunk](https://github.com/reduxjs/redux-thunk)나 [redux-saga](https://redux-saga.js.org/)를 사용해보신 적이 있으신가요? 그중 redux-saga에 대해 알아보려고 합니다. redux-saga 라이브러리는 Side Effect를 어떻게 처리할까요?
 
 > The mental model is that a saga is like a separate thread in your application that's solely responsible for side effects. redux-saga is a redux middleware, which means this thread can be started, paused and cancelled from the main application with normal redux actions, it has access to the full redux application state and it can dispatch redux actions as well.  
 > _출처: [redux-saga 공식 문서](https://redux-saga.js.org/)_
@@ -18,9 +18,9 @@ thumbnail: './images/thumbnail.png'
 
 ## Saga
 
-Saga Pattern은 마이크로 서비스의 등장과 함께 각광받기 시작했습니다. Saga Pattern에 대해서는 다양한 해석이 존재하는데, [MSDN](https://docs.microsoft.com/en-us/previous-versions/msp-n-p/jj591569(v=pandp.10)?redirectedfrom=MSDN)에서는 Saga를 [CQRS](https://justhackem.wordpress.com/2016/09/17/what-is-cqrs/) Pattern의 Process Manager로 보고 있습니다. Saga의 기본 개념은 분산 transaction의 필요성을 제거하고, 각 transaction마다 [Compensating transaction(보상 transaction)](https://en.wikipedia.org/wiki/Compensating_transaction)을 정의하는 것입니다.
+Saga Pattern은 마이크로 서비스의 등장과 함께 주목받기 시작했습니다. Saga Pattern에 대해서는 다양한 해석이 존재하는데, [MSDN](https://docs.microsoft.com/en-us/previous-versions/msp-n-p/jj591569(v=pandp.10)?redirectedfrom=MSDN)에서는 Saga를 [CQRS](https://justhackem.wordpress.com/2016/09/17/what-is-cqrs/) Pattern의 Process Manager로 보고 있습니다. Saga의 기본 개념은 분산 transaction의 필요성을 제거하고, transaction마다 [Compensating transaction(보상 transaction)](https://en.wikipedia.org/wiki/Compensating_transaction)을 정의하는 것입니다.
 
-> Compensating transaction(보상 transaction)란 각 transaction에서 오류가 발생했을 때 수행되는 transaction을 말합니다.
+> Compensating transaction(보상 transaction)이란 각 transaction에서 오류가 발생했을 때 수행되는 transaction을 말합니다.
 
 예를 들어 아래와 같은 서비스가 있다고 가정해 봅시다.
 
@@ -30,12 +30,12 @@ Saga Pattern은 마이크로 서비스의 등장과 함께 각광받기 시작�
 
 ![sample_service_sequence.png](./images/sample_service_sequence.png)
 
-`Saga`는 각 trasaction이 각 서비스에서 데이터를 업데이트 하는 일련의 local transaction입니다. 첫 번째 transaction은 외부 요청에 의해 시작되고, 다음 단계의 transaction은 이전 작업이 완료된 후 시작됩니다.
+`Saga`는 각 trasaction이 각 서비스에서 데이터를 업데이트하는 일련의 local transaction입니다. 첫 번째 transaction은 외부 요청에 의해 시작되고, 다음 단계의 transaction은 이전 작업이 완료된 후 시작됩니다.
 
-Saga Transaction을 구현하는 방법에는 많은 방법이 있지만 대표적으로 두 가지 방법이 있습니다.
+Saga Transaction을 구현하는 방법에는 많은 방법이 있지만, 대표적으로 두 가지 방법이 있습니다.
 
-- **Events/Choreography:** 이벤트 흐름을 관리하는 매니저가 없고, 각 서비스가 event생성, 구독(listen)하며 동작 여부를 결정하는 형태 입니다.
-- **Command/Orchestration:** 이벤트 흐름을 관리하는 매니저가 있으며, 이 매니저는 비즈니스 로직을 집중화 하여 처리합니다.
+- **Events/Choreography:** 이벤트 흐름을 관리하는 매니저가 없고, 각 서비스가 event생성, 구독(listen)하며 동작 여부를 결정하는 형태입니다.
+- **Command/Orchestration:** 이벤트 흐름을 관리하는 매니저가 있으며, 이 매니저는 비즈니스 로직을 집중화하여 처리합니다.
 
 ### Events/Choreography
 
@@ -43,10 +43,10 @@ Saga Transaction을 구현하는 방법에는 많은 방법이 있지만 대표�
 
 위 예시에서 Event흐름은 다음과 같습니다.
 
-1. Order Service는 새로운 주문을 받고, 주문의 상태를 *pending* 으로 변경합니다. 그리고 **ORDER\_CREATED\_EVENT** 이벤트를 발생 시킵니다.
-2. Payment Service 는 **ORDER\_CREATED\_EVENT**이벤트가 발생하면, 고객에게 요금을  청구하고 **BILLED\_ORDER\_EVENT** 이벤트를 발생 시킵니다.
-3. Stock Service 는 **BILLED\_ORDER\_EVENT**이벤트가 발생하면, 재고를 업데이트 하고 주문한 상품을 준비시킨 다음, **ORDER\_PREPARED\_EVENT**이벤트를 발생 시킵니다.
-4. Delivery Service는 **ORDER\_PREPARED\_EVENT**이벤트가 발생하면, 제품을 발송시키고 **ORDER\_DELIVERED\_EVENT**이벤트를 발생 시킵니다.
+1. Order Service는 새로운 주문을 받고, 주문의 상태를 *pending* 으로 변경합니다. 그리고 **ORDER\_CREATED\_EVENT** 이벤트를 발생시킵니다.
+2. Payment Service 는 **ORDER\_CREATED\_EVENT**이벤트가 발생하면, 고객에게 요금을  청구하고 **BILLED\_ORDER\_EVENT** 이벤트를 발생시킵니다.
+3. Stock Service 는 **BILLED\_ORDER\_EVENT**이벤트가 발생하면, 재고를 업데이트하고 주문한 상품을 준비시킨 다음, **ORDER\_PREPARED\_EVENT**이벤트를 발생시킵니다.
+4. Delivery Service는 **ORDER\_PREPARED\_EVENT**이벤트가 발생하면, 제품을 발송시키고 **ORDER\_DELIVERED\_EVENT**이벤트를 발생시킵니다.
 5. 마지막으로, Order Service는 **ORDER\_DELIVERED\_EVENT**이벤트가 발생하면 주문의 상태를 *concluded*로 변경합니다.
 
 ### [Rollback] Events/Choreography
@@ -55,9 +55,9 @@ Saga Transaction을 구현하는 방법에는 많은 방법이 있지만 대표�
 
 `Event/Choreography`방법에서 Rollback은 다음과 같은 단계로 진행됩니다.
 
-1. Stock Service가 **PRODUCT\_OUT\_OF\_STOCK\_EVENT**를 발생 시킵니다.
-2. Order Service와 Payment Service는 두 가지 작업을 진행 합니다:
-    - Payment Service는 처리되고 있던 주문을 환불 처리 합니다.
+1. Stock Service가 **PRODUCT\_OUT\_OF\_STOCK\_EVENT**를 발생시킵니다.
+2. Order Service와 Payment Service는 두 가지 작업을 진행합니다:
+    - Payment Service는 처리되고 있던 주문을 환불 처리합니다.
     - Order Service는 주문 상태를 '실패'로 변경합니다.
 
 > Note. 각 transaction은 id를 가지고 있어, 모든 리스너가 발생한 transaction을 즉시 알 수 있습니다.
@@ -85,7 +85,7 @@ Saga Orchestrator를 구현하는 방법은, 각 command에 해당하는 상태�
 
 1. Stock Service는 OSO에게 **Out-Of-Stock** 응답을 전송합니다.
 2. OSO는 transaction이 실패했음을 인지하고, Rollback을  수행합니다.
-     - 이 경우애는, 실패전에  하나의 command(Payment Executed)가  성공 했으므로  Payment Service에게  **Refund Client** command를 전달합니다. 이후, state의 상태를 '실패'로 변경합니다.
+     - 이 경우에는, 실패전에  하나의 command(Payment Executed)가  성공했으므로  Payment Service에게  **Refund Client** command를 전달합니다. 이후, state의 상태를 '실패'로 변경합니다.
 
 ### Command/Orchestration 정리
 
@@ -93,8 +93,8 @@ Orchestration Saga는 다음과 같은 장점이 있습니다.
 
 - Orchestrator Saga만 다른 Service를 호출할 수 있는 단방향 구조이므로, Service간에  종속성이 생기는 것을 피할 수 있습니다.
 - command/reply 형태로 관리하기 때문에 Service의 복잡성이 줄어듭니다.
-  - Event/Choreography 패턴에서는 각 서비스가 필요한 이벤트를 파악해서 구독하고 있어야 하기 때문에, 복잡성이 높습니다.
-- 동일한 값을 변경하는 요청이 있을 경우 Orchestrator에서 요청의 우선순위를 판단하여 처리할 수 있습니다.
+  - Event/Choreography 패턴에서는 각 서비스가 필요한 이벤트를 파악해서 구독하고 있어야 해서 복잡성이 높습니다.
+- 동일한 값을 변경하는 요청이 있을 때 Orchestrator에서 요청의 우선순위를 판단하여 처리할 수 있습니다.
 
 그러나, 단점도 있습니다.
 
@@ -111,7 +111,7 @@ Orchestration Saga는 다음과 같은 장점이 있습니다.
 
 ## redux-saga
 
-앞서 살펴 본 `Saga`는 redux-saga와 어떻게 이어질까요? redux-saga는 발생하는 Action과 관리되는 State사이에서 흐름을 관리하는 **Orchestrator** 로서 존재합니다.
+앞서 살펴본 `Saga`는 redux-saga와 어떻게 이어질까요? redux-saga는 발생하는 Action과 관리되는 State사이에서 흐름을 관리하는 **Orchestrator** 로서 존재합니다.
 
 ```js{8,9}
 function sagaMiddleware({ getState, dispatch }) {
@@ -154,7 +154,7 @@ redux까지 포함하면, 다음과 같은 Flow로 표현할 수 있습니다.
 
 ![redux-saga-flow](./images/redux_saga_flow.png)
 
-`Saga`는 INCREMENT\_ASYNC action을 listen하고 delay와 put이라는 effect를 yield합니다. Saga는 Effect를 yield하고, **JavaScript 객체를 반환하게하게 됩니다.**
+`Saga`는 INCREMENT\_ASYNC action을 listen하고 delay와 put이라는 effect를 yield합니다. Saga는 Effect를 yield하고, **JavaScript 객체를 반환합니다.**
 
 Middleware는 이 Effect를 받아서 처리합니다. 위 예시에서는 첫 번째 yield delay가 중단되고, 1초가 지날 때까지 대기하게 됩니다.
 
@@ -198,7 +198,7 @@ redux-saga의 effect들은 마치 [액션 생성 함수(action creator function)
 
 ### Cancel
 
-같은 이벤트가 연속적으로 올 때, Saga는 Event를 어떻게 Orchestration할 수 있을까요? redux-saga에서는 [takeLatest](https://redux-saga.js.org/docs/api/#takelatestpattern-saga-args) api를 제공합니다.
+같은 이벤트가 연속적으로 올 때, Saga는 Event를 어떻게 Orchestration할 수 있을까요? redux-saga에서는 [takeLatest](https://redux-saga.js.org/docs/api/#takelatestpattern-saga-args) API를 제공합니다.
 
 ```js{9,12,17}
 export default function takeLatest(patternOrChannel, worker, ...args) {
@@ -227,7 +227,7 @@ export default function takeLatest(patternOrChannel, worker, ...args) {
 }
 ```
 
-`q1`을 시작으로, 동일한 Event가 발생하면 이전 Event를  Cancel(_yCancel_)하고 nextState에 fork로 전달합니다. Orchestrator Pattern에서 command를 통해 Rollback을 구현 했던 것처럼, Saga에서는 Cancel을 통해 effect를 관리하고 있습니다.
+`q1`을 시작으로, 동일한 Event가 발생하면 이전 Event를  Cancel(_yCancel_)하고 nextState에 fork로 전달합니다. Orchestrator Pattern에서 command를 통해 Rollback을 구현했던 것처럼, Saga에서는 Cancel을 통해 effect를 관리하고 있습니다.
 
 ### Test
 
@@ -282,11 +282,11 @@ describe('HelloWorldsaga', () => {
 
 - **Step 0.**  `fetchHelloWorld`라는 saga를 `gen`으로 정의했습니다.
 - **Step 1.** `select(helloSelector.text)` effect와 gen의 next 단계가 일치하는 지 검사합니다.
-- **Step 2.**  다음  yield단계는 `call`을 수행하는 부분입니다. call에는 `fn`과 `args`를 받도록 되어 있으니, `gen.next(call단계)`에 testRequest값을 함께 넘겨줍니다. 그리고 이 결과가 실제로 `call(getHello, testRequest)`와 같은 지 비교합니다.
+- **Step 2.**  다음  yield단계는 `call`을 수행하는 부분입니다. call에는 `fn`과 `args`를 받도록 되어 있으니, `gen.next(call단계)`에 testRequest값을 함께 넘겨줍니다. 그리고 이 결과가 실제로 `call(getHello, testRequest)`와 같은지 비교합니다.
 - **Step 3.** call로 수행된 결과를 success action으로 dispatch하는 부분입니다. 이 부분 역시 미리 mocking해둔 testResult를 `gen.next`의 인자로 넘겨줍니다.
 - **Step 4.** `fetchHelloWorld` saga에서 더 이상의 yield가 없으므로, 이 단계에서 next()의  값은 done입니다.
 
-> 더 자세한 내용은 [redux-saga:testing](https://redux-saga.js.org/docs/advanced/Testing.html)과 [Jbee님의 Store와 비즈니스 로직 테스트](https://jbee.io/react/testing-3-react-testing/)글을 참고 해주세요.
+> 더 자세한 내용은 [redux-saga:testing](https://redux-saga.js.org/docs/advanced/Testing.html)과 [Jbee님의 Store와 비즈니스 로직 테스트](https://jbee.io/react/testing-3-react-testing/)글을 참고해 주세요.
 
 ## 정리
 
