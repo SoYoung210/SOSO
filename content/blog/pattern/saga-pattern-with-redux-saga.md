@@ -7,14 +7,14 @@ thumbnail: './images/thumbnail.png'
 
 ![image-thumbnail](./images/thumbnail.png)
 
-[redux](https://redux.js.org/)를 사용하다가 비동기 처리를 위해 [redux-thunk](https://github.com/reduxjs/redux-thunk)나 [redux-saga](https://redux-saga.js.org/)를 사용해보신 적이 있으신가요? 그중 redux-saga에 대해 알아보려고 합니다. redux-saga 라이브러리는 Side Effect를 어떻게 처리할까요?
+[redux](https://redux.js.org/) 비동기 처리를 위해 [redux-saga](https://redux-saga.js.org/)를 사용해보신 적이 있으신가요?
 
-> The mental model is that a saga is like a separate thread in your application that's solely responsible for side effects. redux-saga is a redux middleware, which means this thread can be started, paused and cancelled from the main application with normal redux actions, it has access to the full redux application state and it can dispatch redux actions as well.  
+> "The mental model is that a saga is like a separate thread in your application that's solely responsible for side effects. redux-saga is a redux middleware, which means this thread can be started, paused and cancelled from the main application with normal redux actions, it has access to the full redux application state and it can dispatch redux actions as well."  
 > _출처: [redux-saga 공식 문서](https://redux-saga.js.org/)_
 
-공식문서에 따르면, redux-saga는 Side Effect를 별도의 스레드로 분리하여 처리합니다. 그리고 이 스레드를 Redux의 Action을 통해 시작, 중지, 취소시킬 수 있습니다. 또한 Redux에서 관리되는 store에 접근할 수 있고, Action을 dispatch 할 수 있습니다.
+"redux-saga의 mental model은 saga가 Effect를 전적으로 처리한다는 것입니다. Redux의 Action을 통해 작업을 시작, 중지, 취소시키거나 Redux에서 관리되는 store에 접근할 수 있고, Action을 dispatch 할 수 있습니다."
 
-이 말을 완전히 이해하려면, redux-saga의 mental model인 [Saga Pattern](https://blog.couchbase.com/saga-pattern-implement-business-transactions-using-microservices-part/)에 대한 이해가 필요합니다.
+이 말을 완전히 이해하려면 [Saga Pattern](https://blog.couchbase.com/saga-pattern-implement-business-transactions-using-microservices-part/)에 대한 이해가 필요합니다.
 
 ## Saga
 
@@ -30,11 +30,11 @@ Saga Pattern은 마이크로 서비스의 등장과 함께 주목받기 시작�
 
 ![sample_service_sequence.png](./images/sample_service_sequence.png)
 
-`Saga`는 각 trasaction이 각 서비스에서 데이터를 업데이트하는 일련의 local transaction입니다. 첫 번째 transaction은 외부 요청에 의해 시작되고, 다음 단계의 transaction은 이전 작업이 완료된 후 시작됩니다.
+`Saga`는 transaction이 각 서비스에서 데이터를 업데이트하는 일련의 local transaction입니다. 첫 번째 transaction은 외부 요청에 의해 시작되고, 다음 단계의 transaction은 이전 작업이 완료된 후 시작됩니다.
 
-Saga Transaction을 구현하는 방법에는 많은 방법이 있지만, 대표적으로 두 가지 방법이 있습니다.
+Saga Transaction을 구현하는 방법에는 대표적으로 두 가지 방법이 있습니다.
 
-- **Events/Choreography:** 이벤트 흐름을 관리하는 매니저가 없고, 각 서비스가 event생성, 구독(listen)하며 동작 여부를 결정하는 형태입니다.
+- **Events/Choreography:** 이벤트 흐름을 관리하는 매니저가 없고 각 서비스가 event생성, 구독(listen)하며 동작 여부를 결정하는 형태입니다.
 - **Command/Orchestration:** 이벤트 흐름을 관리하는 매니저가 있으며, 이 매니저는 비즈니스 로직을 집중화하여 처리합니다.
 
 ### Events/Choreography
@@ -77,7 +77,7 @@ Saga Transaction을 구현하는 방법에는 많은 방법이 있지만, 대표
 
 OSO는 **주문을 처리하는 데에 필요한 모든 transaction을 관리합니다.** 문제가 발생하면 각 Service에게 command를 전달해서 Rollback을 수행하게 합니다.
 
-Saga Orchestrator를 구현하는 방법은, 각 command에 해당하는 상태를 관리하는 `State Machine`으로 구현하는 것입니다.
+Saga Orchestrator는 command와 그 command에 해당하는 상태를 관리하는 `State Machine`으로 구현합니다.
 
 ### [Rollback] Command/Orchestration
 
