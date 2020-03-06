@@ -101,7 +101,7 @@ Orchestration Saga는 다음과 같은 장점이 있습니다.
 - Orchestrator에서 너무 많은 로직이 처리됩니다. Orchestrator가 비대해지고 관리가 어려워질 수 있습니다.
 - Event/Choreography 모델과 다르게 추가로 Orchestrator 서비스를 관리해야 하므로, 인프라 복잡성이 증가합니다.
 
-### Events/Choreography VS Command/Orchestration
+### Command/Orchestration VS Events/Choreography
 
 `Command/Orchestration`구조는 서비스 간에 많은 이벤트나 context를 공유하는 경우, Event Routing이 복잡할 경우 용이합니다.
 
@@ -156,7 +156,7 @@ redux까지 포함하면, 다음과 같은 Flow로 표현할 수 있습니다.
 
 `Saga`는 INCREMENT\_ASYNC action을 listen하고 delay와 put이라는 effect를 yield합니다. Saga는 Effect를 yield하고, **JavaScript 객체를 반환하게하게 됩니다.**
 
-Middleware는 이 Effect를 받아서 처리합니다. 위 예시에서는 첫 번째 yield delay가 중단되고, 1초가 지날때  까지 대기하게 됩니다.
+Middleware는 이 Effect를 받아서 처리합니다. 위 예시에서는 첫 번째 yield delay가 중단되고, 1초가 지날 때까지 대기하게 됩니다.
 
 > **Note.** redux-saga의 Effect는 blocking effect와 non-blocking effect로 구분됩니다.
 Blocking Effect는 처리가 완료될 때까지 기다리며 Non-blocking Effect는 완료를 기다리지 않고 진행합니다.
@@ -205,7 +205,7 @@ export default function takeLatest(patternOrChannel, worker, ...args) {
   const yTake = { done: false, value: take(patternOrChannel) }
   const yFork = ac => ({ done: false, value: fork(worker, ...args, ac) })
   const yCancel = task => ({ done: false, value: cancel(task) })
-	// Set action and task
+ // Set action and task
 
   return fsmIterator(
   {
