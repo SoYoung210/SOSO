@@ -10,15 +10,15 @@
     &::before {
       position: absolute;
       z-index: 999;
-      background: url('../../../content/assets/hat.png');
+      background: url('../../../content/assets/hat2.png');
       display: inline-block;
-      width: 39px;
+      width: 55px;
       background-size: contain;
-      height: 39px;
+      height: 55px;
       content: "";
-      transform: rotate(-27deg);
-      top: -6px;
-      left: -11px;
+      transform: rotate(-34deg);
+      top: -9px;
+      left: -16px;
     }
   }
 

@@ -5,9 +5,9 @@ import * as Elements from '../components/elements'
 import { Layout } from '../layout'
 import { Head } from '../components/head'
 import { PostTitle } from '../components/post-title'
+import { PostDate } from '../components/post-date'
 import { PostContainer } from '../components/post-container'
 import { SocialShare } from '../components/social-share'
-import { SponsorButton } from '../components/sponsor-button'
 import { Bio } from '../components/bio'
 import { PostNavigator } from '../components/post-navigator'
 import { Disqus } from '../components/disqus'
@@ -26,20 +26,25 @@ export default ({ data, pageContext, location }) => {
   const metaData = data.site.siteMetadata
   const { title, comment, siteUrl, author, sponsor } = metaData
   const { disqusShortName, utterances } = comment
+  const { title: postTitle, date, thumbnail } = post.frontmatter
+  const thumbnailSrc = thumbnail
+    ? `${siteUrl}${thumbnail.childImageSharp.fixed.src}`
+    : undefined
 
   return (
     <Layout location={location} title={title}>
       <Head
-        title={post.frontmatter.title}
+        title={postTitle}
         description={post.excerpt}
-        thumbnail={post.frontmatter.thumbnail.childImageSharp.fixed.src}
+        thumbnail={thumbnailSrc}
       />
-      <PostTitle title={post.frontmatter.title} />
+      <PostTitle title={postTitle} />
+      <PostDate date={date} />
       <PostContainer html={post.html} />
-      <SocialShare title={post.frontmatter.title} author={author} />
-      {!!sponsor.buyMeACoffeeId && (
+      <SocialShare title={title} author={author} />
+      {/* {!!sponsor.buyMeACoffeeId && (
         <SponsorButton sponsorId={sponsor.buyMeACoffeeId} />
-      )}
+      )} */}
       <Elements.Hr />
       <Bio />
       <PostNavigator pageContext={pageContext} />

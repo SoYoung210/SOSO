@@ -7,7 +7,20 @@
 }
 
 .link {
+  position: relative;
   box-shadow: none;
   text-decoration: none;
   color: inherit;
+
+  &:after {
+    position: absolute;
+    right: -65px;
+    top: 7px;
+    display: inline-block;
+    background: url('../../../content/assets/spring-icon.png');
+    background-size: contain;
+    width: 55px;
+    height: 49px;
+    content: "";
+  }
 }
