@@ -24,22 +24,27 @@ export default ({ data, pageContext, location }) => {
 
   const post = data.markdownRemark
   const metaData = data.site.siteMetadata
-  const { title, comment, siteUrl, author, sponsor } = metaData
+  const { title, comment, siteUrl, author } = metaData
   const { disqusShortName, utterances } = comment
+  const { title: postTitle, date, thumbnail } = post.frontmatter
+  const thumbnailSrc = thumbnail
+    ? `${siteUrl}${thumbnail.childImageSharp.fixed.src}`
+    : undefined
 
   return (
     <Layout location={location} title={title}>
       <Head
-        title={post.frontmatter.title}
+        title={postTitle}
         description={post.excerpt}
-        thumbnail={post.frontmatter.thumbnail.childImageSharp.fixed.src}
+        thumbnail={thumbnailSrc}
       />
-      <PostTitle title={post.frontmatter.title} />
+      <PostTitle title={postTitle} />
+      <PostDate date={date} />
       <PostContainer html={post.html} />
-      <SocialShare title={post.frontmatter.title} author={author} />
-      {!!sponsor.buyMeACoffeeId && (
+      <SocialShare title={postTitle} author={author} />
+      {/* {!!sponsor.buyMeACoffeeId && (
         <SponsorButton sponsorId={sponsor.buyMeACoffeeId} />
-      )}
+      )} */}
       <Elements.Hr />
       <Bio />
       <PostNavigator pageContext={pageContext} />

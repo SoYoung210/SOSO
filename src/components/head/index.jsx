@@ -35,7 +35,7 @@ export function Head({
               },
               {
                 property: `og:image`,
-                content: `${data.site.siteMetadata.siteUrl}${thumbnail}`
+                content: thumbnailSrc
               },
               {
                 property: `og:description`,
