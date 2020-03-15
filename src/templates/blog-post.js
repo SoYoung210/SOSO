@@ -5,9 +5,9 @@ import * as Elements from '../components/elements'
 import { Layout } from '../layout'
 import { Head } from '../components/head'
 import { PostTitle } from '../components/post-title'
+import { PostDate } from '../components/post-date'
 import { PostContainer } from '../components/post-container'
 import { SocialShare } from '../components/social-share'
-import { SponsorButton } from '../components/sponsor-button'
 import { Bio } from '../components/bio'
 import { PostNavigator } from '../components/post-navigator'
 import { Disqus } from '../components/disqus'
@@ -24,7 +24,7 @@ export default ({ data, pageContext, location }) => {
 
   const post = data.markdownRemark
   const metaData = data.site.siteMetadata
-  const { title, comment, siteUrl, author } = metaData
+  const { title, comment, siteUrl, author, sponsor } = metaData
   const { disqusShortName, utterances } = comment
   const { title: postTitle, date, thumbnail } = post.frontmatter
   const thumbnailSrc = thumbnail
@@ -41,7 +41,7 @@ export default ({ data, pageContext, location }) => {
       <PostTitle title={postTitle} />
       <PostDate date={date} />
       <PostContainer html={post.html} />
-      <SocialShare title={postTitle} author={author} />
+      <SocialShare title={title} author={author} />
       {/* {!!sponsor.buyMeACoffeeId && (
         <SponsorButton sponsorId={sponsor.buyMeACoffeeId} />
       )} */}
