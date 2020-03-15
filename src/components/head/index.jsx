@@ -35,7 +35,7 @@ export function Head({
               },
               {
                 property: `og:image`,
-                content: thumbnailSrc
+                content: thumbnail
               },
               {
                 property: `og:description`,
