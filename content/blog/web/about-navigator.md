@@ -1,5 +1,5 @@
 ---
-title: '알아두면 쓸데 있는 Navigator지식'
+title: '알아두면 쓸모 있는 Navigator지식'
 date: 2020-03-27 08:00:09
 category: web
 thumbnail: './images/navigator/thumbnail.png'
