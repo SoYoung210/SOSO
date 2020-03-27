@@ -245,7 +245,7 @@ decodingInfo는 별도의 기능 활성화가 필요 없습니다. Chrome80 기�
 
 디바이스에서 동시에 터치할 수 있는 지점이 몇 개인지 반환합니다. [TouchEvent](https://developer.mozilla.org/en-US/docs/Web/API/TouchEvent)를 기준으로 하기 때문에, PC에서 크롬을 데스크탑 모드로 설정 했을 경우에는 0, 모바일 모드로 설정한 경우는 1을 반환합니다.
 
-iPhoneX에서는 5를 반환합니다. — codeSandbox넣어야지.
+[CodePen](https://codepen.io/soyoung210/pen/GRJPoaV)에서 테스트 해보실 수 있습니다.
 
 ```js
 // PC - Desktop모드
