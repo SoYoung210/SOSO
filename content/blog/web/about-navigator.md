@@ -1,5 +1,5 @@
 ---
-title: '되돌아보는 index.html - Part 1'
+title: '알아두면 쓸데 있는 Navigator지식'
 date: 2020-03-27 08:00:09
 category: web
 thumbnail: './images/navigator/thumbnail.png'
@@ -44,12 +44,12 @@ NetworkInformation: {
 ```
 
 - **onchange:** connection 객체의 change 이벤트 핸들러 입니다. 다음과 같이 사용할 수 있습니다.
+
 ```js
 // Browser Suport
-const connection =
-	navigator.connection
-	|| navigator.mozConnection
-  || navigator.webkitConnection;
+const connection = navigator.connection
+|| navigator.mozConnection
+|| navigator.webkitConnection;
 
 function updateConnectionStatus() {
   alert("Connection bandwidth: " + connection.effectiveType + " MB/s");
@@ -57,9 +57,9 @@ function updateConnectionStatus() {
 
 connection.addEventListener("change", updateConnectionStatus);
 updateConnectionStatus();
-
 ```
-!['./images/navigator/navigator1.gif']('./images/navigator/navigator1.gif')
+
+!['./images/navigator/navigator1.gif'](./images/navigator/navigator1.gif)
 
 - ectiveType: 연결된 네트워크 상황에 따라 'slow-2g', '2g', '3g', '4g'의 값 중 하나를 반환합니다. 가장 최근 네트워크 통신에서의 round-trip 값과 downlink값을 조합하여 판단합니다.
 - rtt: round-trip추정치 입니다. 25ms 배수 단위에서 반올림 하여 표현합니다.
@@ -68,13 +68,13 @@ updateConnectionStatus();
 
 아래 사진은 4g network에 연결되어 있다가 Chrome Network탭에서 'Fast 3G'로 적용한 뒤의 사진입니다. 실제로 effectiveType과 downlink값이 변한 것을 확인 할 수 있습니다. 
 
-!['./images/navigator/navigator9.png']('./images/navigator/navigator9.png')
+!['./images/navigator/navigator9.png'](./images/navigator/navigator9.png)
 
 ### 브라우저 지원 범위
 
 이 기능은 현재 실험 단계에 있어, 브라우저 지원 범위가 제한적 입니다.
 
-!['./images/navigator/navigator2.png']('./images/navigator/navigator2.png')
+!['./images/navigator/navigator2.png'](./images/navigator/navigator2.png)
 
 - [Can I use](https://caniuse.com/#search=navigator.connection)
 
@@ -83,6 +83,7 @@ updateConnectionStatus();
 사용자의 위치 정보에 대한 속성입니다. (단, 설정에서 위치 정보에 대한 접근 권한을 허용했을 경우)
 
 - [getCurrentPosition](https://developer.mozilla.org/ko/docs/Web/API/Geolocation/getCurrentPosition): 다음과 같이 현재 위치를 가져올 수 있습니다.
+
 ```js
 navigator.geolocation.getCurrentPosition(function(position) {
   console.log(position);
@@ -102,7 +103,9 @@ coords: {
 timestamp: 1500000000
 */
 ```
+
 - [watchPosition](https://developer.mozilla.org/ko/docs/Web/API/Geolocation/watchPosition): 디바이스의 위치가 바뀔 때마다 callback함수가 실행됩니다. 다음과 같이 사용할 수 있습니다.
+
 ```js
 function success(pos) {
 	console.log(pos.coords.latitude, pos.coords.longitude)
@@ -157,7 +160,7 @@ navigator.getBattery().then(battery => {
 
 `getBattery` API는 사용하지 않을 것을 권고하고 있습니다. 개인정보 보호 정책으로 사용하지 않는 방향으로 결정되었습니다.
 
-!['./images/navigator/navigator3.png']('./images/navigator/navigator3.png')
+!['./images/navigator/navigator3.png'](./images/navigator/navigator3.png)
 
 ## ✅ cookieEnabled
 
@@ -169,7 +172,7 @@ navigator.getBattery().then(battery => {
 
 브라우저에 설정 된 언어 값을 반환합니다.
 
-!['./images/navigator/navigator4.png']('./images/navigator/navigator4.png')
+!['./images/navigator/navigator4.png'](./images/navigator/navigator4.png)
 
 크롬의 경우 '설정 > 언어'에서 제일 상단에 설정된 언어 기준이며, '한국어'로 설정된 경우 navigator.language값은 `ko` 이며, '영어(미국)'로 설정된 경우에는 `en-US` 입니다.
 
@@ -234,7 +237,7 @@ decodingInfo는 별도의 기능 활성화가 필요 없습니다. Chrome80 기�
 
 이 기능은 아직 실험 단계이므로, 일부 브라우저에서만 지원됩니다.
 
-!['./images/navigator/navigator5.png']('./images/navigator/navigator5.png')
+!['./images/navigator/navigator5.png'](./images/navigator/navigator5.png)
 
 - [Can I use](https://caniuse.com/#search=mediaCapabilities)
 
@@ -259,7 +262,7 @@ navigator.maxTouchPoints // result: 5
 
 Safari에서 제약이 있습니다.
 
-!['./images/navigator/navigator6.png']('./images/navigator/navigator6.png')
+!['./images/navigator/navigator6.png'](./images/navigator/navigator6.png)
 
 - [Can I use](https://caniuse.com/#feat=mdn-api_navigator_maxtouchpoints)
 
@@ -279,7 +282,7 @@ navigator.onLine // false
 
 대부분의 브라우저에서 사용 가능하지만, IE8에서는 제약이 있습니다.
 
-!['./images/navigator/navigator7.png']('./images/navigator/navigator7.png')
+!['./images/navigator/navigator7.png'](./images/navigator/navigator7.png)
 
 > [Can I use](https://caniuse.com/#search=onLine)
 
@@ -314,7 +317,7 @@ navigator.permissions.query({name: 'geolocation'})
 
 Edge, Firefox, Chrome, Opera 등에서만 지원하는 API입니다.
 
-!['./images/navigator/navigator8.png']('./images/navigator/navigator8.png')
+!['./images/navigator/navigator8.png'](./images/navigator/navigator8.png)
 
 - [Can I use](https://caniuse.com/#feat=permissions-api)
 
