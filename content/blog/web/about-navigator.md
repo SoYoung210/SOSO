@@ -414,7 +414,6 @@ usageDetails: {
   - [chrome://site-engagement/](//site-engagement/) 에서 점수가 높음
   - 홈화면에 추가되어 있음
   - 푸시알람이 활성화 되어 있음
-- **persisted**
 
 > [Can I use](https://caniuse.com/#feat=mdn-api_storage)
 
@@ -485,8 +484,13 @@ usageDetails: {
 
 UA는 [Client Hints](https://wicg.github.io/ua-client-hints/)라는 새로운 스펙으로 대체됩니다. `Accept-CH`라는 request header를 명시해주거나 `meta tag` 를 사용해야 합니다.
 
-- request header: Accept-CH: UA-Full-Version, UA-Platform, UA-Arch
-- meta tag: <meta http-equiv="Accept-CH" content="DPR, Width, Viewport-Width, Downlink">
+- **request header:** Accept-CH: UA-Full-Version, UA-Platform, UA-Arch
+- **meta tag:**
+
+```html
+<meta http-equiv="Accept-CH" content="DPR, Width, Viewport-Width, Downlink">
+```
+
 - Accetp-CH의 유효시간을 설정해주는 Accept-CH-Lifetime 옵션도 있습니다.
 
 정보를 요청하는 방식은 request header혹은 meta tag를 통해 표현하며 comma로 구분합니다. 브라우저가 제공할 수 있는 정보의 목록은 다음과 같습니다.
