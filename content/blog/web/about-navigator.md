@@ -7,13 +7,13 @@ thumbnail: './images/navigator/thumbnail.png'
 
 ![image-thumbnail](./images/navigator/thumbnail.png)
 
-프런트엔드 개발을 하다보면  `navigator` 객체에 대한 사용을 빼놓을 수 없습니다. 이 포스팅에서는 navigator객체의 여러가지 속성들에 대해 살펴봅니다.
+프런트엔드 개발에서 `navigator` 객체에 대한 사용을 빼놓을 수 없습니다. 이 포스팅에서는 navigator객체의 여러가지 속성들에 대해 살펴봅니다.
 
-`navigator` 객체는 대표적인 User Agent뿐만 아니라 사용자의 여러가지 상태에 대한 정보를 담고 있습니다. navigator의 여러가지 속성은 읽기 전용으로 접근할 수 있습니다.
+`navigator` 객체는 대표적인 User Agent뿐만 아니라 사용자의 상태에 관한 여러가지 정보를 담고 있습니다. navigator의 속성들은 읽기 전용으로 접근할 수 있습니다.
 
 ## [react-adaptive-hooks](https://github.com/GoogleChromeLabs/react-adaptive-hooks)
 
-ChromeLabs에서 제작한 사용자 디바이스 및 네트워크 환경에 대한 정보를 담은 hooks입니다. 이 hooks의 코드는 브라우저에서 지원하는 navigator객체의 여러가지 속성을 이용해서 제작 되었습니다.
+ChromeLabs에서 제작한 사용자 디바이스 및 네트워크 환경에 대한 정보를 담은 hooks입니다. 이 hooks 코드는 navigator객체의 여러가지 속성을 이용해서 제작 되었습니다.
 
 이 글에서는 react-adaptive-hooks에서 사용하는 속성들을 포함하여 '알아두면 쓸모 있는 navigator 속성'에는 어떤 것들이 있는지 톺아봅니다.
 
@@ -25,9 +25,9 @@ ChromeLabs에서 제작한 사용자 디바이스 및 네트워크 환경에 대
 - ⚠️: 몇 몇개의 브라우저에서 지원하지 않음
 - ✅: 대부분의 브라우저에서 지원하거나, 100% 지원
 
-## ⚠️ connection
+## [⚠️ connection](https://developer.mozilla.org/en-US/docs/Web/API/Navigator/connection)
 
-사용자가 사용하고 있는 네트워크 환경에 대한 정보를 제공하며, 브라우저에서 출력 시 아래와 같은 정보들을 확인할 수 있습니다.
+사용자가 사용하고 있는 네트워크 환경에 대한 정보를 제공하며, 아래와 같은 정보들을 확인할 수 있습니다.
 
 ```js
 navigator.connection
@@ -60,12 +60,12 @@ updateConnectionStatus();
 
 !['./images/navigator/navigator1.gif'](./images/navigator/navigator1.gif)
 
-- **effectiveType:** 연결된 네트워크 상황에 따라 'slow-2g', '2g', '3g', '4g'의 값 중 하나를 반환합니다. 가장 최근 네트워크 통신에서의 round-trip 값과 downlink값을 조합하여 판단합니다.
+- **effectiveType:** 연결된 네트워크 상황에 따라 slow-2g, 2g, 3g, 4g 값 중 하나를 반환합니다. 가장 최근 네트워크 통신에서의 round-trip 값과 downlink값을 조합하여 판단합니다.
 - **rtt:** round-trip추정치 입니다. 25ms 배수 단위에서 반올림 하여 표현합니다.
 - **downlink:** 대역폭 추정치 입니다. 초당 25KB의 배수로 반올림 후  MB(Mega Bytes)로 변환합니다.
 - **saveData:** 사용자가 '배터리 절약 모드'를 사용하고 있는지 여부입니다.
 
-아래 사진은 4g network에 연결되어 있다가 Chrome Network탭에서 'Fast 3G'로 적용한 뒤의 사진입니다. 실제로 effectiveType과 downlink값이 변한 것을 확인 할 수 있습니다.
+아래 사진은 4g network에 연결되어 있다가 Chrome Network탭에서 Fast 3G로 적용한 뒤의 사진입니다. 실제로 effectiveType과 downlink값이 변한 것을 확인 할 수 있습니다.
 
 !['./images/navigator/navigator9.png'](./images/navigator/navigator9.png)
 
@@ -77,11 +77,11 @@ updateConnectionStatus();
 
 - [Can I use](https://caniuse.com/#search=navigator.connection)
 
-## ✅ geolocation
+## ✅ [geolocation](https://developer.mozilla.org/en-US/docs/Web/API/Geolocation)
 
-사용자의 위치 정보에 대한 속성입니다. (단, 설정에서 위치 정보에 대한 접근 권한을 허용했을 경우)
+사용자의 위치 정보에 대한 속성입니다. 사용자가 디바이스 설정에서 위치 정보에 대한 접근 권한을 허용한 경우에만 사용 가능합니다.
 
-- [getCurrentPosition](https://developer.mozilla.org/ko/docs/Web/API/Geolocation/getCurrentPosition): 다음과 같이 현재 위치를 가져올 수 있습니다.
+- [getCurrentPosition](https://developer.mozilla.org/ko/docs/Web/API/Geolocation/getCurrentPosition): 현재 위치 정보를 가져올 수 있습니다.
 
 ```js
 navigator.geolocation.getCurrentPosition(function(position) {
@@ -119,9 +119,9 @@ navigator.geolocation.watchPosition(success, error);
 
 > [Can I Use](https://caniuse.com/#search=geolocation)
 
-## 🚨 getBattery()
+## 🚨 [getBattery()](https://developer.mozilla.org/en-US/docs/Web/API/Navigator/getBattery)
 
-현재 사용자의 배터리에 대한 정보를 표현합니다. 이 함수는 Promise를 반환하며, 아래와 같이 어떤 정보를 담고 있는지 파악해 볼 수 있습니다.
+디바이스 배터리에 대한 정보입니다. 이 함수는 Promise를 반환하며, 아래와 같이 사용할 수 있습니다.
 
 ```js
 navigator.getBattery().then(res => console.log(res))
@@ -152,35 +152,35 @@ navigator.getBattery().then(battery => {
 })
 ```
 
-배터리 충전 상태가 변할 때 마다 console log 함수가 실행됩니다.
+배터리 충전 상태가 변할 때 마다 callback함수가 실행됩니다.
 
-- **ondischargingtimechange, ondischargingtimechange, onlevelchange:** 각각 [chargingtimechange](https://developer.mozilla.org/en-US/docs/Web/API/BatteryManager/onchargingtimechange), [dischargingtimechange](https://developer.mozilla.org/en-US/docs/Archive/Events/dischargingtimechange), [levelchange](https://developer.mozilla.org/en-US/docs/Archive/Events/levelchange)의 이벤트 핸들러입니다. 하지만, 문서에서 위 이벤트들이 모두 언제든 deprecated될 수 있다고 적혀 있기 때문에 사용하지 않습니다.
+- **ondischargingtimechange, ondischargingtimechange, onlevelchange:** 각각 [chargingtimechange](https://developer.mozilla.org/en-US/docs/Web/API/BatteryManager/onchargingtimechange), [dischargingtimechange](https://developer.mozilla.org/en-US/docs/Archive/Events/dischargingtimechange), [levelchange](https://developer.mozilla.org/en-US/docs/Archive/Events/levelchange)의 이벤트 핸들러입니다.
 
 ### DEPRECATED
 
-`getBattery` API는 사용하지 않을 것을 권고하고 있습니다. 개인정보 보호 정책으로 사용하지 않는 방향으로 결정되었습니다.
+`getBattery` API는 DEPRECATED되었으며, 최신 버전 브라우저에서 동작하지 않을 수 있습니다. 개인정보 보호 정책으로 사용하지 않는 방향으로 결정되었습니다.
 
 !['./images/navigator/navigator3.png'](./images/navigator/navigator3.png)
 
-## ✅ cookieEnabled
+## ✅ [cookieEnabled](https://developer.mozilla.org/en-US/docs/Web/API/Navigator/cookieEnabled)
 
-브라우저에서 쿠키가 사용 가능한지 여부를 나타냅니다. 사용자가 브라우저 환경에서 '쿠키 차단'을 설정 했을 경우  이 값은 false입니다.
+쿠키 사용 가능 여부를 나타냅니다. 사용자가 브라우저 환경에서 '쿠키 차단'을 설정 했을 경우  이 값은 false입니다.
 
-- [Can I use](cookieEnabled)
+> [Can I use](cookieEnabled)
 
-## ✅ language
+## ✅ [language](https://developer.mozilla.org/en-US/docs/Web/API/NavigatorLanguage/language)
 
-브라우저에 설정 된 언어 값을 반환합니다.
+디바이스에 설정 된 언어 정보를 반환합니다.
 
 !['./images/navigator/navigator4.png'](./images/navigator/navigator4.png)
 
 크롬의 경우 '설정 > 언어'에서 제일 상단에 설정된 언어 기준이며, '한국어'로 설정된 경우 navigator.language값은 `ko` 이며, '영어(미국)'로 설정된 경우에는 `en-US` 입니다.
 
-- [Can I use](https://caniuse.com/#search=geolocation)
+> [Can I use](https://caniuse.com/#search=geolocation)
 
-## ⚠️ mediaCapabilities
+## [⚠️ mediaCapabilities](https://developer.mozilla.org/en-US/docs/Web/API/Navigator/mediaCapabilities)
 
-주어진 포맷에 대해 브라우저의 인코딩, 디코딩 가능 여부에 관한 정보를 반환합니다.
+주어진 포맷에 대해 디바이스의 인코딩, 디코딩 가능 여부에 관한 정보를 반환합니다.
 
 ### **encodingInfo**
 
@@ -208,7 +208,7 @@ navigator.mediaCapabilities.encodingInfo(mediaConfig).then(result => {
 });
 ```
 
-기능을 활성화 한 후 위 코드를 실행하면 "This configuration is supported, not smooth, and not power efficient." 결과를 얻을 수 있습니다.
+기능을 활성화 한 후 위 코드를 실행하면 **"This configuration is supported, not smooth, and not power efficient."** 결과를 확인할 수 있습니다.
 
 > 활성화 하지 않은 경우에는, `Uncaught TypeError` 가 발생합니다.
 
@@ -231,7 +231,7 @@ navigator.mediaCapabilities.decodingInfo({
 });
 ```
 
-decodingInfo는 별도의 기능 활성화가 필요 없습니다. Chrome80 기준으로 위 코드의 실행 결과는 "This configuration is supported, smooth, and power efficient."입니다.
+decodingInfo는 별도의 기능 활성화가 필요 없습니다. Chrome80 기준으로 위 코드의 실행 결과는 **"This configuration is supported, smooth, and power efficient."** 입니다.
 
 ### 브라우저 지원 범위
 
@@ -239,9 +239,9 @@ decodingInfo는 별도의 기능 활성화가 필요 없습니다. Chrome80 기�
 
 !['./images/navigator/navigator5.png'](./images/navigator/navigator5.png)
 
-- [Can I use](https://caniuse.com/#search=mediaCapabilities)
+> [Can I use](https://caniuse.com/#search=mediaCapabilities)
 
-## ⚠️ maxTouchPoints
+## [⚠️ maxTouchPoints](https://developer.mozilla.org/en-US/docs/Web/API/Navigator/maxTouchPoints)
 
 디바이스에서 동시에 터치할 수 있는 지점이 몇 개인지 반환합니다. [TouchEvent](https://developer.mozilla.org/en-US/docs/Web/API/TouchEvent)를 기준으로 하기 때문에, PC에서 크롬을 데스크탑 모드로 설정 했을 경우에는 0, 모바일 모드로 설정한 경우는 1을 반환합니다.
 
@@ -260,15 +260,14 @@ navigator.maxTouchPoints // result: 5
 
 ### 브라우저 지원 범위
 
-Safari에서 제약이 있습니다.
+[Can I use](https://caniuse.com/#feat=mdn-api_navigator_maxtouchpoints)에서는 Safari에서 제약이 있다고 하지만, 실제로는 잘 동작합니다.
 
+!['./images/navigator/navigator6-1.png'](./images/navigator/navigator6-1.png)
 !['./images/navigator/navigator6.png'](./images/navigator/navigator6.png)
 
-- [Can I use](https://caniuse.com/#feat=mdn-api_navigator_maxtouchpoints)
+## [✅ onLine](https://developer.mozilla.org/en-US/docs/Web/API/NavigatorOnLine/onLine)
 
-## ✅ onLine
-
-디바이스가 현재 인터넷에 연결되어 있는지 여부를 반환합니다. 실행하면 다음과 같은 결과를 확인할 수 있습니다.
+디바이스가 현재 인터넷에 연결되어 있는지 여부를 반환합니다.
 
 ```js
 // 인터넷 연결
@@ -286,19 +285,19 @@ navigator.onLine // false
 
 > [Can I use](https://caniuse.com/#search=onLine)
 
-## ⚠️ permissions
+## [⚠️ permissions](https://developer.mozilla.org/en-US/docs/Web/API/Navigator/permissions)
 
 사용자로부터 권한을 얻어야 하는 기능들(푸쉬 노티, 위치정보 등)에 대한 권한 설정 상태를 조회할 수 있습니다.
 
 ```js
 navigator.permissions.query({name: 'geolocation'})
- .then(res => {
-  if (res.state === 'granted') {
-   console.log('권한을 얻었어요!')
-  } else if (res.state === 'prompt') {
-   console.log('권한 요청을 한번도 요청한적 없어요.');
-  }
- })
+  .then(res => {
+    if (res.state === 'granted') {
+      console.log('권한을 얻었어요!')
+    } else if (res.state === 'prompt') {
+      console.log('권한 요청을 한번도 요청한적 없어요.');
+    }
+  })
 ```
 
 권한의 상태는 세 가지입니다. ([문서](https://developer.mozilla.org/en-US/docs/Web/API/PermissionStatus))
@@ -309,21 +308,19 @@ navigator.permissions.query({name: 'geolocation'})
 
 `query` 의 인자로 PermissionDescriptor를 받고, 이 속성은 세 가지 요소로 구성됩니다.
 
-- name: 약속된 권한의 이름입니다. 권한 이름 목록은 [여기](https://w3c.github.io/permissions/#enumdef-permissionname)에서 확인할 수 있습니다.
-- userVisibleOnly: (푸쉬 노티 전용)
-- sysex
+- **name:** 약속된 권한의 이름입니다. 권한 이름 목록은 [여기](https://w3c.github.io/permissions/#enumdef-permissionname)에서 확인할 수 있습니다.
+- **userVisibleOnly:** (푸쉬 노티 전용)
+- **sysex**
 
 ### 브라우저 지원 범위
 
-Edge, Firefox, Chrome, Opera 등에서만 지원하는 API입니다.
-
 !['./images/navigator/navigator8.png'](./images/navigator/navigator8.png)
 
-- [Can I use](https://caniuse.com/#feat=permissions-api)
+> [Can I use](https://caniuse.com/#feat=permissions-api)
 
-## ✅ platform
+## [✅ platform](https://developer.mozilla.org/en-US/docs/Web/API/NavigatorID/platform)
 
-운영되고 있는 플랫폼에 대한 정보를 반환합니다. Macbook Pro 기준 `MacIntel`값이며, 대표적인 값들은 다음과 같습니다.
+운영되고 있는 플랫폼에 대한 정보를 반환합니다. 맥북 프로에서는 `MacIntel`이고, 대표적인 값들은 다음과 같습니다.
 
 - HP-UX
 - Linux i686
@@ -338,7 +335,7 @@ Edge, Firefox, Chrome, Opera 등에서만 지원하는 API입니다.
 
 > [Can I use](https://caniuse.com/#feat=mdn-api_navigatorid_platform)
 
-## ✅ plugins
+## [✅ plugins](https://developer.mozilla.org/en-US/docs/Web/API/NavigatorPlugins/plugins)
 
 브라우저에서 지원하는 여러가지 플러그인 목록입니다. Chrome에서 조회하면 아래 결과를 확인할 수 있습니다.
 
@@ -389,7 +386,7 @@ function getFlashVersion() {
 
 > [Can I use](https://caniuse.com/#search=plugins)
 
-## ✅ storage
+## [✅ storage](https://developer.mozilla.org/en-US/docs/Web/API/StorageManager)
 
 [StorageManager](https://developer.mozilla.org/en-US/docs/Web/API/StorageManager)객체를 반환합니다. Storage Manager는 세 가지 메서드를 지원합니다.
 
@@ -421,30 +418,64 @@ usageDetails: {
 
 > [Can I use](https://caniuse.com/#feat=mdn-api_storage)
 
-## ✅ userAgent
+## [✅ userAgent](https://developer.mozilla.org/en-US/docs/Web/API/NavigatorID/userAgent)
 
 브라우저의 이름, 버전 및 플랫폼 정보를 담고 있습니다. 서버에 보내는 모든 요청에 userAgent 문자열 이라고 부르는 `User-Agent`(이하 UA) HTTP 헤더를 보냅니다. 이 문자열은 브라우저 종류, 버전 번호, 호스트 운영체제 등의 정보를 포함합니다.
 
-두 가지 환경에서  `navigator.userAgent` 정보를 확인하면 다음과 같습니다.
+여러가지 환경에서 `navigator.userAgent` 정보를 확인하면 다음과 같습니다.
+<details>
+<summary><b>Mac, Chrome</b></summary>
+<ul>
+<li><b>결과:</b> Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/80.0.3987.87 Safari/537.36
+</li>
+<li>👉 Mac OS X 10.14.6버전의 Gecko같은 KHTML을 사용하는 크롬  80.0.3987.87 버전이며 AppleWebkit 및 Safari537.36버전과 호환되는 브라우저라는 뜻입니다.
+</li>
+</ul>
+</details>
 
-- **Mac, Chrome:** Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/80.0.3987.87 Safari/537.36
+<details>
+<summary><b>Mac, Safari</b></summary>
+<ul>
+<li><b>결과:</b> Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_6) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/13.0.5 Safari/605.1.15
+</li>
+</ul>
+</details>
 
-👉Mac OS X 10.14.6버전의 Gecko같은 KHTML을 사용하는 크롬  80.0.3987.87 버전이며 AppleWebkit 및 Safari537.36버전과 호환되는 브라우저라는 뜻입니다.
+<details>
+<summary><b>Windows10, Edge</b></summary>
+<ul>
+<li><b>결과:</b> Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/70.0.3538.102 Safari/537.36 Edge/18.1836
+</li>
+</ul>
+</details>
 
-- **Mac, Safari:** Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_6) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/13.0.5 Safari/605.1.15
-- **Windows10, Edge:** Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/70.0.3538.102 Safari/537.36 Edge/18.1836
-- **Windows10, IE11:** Mozilla/5.0 (Windows NT 10.0; WOW64; Trident/7.0; .NET4.0C; .NET4.0E; Tablet PC 2.0; rv:11.0) like Gecko
-- **iPhone X, Chrome:** Mozilla/5.0 (iPhone; CPU iPhone OS 13_2_3 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/13.0.3 Mobile/15E148 Safari/604.
+<details>
+<summary><b>Windows10, IE11</b></summary>
+<ul>
+<li><b>결과:</b>  Mozilla/5.0 (Windows NT 10.0; WOW64; Trident/7.0; .NET4.0C; .NET4.0E; Tablet PC 2.0; rv:11.0) like Gecko
+</li>
+</ul>
+</details>
 
+<details>
+<summary><b>iPhone X, Chrome</b></summary>
+<ul>
+<li><b>결과:</b> Mozilla/5.0 (iPhone; CPU iPhone OS 13_2_3 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/13.0.3 Mobile/15E148 Safari/604.
+</li>
+<li>
 👉모바일 디바이스는 `iphone`, `ipod`, `android`등의 문자열을 포함하고 있습니다.
+</li>
+</ul>
+</details>
+<br/>
 
-- Nescape Navigator와 IE만 존재하던 시절, Netscape 브라우저는 'Mozilla/version'과 같은 방식으로 버전을 표현 하였고, 이후 다른 브라우저들이 Netscape 브라우저의 특정 버전과 호환된다는 의미로 userAgent정보에 Mozilla/version을 추가했습니다. (실제로는 해당 버전 기반이 아님.) 오늘날 많은 브라우저에서 userAgent가 'Mozilla/version'으로 시작하는 이유입니다.
+> Nescape Navigator와 IE만 존재하던 시절, Netscape 브라우저는 **'Mozilla/version'**과 같은 방식으로 버전을 표현 하였고, 이후 다른 브라우저들이 Netscape 브라우저의 특정 버전과 호환된다는 의미로 userAgent정보에 Mozilla/version을 추가했습니다. (실제로는 해당 버전 기반이 아닙니다.) 오늘날 많은 브라우저에서 userAgent가 **'Mozilla/version'**으로 시작하는 이유입니다.
 
 `UA`는 Chrome81버전부터 단계적으로 지원을 중단할 계획입니다. 광고주가 웹 사이트 방문자를 추적하거나 문자열 파싱에 기반한 브라우저 지원은 여러가지 문제를 낳았기 때문입니다.
 
-- "On top of those privacy issues, User-Agent sniffing is an abundant source of compatibility issues, in particular for minority browsers, resulting in browsers lying about themselves (generally or to specific sites), and sites (including Google properties) being broken in some browsers for no good reason," - Yoav Weiss, Google Engineer-
+"On top of those privacy issues, User-Agent sniffing is an abundant source of compatibility issues, in particular for minority browsers, resulting in browsers lying about themselves (generally or to specific sites), and sites (including Google properties) being broken in some browsers for no good reason," - Yoav Weiss, Google Engineer-
 
-장기적인 계획으로는 Chrome을 사용하는 유저가 Windows 7에서 사용하는지, 특정 디바이스에서 사용중인지에 대한 정보를 제공하지 않는 것입니다. UA에 대한 단계적 지원 중단 계획은 다음과 같습니다.
+앞으로의 계획은 Chrome을 사용하는 유저가 Windows 7에서 사용하는지, 특정 디바이스에서 사용중인지에 대한 정보를 제공하지 않는 것입니다. UA에 대한 단계적 지원 중단 계획은 다음과 같습니다.
 
 - **Chrome 81** (2020년 3월 중순) - console에 경고를 표시하여, UA를 사용하는 코드를 변경해야 한다는 점을 알립니다.
 - **Chrome 83** (2020년 6월 초) - UA에 포함되는 Chrome브라우저 버전을 더이상 업데이트 하지 않고 OS버전을 통합 시킵니다.
