@@ -31,22 +31,21 @@ ChromeLabs에서 제작한 사용자 디바이스 및 네트워크 환경에 대
 
 ```js
 navigator.connection
-/*
+---
 [결과]
 NetworkInformation: {
-	onchange: null
-	effectiveType: "4g"
-	rtt: 100
-	downlink: 10
-	saveData: false
+ onchange: null
+ effectiveType: "4g"
+ rtt: 100
+ downlink: 10
+ saveData: false
 }
-*/
 ```
 
 - **onchange:** connection 객체의 change 이벤트 핸들러 입니다. 다음과 같이 사용할 수 있습니다.
 
 ```js
-// Browser Suport
+// Browser Support
 const connection = navigator.connection
 || navigator.mozConnection
 || navigator.webkitConnection;
@@ -61,12 +60,12 @@ updateConnectionStatus();
 
 !['./images/navigator/navigator1.gif'](./images/navigator/navigator1.gif)
 
-- ectiveType: 연결된 네트워크 상황에 따라 'slow-2g', '2g', '3g', '4g'의 값 중 하나를 반환합니다. 가장 최근 네트워크 통신에서의 round-trip 값과 downlink값을 조합하여 판단합니다.
-- rtt: round-trip추정치 입니다. 25ms 배수 단위에서 반올림 하여 표현합니다.
-- downlink: 대역폭 추정치 입니다. 초당 25KB의 배수로 반올림 후  MB(Mega Bytes)로 변환합니다.
-- saveData: 사용자가 '배터리 절약 모드'를 사용하고 있는지 여부입니다.
+- **effectiveType:** 연결된 네트워크 상황에 따라 'slow-2g', '2g', '3g', '4g'의 값 중 하나를 반환합니다. 가장 최근 네트워크 통신에서의 round-trip 값과 downlink값을 조합하여 판단합니다.
+- **rtt:** round-trip추정치 입니다. 25ms 배수 단위에서 반올림 하여 표현합니다.
+- **downlink:** 대역폭 추정치 입니다. 초당 25KB의 배수로 반올림 후  MB(Mega Bytes)로 변환합니다.
+- **saveData:** 사용자가 '배터리 절약 모드'를 사용하고 있는지 여부입니다.
 
-아래 사진은 4g network에 연결되어 있다가 Chrome Network탭에서 'Fast 3G'로 적용한 뒤의 사진입니다. 실제로 effectiveType과 downlink값이 변한 것을 확인 할 수 있습니다. 
+아래 사진은 4g network에 연결되어 있다가 Chrome Network탭에서 'Fast 3G'로 적용한 뒤의 사진입니다. 실제로 effectiveType과 downlink값이 변한 것을 확인 할 수 있습니다.
 
 !['./images/navigator/navigator9.png'](./images/navigator/navigator9.png)
 
@@ -88,27 +87,27 @@ updateConnectionStatus();
 navigator.geolocation.getCurrentPosition(function(position) {
   console.log(position);
 }, err => console.log(err));
-/*
+
+---
 [결과]
 coords: {
-	latitude: 경도
-	longitude: 위도
-	altitude: 고도
-	accuracy: 위, 경도 정확도
-	altitudeAccuracy: 고도의 정확도
-	heading: 움직이는 방향을 나타내는 숫자. 정북에서 시계방향으로 벗어난 각의 크기(정북:0, 동쪽: 90)
-	speed: 속도
+ latitude: 경도
+ longitude: 위도
+ altitude: 고도
+ accuracy: 위, 경도 정확도
+ altitudeAccuracy: 고도의 정확도
+ heading: 움직이는 방향을 나타내는 숫자. 정북에서 시계방향으로 벗어난 각의 크기(정북:0, 동쪽: 90)
+ speed: 속도
 }
 
 timestamp: 1500000000
-*/
 ```
 
 - [watchPosition](https://developer.mozilla.org/ko/docs/Web/API/Geolocation/watchPosition): 디바이스의 위치가 바뀔 때마다 callback함수가 실행됩니다. 다음과 같이 사용할 수 있습니다.
 
 ```js
 function success(pos) {
-	console.log(pos.coords.latitude, pos.coords.longitude)
+ console.log(pos.coords.latitude, pos.coords.longitude)
 }
 
 function error(err) {
@@ -117,16 +116,18 @@ function error(err) {
 
 navigator.geolocation.watchPosition(success, error);
 ```
+
 > [Can I Use](https://caniuse.com/#search=geolocation)
 
 ## 🚨 getBattery()
 
 현재 사용자의 배터리에 대한 정보를 표현합니다. 이 함수는 Promise를 반환하며, 아래와 같이 어떤 정보를 담고 있는지 파악해 볼 수 있습니다.
+
 ```js
 navigator.getBattery().then(res => console.log(res))
 
-/* 
-[결과] 
+---
+[결과]
 charging: true
 chargingTime: 0
 dischargingTime: Infinity
@@ -135,14 +136,13 @@ onchargingchange: null
 onchargingtimechange: null
 ondischargingtimechange: null
 onlevelchange: null
-*/
 ```
 
-- charging: 현재 디바이스가 충전중인지 여부를 나타냅니다.
-- chargingTime: 배터리가 완전히 충전되기까지 남은 시간을 초로 표현합니다. 0이라면 충전이 완료된 상태입니다.
-- dischargingTime: 배터리가 완전히 방전되고 시스템이 중지될때까지의 남은 시간을 초로 표현합니다.
-- level: 충전 상태를 0.0에서 1.0사이의 값으로 표현합니다.
-- onchargingchange: [chargingchange](https://developer.mozilla.org/ko/docs/Web/Events/chargingchange)이벤트 핸들러입니다. 이 이벤트는 배터리 충전 상태가 변경될 때 발생합니다. 아래와 같이 사용할 수 있습니다.
+- **charging:** 현재 디바이스가 충전중인지 여부를 나타냅니다.
+- **chargingTime:** 배터리가 완전히 충전되기까지 남은 시간을 초로 표현합니다. 0이라면 충전이 완료된 상태입니다.
+- **dischargingTime:** 배터리가 완전히 방전되고 시스템이 중지될때까지의 남은 시간을 초로 표현합니다.
+- **level:** 충전 상태를 0.0에서 1.0사이의 값으로 표현합니다.
+- **onchargingchange:** [chargingchange](https://developer.mozilla.org/ko/docs/Web/Events/chargingchange)이벤트 핸들러입니다. 이 이벤트는 배터리 충전 상태가 변경될 때 발생합니다. 아래와 같이 사용할 수 있습니다.
 
 ```js
 navigator.getBattery().then(battery => {
@@ -154,7 +154,7 @@ navigator.getBattery().then(battery => {
 
 배터리 충전 상태가 변할 때 마다 console log 함수가 실행됩니다.
 
-- ondischargingtimechange, ondischargingtimechange, onlevelchange: 각각 [chargingtimechang](https://developer.mozilla.org/en-US/docs/Web/API/BatteryManager/onchargingtimechange)e, [dischargingtimechange](https://developer.mozilla.org/en-US/docs/Archive/Events/dischargingtimechange), [levelchange](https://developer.mozilla.org/en-US/docs/Archive/Events/levelchange)의 이벤트 핸들러입니다. 하지만, 문서에서 위 이벤트들이 모두 언제든 deprecated될 수 있다고 적혀 있기 때문에 사용하지 않습니다.
+- **ondischargingtimechange, ondischargingtimechange, onlevelchange:** 각각 [chargingtimechange](https://developer.mozilla.org/en-US/docs/Web/API/BatteryManager/onchargingtimechange), [dischargingtimechange](https://developer.mozilla.org/en-US/docs/Archive/Events/dischargingtimechange), [levelchange](https://developer.mozilla.org/en-US/docs/Archive/Events/levelchange)의 이벤트 핸들러입니다. 하지만, 문서에서 위 이벤트들이 모두 언제든 deprecated될 수 있다고 적혀 있기 때문에 사용하지 않습니다.
 
 ### DEPRECATED
 
@@ -288,17 +288,17 @@ navigator.onLine // false
 
 ## ⚠️ permissions
 
-사용자로부터 권한을 얻어야 하는 기능들(푸쉬 노티, 위치정보 등)에 대한 권한 설정 상태를 조회할 수 있습니다. 
+사용자로부터 권한을 얻어야 하는 기능들(푸쉬 노티, 위치정보 등)에 대한 권한 설정 상태를 조회할 수 있습니다.
 
 ```js
 navigator.permissions.query({name: 'geolocation'})
-	.then(res => {
-		if (res.state === 'granted') {
-			console.log('권한을 얻었어요!')
-		} else if (res.state === 'prompt') {
-			console.log('권한 요청을 한번도 요청한적 없어요.');
-		}
-	})
+ .then(res => {
+  if (res.state === 'granted') {
+   console.log('권한을 얻었어요!')
+  } else if (res.state === 'prompt') {
+   console.log('권한 요청을 한번도 요청한적 없어요.');
+  }
+ })
 ```
 
 권한의 상태는 세 가지입니다. ([문서](https://developer.mozilla.org/en-US/docs/Web/API/PermissionStatus))
@@ -345,29 +345,28 @@ Edge, Firefox, Chrome, Opera 등에서만 지원하는 API입니다.
 ```js
 navigator.mimeTypes
 
-/*
+---
 [결과]
 0: {
-	0: MimeType,
-	application/x-google-chrome-pdf: MimeType,
-	name: "Chrome PDF Plugin",
-	filename: "internal-pdf-viewer",
-	description: "Portable Document Format",
-	length: 1
+ 0: MimeType,
+ application/x-google-chrome-pdf: MimeType,
+ name: "Chrome PDF Plugin",
+ filename: "internal-pdf-viewer",
+ description: "Portable Document Format",
+ length: 1
 }
 1: {
-	0: MimeType,
-	application/pdf: MimeType,
-	name: "Chrome PDF Viewer",
-	filename: "mhjfbmdgcfjbbpaeojofohoefgiehjai",
-	description: "",
-	length: 1
+ 0: MimeType,
+ application/pdf: MimeType,
+ name: "Chrome PDF Viewer",
+ filename: "mhjfbmdgcfjbbpaeojofohoefgiehjai",
+ description: "",
+ length: 1
 }
 2: {
-	0: MimeType,
-	1: MimeType,
-	...
-*/
+ 0: MimeType,
+ 1: MimeType,
+ ...
 ```
 
 `namedItem` 메서드를 사용해서 특정 플러그인이 설치되어 있는지 확인할 수 있습니다.
@@ -392,26 +391,25 @@ function getFlashVersion() {
 
 ## ✅ storage
 
-[StorageManager](https://developer.mozilla.org/en-US/docs/Web/API/StorageManager)객체를 반환합니다. Storage Manager는 세 가지 메서드를 지원합니다. 
+[StorageManager](https://developer.mozilla.org/en-US/docs/Web/API/StorageManager)객체를 반환합니다. Storage Manager는 세 가지 메서드를 지원합니다.
 
 - **[estimate](https://developer.mozilla.org/en-US/docs/Web/API/StorageManager/estimate):** 현재 페이지의 storage사용 가능 공간과 사용량을 알 수 있습니다. 이 메서드는 비동기로 동작합니다. 사용 예시는 다음과 같습니다.
 
 ```js
 // https://twitter.com
 navigator.storage.estimate().then(
-	res => console.log(res)
+ res => console.log(res)
 )
 
-/*
+---
 [결과]
 quota: 150411345100
 usage: 18873830
 usageDetails: {
-	caches: 18312960,
-	indexedDB: 413132,
-	serviceWorkerRegistrations: 147738
+ caches: 18312960,
+ indexedDB: 413132,
+ serviceWorkerRegistrations: 147738
 }
-*/
 ```
 
 - **[persist](https://developer.mozilla.org/en-US/docs/Web/API/StorageManager/persist):** 아래 조건을 만족하는 페이지에 대해 storage를 영속적으로 저장할 수 있습니다.
@@ -425,7 +423,7 @@ usageDetails: {
 
 ## ✅ userAgent
 
-브라우저의 이름, 버전 및 플랫폼 정보를 담고 있습니다. 서버에 보내는 모든 요청에 userAgent 문자열 이라고 부르는 `User-Agent`(이하 UA) HTTP 헤더를 보냅니다. 이 문자열은 브라우저 종류, 버전 번호, 호스트 운영체제 등의 정보를 포함합니다. 
+브라우저의 이름, 버전 및 플랫폼 정보를 담고 있습니다. 서버에 보내는 모든 요청에 userAgent 문자열 이라고 부르는 `User-Agent`(이하 UA) HTTP 헤더를 보냅니다. 이 문자열은 브라우저 종류, 버전 번호, 호스트 운영체제 등의 정보를 포함합니다.
 
 두 가지 환경에서  `navigator.userAgent` 정보를 확인하면 다음과 같습니다.
 
