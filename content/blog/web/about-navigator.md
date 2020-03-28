@@ -15,7 +15,7 @@ thumbnail: './images/navigator/thumbnail.png'
 
 ChromeLabs에서 제작한 사용자 디바이스 및 네트워크 환경에 대한 정보를 담은 hooks입니다. 이 hooks 코드는 navigator객체의 여러가지 속성을 이용해서 제작 되었습니다.
 
-이 글에서는 react-adaptive-hooks에서 사용하는 속성들을 포함하여 '알아두면 쓸모 있는 navigator 속성'에는 어떤 것들이 있는지 톺아봅니다.
+이 글에서는 react-adaptive-hooks에서 사용하는 속성들을 포함하여 '알아두면 쓸모 있는 navigator 속성'에는 어떤 것들이 있는지 살펴봅니다.
 
 ## 들어가기 전에
 
@@ -29,7 +29,7 @@ ChromeLabs에서 제작한 사용자 디바이스 및 네트워크 환경에 대
 
 사용자가 사용하고 있는 네트워크 환경에 대한 정보를 제공하며, 아래와 같은 정보들을 확인할 수 있습니다.
 
-```js
+```ts
 navigator.connection
 ---
 [결과]
@@ -530,6 +530,10 @@ Sec-CH-UA-Arch: "ARM64"
 ```
 
 > [Can I use](https://caniuse.com/#search=geolocation)
+
+## 마치며
+
+navigator의 여러가지 속성들을 살펴보면서, 웹에서 할 수 있는 일이 생각보다 많았다는 것을 알 수 있었습니다. 이렇게 브라우저에서 제공되는 기본 기능들을 대략적으로나마 알아두면, 여러가지 상황에서 활용해볼 수 있을것 같습니다.
 
 ## Ref
 
