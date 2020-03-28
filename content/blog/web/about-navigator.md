@@ -7,22 +7,22 @@ thumbnail: './images/navigator/thumbnail.png'
 
 ![image-thumbnail](./images/navigator/thumbnail.png)
 
-프런트엔드 개발에서 `navigator` 객체에 대한 사용을 빼놓을 수 없습니다. 이 포스팅에서는 navigator객체의 여러가지 속성들에 대해 살펴봅니다.
+프런트엔드 개발에서 `navigator` 객체에 대한 사용을 빼놓을 수 없습니다. 이 포스팅에서는 navigator객체의 여러 가지 속성들에 대해 살펴봅니다.
 
 `navigator` 객체는 대표적인 User Agent뿐만 아니라 사용자의 상태에 관한 여러가지 정보를 담고 있습니다. navigator의 속성들은 읽기 전용으로 접근할 수 있습니다.
 
 ## [react-adaptive-hooks](https://github.com/GoogleChromeLabs/react-adaptive-hooks)
 
-ChromeLabs에서 제작한 사용자 디바이스 및 네트워크 환경에 대한 정보를 담은 hooks입니다. 이 hooks 코드는 navigator객체의 여러가지 속성을 이용해서 제작 되었습니다.
+ChromeLabs에서 제작한 사용자 디바이스 및 네트워크 환경에 대한 정보를 담은 hooks입니다. 이 hooks 코드는 navigator객체의 여러 속성을 이용해서 제작되었습니다.
 
 이 글에서는 react-adaptive-hooks에서 사용하는 속성들을 포함하여 '알아두면 쓸모 있는 navigator 속성'에는 어떤 것들이 있는지 살펴봅니다.
 
 ## 들어가기 전에
 
-일부 속성들은 브라우저 지원 범위가 매우 제한적 입니다. 지원 범위에 따라 세 단계로 나누어 표현했습니다.
+일부 속성들은 브라우저 지원 범위가 매우 제한적입니다. 지원 범위에 따라 세 단계로 나누어 표현했습니다.
 
 - 🚨: Deprecated
-- ⚠️: 몇 몇개의 브라우저에서 지원하지 않음
+- ⚠️: 몇 개의 브라우저에서 지원하지 않음
 - ✅: 대부분의 브라우저에서 지원하거나, 100% 지원
 
 ## [⚠️ connection](https://developer.mozilla.org/en-US/docs/Web/API/Navigator/connection)
@@ -42,7 +42,7 @@ NetworkInformation: {
 }
 ```
 
-- **onchange:** connection 객체의 change 이벤트 핸들러 입니다. 다음과 같이 사용할 수 있습니다.
+- **onchange:** connection 객체의 change 이벤트 핸들러입니다. 다음과 같이 사용할 수 있습니다.
 
 ```js
 // Browser Support
@@ -61,8 +61,8 @@ updateConnectionStatus();
 !['./images/navigator/navigator1.gif'](./images/navigator/navigator1.gif)
 
 - **effectiveType:** 연결된 네트워크 상황에 따라 slow-2g, 2g, 3g, 4g 값 중 하나를 반환합니다. 가장 최근 네트워크 통신에서의 round-trip 값과 downlink값을 조합하여 판단합니다.
-- **rtt:** round-trip추정치 입니다. 25ms 배수 단위에서 반올림 하여 표현합니다.
-- **downlink:** 대역폭 추정치 입니다. 초당 25KB의 배수로 반올림 후  MB(Mega Bytes)로 변환합니다.
+- **rtt:** round-trip추정치 입니다. 25ms 배수 단위에서 반올림하여 표현합니다.
+- **downlink:** 대역폭 추정치입니다. 초당 25KB의 배수로 반올림 후  MB(Mega Bytes)로 변환합니다.
 - **saveData:** 사용자가 '배터리 절약 모드'를 사용하고 있는지 여부입니다.
 
 아래 사진은 4g network에 연결되어 있다가 Chrome Network탭에서 Fast 3G로 적용한 뒤의 사진입니다. 실제로 effectiveType과 downlink값이 변한 것을 확인 할 수 있습니다.
@@ -138,10 +138,10 @@ ondischargingtimechange: null
 onlevelchange: null
 ```
 
-- **charging:** 현재 디바이스가 충전중인지 여부를 나타냅니다.
+- **charging:** 현재 디바이스가 충전 중인지 여부를 나타냅니다.
 - **chargingTime:** 배터리가 완전히 충전되기까지 남은 시간을 초로 표현합니다. 0이라면 충전이 완료된 상태입니다.
-- **dischargingTime:** 배터리가 완전히 방전되고 시스템이 중지될때까지의 남은 시간을 초로 표현합니다.
-- **level:** 충전 상태를 0.0에서 1.0사이의 값으로 표현합니다.
+- **dischargingTime:** 배터리가 완전히 방전되고 시스템이 중지될 때까지의 남은 시간을 초로 표현합니다.
+- **level:** 충전 상태를 0.0에서 1.0 사이의 값으로 표현합니다.
 - **onchargingchange:** [chargingchange](https://developer.mozilla.org/ko/docs/Web/Events/chargingchange)이벤트 핸들러입니다. 이 이벤트는 배터리 충전 상태가 변경될 때 발생합니다. 아래와 같이 사용할 수 있습니다.
 
 ```js
@@ -152,7 +152,7 @@ navigator.getBattery().then(battery => {
 })
 ```
 
-배터리 충전 상태가 변할 때 마다 callback함수가 실행됩니다.
+배터리 충전 상태가 변할 때마다 callback함수가 실행됩니다.
 
 - **ondischargingtimechange, ondischargingtimechange, onlevelchange:** 각각 [chargingtimechange](https://developer.mozilla.org/en-US/docs/Web/API/BatteryManager/onchargingtimechange), [dischargingtimechange](https://developer.mozilla.org/en-US/docs/Archive/Events/dischargingtimechange), [levelchange](https://developer.mozilla.org/en-US/docs/Archive/Events/levelchange)의 이벤트 핸들러입니다.
 
@@ -164,13 +164,13 @@ navigator.getBattery().then(battery => {
 
 ## ✅ [cookieEnabled](https://developer.mozilla.org/en-US/docs/Web/API/Navigator/cookieEnabled)
 
-쿠키 사용 가능 여부를 나타냅니다. 사용자가 브라우저 환경에서 '쿠키 차단'을 설정 했을 경우  이 값은 false입니다.
+쿠키 사용 가능 여부를 나타냅니다. 사용자가 브라우저 환경에서 '쿠키 차단'을 설정했을 경우  이 값은 false입니다.
 
 > [Can I use](cookieEnabled)
 
 ## ✅ [language](https://developer.mozilla.org/en-US/docs/Web/API/NavigatorLanguage/language)
 
-디바이스에 설정 된 언어 정보를 반환합니다.
+디바이스에 설정된 언어 정보를 반환합니다.
 
 !['./images/navigator/navigator4.png'](./images/navigator/navigator4.png)
 
@@ -184,7 +184,7 @@ navigator.getBattery().then(battery => {
 
 ### **encodingInfo**
 
-사용자가 기능을 활성화 한 경우에만 사용할 수 있으며, 크롬의 경우 [설정](chrome://flags/#enable-experimental-web-platform-features)에서 변경할 수 있습니다.
+사용자가 기능을 활성화한 경우에만 사용할 수 있으며, 크롬의 경우 [설정](chrome://flags/#enable-experimental-web-platform-features)에서 변경할 수 있습니다.
 
 ```js
 //Create media configuration to be tested
@@ -208,9 +208,9 @@ navigator.mediaCapabilities.encodingInfo(mediaConfig).then(result => {
 });
 ```
 
-기능을 활성화 한 후 위 코드를 실행하면 **"This configuration is supported, not smooth, and not power efficient."** 결과를 확인할 수 있습니다.
+기능을 활성화한 후 위 코드를 실행하면 **"This configuration is supported, not smooth, and not power efficient."** 결과를 확인할 수 있습니다.
 
-> 활성화 하지 않은 경우에는, `Uncaught TypeError` 가 발생합니다.
+> 활성화하지 않은 경우에는, `Uncaught TypeError` 가 발생합니다.
 
 ### **decodingInfo**
 
@@ -243,9 +243,9 @@ decodingInfo는 별도의 기능 활성화가 필요 없습니다. Chrome80 기�
 
 ## [⚠️ maxTouchPoints](https://developer.mozilla.org/en-US/docs/Web/API/Navigator/maxTouchPoints)
 
-디바이스에서 동시에 터치할 수 있는 지점이 몇 개인지 반환합니다. [TouchEvent](https://developer.mozilla.org/en-US/docs/Web/API/TouchEvent)를 기준으로 하기 때문에, PC에서 크롬을 데스크탑 모드로 설정 했을 경우에는 0, 모바일 모드로 설정한 경우는 1을 반환합니다.
+디바이스에서 동시에 터치할 수 있는 지점이 몇 개인지 반환합니다. [TouchEvent](https://developer.mozilla.org/en-US/docs/Web/API/TouchEvent)를 기준으로 하므로, PC에서 크롬을 데스크탑 모드로 설정했을 경우에는 0, 모바일 모드로 설정한 경우는 1을 반환합니다.
 
-[CodePen](https://codepen.io/soyoung210/pen/GRJPoaV)에서 테스트 해보실 수 있습니다.
+[CodePen](https://codepen.io/soyoung210/pen/GRJPoaV)에서 테스트해 보실 수 있습니다.
 
 ```js
 // PC - Desktop모드
@@ -279,7 +279,7 @@ navigator.onLine // false
 
 ### 브라우저 지원 범위
 
-대부분의 브라우저에서 사용 가능하지만, IE8에서는 제약이 있습니다.
+대부분의 브라우저에서 사용할 수 있지만, IE8에서는 제약이 있습니다.
 
 !['./images/navigator/navigator7.png'](./images/navigator/navigator7.png)
 
@@ -412,8 +412,8 @@ usageDetails: {
 - **[persist](https://developer.mozilla.org/en-US/docs/Web/API/StorageManager/persist):** 아래 조건을 만족하는 페이지에 대해 storage를 영속적으로 저장할 수 있습니다.
   - 북마크에 등록되어 있음
   - [chrome://site-engagement/](//site-engagement/) 에서 점수가 높음
-  - 홈화면에 추가되어 있음
-  - 푸시알람이 활성화 되어 있음
+  - 홈 화면에 추가되어 있음
+  - 푸시알람이 활성화되어 있음
 
 > [Can I use](https://caniuse.com/#feat=mdn-api_storage)
 
@@ -468,16 +468,20 @@ usageDetails: {
 </details>
 <br/>
 
-> Nescape Navigator와 IE만 존재하던 시절, Netscape 브라우저는 **'Mozilla/version'**과 같은 방식으로 버전을 표현 하였고, 이후 다른 브라우저들이 Netscape 브라우저의 특정 버전과 호환된다는 의미로 userAgent정보에 Mozilla/version을 추가했습니다. (실제로는 해당 버전 기반이 아닙니다.) 오늘날 많은 브라우저에서 userAgent가 **'Mozilla/version'**으로 시작하는 이유입니다.
+<details>
+<summary style="color: gray; font-weight:bold">왜 모든 UA에는 'Mozilla/version'이 있을까?</summary>
+<p style="color: gray;">Nescape Navigator와 IE만 존재하던 시절, Netscape 브라우저는 <b>'Mozilla/version'</b>과 같은 방식으로 버전을 표현하였고, 이후 다른 브라우저들이 Netscape 브라우저의 특정 버전과 호환된다는 의미로 userAgent정보에 Mozilla/version을 추가했습니다. (실제로는 해당 버전 기반이 아닙니다.) 오늘날 많은 브라우저에서 userAgent가 <b>'Mozilla/version'</b>으로 시작하는 이유입니다.</p>
+</details>
+<br/>
 
-`UA`는 Chrome81버전부터 단계적으로 지원을 중단할 계획입니다. 광고주가 웹 사이트 방문자를 추적하거나 문자열 파싱에 기반한 브라우저 지원은 여러가지 문제를 낳았기 때문입니다.
+`UA`는 Chrome81버전부터 단계적으로 지원을 중단할 계획입니다. 광고주가 웹 사이트 방문자를 추적하거나 문자열 파싱에 기반한 브라우저 지원은 여러 가지 문제를 낳았기 때문입니다.
 
-"On top of those privacy issues, User-Agent sniffing is an abundant source of compatibility issues, in particular for minority browsers, resulting in browsers lying about themselves (generally or to specific sites), and sites (including Google properties) being broken in some browsers for no good reason," - Yoav Weiss, Google Engineer-
+앞으로의 계획은 Chrome을 사용하는 유저가 Windows 7에서 사용하는지, 특정 디바이스에서 사용 중인지에 대한 정보를 제공하지 않는 것입니다. UA에 대한 단계적 지원 중단 계획은 다음과 같습니다.
 
-앞으로의 계획은 Chrome을 사용하는 유저가 Windows 7에서 사용하는지, 특정 디바이스에서 사용중인지에 대한 정보를 제공하지 않는 것입니다. UA에 대한 단계적 지원 중단 계획은 다음과 같습니다.
+> "On top of those privacy issues, User-Agent sniffing is an abundant source of compatibility issues, in particular for minority browsers, resulting in browsers lying about themselves (generally or to specific sites), and sites (including Google properties) being broken in some browsers for no good reason," - Yoav Weiss, Google Engineer-
 
 - **Chrome 81** (2020년 3월 중순) - console에 경고를 표시하여, UA를 사용하는 코드를 변경해야 한다는 점을 알립니다.
-- **Chrome 83** (2020년 6월 초) - UA에 포함되는 Chrome브라우저 버전을 더이상 업데이트 하지 않고 OS버전을 통합 시킵니다.
+- **Chrome 83** (2020년 6월 초) - UA에 포함되는 Chrome브라우저 버전을 더이상 업데이트하지 않고 OS버전을 통합시킵니다.
 - **Chrome 85** (2020년 9월 중순) - 데스크탑 OS정보를 공통 값으로 통일합니다. OS/기기 정보를 공통 값으로 통일합니다.
 
 ### Client Hints
@@ -491,7 +495,7 @@ UA는 [Client Hints](https://wicg.github.io/ua-client-hints/)라는 새로운 �
 <meta http-equiv="Accept-CH" content="DPR, Width, Viewport-Width, Downlink">
 ```
 
-- Accetp-CH의 유효시간을 설정해주는 Accept-CH-Lifetime 옵션도 있습니다.
+- Accept-CH의 유효시간을 설정해주는 Accept-CH-Lifetime 옵션도 있습니다.
 
 정보를 요청하는 방식은 request header혹은 meta tag를 통해 표현하며 comma로 구분합니다. 브라우저가 제공할 수 있는 정보의 목록은 다음과 같습니다.
 
@@ -533,7 +537,7 @@ Sec-CH-UA-Arch: "ARM64"
 
 ## 마치며
 
-navigator의 여러가지 속성들을 살펴보면서, 웹에서 할 수 있는 일이 생각보다 많았다는 것을 알 수 있었습니다. 이렇게 브라우저에서 제공되는 기본 기능들을 대략적으로나마 알아두면, 여러가지 상황에서 활용해볼 수 있을것 같습니다.
+navigator의 여러 가지 속성들을 살펴보면서, 웹에서 할 수 있는 일이 생각보다 많았다는 것을 알 수 있었습니다. 이렇게 브라우저에서 제공되는 기본 기능들을 대략적으로나마 알아두면, 여러 가지 상황에서 활용해볼 수 있을것 같습니다.
 
 ## Ref
 
