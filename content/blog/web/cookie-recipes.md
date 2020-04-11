@@ -37,7 +37,31 @@ guest_id=v1%3A1...; _ga=GA1.2...
 - **__Secure-**: `__Secure-` 로 시작되는 쿠키 이름은 반드시 `secure` 플래그가 설정되어야 하고, HTTPS페이지여야 합니다.
 - **__Host-**: `__Host-` 로 시작되는 쿠키역시 secure 플래그가 설정되어야 하며, HTTPS 페이지여야 하고, 도메인이 지정되지 않아야 합니다. (따라서 서브 도메인에 쿠키를 공유할 수 없습니다) 그리고, 경로는 반드시 "/"여야 합니다.
 
-아래는 여러가지 Optinal한 쿠키 속성입니다.
+```js
+// Example
+// Browsers that support the __Secure cookie prefix will reject this due to the
+// missing Secure attribute.
+document.cookie = '__Secure-invalid-without-secure=1';
+// All browsers, including those that support the __Secure cookie prefix,
+// will accept this since the Secure attribute is present.
+document.cookie = '__Secure-valid-with-secure=1; Secure';
+
+// Browsers that support the __Host cookie prefix will reject this due to the
+// missing Secure and Path=/ attributes.
+document.cookie = '__Host-invalid-without-secure-or-path=1';
+// Browsers that support the __Host cookie prefix will reject this due to the
+// missing Path=/ attribute, even though Secure was added.
+document.cookie = '__Host-invalid-without-path=1; Secure';
+// All browsers, including those that support the __Host cookie prefix,
+// will accept this since both the Secure and Path=/ attributes are present.
+document.cookie = '__Host-valid-with-secure-and-path=1; Secure; Path=/';
+
+// Browsers that don't support Cookie Prefixes will have all of the cookies set.
+// Browser that do support Cookie Prefixes will have two of the cookies set.
+ChromeSamples.log(document.cookie.split('; ').sort().join('\n'));
+```
+
+아래는 여러가지 Optional한 쿠키 속성입니다.
 
 **Expires=\<date>**
 
@@ -165,6 +189,7 @@ Safari 13.1업데이트에 Intelligent Tracking Prevention (ITP)에 중요한 �
 - [https://docs.adobe.com/content/help/ko-KR/target/using/implement-target/before-implement/privacy/google-chrome-samesite-cookie-policies.translate.html](https://docs.adobe.com/content/help/ko-KR/target/using/implement-target/before-implement/privacy/google-chrome-samesite-cookie-policies.translate.html)
 - [https://ifuwanna.tistory.com/223](https://ifuwanna.tistory.com/223)
 - [https://www.yceffort.kr/2020/01/chrome-cookie-same-site-secure/](https://www.yceffort.kr/2020/01/chrome-cookie-same-site-secure/)
+- [https://googlechrome.github.io/samples/cookie-prefixes/](https://googlechrome.github.io/samples/cookie-prefixes/)
 - [https://developers-kr.googleblog.com/2020/01/developers-get-ready-for-new.html](https://developers-kr.googleblog.com/2020/01/developers-get-ready-for-new.html)
 - [https://medium.com/cross-site-request-forgery-csrf/double-submit-cookie-pattern-65bb71d80d9f](https://medium.com/cross-site-request-forgery-csrf/double-submit-cookie-pattern-65bb71d80d9f)
 - [thumbnail image](https://www.freepik.com/premium-vector/hand-drawn-illustration-cookie_2795450.htm)
