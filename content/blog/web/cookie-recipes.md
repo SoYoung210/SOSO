@@ -167,3 +167,4 @@ Safari 13.1업데이트에 Intelligent Tracking Prevention (ITP)에 중요한 �
 - [https://www.yceffort.kr/2020/01/chrome-cookie-same-site-secure/](https://www.yceffort.kr/2020/01/chrome-cookie-same-site-secure/)
 - [https://developers-kr.googleblog.com/2020/01/developers-get-ready-for-new.html](https://developers-kr.googleblog.com/2020/01/developers-get-ready-for-new.html)
 - [https://medium.com/cross-site-request-forgery-csrf/double-submit-cookie-pattern-65bb71d80d9f](https://medium.com/cross-site-request-forgery-csrf/double-submit-cookie-pattern-65bb71d80d9f)
+- [thumbnail image](https://www.freepik.com/premium-vector/hand-drawn-illustration-cookie_2795450.htm)
