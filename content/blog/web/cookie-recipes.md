@@ -39,26 +39,19 @@ guest_id=v1%3A1...; _ga=GA1.2...
 
 ```js
 // Example
-// Browsers that support the __Secure cookie prefix will reject this due to the
-// missing Secure attribute.
+// __Secure- prefix는 Secure속성이 있어야 합니다.
+// Secure속성이 없으므로 이 쿠키는 무시됩니다.
 document.cookie = '__Secure-invalid-without-secure=1';
-// All browsers, including those that support the __Secure cookie prefix,
-// will accept this since the Secure attribute is present.
+// __Secure- prefix가진 쿠키가 적용되는 경우
 document.cookie = '__Secure-valid-with-secure=1; Secure';
 
-// Browsers that support the __Host cookie prefix will reject this due to the
-// missing Secure and Path=/ attributes.
+// __Host- prefix는 Path, Secure속성이
+// 한 가지라도 없을 경우 무시됩니다.
 document.cookie = '__Host-invalid-without-secure-or-path=1';
-// Browsers that support the __Host cookie prefix will reject this due to the
-// missing Path=/ attribute, even though Secure was added.
 document.cookie = '__Host-invalid-without-path=1; Secure';
-// All browsers, including those that support the __Host cookie prefix,
-// will accept this since both the Secure and Path=/ attributes are present.
-document.cookie = '__Host-valid-with-secure-and-path=1; Secure; Path=/';
 
-// Browsers that don't support Cookie Prefixes will have all of the cookies set.
-// Browser that do support Cookie Prefixes will have two of the cookies set.
-ChromeSamples.log(document.cookie.split('; ').sort().join('\n'));
+// __Host- prefix가진 쿠키가 적용되는 경우
+document.cookie = '__Host-valid-with-secure-and-path=1; Secure; Path=/';
 ```
 
 아래는 여러가지 Optional한 쿠키 속성입니다.
