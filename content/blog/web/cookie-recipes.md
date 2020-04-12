@@ -7,6 +7,10 @@ thumbnail: './images/cookie/thumbnail.png'
 
 ![image-thumbnail](./images/cookie/thumbnail.png)
 
+<div style="opacity: 0.5; padding-right: 15px; text-align:right">
+    <sup>Image by: <a href="https://www.freepik.com/premium-vector/hand-drawn-illustration-cookie_2795450.htm">https://www.freepik.com/</a></sup>
+</div>
+
 작년에 발표된 [Chrome SameSite](https://www.chromium.org/updates/same-site) 정책과 웹 사이트의 인증 기능을 구현하는 과정에서 '쿠키'에 대해 한 번쯤 들어 보셨을 것입니다. 이 포스팅에서는 쿠키가 무엇이고, 어떤 종류가 있는지, 쿠키의 특성과 연관된 브라우저 정책들을 살펴봅니다.
 
 ## 쿠키
@@ -192,4 +196,3 @@ Safari 13.1업데이트에 Intelligent Tracking Prevention (ITP)에 중요한 �
 - [https://googlechrome.github.io/samples/cookie-prefixes/](https://googlechrome.github.io/samples/cookie-prefixes/)
 - [https://developers-kr.googleblog.com/2020/01/developers-get-ready-for-new.html](https://developers-kr.googleblog.com/2020/01/developers-get-ready-for-new.html)
 - [https://medium.com/cross-site-request-forgery-csrf/double-submit-cookie-pattern-65bb71d80d9f](https://medium.com/cross-site-request-forgery-csrf/double-submit-cookie-pattern-65bb71d80d9f)
-- [thumbnail image](https://www.freepik.com/premium-vector/hand-drawn-illustration-cookie_2795450.htm)
