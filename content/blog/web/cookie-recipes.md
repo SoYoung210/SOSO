@@ -67,6 +67,7 @@ document.cookie = '__Host-valid-with-secure-and-path=1; Secure; Path=/';
 **Domain=\<domain-value>**
 
 Domain은 쿠키의 스코프를 정의하며 어느 사이트에서 생성한 것인지 알려줍니다. 지정되지 않으면 현재 페이지 URL을 기준으로 적용됩니다.
+예를 들어 `Domain=so-so.dev`로 적용된 쿠키는 so-so.dev외에 다른 사이트에서 사용하지 못합니다.
 
 **Path=\<path-value>**
 
