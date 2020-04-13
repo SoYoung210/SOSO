@@ -2,8 +2,14 @@
 title: '성장에 Silver Bullet은 없다'
 date: 2020-04-15 08:00:09
 category: essay
-thumbnail: './images/2019_presentation.png'
+thumbnail: './images/growth/thumbnail.png'
 ---
+
+![image-thumbnail](./images/growth/thumbnail.png)
+
+<div style="opacity: 0.5; padding-right: 15px; text-align:right">
+    <sup>Image by: <a href="https://dribbble.com/shots/7093773-Landing-page-exploration">https://dribble.com</a></sup>
+</div>
 
 첫 회사에 입사하기 전부터 '성장할 수 있는 회사'를 찾고 싶었고, 내 목표는 개발자로서 '멈추지 않고 성장하는 것'이다. 작년에 이 주제로 많이 고민했었고 그 내용을 [발표](https://speakerdeck.com/soyoung210/jeolmang-deuribeun-seongjang-hamgge-ilhago-sipeun-gaebaljaga-doegiggaji)에서 공유하기도 했었다.  지금 다시 생각해본 성장은 'Silver Bullet'은 없고 매번 많은 고민을 통해 이뤄진다고 생각한다. 그 내용을 짧게 정리해 보려 한다.
 
