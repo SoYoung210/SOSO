@@ -1,6 +1,6 @@
 ---
 title: '성장에 Silver Bullet은 없다'
-date: 2020-04-15 08:00:09
+date: 2020-04-13 08:00:09
 category: essay
 thumbnail: './images/growth/thumbnail.png'
 ---
