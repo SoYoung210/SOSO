@@ -19,7 +19,10 @@ thumbnail: './images/growth/thumbnail.png'
 
 나는 이 기준을 이렇게 정의했다.
 
+<div style="padding: 10px 0; font-weight: bold; font-size: 18px;
+    word-break: keep-all;">
 "나만의 관점이 많아지는 것"
+</div>
 
 새로운 기능을 잘 구현하지 못해도 괜찮다. 지식과 방법은 구글링을 통해 얻을 수도 있고 옆자리 동료에게 물어보면 10분 만에 답이 나오기도 한다. 그렇기 때문에 '아는지 모르는지'라는 기준이 성장의 척도가 되기에는 부족하다고 생각한다.
 
