@@ -28,7 +28,7 @@ export default ({ data, pageContext, location }) => {
   const { disqusShortName, utterances } = comment
   const { title: postTitle, date, thumbnail } = post.frontmatter
   const thumbnailSrc = thumbnail
-    ? `https://deploy-preview-49--friendly-bose-75c3ce.netlify.com/${thumbnail.childImageSharp.fixed.src}`
+    ? `${siteUrl}${thumbnail.childImageSharp.fixed.src}`
     : undefined
 
   return (
