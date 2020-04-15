@@ -4,6 +4,8 @@ import { graphql } from 'gatsby'
 import { rhythm } from '../utils/typography'
 import * as Lang from '../constants'
 
+import '../styles/resume.scss'
+
 export default ({ data }) => {
   const resumes = data.allMarkdownRemark.edges
 
@@ -13,6 +15,7 @@ export default ({ data }) => {
 
   return (
     <div
+      className='about'
       style={{
         marginLeft: `auto`,
         marginRight: `auto`,

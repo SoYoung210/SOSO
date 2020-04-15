@@ -5,16 +5,7 @@ lang: 'ko'
 thumbnail: ''
 ---
 
-<article class="l-Wrapper">
-  <div class="l-Header">
-    <h1 class="Title">
-      <span class="u-shadow">
-        SOYOUNG LEE
-      </span>
-    </h1>
-  </div>
-
-<br/>
+# SOYOUNG LEE
 
 웹 프론트엔드 개발자 이소영입니다.  
 React를 주로 다루며, 문서화와 구조, 그리고 UX에 관심이 많습니다.
@@ -23,21 +14,15 @@ React를 주로 다루며, 문서화와 구조, 그리고 UX에 관심이 많습
 
 |            |                              |
 | :--------: | ---------------------------- |
-| **GitHub** | https://github.com/SoYoung210 |
-| **Blog** | https://so-so.dev |
+| **GitHub** | <https://github.com/SoYoung210> |
+| **Blog** | <https://so-so.dev> |
 | **E-mail** | ethdud1@gmail.com            |
 
   </div>
 
-<div class="l-Header">
-  <h1 class="Title">
-    <span class="u-shadow">
-      Work Experiences
-    </span>
-  </h1>
-</div>
+# Experiences
 
-<a class="u-link" href="https://rainist.com" target="_blank">Rainist</a>
+## Rainist
 
 |              |                                                         |
 | -----------: | ------------------------------------------------------- |
@@ -45,15 +30,7 @@ React를 주로 다루며, 문서화와 구조, 그리고 UX에 관심이 많습
 | **position** | 웹 프론트엔드 개발자 |
 | **projects** | 8주 안정화 프로젝트, CMS, Static Web Generator, Project Generator |
 
-<div class="l-Header">
-  <h1 class="Title">
-    <span class="u-shadow">
-      Tech Experiences
-    </span>
-  </h1>
-</div>
-
-## 뱅크샐러드 8주 안정화 프로젝트
+### 뱅크샐러드 8주 안정화 프로젝트
 
 전사적으로 기술 부문의 안정화 프로젝트를 진행했고, Web팀에서 다음과 같은 일을 맡아서 진행했습니다.
 
@@ -61,13 +38,13 @@ React를 주로 다루며, 문서화와 구조, 그리고 UX에 관심이 많습
   * LightHouse기준(Slow 4G)40점에서 87점까지 향상.
   * Round Trip을 고려한 Code Splitting Guide 수립.
   * SSR이 필요한 프로젝트 예시와 예시 코드를 통한 React에서의 SSR 가이드 수립.
-  > 관련 저장소: https://github.com/SoYoung210/react-ssr-code-splitting
+  > 관련 저장소: <https://github.com/SoYoung210/react-ssr-code-splitting>
 
 * 웹 기반 서비스 [IaC](https://en.wikipedia.org/wiki/Infrastructure_as_code) 관련 가이드 수립
   * Kubernetes, Nginx 등 뱅크샐러드의 웹 기반 서비스들이 어떤 구조로 운영되고 있고, 어떻게 변경/개선 되는지 도식화 하여 문서 작성
   * 웹 서비스에 사용하고 있던 legacy 설정 파일을 수정하고, 불필요하게 사용하고 있던 reverse proxy 세팅 제거
 
-## CMS
+### CMS
 
 * 19.03~ 19.06
 * *TypeScript*, *React*, *Redux*, *redux-observable*
@@ -79,7 +56,7 @@ React를 주로 다루며, 문서화와 구조, 그리고 UX에 관심이 많습
   * 디자인: [ant.desing](https://ant.design/)을 활용하여 디자인
   * 개발: 팀내에서 사용해보지 않았던 redux와 redux-middleware를 도입하고 해당 내용을 공유
 
-## Project Generator
+### Project Generator
 
 웹 프로젝트에 필요한 webpack, babel등의 설정파일을 포함한 프로젝트 전체 구조를 스캐폴딩 할 수 있는 도구.
 
@@ -87,7 +64,7 @@ React를 주로 다루며, 문서화와 구조, 그리고 UX에 관심이 많습
   * 프로젝트 빌드에 소요되는 시간을 5초로 단축
   * 신규 입사자를 위한 구조 설명 도구로 활용
 
-## Static Web Generator(CMS)
+### Static Web Generator(CMS)
 
 이미지와 버튼으로 구성된 HTML을 만들어주는 도구.
 
@@ -95,28 +72,16 @@ React를 주로 다루며, 문서화와 구조, 그리고 UX에 관심이 많습
 * title, button position등 필요한 정보 입력
 * [UI](https://speakerdeck.com/soyoung210/jeolmang-deuribeun-seongjang-hamgge-ilhago-sipeun-gaebaljaga-doegiggaji?slide=44)
 
-<div class="l-Header">
-  <h1 class="Title">
-    <span class="u-shadow">
-      Projects
-    </span>
-  </h1>
-</div>
+# Projects
 
 ## soso-tip
 
-- GitHub Repository Link: https://github.com/SoYoung210/soso-tip
+- GitHub Repository Link: <https://github.com/SoYoung210/soso-tip>
 
 개발프로젝트는 아닙니다. 개발과정에서 만났던 이슈를 기록하고, 공유하는 용도의 저장소 입니다.  
 같은 실수를 반복하는 경험을 줄일 수 있고, 실수한 내용을 정리하는 과정에서 완벽히 이해할 수 있다고 생각합니다.
 
-<div class="l-Header">
-  <h1 class="Title">
-    <span class="u-shadow">
-      Activities
-    </span>
-  </h1>
-</div>
+# Activities
 
 <h2 class='u-link zero'>Presentation</h2>
 
