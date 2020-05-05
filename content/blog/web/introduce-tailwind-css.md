@@ -1,6 +1,6 @@
 ---
 title: 'tailwindcss를 소개합니다'
-date: 2020-04-04 08:00:09
+date: 2020-05-05 08:00:09
 category: web
 thumbnail: './images/tailwind/thumbnail.png'
 ---
@@ -48,7 +48,7 @@ Utility-first CSS에서는 클래스 이름을 스타일의 속성이 잘 드러
 
 위와 같이 Card title을 감싸고 있는 박스에 상하좌우 padding 20px이 필요하다면, utility-first css에서는 다음과 같이 표현할 수 있습니다.
 
-```html
+```html{2}
 <div class="card">
     <div class="card-body p-5">
     ...
@@ -93,7 +93,7 @@ module.exports = {
 
 padding옵션을 직접 적용하지 않고, spacing 속성을 통해 적용되도록 하는 것입니다.
 
-```jsx
+```jsx{17,19}
 // tailwind.config.js
 module.exports = {
   spacing: {
@@ -157,7 +157,7 @@ variants를 커스텀하게 적용하는 경우 기본 값과 자동으로 마�
 
 **❌ 추가 속성만 정의하면, 기본 속성을 사용할 수 없게 됩니다.**
 
-```jsx
+```jsx{4}
 // tailwind.config.js
 module.exports = {
   variants: {
@@ -168,7 +168,7 @@ module.exports = {
 
 ✅ **활성화 하고 싶은 모든 속성을 적어주어야 합니다.**
 
-```jsx
+```jsx{4}
 // tailwind.config.js
 module.exports = {
   variants: {
@@ -192,7 +192,7 @@ tailwindcss에는 screen 크기에 따라 기본적으로 4개의 break point가
 
 tailwind.config.js 의 `screens` 속성을 변경하여 breakpoints를 추가로 정의할 수 있습니다.
 
-```jsx
+```jsx{5,8,11}
 // tailwind.config.js
 module.exports = {
   theme: {
@@ -214,7 +214,7 @@ module.exports = {
 
 tailwindcss에서는 필요한 plugin을 추가로 생성할 수 있습니다.
 
-```jsx
+```jsx{16}
 // tailwind.config.js
 const plugin = require('tailwindcss/plugin')
 
@@ -282,7 +282,7 @@ module.exports = {
 
 tailwind css는 [👩‍🎤 emotion](https://emotion.sh/docs/introduction) 이나 [💅 styled-components](https://styled-components.com/)등의 css-in-js 라이브러리와 함께 사용할 수 있습니다.  그리고 이 경우, [twin.macro](https://www.npmjs.com/package/twin.macro)와 함께 사용하면 더 깔끔한 코드를 작성할 수 있습니다.
 
-```jsx
+```jsx{2,7}
 import React from 'react'
 import tw from 'twin.macro'
 import styled from '@emotion/styled/macro'
@@ -306,7 +306,7 @@ export default () => <Input hasDarkHover />
 
 몇 가지 간단한 설정만 해주면 쉽게 사용할 수 있습니다.
 
-```jsx
+```jsx{4}
 // .babelrc
 {
   "plugins": [
@@ -331,7 +331,7 @@ export default () => <Input hasDarkHover />
 
 새로운 프로젝트에서 약 2달간 tailwindcss를 사용해본 결과 아직까지는 대부분 만족스럽습니다.
 
-- 한 가지 아쉬운 점은 translate속성에 3D를 지원하지 않아, 이 부분은 inline style로 별도로 처리해주었습니다.
+> 한 가지 아쉬운 점은 translate속성에 3D를 지원하지 않아, 이 부분은 inline style로 별도로 처리해주었습니다.
 
 분명, 적용 초반기에는 어떤 규칙으로 className을 적용해야 하는지 공식 사이트를 많이 참고해야 한다는 허들이 존재하지만 어느정도 익숙해지니 tailiwindcss는 이 허들을 감내 할만한 가치가 있는 도구라고 생각합니다. 디자인 가이드가 어느정도 통일성 있는 상황이라면 미리 정의해둔 class만 붙여주는 식으로 개발하게 되니 확실히 속도면에서 뚜렷한 장점이 느껴졌습니다.
 
