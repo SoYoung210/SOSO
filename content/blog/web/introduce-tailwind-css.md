@@ -1,0 +1,343 @@
+---
+title: 'tailwindcss를 소개합니다'
+date: 2020-04-04 08:00:09
+category: web
+thumbnail: './images/tailwind/thumbnail.png'
+---
+
+![image-thumbnail](./images/tailwind/thumbnail.png)
+
+tailwind css는 utility-first CSS 프레임워크입니다. 이 글에서는 utility-first CSS란 무엇이고 tailwind를 어떻게 사용할 수 있는지 소개합니다.
+
+## Utility-first CSS
+
+utility-first css라는 이름이 생소할 수 있지만, 이미 많이 사용된 라이브러리 중에는 Bootstrap이 이 개념을 기반으로 제작되었습니다. 다음과 같이  `class` 를 붙여주는 방식으로 스타일을 적용합니다.
+
+```html
+<div class="alert alert-primary" role="alert">
+  A simple primary alert—check it out!
+</div>
+<div class="alert alert-secondary" role="alert">
+  A simple secondary alert—check it out!
+</div>
+<div class="alert alert-success" role="alert">
+  A simple success alert—check it out!
+</div>
+<div class="alert alert-danger" role="alert">
+  A simple danger alert—check it out!
+</div>
+```
+
+- 결과:
+
+Utility-first CSS에서는 클래스 이름을 스타일의 속성이 잘 드러나도록  짓습니다. 어떤 역할을 하는지, 어떤 화면에서 사용되는 지 등의 요소를 포함하지 않습니다.
+
+예를 들어, margin과 padding만을 담당하는 클래스를 다음과 같이 정의합니다.
+
+```css
+.{property}{side}-{size}
+```
+
+- `mt-5` : margin-top 값을 5px 등 정의된 속성에 따라 적용
+- `pb-3` : padding-bottom 값을 3px 등 정의된 속성에 따라 적용
+- `px-2` : x축 기준 padding값(padding-left, padding-right)을 2px등 정의된 속성에 따라 적용
+
+이렇게 필요한 속성을 config에 정의 해두고 여러가지 상황에서 사용할 수 있습니다.
+
+![card_example.png](./images/tailwind/card_example.png)
+
+위와 같이 Card title을 감싸고 있는 박스에 상하좌우 padding 20px이 필요하다면, utility-first css에서는 다음과 같이 표현할 수 있습니다.
+
+```html
+<div class="card">
+    <div class="card-body p-5">
+    ...
+    </div>
+</div>
+```
+
+이렇게, 요소의 기능적 측면보다는 스타일 관점에서 사용하는 것이 utility-first css입니다.
+
+## Custom Config
+
+이번 글에서 소개 할 tailwind css는 **custom이 쉽고 자유롭다**는 장점과, config를 함수로 관리할 수도 있다는 장점이 있습니다.
+
+`padding`속성을 예로 살펴보겠습니다.
+
+![search_example.png](./images/tailwind/search_example.png)
+
+[tailwind 페이지](https://tailwindcss.com/)에서 'padding'이라는 키워드로 검색하면, 다음과 같이 사용할 수 있는 속성들이 나옵니다.
+
+![search_result.png](./images/tailwind/search_result.png)
+
+기본 제공되는 속성을 사용할 수도 있고, `tailwind.config.js` 에서 두 가지 방법으로 커스텀 할수도 있습니다.
+
+### theme.padding 사용
+
+```jsx
+// tailwind.config.js
+module.exports = {
+  theme: {
+    padding: {
+      sm: '8px',
+      md: '16px',
+      lg: '24px',
+      xl: '48px',
+      '20': '20px',
+    }
+  }
+}
+```
+
+### theme.spacing 사용
+
+padding옵션을 직접 적용하지 않고, spacing 속성을 통해 적용되도록 하는 것입니다.
+
+```jsx
+// tailwind.config.js
+module.exports = {
+  spacing: {
+    sm: '8px',
+    md: '16px',
+    lg: '24px',
+    xl: '48px',
+    8: '8px',
+    9: '9px',
+    10: '10px',
+    12: '12px',
+    14: '14px',
+    15: '15px',
+    16: '16px',
+    18: '18px',
+  },
+  padding: (theme) => theme('spacing'),
+  // margin도 spacing 수치를 통해 적용됨
+  margin: (theme) => theme('spacing'),
+}
+
+```
+
+`spacing`을 사용해서 margin등 '수치'가 필요한 속성에서 모두 적용할 수 있습니다.
+
+### variants
+
+tailwind.config.js 파일의 `variants` 에서는 반응형 및 pseudo-class에 제어할 수 있도록 해줍니다.
+
+```jsx
+// tailwind.config.js
+module.exports = {
+  variants: {
+    appearance: ['responsive'],
+    // ...
+    borderColor: ['responsive', 'hover', 'focus'],
+    // ...
+    outline: ['responsive', 'focus'],
+    // ...
+    zIndex: ['responsive'],
+  },
+}
+```
+
+variants의 Key는 tailwind.config.js `theme`에서 사용하는 property들이며, 아래 목록의 variants는 기본으로 지원됩니다.
+
+- `'responsive'`
+- `'group-hover'`
+- `'focus-within'`
+- `'first'`
+- `'last'`
+- `'odd'`
+- `'even'`
+- `'hover'`
+- `'focus'`
+- `'active'`
+- `'visited'`
+- `'disabled'`
+
+variants를 커스텀하게 적용하는 경우 기본 값과 자동으로 마이그레이션 되지 않으니, 기본 값과 추가로 정의할 값을 함께 적어주어야 합니다.
+
+**❌ 추가 속성만 정의하면, 기본 속성을 사용할 수 없게 됩니다.**
+
+```jsx
+// tailwind.config.js
+module.exports = {
+  variants: {
+    backgroundColor: ['active'],
+  },
+}
+```
+
+✅ **활성화 하고 싶은 모든 속성을 적어주어야 합니다.**
+
+```jsx
+// tailwind.config.js
+module.exports = {
+  variants: {
+    backgroundColor: ['responsive', 'hover', 'focus', 'active'],
+  },
+}
+```
+
+### 반응형 적용
+
+tailwindcss에는 screen 크기에 따라 기본적으로 4개의 break point가 적용되어 있고, 유틸리티 클래스를 추가하는 것으로 쉽게 적용할 수 있습니다.
+
+```html
+<!-- 기본 16, medium: 32, large: 48 -->
+<img class="w-16 md:w-32 lg:w-48" src="...">
+```
+
+아래와 같이 스크린 크기에 따라 배경 색 등 모든 요소를 반응형으로 구성할 수 있습니다.
+
+![responsive_tailwind.gif](./images/tailwind/responsive_tailwind.gif)
+
+tailwind.config.js 의 `screens` 속성을 변경하여 breakpoints를 추가로 정의할 수 있습니다.
+
+```jsx
+// tailwind.config.js
+module.exports = {
+  theme: {
+    screens: {
+      'tablet': '640px',
+      // => @media (min-width: 640px) { ... }
+
+      'laptop': '1024px',
+      // => @media (min-width: 1024px) { ... }
+
+      'desktop': '1280px',
+      // => @media (min-width: 1280px) { ... }
+    },
+  }
+}
+```
+
+### plugins
+
+tailwindcss에서는 필요한 plugin을 추가로 생성할 수 있습니다.
+
+```jsx
+// tailwind.config.js
+const plugin = require('tailwindcss/plugin')
+
+module.exports = {
+  plugins: [
+    plugin(function({ addUtilities }) {
+      const newUtilities = {
+        '.skew-10deg': {
+          transform: 'skewY(-10deg)',
+        },
+        '.skew-15deg': {
+          transform: 'skewY(-15deg)',
+        },
+      }
+
+      addUtilities(newUtilities)
+    })
+  ]
+}
+```
+
+이런 식으로 원하는 utility class를 추가할 수 있습니다. 새롭게 추가한 class에 대해서도 위에서 언급한 variants속성을 부여할 수 있습니다.
+
+```jsx
+// tailwind.config.js
+const plugin = require('tailwindcss/plugin')
+
+module.exports = {
+  plugins: [
+    plugin(function({ addUtilities }) {
+      const newUtilities = {
+        // ...
+      }
+
+      addUtilities(newUtilities, {
+        variants: ['responsive', 'hover'],
+      })
+    })
+  ]
+}
+```
+
+HTML Tag에 기본 스타일을 적용하고 싶다면, plugins에서  `addBase` 를 통해 지정할 수 있습니다.
+
+```jsx
+// tailwind.config.js
+const plugin = require('tailwindcss/plugin')
+
+module.exports = {
+  plugins: [
+    plugin(function({ addBase, config }) {
+      addBase({
+        'h1': { fontSize: config('theme.fontSize.2xl') },
+        'h2': { fontSize: config('theme.fontSize.xl') },
+        'h3': { fontSize: config('theme.fontSize.lg') },
+      })
+    })
+  ]
+}
+```
+
+기본 스타일은 `div`, `h1`등과 같은 선택자만 허용합니다.
+
+## With CSS-in-JS
+
+tailwind css는 [👩‍🎤 emotion](https://emotion.sh/docs/introduction) 이나 [💅 styled-components](https://styled-components.com/)등의 css-in-js 라이브러리와 함께 사용할 수 있습니다.  그리고 이 경우, [twin.macro](https://www.npmjs.com/package/twin.macro)와 함께 사용하면 더 깔끔한 코드를 작성할 수 있습니다.
+
+```jsx
+import React from 'react'
+import tw from 'twin.macro'
+import styled from '@emotion/styled/macro'
+import { css } from '@emotion/core'
+
+const Input = styled.input([
+  tw`p-20`,
+  ({ hasDarkHover }) =>
+    hasDarkHover
+      ? tw`hover:border-black`
+      : css`
+          &:hover {
+            ${tw`border-white`}
+          }
+        `,
+])
+export default () => <Input hasDarkHover />
+```
+
+> 현재 tailwindcss는 2020.05 기준 1.4.4버전까지 나왔고, twin.macro의 tailwindcss버전은 1.3.4입니다. twin.macro에서 tailwindcss 1.4.0 [지원을 위한 준비](https://github.com/ben-rogerson/twin.macro/issues/45)를 하고 있으니, 조금 기다리면 곧 나올 것 같습니다! 🎉
+
+몇 가지 간단한 설정만 해주면 쉽게 사용할 수 있습니다.
+
+```jsx
+// .babelrc
+{
+  "plugins": [
+    "macros", // babel-plugin-macros
+  ],
+  "presets": [
+  /* Other presets */
+    "@emotion/babel-preset-css-prop", // @emotion/babel-preset-css-prop
+  ]
+}
+```
+
+### ⚠️ 주의할 점
+
+주의할 점은, twin.macro는 `tailwind.config.js`에 있는 속성만 참조하기 때문에, `tailwind.config.css` 에 추가로 정의한 className은 twin.macro와 함께 사용할 수 없습니다.
+
+또, 아직은 styled-component내부에서 템플릿 리터럴을 사용할 수 없는데, 이 기능은 [준비 중](https://github.com/ben-rogerson/twin.macro/issues/17)이라고 합니다.
+
+![tw_macro_issue.png](./images/tailwind/tw_macro_issue.png)
+
+## 마무리하며
+
+새로운 프로젝트에서 약 2달간 tailwindcss를 사용해본 결과 아직까지는 대부분 만족스럽습니다.
+
+- 한 가지 아쉬운 점은 translate속성에 3D를 지원하지 않아, 이 부분은 inline style로 별도로 처리해주었습니다.
+
+분명, 적용 초반기에는 어떤 규칙으로 className을 적용해야 하는지 공식 사이트를 많이 참고해야 한다는 허들이 존재하지만 어느정도 익숙해지니 tailiwindcss는 이 허들을 감내 할만한 가치가 있는 도구라고 생각합니다. 디자인 가이드가 어느정도 통일성 있는 상황이라면 미리 정의해둔 class만 붙여주는 식으로 개발하게 되니 확실히 속도면에서 뚜렷한 장점이 느껴졌습니다.
+
+tailwind css를 사용해보며 style을 완전히 컴포넌트의 목적이나 기능과 분리하여 바라볼 수 있다는 새로운 관점도 생각해 볼 수 있었던 계기가 되었습니다.
+
+## Ref
+
+- [https://blog.usejournal.com/utility-first-css-ridiculously-fast-front-end-development-for-almost-every-design-503130d8fefc](https://blog.usejournal.com/utility-first-css-ridiculously-fast-front-end-development-for-almost-every-design-503130d8fefc)
+- [https://tailwindcss.com/docs](https://tailwindcss.com/docs)
