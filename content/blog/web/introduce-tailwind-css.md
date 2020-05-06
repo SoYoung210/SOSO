@@ -7,11 +7,13 @@ thumbnail: './images/tailwind/thumbnail.png'
 
 ![image-thumbnail](./images/tailwind/thumbnail.png)
 
-tailwind css는 utility-first CSS 프레임워크입니다. 이 글에서는 utility-first CSS란 무엇이고 tailwind를 어떻게 사용할 수 있는지 소개합니다.
+tailwind css는 utility-first CSS 프레임워크입니다.
+
+이 글에서는 utility-first CSS에 대한 개념과 tailwind를 어떻게 사용할 수 있는 지 소개합니다.
 
 ## Utility-first CSS
 
-utility-first css라는 이름이 생소할 수 있지만, 이미 많이 사용된 라이브러리 중에는 Bootstrap이 이 개념을 기반으로 제작되었습니다. 다음과 같이  `class` 를 붙여주는 방식으로 스타일을 적용합니다.
+utility-first css라는 이름이 생소할 수 있지만, 사용하는 방법은 [Bootstrap](https://getbootstrap.com/)과 매우 유사합니다. Bootstrap에서는 다음과 같이 class를 부여하는 방식으로 스타일을 적용합니다.
 
 ```html
 <div class="alert alert-primary" role="alert">
@@ -28,29 +30,35 @@ utility-first css라는 이름이 생소할 수 있지만, 이미 많이 사용�
 </div>
 ```
 
-- 결과:
+<details>
+<summary><b>결과:</b></summary>
+<ul>
+  <img src="./images/tailwind/bootstrap_example.png" alt='bootstrap 예시'/>
+</ul>
+</details>
+<br/>
 
-Utility-first CSS에서는 클래스 이름을 스타일의 속성이 잘 드러나도록  짓습니다. 어떤 역할을 하는지, 어떤 화면에서 사용되는 지 등의 요소를 포함하지 않습니다.
+Utility-first CSS에서는 스타일의 속성이 잘 드러나도록 클래스 이름을 짓습니다. 어떤 역할을 하는지, 어떤 화면에서 사용되는 지 등의 요소를 포함하지 않습니다.
 
-예를 들어, margin과 padding만을 담당하는 클래스를 다음과 같이 정의합니다.
+클래스 이름은 다음과 같은 형태로 사용합니다.
 
 ```css
 .{property}{side}-{size}
 ```
 
+**margin**과 **padding**으로 간단한 예시를 들어보자면 아래와 같습니다.
+
 - `mt-5` : margin-top 값을 5px 등 정의된 속성에 따라 적용
 - `pb-3` : padding-bottom 값을 3px 등 정의된 속성에 따라 적용
 - `px-2` : x축 기준 padding값(padding-left, padding-right)을 2px등 정의된 속성에 따라 적용
 
-이렇게 필요한 속성을 config에 정의 해두고 여러가지 상황에서 사용할 수 있습니다.
-
 ![card_example.png](./images/tailwind/card_example.png)
 
-위와 같이 Card title을 감싸고 있는 박스에 상하좌우 padding 20px이 필요하다면, utility-first css에서는 다음과 같이 표현할 수 있습니다.
+Card title을 감싸고 있는 박스에 상하좌우 padding 20px이 필요하다면, 다음과 같이 표현할 수 있습니다.
 
 ```html{2}
 <div class="card">
-    <div class="card-body p-5">
+    <div class="card-body p-20">
     ...
     </div>
 </div>
@@ -60,17 +68,17 @@ Utility-first CSS에서는 클래스 이름을 스타일의 속성이 잘 드러
 
 ## Custom Config
 
-이번 글에서 소개 할 tailwind css는 **custom이 쉽고 자유롭다**는 장점과, config를 함수로 관리할 수도 있다는 장점이 있습니다.
+이번 글에서 소개 할 tailwind css는 **custom이 쉽고 확장에 용이하다는**는 장점이 있습니다.
 
 `padding`속성을 예로 살펴보겠습니다.
 
 ![search_example.png](./images/tailwind/search_example.png)
 
-[tailwind 페이지](https://tailwindcss.com/)에서 'padding'이라는 키워드로 검색하면, 다음과 같이 사용할 수 있는 속성들이 나옵니다.
+[tailwind 페이지](https://tailwindcss.com/)에서 **padding**이라는 키워드로 검색하면, 아래와 같이 사용할 수 있는 속성들이 나옵니다.
 
 ![search_result.png](./images/tailwind/search_result.png)
 
-기본 제공되는 속성을 사용할 수도 있고, `tailwind.config.js` 에서 두 가지 방법으로 커스텀 할수도 있습니다.
+기본적으로 적용되어 있는 속성을 사용할 수도 있고, `tailwind.config.js` 에서 커스텀 할수도 있습니다.
 
 ### theme.padding 사용
 
@@ -117,11 +125,11 @@ module.exports = {
 
 ```
 
-`spacing`을 사용해서 margin등 '수치'가 필요한 속성에서 모두 적용할 수 있습니다.
+`spacing`을 사용해서 margin등 **수치**가 필요한 속성에서 모두 적용할 수 있습니다.
 
 ### variants
 
-tailwind.config.js 파일의 `variants` 에서는 반응형 및 pseudo-class에 제어할 수 있도록 해줍니다.
+tailwind.config.js 파일의 `variants` 에서는 반응형 및 pseudo-class를 제어할 수 있도록 해줍니다.
 
 ```jsx
 // tailwind.config.js
@@ -236,7 +244,7 @@ module.exports = {
 }
 ```
 
-이런 식으로 원하는 utility class를 추가할 수 있습니다. 새롭게 추가한 class에 대해서도 위에서 언급한 variants속성을 부여할 수 있습니다.
+위와 같이 원하는 utility class를 추가할 수 있으며, 새롭게 추가한 class에 대해서도 variants속성을 추가할 수 있습니다.
 
 ```jsx
 // tailwind.config.js
@@ -257,7 +265,7 @@ module.exports = {
 }
 ```
 
-HTML Tag에 기본 스타일을 적용하고 싶다면, plugins에서  `addBase` 를 통해 지정할 수 있습니다.
+HTML Tag에 기본 스타일을 적용하고 싶다면, plugins에서  `addBase` 를 통해 적용할 수 있습니다.
 
 ```jsx
 // tailwind.config.js
@@ -276,11 +284,11 @@ module.exports = {
 }
 ```
 
-기본 스타일은 `div`, `h1`등과 같은 선택자만 허용합니다.
+기본 스타일은 [Element Selector](https://www.w3schools.com/cssref/sel_element.asp)만 허용합니다.
 
 ## With CSS-in-JS
 
-tailwind css는 [👩‍🎤 emotion](https://emotion.sh/docs/introduction) 이나 [💅 styled-components](https://styled-components.com/)등의 css-in-js 라이브러리와 함께 사용할 수 있습니다.  그리고 이 경우, [twin.macro](https://www.npmjs.com/package/twin.macro)와 함께 사용하면 더 깔끔한 코드를 작성할 수 있습니다.
+tailwind css는 [👩‍🎤 emotion](https://emotion.sh/docs/introduction) 이나 [💅 styled-components](https://styled-components.com/)와 같은 CSS-in-JS 라이브러리와 함께 사용할 수 있습니다.  이 경우 **[twin.macro](https://www.npmjs.com/package/twin.macro)**와 함께 사용하면 더 깔끔한 코드를 작성할 수 있습니다.
 
 ```jsx{2,7}
 import React from 'react'
@@ -302,7 +310,7 @@ const Input = styled.input([
 export default () => <Input hasDarkHover />
 ```
 
-> 현재 tailwindcss는 2020.05 기준 1.4.4버전까지 나왔고, twin.macro의 tailwindcss버전은 1.3.4입니다. twin.macro에서 tailwindcss 1.4.0 [지원을 위한 준비](https://github.com/ben-rogerson/twin.macro/issues/45)를 하고 있으니, 조금 기다리면 곧 나올 것 같습니다! 🎉
+> 2020.05 기준 tailwindcss는  1.4.4버전까지 나왔고, twin.macro의 tailwindcss버전은 1.3.4입니다. 현재 twin.macro에서 tailwindcss 1.4.0 [지원을 위한 준비](https://github.com/ben-rogerson/twin.macro/issues/45)중입니다.
 
 몇 가지 간단한 설정만 해주면 쉽게 사용할 수 있습니다.
 
