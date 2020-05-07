@@ -11,7 +11,7 @@ tailwind css는 utility-first CSS 프레임워크입니다.
 
 이 글에서는 utility-first CSS에 대한 개념과 tailwind를 어떻게 사용할 수 있는 지 소개합니다.
 
-## Utility-first CSS
+## utility-first CSS
 
 utility-first css라는 이름이 생소할 수 있지만, 사용하는 방법은 [Bootstrap](https://getbootstrap.com/)과 매우 유사합니다. Bootstrap에서는 다음과 같이 class를 부여하는 방식으로 스타일을 적용합니다.
 
@@ -38,13 +38,15 @@ utility-first css라는 이름이 생소할 수 있지만, 사용하는 방법�
 </details>
 <br/>
 
-Utility-first CSS에서는 스타일의 속성이 잘 드러나도록 클래스 이름을 짓습니다. 어떤 역할을 하는지, 어떤 화면에서 사용되는 지 등의 요소를 포함하지 않습니다.
+utility-first CSS는 각 class가 담당할 스타일을 미리 정의하고 필요한 class들을 조합해서 적용하는 식으로 사용합니다.
 
-클래스 이름은 다음과 같은 형태로 사용합니다.
+class 이름은 다음과 같은 형태로 짓습니다.
 
 ```css
 .{property}{side}-{size}
 ```
+
+### Example
 
 **margin**과 **padding**으로 간단한 예시를 들어보자면 아래와 같습니다.
 
@@ -54,7 +56,9 @@ Utility-first CSS에서는 스타일의 속성이 잘 드러나도록 클래스 
 
 ![card_example.png](./images/tailwind/card_example.png)
 
-Card title을 감싸고 있는 박스에 상하좌우 padding 20px이 필요하다면, 다음과 같이 표현할 수 있습니다.
+기존에는 Card title을 감싸고 있는 박스에 상하좌우 padding 20px이 필요하다면, `my-card-inner`와 같은 이름을 가진 class를 사용했을 것입니다. 그리고 이 class는 padding외에 여러가지 스타일을 담고 있을 수도 있고, 디자인이 변경될때마다 모든 요소를 파악해서 일괄적으로 수정해주어야 합니다.
+
+하지만, utility-first CSS에서는 다음과 같이 표현할 수 있습니다.
 
 ```html{2}
 <div class="card">
@@ -64,11 +68,15 @@ Card title을 감싸고 있는 박스에 상하좌우 padding 20px이 필요하�
 </div>
 ```
 
-이렇게, 요소의 기능적 측면보다는 스타일 관점에서 사용하는 것이 utility-first css입니다.
+이 경우, `p-20`의 기준 값이 20px에서 5rem으로 변경되는 상황에서도 설정값만 변경해주면 되어 수정에 용이하고 class가 담당하는 스타일이 무엇인지 명확하게 드러납니다.
 
-## Custom Config
+이런식으로 요소의 기능적 측면보다는 스타일 관점에서 사용하는 것이 utility-first css입니다.
 
-이번 글에서 소개 할 tailwind css는 **custom이 쉽고 확장에 용이하다는**는 장점이 있습니다.
+## TailwindCSS
+
+이번 글에서 소개 할 tailwind css는 다른 utility-first CSS에 비해 **custom이 쉽고 확장에 용이하다는**는 장점이 있습니다. 여러가지 플러그인을 추가하거나 직접 제작할 수 있고, 문서화도 잘 되어있습니다.
+
+### Example
 
 `padding`속성을 예로 살펴보겠습니다.
 
