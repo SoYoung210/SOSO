@@ -1,5 +1,5 @@
 ---
-title: 'tailwindcss를 소개합니다'
+title: 'Tailwindcss를 소개합니다'
 date: 2020-05-05 08:00:09
 category: web
 thumbnail: './images/tailwind/thumbnail.png'
@@ -7,13 +7,15 @@ thumbnail: './images/tailwind/thumbnail.png'
 
 ![image-thumbnail](./images/tailwind/thumbnail.png)
 
-tailwind css는 utility-first CSS 프레임워크입니다.
+Tailwind CSS는 utility-first CSS 프레임워크입니다.
 
-이 글에서는 utility-first CSS에 대한 개념과 tailwind를 어떻게 사용할 수 있는 지 소개합니다.
+이 글에서는 utility-first CSS에 대한 개념과 Tailwind CSS를 어떻게 사용할 수 있는 지 소개합니다.
 
 ## utility-first CSS
 
-utility-first css라는 이름이 생소할 수 있지만, 사용하는 방법은 [Bootstrap](https://getbootstrap.com/)과 매우 유사합니다. Bootstrap에서는 다음과 같이 class를 부여하는 방식으로 스타일을 적용합니다.
+utility-first CSS라는 이름이 생소할 수 있지만, 이미 많이 사용된 라이브러리 중에는 Bootstrap이 이 개념을 기반으로 제작되었습니다.
+
+사용하는 방법은 [Bootstrap](https://getbootstrap.com/)과 매우 유사합니다. Bootstrap에서는 다음과 같이 class를 부여하는 방식으로 스타일을 적용합니다.
 
 ```html
 <div class="alert alert-primary" role="alert">
@@ -74,7 +76,7 @@ class 이름은 다음과 같은 형태로 짓습니다.
 
 ## TailwindCSS
 
-이번 글에서 소개 할 tailwind css는 다른 utility-first CSS에 비해 **custom이 쉽고 확장에 용이하다는**는 장점이 있습니다. 여러가지 플러그인을 추가하거나 직접 제작할 수 있고, 문서화도 잘 되어있습니다.
+이번 글에서 소개 할 TailwindCSS는 다른 utility-first CSS에 비해 **custom이 쉽고 확장에 용이하다는**는 장점이 있습니다. 여러가지 플러그인을 추가하거나 직접 제작할 수 있고, 문서화도 잘 되어있습니다.
 
 ### Example
 
@@ -195,7 +197,7 @@ module.exports = {
 
 ### 반응형 적용
 
-tailwindcss에는 screen 크기에 따라 기본적으로 4개의 break point가 적용되어 있고, 유틸리티 클래스를 추가하는 것으로 쉽게 적용할 수 있습니다.
+TailwindCSS에는 screen 크기에 따라 기본적으로 4개의 break point가 적용되어 있고, 유틸리티 클래스를 추가하는 것으로 쉽게 적용할 수 있습니다.
 
 ```html
 <!-- 기본 16, medium: 32, large: 48 -->
@@ -296,7 +298,7 @@ module.exports = {
 
 ## With CSS-in-JS
 
-tailwind css는 [👩‍🎤 emotion](https://emotion.sh/docs/introduction) 이나 [💅 styled-components](https://styled-components.com/)와 같은 CSS-in-JS 라이브러리와 함께 사용할 수 있습니다.  이 경우 **[twin.macro](https://www.npmjs.com/package/twin.macro)**와 함께 사용하면 더 깔끔한 코드를 작성할 수 있습니다.
+TailwindCSS는 [👩‍🎤 emotion](https://emotion.sh/docs/introduction) 이나 [💅 styled-components](https://styled-components.com/)와 같은 CSS-in-JS 라이브러리와 함께 사용할 수 있습니다.  이 경우 **[twin.macro](https://www.npmjs.com/package/twin.macro)**와 함께 사용하면 더 깔끔한 코드를 작성할 수 있습니다.
 
 ```jsx{2,7}
 import React from 'react'
@@ -318,7 +320,7 @@ const Input = styled.input([
 export default () => <Input hasDarkHover />
 ```
 
-> 2020.05 기준 tailwindcss는  1.4.4버전까지 나왔고, twin.macro의 tailwindcss버전은 1.3.4입니다. 현재 twin.macro에서 tailwindcss 1.4.0 [지원을 위한 준비](https://github.com/ben-rogerson/twin.macro/issues/45)중입니다.
+> 2020.05 기준 TailwindCSS는  1.4.4버전까지 나왔고, twin.macro에서 사용하는 버전은 1.3.4입니다. 현재 twin.macro에서 TailwindCSS 1.4.0 [지원을 위한 준비](https://github.com/ben-rogerson/twin.macro/issues/45)중입니다.
 
 몇 가지 간단한 설정만 해주면 쉽게 사용할 수 있습니다.
 
@@ -345,15 +347,19 @@ export default () => <Input hasDarkHover />
 
 ## 마무리하며
 
-새로운 프로젝트에서 약 2달간 tailwindcss를 사용해본 결과 아직까지는 대부분 만족스럽습니다.
+TailwindCSS를 새로운 프로젝트에서 약 2달간 사용해본 결과 아직까지는 대부분 만족스럽습니다.
 
-> 한 가지 아쉬운 점은 translate속성에 3D를 지원하지 않아, 이 부분은 inline style로 별도로 처리해주었습니다.
+> 한 가지 아쉬운 점은 translate속성에 3D를 지원하지 않아, 이 부분은 별도로 inline style로 처리해주었습니다.
 
-분명, 적용 초반기에는 어떤 규칙으로 className을 적용해야 하는지 공식 사이트를 많이 참고해야 한다는 허들이 존재하지만 어느정도 익숙해지니 tailiwindcss는 이 허들을 감내 할만한 가치가 있는 도구라고 생각합니다. 디자인 가이드가 어느정도 통일성 있는 상황이라면 미리 정의해둔 class만 붙여주는 식으로 개발하게 되니 확실히 속도면에서 뚜렷한 장점이 느껴졌습니다.
+분명, 적용 초반기에는 어떤 규칙으로 className을 적용해야 하는지 공식 사이트를 많이 참고해야 한다는 허들이 존재하지만 어느정도 익숙해지니 이 허들을 감내 할만한 가치가 있는 도구라고 생각합니다. 특히, 디자인 가이드가 어느정도 통일성 있는 상황이라면 미리 정의해둔 class만 붙여주는 식으로 개발하게 되니 확실히 속도면에서 뚜렷한 장점이 느껴졌습니다.
 
-tailwind css를 사용해보며 style을 완전히 컴포넌트의 목적이나 기능과 분리하여 바라볼 수 있다는 새로운 관점도 생각해 볼 수 있었던 계기가 되었습니다.
+TailwindCSS를 사용해보며 style을 완전히 컴포넌트의 목적이나 기능과 분리하여 바라볼 수 있다는 새로운 관점도 생각해 볼 수 있었던 계기가 되었습니다.
 
 ## Ref
 
 - [https://blog.usejournal.com/utility-first-css-ridiculously-fast-front-end-development-for-almost-every-design-503130d8fefc](https://blog.usejournal.com/utility-first-css-ridiculously-fast-front-end-development-for-almost-every-design-503130d8fefc)
 - [https://tailwindcss.com/docs](https://tailwindcss.com/docs)
+
+## Recommend
+
+- [https://dev.to/michi/utility-first-css-you-have-to-try-it-first-3m85](https://dev.to/michi/utility-first-css-you-have-to-try-it-first-3m85)
