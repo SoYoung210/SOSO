@@ -7,9 +7,9 @@ thumbnail: './images/tailwind/thumbnail.png'
 
 ![image-thumbnail](./images/tailwind/thumbnail.png)
 
-Tailwind CSS는 utility-first CSS 프레임워크입니다.
+TailwindCSS는 utility-first CSS 프레임워크입니다.
 
-이 글에서는 utility-first CSS에 대한 개념과 Tailwind CSS를 어떻게 사용할 수 있는 지 소개합니다.
+이 글에서는 utility-first CSS에 대한 개념과 TailwindCSS를 어떻게 사용할 수 있는지 소개합니다. 평소 TailwindCSS에 관심이 있으셨거나 도입을 고려하고 계시다면 한번쯤 읽어보시면 좋을 것 같습니다.
 
 ## utility-first CSS
 
@@ -54,11 +54,11 @@ class 이름은 다음과 같은 형태로 짓습니다.
 
 - `mt-5` : margin-top 값을 5px 등 정의된 속성에 따라 적용
 - `pb-3` : padding-bottom 값을 3px 등 정의된 속성에 따라 적용
-- `px-2` : x축 기준 padding값(padding-left, padding-right)을 2px등 정의된 속성에 따라 적용
+- `px-2` : x축 기준 padding값(padding-left, padding-right)을 2px 등 정의된 속성에 따라 적용
 
 ![card_example.png](./images/tailwind/card_example.png)
 
-기존에는 Card title을 감싸고 있는 박스에 상하좌우 padding 20px이 필요하다면, `my-card-inner`와 같은 이름을 가진 class를 사용했을 것입니다. 그리고 이 class는 padding외에 여러가지 스타일을 담고 있을 수도 있고, 디자인이 변경될때마다 모든 요소를 파악해서 일괄적으로 수정해주어야 합니다.
+기존에는 Card title을 감싸고 있는 박스에 상하좌우 padding 20px이 필요하다면, `my-card-inner`와 같은 이름을 가진 class를 사용했을 것입니다. 그리고 이 class는 padding 외에 여러가지 스타일을 담고 있을 수도 있고, 디자인이 변경될 때마다 모든 요소를 파악해서 일괄적으로 수정해주어야 합니다.
 
 하지만, utility-first CSS에서는 다음과 같이 표현할 수 있습니다.
 
@@ -72,11 +72,11 @@ class 이름은 다음과 같은 형태로 짓습니다.
 
 이 경우, `p-20`의 기준 값이 20px에서 5rem으로 변경되는 상황에서도 설정값만 변경해주면 되어 수정에 용이하고 class가 담당하는 스타일이 무엇인지 명확하게 드러납니다.
 
-이런식으로 요소의 기능적 측면보다는 스타일 관점에서 사용하는 것이 utility-first css입니다.
+이런 식으로 요소의 기능적 측면보다는 스타일 관점에서 사용하는 것이 utility-first css입니다.
 
 ## TailwindCSS
 
-이번 글에서 소개 할 TailwindCSS는 다른 utility-first CSS에 비해 **custom이 쉽고 확장에 용이하다는**는 장점이 있습니다. 여러가지 플러그인을 추가하거나 직접 제작할 수 있고, 문서화도 잘 되어있습니다.
+이번 글에서 소개할 TailwindCSS는 다른 utility-first CSS에 비해 **custom이 쉽고 확장에 용이하다**는 장점이 있습니다. 여러 가지 플러그인을 추가하거나 직접 제작할 수 있고, 문서화도 잘 되어있습니다.
 
 ### Example
 
@@ -88,7 +88,7 @@ class 이름은 다음과 같은 형태로 짓습니다.
 
 ![search_result.png](./images/tailwind/search_result.png)
 
-기본적으로 적용되어 있는 속성을 사용할 수도 있고, `tailwind.config.js` 에서 커스텀 할수도 있습니다.
+기본적으로 적용되어 있는 속성을 사용할 수도 있고, `tailwind.config.js` 에서 커스텀할 수도 있습니다.
 
 ### theme.padding 사용
 
@@ -135,11 +135,11 @@ module.exports = {
 
 ```
 
-`spacing`을 사용해서 margin등 **수치**가 필요한 속성에서 모두 적용할 수 있습니다.
+`spacing`을 사용해서 margin 등 **수치**가 필요한 속성에서 모두 적용할 수 있습니다.
 
 ### variants
 
-tailwind.config.js 파일의 `variants` 에서는 반응형 및 pseudo-class를 제어할 수 있도록 해줍니다.
+tailwind.config.js 파일의 `variants`에서는 반응형 및 pseudo-class를 제어할 수 있도록 해줍니다.
 
 ```jsx
 // tailwind.config.js
@@ -208,7 +208,7 @@ TailwindCSS에는 screen 크기에 따라 기본적으로 4개의 break point가
 
 ![responsive_tailwind.gif](./images/tailwind/responsive_tailwind.gif)
 
-tailwind.config.js 의 `screens` 속성을 변경하여 breakpoints를 추가로 정의할 수 있습니다.
+tailwind.config.js의 `screens` 속성을 변경하여 breakpoints를 추가로 정의할 수 있습니다.
 
 ```jsx{5,8,11}
 // tailwind.config.js
@@ -230,7 +230,7 @@ module.exports = {
 
 ### plugins
 
-tailwindcss에서는 필요한 plugin을 추가로 생성할 수 있습니다.
+Tailwindcss에서는 필요한 plugin을 추가로 생성할 수 있습니다.
 
 ```jsx{16}
 // tailwind.config.js
@@ -275,7 +275,7 @@ module.exports = {
 }
 ```
 
-HTML Tag에 기본 스타일을 적용하고 싶다면, plugins에서  `addBase` 를 통해 적용할 수 있습니다.
+HTML Tag에 기본 스타일을 적용하고 싶다면, plugins에서  `addBase`를 통해 적용할 수 있습니다.
 
 ```jsx
 // tailwind.config.js
@@ -298,7 +298,7 @@ module.exports = {
 
 ## With CSS-in-JS
 
-TailwindCSS는 [👩‍🎤 emotion](https://emotion.sh/docs/introduction) 이나 [💅 styled-components](https://styled-components.com/)와 같은 CSS-in-JS 라이브러리와 함께 사용할 수 있습니다.  이 경우 **[twin.macro](https://www.npmjs.com/package/twin.macro)**와 함께 사용하면 더 깔끔한 코드를 작성할 수 있습니다.
+TailwindCSS는 [👩‍🎤 emotion](https://emotion.sh/docs/introduction)이나 [💅 styled-components](https://styled-components.com/)와 같은 CSS-in-JS 라이브러리와 함께 사용할 수 있습니다.  이 경우 **[twin.macro](https://www.npmjs.com/package/twin.macro)**와 함께 사용하면 더 깔끔한 코드를 작성할 수 있습니다.
 
 ```jsx{2,7}
 import React from 'react'
@@ -351,7 +351,7 @@ TailwindCSS를 새로운 프로젝트에서 약 2달간 사용해본 결과 아�
 
 > 한 가지 아쉬운 점은 translate속성에 3D를 지원하지 않아, 이 부분은 별도로 inline style로 처리해주었습니다.
 
-분명, 적용 초반기에는 어떤 규칙으로 className을 적용해야 하는지 공식 사이트를 많이 참고해야 한다는 허들이 존재하지만 어느정도 익숙해지니 이 허들을 감내 할만한 가치가 있는 도구라고 생각합니다. 특히, 디자인 가이드가 어느정도 통일성 있는 상황이라면 미리 정의해둔 class만 붙여주는 식으로 개발하게 되니 확실히 속도면에서 뚜렷한 장점이 느껴졌습니다.
+분명, 적용 초반기에는 어떤 규칙으로 className을 적용해야 하는지 공식 사이트를 많이 참고해야 한다는 허들이 존재하지만 어느 정도 익숙해지니 이 허들을 감내할만한 가치가 있는 도구라고 생각합니다. 특히, 디자인 가이드가 통일성 있는 상황이라면 미리 정의해둔 class만 붙여주는 식으로 개발하게 되니 확실히 속도면에서 뚜렷한 장점이 느껴졌습니다.
 
 TailwindCSS를 사용해보며 style을 완전히 컴포넌트의 목적이나 기능과 분리하여 바라볼 수 있다는 새로운 관점도 생각해 볼 수 있었던 계기가 되었습니다.
 
