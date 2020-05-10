@@ -1,6 +1,6 @@
 ---
 title: 'Tailwindcss를 소개합니다'
-date: 2020-05-05 08:00:09
+date: 2020-05-10 08:00:09
 category: web
 thumbnail: './images/tailwind/thumbnail.png'
 ---
