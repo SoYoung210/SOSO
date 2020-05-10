@@ -1,5 +1,5 @@
 ---
-title: 'Tailwindcss를 소개합니다'
+title: 'Tailwindcss를 소개합니다.(with. twin.macro + emotion)'
 date: 2020-05-10 08:00:09
 category: web
 thumbnail: './images/tailwind/thumbnail.png'
