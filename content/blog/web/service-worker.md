@@ -8,9 +8,9 @@ thumbnail: './images/tailwind/thumbnail.png'
 ![image-thumbnail](./images/tailwind/thumbnail.png)
 > 이미지 변경하기
 
-ServiceWorkier는 웹 서비스에서도 백그라운드 동기화, 푸시 알림 등이 가능하도록 지원해주는 도구입니다.
+ServiceWorker는 웹 서비스에서도 백그라운드 동기화, 푸시 알림 등이 가능하도록 지원해주는 도구입니다.
 
-이 글에서는 Service Worker에 대한 소개와 간단한 사용 예시들을 살펴봅니다.
+이 글에서는 ServiceWorker(이하 서비스워커)에 대한 소개와 간단한 사용 예시들을 살펴봅니다.
 
 ## 서비스 워커란?
 
@@ -20,7 +20,7 @@ ServiceWorkier는 웹 서비스에서도 백그라운드 동기화, 푸시 알�
 
 웹 페이지와 별개로 존재하기 때문에 다음과 같은 제약이 있습니다.
 
-1. 서비스 워커는 요청하지 않는 이상, 없는 것이나 다름 없습니다. 웹 워커(Web Workder)에서와 같은 `.ternimate()` 명령은 존재하지 않습니다.
+1. 서비스 워커는 요청하지 않는 이상, 없는 것이나 다름 없습니다. 웹 워커(Web Worker)에서와 같은 `.ternimate()` 명령은 존재하지 않습니다.
 2. 웹 페이지 life cycle을 따르지 않습니다. 서비스 워커는 웹페이지가 닫히더라도 자동으로 비활성화 되지 않습니다.
 3. 웹 페이지와 별개로 존재하므로 DOM이나 window요소에 접근할 수 없습니다.
 
