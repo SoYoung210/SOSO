@@ -2,10 +2,10 @@
 title: '간단한 Service Worker 소개'
 date: 2020-06-01 08:00:09
 category: web
-thumbnail: './images/tailwind/thumbnail.png'
+thumbnail: './images/service-worker/thumbnail.png'
 ---
 
-![image-thumbnail](./images/tailwind/thumbnail.png)
+![image-thumbnail](./images/service-worker/thumbnail.png)
 > 이미지 변경하기
 
 ServiceWorker는 웹 서비스에서도 백그라운드 동기화, 푸시 알림 등이 가능하도록 지원해주는 도구입니다.
