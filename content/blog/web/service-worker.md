@@ -19,9 +19,11 @@ ServiceWorker는 웹 서비스에서도 백그라운드 동기화, 푸시 알림
 
 웹 페이지와 별개로 존재하기 때문에 다음과 같은 제약이 있습니다.
 
-1. 서비스워커는 요청하지 않는 이상, 없는 것이나 다름 없습니다. 웹 워커(Web Worker)에서와 같은 `.ternimate()` 명령은 존재하지 않습니다.
+1. 서비스워커는 요청하지 않는 이상, 없는 것이나 다름 없습니다. [Web Worker](https://developer.mozilla.org/ko/docs/Web/API/Web_Workers_API)에서와 같은 `.ternimate()` 명령은 존재하지 않습니다.
 2. 웹 페이지 life cycle을 따르지 않습니다. 서비스워커는 웹페이지가 닫히더라도 자동으로 비활성화 되지 않습니다.
 3. 웹 페이지와 별개로 존재하므로 DOM이나 window요소에 접근할 수 없습니다.
+
+위 제약을 고려했을 때, 서비스워커는 다음과 같이 활용할 수 있습니다.
 
 ### 1. 캐시와 상호작용
 
@@ -33,13 +35,13 @@ ServiceWorker는 웹 서비스에서도 백그라운드 동기화, 푸시 알림
 
 ![push-notification](./images/service-worker/push-notification.png)
 
-서비스워커는 브라우저 창이 닫힌 상태에서도 동작하므로, 푸시 알람을 구현할 수 있습니다.
+브라우저 창이 닫힌 상태에서도 동작하므로, 푸시 알람을 구현할 수 있습니다.
 
 ### 3. 백그라운드 동기화
 
 ![background-sync](./images/service-worker/background-sync.png)
 
-채팅 메시지 또는 사진 업로드 등의 작업 도중 컴퓨터가 오프라인 상태가 되는 경우 오프라인 상태가 되었을 때 해당 작업을 마저 완료하는 것입니다.
+채팅 메시지 또는 사진 업로드 등의 작업 도중 컴퓨터가 오프라인 상태가 되는 경우 온라인 상태가 되었을 때 해당 작업을 마저 완료할 수 있습니다.
 
 ![background-sync-example1](./images/service-worker/background-sync-example1.png)
 
@@ -47,13 +49,13 @@ ServiceWorker는 웹 서비스에서도 백그라운드 동기화, 푸시 알림
 
 ![background-sync-example2](./images/service-worker/background-sync-example2.png)
 
-## Cache 설정(w. CRA)
+## Example: Cache 설정(w. CRA)
 
-서비스워커에서 캐시 관련 설정을 적용하기 위해서는 어떻게 해야하는 지 간단하게 살펴보고, [CRA](https://create-react-app.dev/)의 설정을 살펴보면서 React프로젝트에 어떻게 적용할 수 있는지 살펴보겠습니다.
+서비스워커에서 캐시 관련 설정을 적용하기 위해서는 어떻게 해야하는 지 간단하게 살펴보고, [CRA](https://create-react-app.dev/)를 기반으로, React프로젝트에서는 어떻게 적용할 수 있는지 살펴보겠습니다.
 
 ### 서비스워커 사용
 
-서비스워커를 사용하기 위해서는 먼저 서비스워커를 `등록`하는 단계가 필요합니다.
+서비스워커를 사용하기 위해서는 먼저 **등록**하는 단계가 필요합니다.
 
 ```jsx
 if('serviceWorker' in navigator) {
