@@ -76,8 +76,6 @@ const contentToChache = [
 
 `install` 이벤트 핸들러에서 캐싱에 관한 설정을 적어주면 됩니다.
 
-- 않이 여기서 self가 뭐람..
-
 ```jsx
 self.addEventListener('install', (e) => {
   console.log('[Service Worker] Install');
@@ -94,9 +92,9 @@ self.addEventListener('install', (e) => {
 
 서비스워커는 `waitUntil` 안쪽의 코드가 실행되기 전까지는 install되지 않습니다. 서비스워커 설치에 시간이 소요될 수 있으므로 이를 비동기로 처리하기 위해 callBack함수를 정의해주는 것입니다.
 
-`caches` 는 데이터를 저장할 수 있는 서비스워커 코드 범위 내에서 사용할 수 있는 객체입니다. [웹 저장소](https://developer.mozilla.org/ko/docs/Web/API/Web_Storage_API)는 동기적이므로 이 데이터를 웹 저장소에 저장할 수는 없습니다. 대신, 서비스워커는 Cache API를 사용합니다. 
+`caches` 는 데이터를 저장할 수 있는 서비스워커 코드 범위 내에서 사용할 수 있는 객체입니다. [웹 저장소](https://developer.mozilla.org/ko/docs/Web/API/Web_Storage_API)는 동기적이므로 이 데이터를 웹 저장소에 저장할 수는 없습니다. 대신, Cache API를 사용합니다.
 
-다음 요청 때에는 캐시 된 파일이 있다면 추가적으로 요청하지 않고 캐싱파일을 반환합니다.
+다음 요청 때에는 캐시 된 파일이 있다면 추가적으로 요청하지 않고 캐싱된파일을 반환합니다.
 
 ### 캐싱된 파일 사용
 
@@ -105,24 +103,29 @@ self.addEventListener('install', (e) => {
 ```jsx
 self.addEventListener('fetch', (e) => {
     console.log('[Service Worker] Fetched resource '+e.request.url);
-}); 
+});
 ```
 
-아래 코드는 서비스에서 요청한 리소스가 실제로 캐싱되어 있다면 캐싱파일을 제공하고, 없을 경우 캐시에 추가하는 코드입니다.
+아래 코드는 요청한 리소스가 실제로 캐싱되어 있다면 캐싱파일을 제공하고, 없을 경우 캐시에 추가하는 코드입니다.
 
-```jsx
+```jsx{5,7,16,18}
 self.addEventListener('fetch', (e) => {
   e.respondWith(
     caches.match(e.request).then((r) => {
+      // 캐싱된 리소스가 있다면 이를 반환
       return r || (
+        // 없다면, fetch진행
         fetch(e.request)
           .then((response) {
             return caches
               .open(cacheName)
               .then((cache) => {
-                console.log('[Service Worker] Caching new resource: '+e.request.url);
+                console.log(
+                  '[Service Worker] Caching new resource: '+e.request.url
+                );
+                // 캐시에 응답 저장
                 cache.put(e.request, response.clone());
-
+                // 응답 반환
                 return response;
               });
           });
@@ -136,7 +139,8 @@ self.addEventListener('fetch', (e) => {
 
 ### CRA의 서비스워커 설정
 
-CRA로 생성한 프로젝트에는 기본적으로 서비스워커에 대한 설정(링크: serviceWorker.ts`)이 되어 있습니다.
+CRA로 생성한 프로젝트에는 기본적으로 [Workbox](https://developers.google.com/web/tools/workbox)를 통해 [서비스워커를 지원](https://github.com/facebook/create-react-app/blob/c87ab79559e98a5dae2cd0b02477c38ff6113e6a/packages/react-scripts/config/webpack.config.js#L694)하고 있습니다.
+> [Added options to alow for overrides to workbox-webpack-plugin PR](https://github.com/facebook/create-react-app/pull/5369)에서 workbox옵션 커스텀에 대한 PR이 진행중이지만, 아직 배포되지 않았고 2018년 PR인점을 볼 때 근 시일내에 사용이 어려울 수 있을것 같습니다. 따라서, workbox를 커스텀하게 구성하고 싶다면 [@craco/craco](https://www.npmjs.com/package/@craco/craco)를 사용해서 구성할 수 있습니다.
 
 `register`함수에서는 다음과 같이 현재 환경이 production인지 등을 검사하고 load이벤트의 리스너로 서비스워커 등록을 실행하고 있습니다.
 
@@ -170,7 +174,7 @@ export function register(config?: Config) {
 }
 ```
 
-이 함수에서 참조하고 있는 `swUrl`은 build시 나오는 파일입니다.
+이 함수에서 참조하고 있는 `swUrl`은 build시 생성되는 `service-worker.js`파일의 path입니다.
 ![swUrl-build](./images/service-worker/swUrl-build.png)
 
 CRA는 workBox를 이용해서 기본적인 설정이 이미 되어있습니다.
