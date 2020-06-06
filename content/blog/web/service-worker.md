@@ -9,18 +9,18 @@ thumbnail: './images/service-worker/thumbnail.png'
 
 ServiceWorker는 웹 서비스에서도 백그라운드 동기화, 푸시 알림 등이 가능하도록 지원해주는 도구입니다.
 
-이 글에서는 서비스워커에 대한 소개와 간단하게  CRA기반에서 어떻게 cache를 설정하는 지 살펴봅니다.
+이 글에서는 서비스워커에 대한 소개와 간단하게 CRA기반에서 어떻게 cache설정을 적용하는지 살펴봅니다.
 
 ## 서비스워커란?
 
-서비스워커는 브라우저가 백그라운드에서 실행하는 스크립트로, 웹페이지와는 별개로 작동하며 웹페이지 또는 사용자의 인터랙션이 필요하지 않은 기능에 한해 다양한 기능을 제공하고 있습니다.
+서비스워커는 브라우저가 백그라운드에서 실행하는 스크립트로, 웹페이지와는 별개로 작동하며 웹페이지 또는 사용자의 인터랙션이 필요하지 않은 기능만 제공하고 있습니다.
 
-서비스워커의 수명 주기는 웹페이지와는 **완전히 별개입니다.** 웹 서비스와 브라우저 및 네트워크 사이에서 프록시 서버의 역할을 하며, 오프라인에서도 페이지가 사용 가능하도록 할 수도 있습니다.
+서비스워커의 수명 주기는 웹페이지와는 **완전히 별개입니다.** 웹 서비스와 브라우저 및 네트워크 사이에서 프록시 서버의 역할을 하며, 오프라인에서도 서비스를 사용할 수 있도록 합니다.
 
 웹 페이지와 별개로 존재하기 때문에 다음과 같은 제약이 있습니다.
 
-1. 서비스워커는 요청하지 않는 이상, 없는 것이나 다름 없습니다. [Web Worker](https://developer.mozilla.org/ko/docs/Web/API/Web_Workers_API)에서와 같은 `.ternimate()` 명령은 존재하지 않습니다.
-2. 웹 페이지 life cycle을 따르지 않습니다. 서비스워커는 웹페이지가 닫히더라도 자동으로 비활성화 되지 않습니다.
+1. 서비스워커는 요청하지 않는 이상, 없는 것이나 다름없습니다. [Web Worker](https://developer.mozilla.org/ko/docs/Web/API/Web_Workers_API)에서와 같은 `.ternimate()` 명령은 존재하지 않습니다.
+2. 웹 페이지 life cycle을 따르지 않습니다. 서비스워커는 웹페이지가 닫히더라도 자동으로 비활성화되지 않습니다.
 3. 웹 페이지와 별개로 존재하므로 DOM이나 window요소에 접근할 수 없습니다.
 
 위 제약을 고려했을 때, 서비스워커는 다음과 같이 활용할 수 있습니다.
@@ -51,7 +51,7 @@ ServiceWorker는 웹 서비스에서도 백그라운드 동기화, 푸시 알림
 
 ## Example: Cache 설정(w. CRA)
 
-서비스워커에서 캐시 관련 설정을 적용하기 위해서는 어떻게 해야하는 지 간단하게 살펴보고, [CRA](https://create-react-app.dev/)를 기반으로, React프로젝트에서는 어떻게 적용할 수 있는지 살펴보겠습니다.
+서비스워커에서 캐시 관련 설정을 어떻게 적용하는지 간단하게 살펴보고, [CRA](https://create-react-app.dev/)를 기반으로, React프로젝트에서는 어떻게 적용할 수 있는지 살펴보겠습니다.
 
 ### 서비스워커 사용
 
@@ -94,11 +94,11 @@ self.addEventListener('install', (e) => {
 
 `caches` 는 데이터를 저장할 수 있는 서비스워커 코드 범위 내에서 사용할 수 있는 객체입니다. [웹 저장소](https://developer.mozilla.org/ko/docs/Web/API/Web_Storage_API)는 동기적이므로 이 데이터를 웹 저장소에 저장할 수는 없습니다. 대신, Cache API를 사용합니다.
 
-다음 요청 때에는 캐시 된 파일이 있다면 추가적으로 요청하지 않고 캐싱된파일을 반환합니다.
+다음 요청 때에는 캐시 된 파일이 있다면 추가로 요청하지 않고 캐싱 된 파일을 반환합니다.
 
-### 캐싱된 파일 사용
+### 캐싱 된 파일 사용
 
-서비스에서 HTTP요청이 발생할 때 이 요청을 서비스워커에서 감지해서 처리할 수 있습니다.
+서비스에서 HTTP 요청이 발생할 때 이 요청을 서비스워커에서 감지해서 처리할 수 있습니다.
 
 ```jsx
 self.addEventListener('fetch', (e) => {
@@ -106,7 +106,7 @@ self.addEventListener('fetch', (e) => {
 });
 ```
 
-아래 코드는 요청한 리소스가 실제로 캐싱되어 있다면 캐싱파일을 제공하고, 없을 경우 캐시에 추가하는 코드입니다.
+아래 코드는 요청한 리소스가 실제로 캐싱되어 있다면 캐싱파일을 제공하고, 없으면 캐시에 추가하는 코드입니다.
 
 ```jsx{5,7,16,18}
 self.addEventListener('fetch', (e) => {
@@ -140,7 +140,7 @@ self.addEventListener('fetch', (e) => {
 ### CRA의 서비스워커 설정
 
 CRA로 생성한 프로젝트에는 기본적으로 [Workbox](https://developers.google.com/web/tools/workbox)를 통해 [서비스워커를 지원](https://github.com/facebook/create-react-app/blob/c87ab79559e98a5dae2cd0b02477c38ff6113e6a/packages/react-scripts/config/webpack.config.js#L694)하고 있습니다.
-> [Added options to alow for overrides to workbox-webpack-plugin PR](https://github.com/facebook/create-react-app/pull/5369)에서 workbox옵션 커스텀에 대한 PR이 진행중이지만, 아직 배포되지 않았고 2018년 PR인점을 볼 때 근 시일내에 사용이 어려울 수 있을것 같습니다. 따라서, workbox를 커스텀하게 구성하고 싶다면 [@craco/craco](https://www.npmjs.com/package/@craco/craco)를 사용해서 구성할 수 있습니다.
+> [Added options to alow for overrides to workbox-webpack-plugin PR](https://github.com/facebook/create-react-app/pull/5369)에서 workbox옵션 커스텀에 대한 PR이 진행 중이지만, 아직 배포되지 않았고 2018년 PR인 점을 볼 때 근 시일 내에 사용이 어려울 수 있을 것 같습니다. 따라서, workbox를 커스텀하게 구성하고 싶다면 [@craco/craco](https://www.npmjs.com/package/@craco/craco)를 사용해서 구성할 수 있습니다.
 
 `register`함수에서는 다음과 같이 현재 환경이 production인지 등을 검사하고 load이벤트의 리스너로 서비스워커 등록을 실행하고 있습니다.
 
@@ -227,10 +227,10 @@ function registerValidSW(swUrl: string, config?: Config) {
 }
 ```
 
-서비스워커의 상태가 `installed` 일때 이미 [navigator 객체](https://developer.mozilla.org/ko/docs/Web/API/Navigator)에 서비스워커가 존재한다면 **현재 탭이 종료되고 새로운 탭이 열렸을 때, 즉 실행 환경이 완전히 초기화 되었을 때 새로 캐시된 컨텐츠가 제공될 것**이라고 되어있습니다. 그 이유는 Workbox에서 탭이 새로 열리기 전까지는 cache manifest의 revision값이 갱신되지 않기 때문입니다.
+서비스워커의 상태가 `installed` 일 때 이미 [navigator 객체](https://developer.mozilla.org/ko/docs/Web/API/Navigator)에 서비스워커가 존재한다면 **현재 탭이 종료되고 새로운 탭이 열렸을 때, 즉 실행 환경이 완전히 초기화되었을 때 새로 캐시된 컨텐츠가 제공될 것**이라고 되어있습니다. 그 이유는 Workbox에서 탭이 새로 열리기 전까지는 cache manifest의 revision값이 갱신되지 않기 때문입니다.
 
 ![precache-build](images/service-worker/precache-build.png)
-Workbox는 `revision` 값과 `url` 정보를 종합하여 precache manifest를 구성합니다. 이 정보가 탭이 다시 열릴 때 까지는 갱신되지 않기 때문에 단순 새로고침으로는 배포 시 새로운 컨텐츠를 보여줄 수 없게 됩니다.
+Workbox는 `revision` 값과 `url` 정보를 종합하여 precache manifest를 구성합니다. 이 정보가 탭이 다시 열릴 때까지는 갱신되지 않기 때문에 단순 새로고침으로는 배포 시 새로운 컨텐츠를 보여줄 수 없게 됩니다.
 > 자세한 내용은 [Workbox Guide](https://developers.google.com/web/tools/workbox)에서 확인하실 수 있습니다.
 
 따라서, 서비스워커 캐싱 파일 목록에서 `index.html`을 제외하여 배포 상황에서도 새로운 컨텐츠를 바로 받아올 수 있도록 해야 합니다.
