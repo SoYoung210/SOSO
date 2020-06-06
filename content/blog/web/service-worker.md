@@ -235,7 +235,11 @@ Workbox는 `revision` 값과 `url` 정보를 종합하여 precache manifest를 �
 
 따라서, 서비스워커 캐싱 파일 목록에서 `index.html`을 제외하여 배포 상황에서도 새로운 컨텐츠를 바로 받아올 수 있도록 해야 합니다.
 
-[CRA GitHub Repository에 Custom Workbox설정에 관한 PR](https://github.com/facebook/create-react-app/pull/5369)이 올라와있지만 아직 배포 된 기능이 아니므로 이 설정을 override해야 합니다. [craco](https://www.npmjs.com/package/@craco/craco)등 cra의 webpack config를 변경할 수 있는 옵션을 사용하여 [Workbox Webpack Plugin](https://developers.google.com/web/tools/workbox/modules/workbox-webpack-plugin)의 설정을 변경해주어도 되고, workbox-cli를 이용하여 파일 서비스워커 관련 설정을 override해도 됩니다.
+[CRA GitHub Repository에 Custom Workbox설정에 관한 PR](https://github.com/facebook/create-react-app/pull/5369)이 올라와있지만 아직 머지되지 않았습니다. [craco](https://www.npmjs.com/package/@craco/craco)등 cra의 webpack config를 변경할 수 있는 옵션을 사용하여 [Workbox Webpack Plugin](https://developers.google.com/web/tools/workbox/modules/workbox-webpack-plugin)의 설정을 변경해주거나, workbox-cli를 이용하여 파일 서비스워커 관련 설정을 override해야 합니다.
+
+## 정리
+
+
 
 ## Ref
 
