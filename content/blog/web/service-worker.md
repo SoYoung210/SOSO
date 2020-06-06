@@ -239,7 +239,7 @@ Workbox는 `revision` 값과 `url` 정보를 종합하여 precache manifest를 �
 
 ## 정리
 
-
+간단하게 서비스워커와 캐시 예제까지 살펴보았습니다. 서비스워커 설정과 Web App Manifest설정을 추가한다면 간단하게 [PWA](https://developer.mozilla.org/en-US/docs/Web/Progressive_web_apps)를 구성할 수도 있습니다. 이를 잘 활용한다면 앞으로 웹앱이 가지고 있는 한계점을 극복할 수 있을것이라고 생각합니다.
 
 ## Ref
 
