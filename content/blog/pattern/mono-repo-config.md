@@ -1,5 +1,5 @@
 ---
-title: 'Saga Pattern과 redux-saga'
+title: 'Mono Repo 환경 구축하기(w. lerna + rollup + typescript)'
 date: 2020-06-20 00:03:61
 category: pattern
 thumbnail: './images/monorepo/thumbnail.png'
@@ -9,24 +9,23 @@ thumbnail: './images/monorepo/thumbnail.png'
 
 ## 들어가기 전에
 
-Lerna는 단일 저장소(Repository)에서 다양한 package를 관리할 수 있도록 도와주는 라이브러리입니다. 프로젝트 전체를 빌드하거나 테스트를 수행하는 등 저장소에서 관리하고 있는 pakcage들을 한번에 관리할 수 있도록 도와줍니다.
+이 글은 Lerna를 사용한 mono repo에서 package 환경 구축방법을 소개하는 글입니다. Lerna는 단일 저장소(Repository)에서 다양한 package를 관리할 수 있도록 도와주는 라이브러리이며 프로젝트 전체를 빌드하거나 테스트를 수행하는 등 저장소에서 관리하고 있는 package들을 한번에 관리할 수 있도록 도와줍니다.
 
-이 글은 lerna를 사용한 mono repo에서 package 환경 구축방법을 소개하는 글입니다.
-
-전체 코드는 [여기](https://github.com/SoYoung210/lerna-rollup-github-package-example)에서 보실 수 있습니다.
+이 글에 사용된 전체 코드는 [여기](https://github.com/SoYoung210/lerna-rollup-github-package-example)에서 확인하실 수 있습니다.
 
 ## 어떤 설정들을 공유하고 싶은가
 
-예시로 소개한 프로젝트는 Rollup을 번들러로 사용하고 있고,  TypeScript를 사용하며 각각 CJS와 ESM형태를 지원해야 합니다. 따라서, 모든 패키지에서 아래 설정 파일들이 필요합니다.
+이 글에서 다루는 프로젝트는 Rollup을 번들러로 사용하고 있고, TypeScript를 사용하며 각각 CJS와 ESM형태를 지원해야 합니다. 따라서, 모든 패키지에 아래 설정 파일들이 필요합니다.
 
 - rollup.config.js
 - tsconfig.json
 
 ## Step0. root위치에 config파일들 추가
 
-이 글에서는 각 package별로 config를 구성하는 것이 아니라, root에 위치시키고 이 설정파일을 package들이 공유하는 형태입니다.
+이 글에서는 각 package별로 config를 구성하는 것이 아니라, root에 위치시키고 이 설정파일을 package들이 공유하는 방식에 대해 소개할 예정입니다.
+Step별로 필요한 부분에 대해 소개할 예정입니다.
 
-프로젝트의 root에 각각 rollup.config.js, tsconfig.json를 추가합니다.
+우선, 프로젝트의 root에 각각 `rollup.config.js`, `tsconfig.json`를 추가합니다.
 
 ```jsx
 // rollup.config.js
@@ -54,7 +53,7 @@ function buildJS(input, output, format) {
     input,
     external: ['react'],
     // 생략 - https://github.com/SoYoung210/lerna-rollup-github-package-example/blob/master/rollup.config.js
-    preserveModules: format === 'es', //esm형태로 번들되지 않도록 (Tree Shaking)
+    preserveModules: format === 'es', // 하나의 파일로 bundle되지 않도록 (Tree Shaking)
   };
 
   return config;
@@ -103,7 +102,7 @@ function buildJS(input, output, format) {
 },
 ```
 
-`npm run build`를 수행하면 각 package의  package.json에 명시된 `build` 스크립트를 수행합니다.
+`npm run build`를 수행하면 각 package의 package.json에 명시된 `build` 스크립트를 수행합니다.
 
 `packages/sample-one`에 `build`스크립트를 추가합니다.
 
@@ -114,9 +113,9 @@ function buildJS(input, output, format) {
 }
 ```
 
-root에 있는 rollup파일을 참조할것이기 때문에 상대경로로 참조해 주었습니다. ESModule과 CommonJS를 지원할 수 있도록 `main`과 `module`필드도 추가해 주고, type에 대한 내용도 추가합니다.
+root에 있는 rollup설정파일을 참조할것이기 때문에 상대경로로 참조해 주었습니다. ESModule과 CommonJS를 지원할 수 있도록 `main`과 `module`필드도 추가해 주고, type에 대한 내용도 추가합니다.
 
-- 이 설정을 읽어 rollup.config.js에 적용합니다.
+> 이 설정을 읽어 rollup.config.js에 적용합니다.
 
 ```json
 // packages/sample-one/package.json
@@ -125,24 +124,23 @@ root에 있는 rollup파일을 참조할것이기 때문에 상대경로로 참�
 "types": "dist/index.d.ts",
 ```
 
-## Step2. package의 custom한 설정 읽어들이기
+## Step 2. package의 custom한 설정 읽어들이기
 
-config파일은 공유하지만, 각 패키지별로 커스텀하게 설정하고 싶은 부분도 있습니다. 예를 들면, 각 패키지별로 peerDependency를 다르게 설정하거나 rollup에 필요한 input파일 자체를 다르게 분리해야 할 필요가 있을수도 있습니다.
+config파일은 공유하지만, 각 패키지별로 커스텀하게 설정하고 싶은 부분도 있습니다. 예를 들면, 각 패키지별로 peerDependency를 다르게 설정하거나 rollup에 필요한 input파일 자체를 다르게 분리해야 할 필요가 있을수 있습니다.
 
-root에 위치한 config파일과 각 패키지를 이어주기 위해 `환경변수`와 [read-pkg-up](https://www.npmjs.com/package/read-pkg-up)을 사용합니다.
+root에 위치한 config파일과 각 패키지를 이어주기 위해 환경변수와 [read-pkg-up](https://www.npmjs.com/package/read-pkg-up)을 활용합니다.
 
 ### 환경변수
 
-`rollup.config.js` 의 경로와 패키지의 경로가 상이하기 때문에, 패키지의 package.json에서 input file의 경로를 환경변수로 전달했습니다.
+`rollup.config.js`의 경로와 각 패키지의 경로가 다르기 때문에, 패키지의 `package.json`에서 input file의 경로를 환경변수로 전달했습니다.
 
-- 👩🏻‍💻: rollup.config.js자체에 경로를 설정하거나 process.cwd등을 활용할 수도 있지만, 간단하게 해결하고자 위와 같이 적용하였습니다. 더 나은 방법으로 적용하시면 됩니다.
+> 👩🏻‍💻: rollup.config.js자체에 경로를 설정하거나 process.cwd등을 활용할 수도 있지만, 간단하게 해결하고자 위와 같이 적용하였습니다. 더 나은 방법으로 적용하시면 됩니다.
 
-🚨diff 로 할까 - git format
-
-```json
+```diff
 // packages/sample-one/package.json
 "scripts": {
-  "build": "NODE_ENV=production INPUT_FILE=./index.ts rollup -c ../../rollup.config.js"
+-  "build": "NODE_ENV=production rollup -c ../../rollup.config.js"
++  "build": "NODE_ENV=production INPUT_FILE=./index.ts rollup -c ../../rollup.config.js"
 }
 ```
 
@@ -176,15 +174,15 @@ function buildJS(input, output, format) {
 
 read-pkg-up은 가장 가까운 위치의 `package.json`을 읽어오는 라이브러리입니다.
 
-mono repo의 root에서 `lerna build` 와 같은 명령어를 수행하면 `lerna.json`의 `packages`를 참고하여 전체 프로젝트를 빌드하게 되는데, 이 때 각 package의 설정을 쉽게 읽어올 수 있도록 하기 위해 사용하였습니다.
+mono repo의 root에서 `lerna build`와 같은 명령어를 수행하면 `lerna.json`의 `packages`를 참고하여 전체 프로젝트를 빌드하게 되는데, 이 때 각 package의 설정을 쉽게 읽어올 수 있도록 하기 위해 사용하였습니다.
 
-## Step3. Type 정의 파일 생성
+## Step 3. Type 정의 파일 생성
 
-Step0에서 추가한 rollup.config.js를 살펴보면, cjs 포맷과 esm 포맷을 지원하고 있습니다.
+Step 0에서 추가한 rollup.config.js를 살펴보면, cjs 포맷과 esm 포맷을 지원하고 있습니다.
 
 `lerna build`를 수행하여 프로젝트를 빌드하면 다음과 같은 결과를 확인할 수 있습니다.
 
-```markdown
+```markdown{3,7}
 packages/sample-one
 +-- dist
 |   +-- esm
@@ -198,17 +196,11 @@ packages/sample-one
 
 esm과 cjs폴더를 만들어 분리해둔 형태입니다. esm을 지원하는 type definition파일이 추가되고 프로젝트의 root에 위치하도록 설정해야 합니다.
 
-프로젝트의 root에 위치하지 않으면 아래와 같이 import했을 때 'type을 읽을 수 없다는 에러'가 발생합니다.
+`index.d.ts`파일이 root에 위치하지 않으면 아래와 같이 import했을 때 모듈을 찾을 수 없다는 에러가 발생합니다.
 
 ![./images/monorepo/import-error.png](./images/monorepo/import-error.png)
 
-[rollup-plugin-typescript2](https://www.npmjs.com/package/rollup-plugin-typescript2)를 사용하는 방법도 있지만, dist의 root위치에 d.ts가 생성되지 않고 esm하위에 생성되는 이슈가 있어 별도로 생성해줍니다.
-
-절대경로로 참조한 모듈에 대해 d.ts가 정상적으로 생성되지 않는 이슈가 있어, [ttypescript](https://github.com/cevek/ttypescript/)와 [typescript-transform-paths](https://github.com/LeDDGroup/typescript-transform-paths)를 사용하도록 설정해줍니다.
-
-```powershell
-npm i -D ttypescript typescript-transform-paths
-```
+[rollup-plugin-typescript2](https://www.npmjs.com/package/rollup-plugin-typescript2)를 사용하는 방법도 있지만, dist의 root위치에 d.ts가 생성되지 않고 esm하위에 생성되는 이슈가 있어 type build를 rollup에서 수행하는 것이 아닌, 별도로 수행하도록 해주었습니다.
 
 ### 패키지 내 절대경로 설정
 
@@ -231,9 +223,15 @@ npm i -D ttypescript typescript-transform-paths
 }
 ```
 
-- 🚨`packages`하위에 위치한 모든 패키지를 `paths`에 추가해주지 않으면 type build시 에러가 발생합니다.
+> 🚨`packages`하위에 위치한 모든 패키지를 `paths`에 추가해주지 않으면 type build시 에러가 발생합니다.
 
 ### package build:typings 추가
+
+절대경로로 참조한 모듈에 대해 d.ts가 정상적으로 생성되지 않는 이슈가 있어, [ttypescript](https://github.com/cevek/ttypescript/)와 [typescript-transform-paths](https://github.com/LeDDGroup/typescript-transform-paths)를 사용하도록 설정해줍니다.
+
+```bash
+npm i -D ttypescript typescript-transform-paths
+```
 
 ```json
 // packages/sample-one/package.json
@@ -245,7 +243,7 @@ npm i -D ttypescript typescript-transform-paths
 
 각 패키지는 root의 `tsconfig.json` 을 사용하도록 했고, `--declarationDir` 옵션으로 경로를 따로 넘겨주는 방식으로 `sample-one/dist` 위치에 d.ts파일이 생성되도록 했습니다.
 
-```json
+```json{10,11}
 packages/sample-one
 +-- dist
 |   +-- esm
@@ -301,7 +299,7 @@ GitHub Actions를 사용해 master merge시 GitHub Package Registry로 배포되
 
 프로젝트의 `.github/workflows`폴더에 `relese.yml`파일을 생성합니다.
 
-```yaml
+```yaml{19,29,30,31}
 name: Release
 
 on:
