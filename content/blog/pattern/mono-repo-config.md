@@ -1,6 +1,6 @@
 ---
 title: 'Monorepo 환경 구축하기(w. lerna + rollup + typescript)'
-date: 2020-06-20 00:03:61
+date: 2020-06-21 00:03:61
 category: pattern
 thumbnail: './images/monorepo/thumbnail.png'
 ---
@@ -17,10 +17,12 @@ thumbnail: './images/monorepo/thumbnail.png'
 
 ## 어떤 설정을 공유하고 싶은가
 
-이 글에서 다루는 프로젝트는 Rollup을 번들러로 사용하고 있고, TypeScript를 사용하며 각각 CJS와 ESM형태를 지원합니다. 따라서, 모든 패키지에 아래 설정 파일들이 필요합니다.
+이 글에서 다루는 프로젝트는 Rollup을 번들러로 사용하고 있고, TypeScript를 사용하며 각각 CJS와 ESM형태를 지원합니다. 따라서, 패키지에 공통적으로 아래 설정 파일들이 필요합니다.
 
 - rollup.config.js
 - tsconfig.json
+
+이 설정을 모든 패키지에 만들지 않고 root에 두고 공유하는 형태로 작성할 예정입니다.
 
 ## Step 0. root에 config파일들 추가
 
@@ -50,7 +52,6 @@ function buildJS(input, output, format) {
 
   const config = {
     input,
-    external: ['react'],
     // 생략 - https://github.com/SoYoung210/lerna-rollup-github-package-example/blob/master/rollup.config.js
     preserveModules: format === 'es', // 하나의 파일로 bundle되지 않도록 (Tree Shaking)
   };
@@ -101,7 +102,7 @@ function buildJS(input, output, format) {
 },
 ```
 
-`npm run build`를 수행하면 각 패키지의 package.json에 명시된 `build` 스크립트를 수행합니다.
+프로젝트 root에서 `npm run build`를 수행하면 각 패키지의 package.json에 명시된 `build` 스크립트를 수행합니다.
 
 `packages/sample-one`에 `build`스크립트를 추가합니다.
 
@@ -173,6 +174,30 @@ read-pkg-up은 가장 가까운 위치의 `package.json`을 읽어오는 라이�
 
 Monorepo의 root에서 `lerna ${command}`를 수행하면 `lerna.json`의 `packages`의 경로를 순회하며 스크립트를 수행하는데, 이때 각 패키지의 `package.json`을 쉽게 읽어올 수 있도록 하기 위해 사용하였습니다.
 
+```js
+// rollup.config.js
+const fs = require('fs');
+const readPkgUp = require('read-pkg-up');
+
+const { packageJson: pkg } = readPkgUp.sync({
+  cwd: fs.realpathSync(process.cwd()),
+});
+
+const pkgDependencies = Object.keys(pkg.dependencies || {});
+const pkgPeerDependencies = Object.keys(pkg.peerDependencies || {});
+const pkgOptionalDependencies = Object.keys(pkg.optionalDependencies || {});
+
+const config = {
+  input,
+  external: pkgDependencies
+        .concat(pkgPeerDependencies)
+        .concat(pkgOptionalDependencies),
+  plugins: [
+    /* 생략 */
+  ]
+}
+```
+
 ## Step 3. Type 정의 파일 생성
 
 [Step 0](https://so-so.dev/pattern/mono-repo-config/#step-0-root%EC%97%90-config%ED%8C%8C%EC%9D%BC%EB%93%A4-%EC%B6%94%EA%B0%80)에서 추가한 rollup.config.js를 살펴보면, CommonJS 포맷과 ES Module포맷을 지원하고 있습니다.
@@ -199,11 +224,58 @@ esm과 cjs폴더를 만들어 분리해둔 형태입니다. `dist/`경로에 ES 
 
 [rollup-plugin-typescript2](https://www.npmjs.com/package/rollup-plugin-typescript2)를 사용하는 방법도 있지만, `dist/`위치에 d.ts가 생성되지 않고 esm폴더하위에 생성되는 이슈가 있어 type build를 rollup에서 수행하지 않고 별도로 수행하도록 해주었습니다.
 
+`tsconfig.json`의 경우 모든 패키지에서 type definition 설정을 공유할 수 없는 문제가 있습니다.
+
 ```json{4}
 // packages/sample-one/package.json
 "scripts": {
   "build": "npm run build:typings && NODE_ENV=production INPUT_FILE=./index.ts rollup -c ../../rollup.config.js",
   "build:typings": "tsc -p ../../tsconfig.json --declarationDir dist"
+}
+```
+
+위와 같이 root의 tsconfig.json을 사용하도록 한 경우 아래와 같이 `packages`하위의 모든 패키지에 대한 type build가 수행됩니다.
+
+```markdown{10,13}
+packages/sample-one
++-- dist
+|   +-- esm
+|      +-- index.js
+|      +-- index.js.map
+|      +-- main.js.map
+|   +-- cjs
+|      +-- index.js
++--    +-- index.js.map
+|   +-- sample-one
+|      +-- index.d.ts
+|      +-- main.d.ts
+|   +-- sample-two
+|      +-- index.d.ts
++--    +-- main.d.ts
+```
+
+각 패키지에 `tsconfig.json`을 두어서 현재 패키지 경로에 대한 정보가 포함되도록 수정해야 합니다.
+
+```json
+// packages/sample-one/tsconfig.json
+{
+  "extends": "../../tsconfig.json"
+}
+
+// packages/sample-two/tsconfig.json
+{
+  "extends": "../../tsconfig.json"
+}
+```
+
+`build:typings`에 사용되는 tsconfig.json 경로를 수정해 줍니다.
+
+```diff
+// packages/sample-one/package.json
+
+"scripts": {
+- "build:typings": "tsc -p ../../tsconfig.json --declarationDir dist"
++ "build:typings": "tsc -p ./tsconfig.json --declarationDir dist"
 }
 ```
 
@@ -238,28 +310,15 @@ esm과 cjs폴더를 만들어 분리해둔 형태입니다. `dist/`경로에 ES 
 npm i -D ttypescript typescript-transform-paths
 ```
 
+이전에 작성했던 `build:typings`내용을 수정해줍니다.
+> 만약 프로젝트에서 절대경로를 사용하지 않는다면 tsc로도 충분합니다.
+
 ```diff
 // packages/sample-one/package.json
 "scripts": {
-- "build:typings": "tsc -p ../../tsconfig.json --declarationDir dist",
-+ "build:typings": "ttsc -p ../../tsconfig.json --declarationDir dist"
+- "build:typings": "tsc -p ./tsconfig.json --declarationDir dist",
++ "build:typings": "ttsc -p ./tsconfig.json --declarationDir dist"
 },
-```
-
-`--declarationDir` 옵션으로 경로를 따로 넘겨주는 방식으로 `sample-one/dist` 위치에 d.ts파일이 생성되도록 했습니다.
-
-```json{10,11}
-packages/sample-one
-+-- dist
-|   +-- esm
-|      +-- index.js
-|      +-- index.js.map
-|      +-- main.js.map
-|   +-- cjs
-|      +-- index.js
-+--    +-- index.js.map
-+-- index.d.ts
-+-- main.d.ts
 ```
 
 ## Step 4. GitHub Package 배포 설정
