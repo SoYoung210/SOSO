@@ -9,13 +9,13 @@ thumbnail: './images/monorepo/thumbnail.png'
 
 ## 들어가기 전에
 
-이 글은 Lerna를 사용한 Monorepo에서 package 환경 구축방법을 소개하는 글입니다. Lerna는 Monorepo에서에서 다양한 패키지를 관리할 수 있도록 도와주는 라이브러리이며 프로젝트 전체를 빌드하거나 테스트를 수행하는 등 저장소에서 관리하고 있는 패키지들을 한번에 관리할 수 있도록 도와줍니다.
+이 글은 Lerna를 사용한 Monorepo에서 package 환경 구축 방법을 소개하는 글입니다. Lerna는 Monorepo에서에서 다양한 패키지를 관리할 수 있도록 도와주는 라이브러리이며 프로젝트 전체를 빌드하거나 테스트를 수행하는 등 저장소에서 관리하는 패키지들을 한 번에 관리할 수 있도록 도와줍니다.
 
-각 패키지별로 config를 구성하는 것이 아니라, root에 설정파일들을 두고, 각 패키지들이 공유하는 방식에 대해 Step별로 소개할 예정입니다.
+패키지별로 config를 구성하는 것이 아니라, root에 설정파일들을 두고, 각 패키지가 공유하는 방식에 대해 Step별로 소개할 예정입니다.
 
 이 글에 사용된 전체 코드는 [여기](https://github.com/SoYoung210/lerna-rollup-github-package-example)에서 확인하실 수 있습니다.
 
-## 어떤 설정들을 공유하고 싶은가
+## 어떤 설정을 공유하고 싶은가
 
 이 글에서 다루는 프로젝트는 Rollup을 번들러로 사용하고 있고, TypeScript를 사용하며 각각 CJS와 ESM형태를 지원합니다. 따라서, 모든 패키지에 아래 설정 파일들이 필요합니다.
 
@@ -88,7 +88,7 @@ function buildJS(input, output, format) {
 
 ## Step 1. lerna build 추가
 
-프로젝트의 root에 위치한 `package.json`에 아래 스크립트를 추가 합니다.
+`package.json`에 아래 스크립트를 추가합니다.
 
 ```json
 // root의 package.json
@@ -123,9 +123,9 @@ root에 있는 `rollup.config.js`을 사용하도록 설정했습니다. ESModul
 
 ## Step 2. package의 custom한 설정 읽어들이기
 
-config파일은 공유하지만, 각 패키지별로 커스텀하게 설정하고 싶은 부분도 있습니다. 예를 들면, 각 패키지별로 peerDependency를 다르게 설정하거나 rollup에 필요한 input파일 자체를 다르게 분리해야 할 필요가 있을수 있습니다.
+config파일은 공유하지만, 패키지별로 커스텀하게 설정하고 싶은 부분도 있습니다. 예를 들면, peerDependency를 다르게 설정하거나 rollup에 필요한 input파일 자체를 다르게 분리해야 할 필요가 있을수 있습니다.
 
-root에 위치한 config파일과 각 패키지를 이어주기 위해 환경변수와 [read-pkg-up](https://www.npmjs.com/package/read-pkg-up)을 활용합니다.
+root에 있는 config파일과 각 패키지를 이어주기 위해 환경변수와 [read-pkg-up](https://www.npmjs.com/package/read-pkg-up)을 활용합니다.
 
 ### 환경변수
 
@@ -171,7 +171,7 @@ function buildJS(input, output, format) {
 
 read-pkg-up은 가장 가까운 위치의 `package.json`을 읽어오는 라이브러리입니다.
 
-Monorepo의 root에서 `lerna ${command}`를 수행하면 `lerna.json`의 `packages`의 경로를 순회하며 스크립트를 수행하는데, 이 때 각 패키지의 `package.json`을 쉽게 읽어올 수 있도록 하기 위해 사용하였습니다.
+Monorepo의 root에서 `lerna ${command}`를 수행하면 `lerna.json`의 `packages`의 경로를 순회하며 스크립트를 수행하는데, 이때 각 패키지의 `package.json`을 쉽게 읽어올 수 있도록 하기 위해 사용하였습니다.
 
 ## Step 3. Type 정의 파일 생성
 
@@ -228,7 +228,7 @@ esm과 cjs폴더를 만들어 분리해둔 형태입니다. `dist/`경로에 ES 
 }
 ```
 
-> 🚨 : packages하위에 위치한 모든 패키지를 `paths`에 추가해주지 않으면 type build시 에러가 발생합니다.
+> 🚨 : packages 하위에 위치한 모든 패키지를 `paths`에 추가해주지 않으면 type build시 에러가 발생합니다.
 
 ### package build:typings 수정
 
@@ -278,29 +278,29 @@ lerna ERR! E400 scope 'test' in package name '@test/sample-two' does not match r
 
 ### .npmrc 생성
 
-프로젝트 root위치에 `.npmrc`파일을 생성하고, 아래 내용을 입력해줍니다.
+프로젝트 root에 `.npmrc`파일을 생성하고, 아래 내용을 입력해줍니다.
 
 ```powershell
 @userName:registry=https://npm.pkg.github.com/userName
 ```
 
-`package.json`파일에서 `@userName/sample-one`와 같이 @userName이 prefix로 붙는 패키지에 대해서 공식 npm 저장소(<https://registry/npmjs.org/>) 대신 GitHub Package Registry(<https://npm.pkg.github.com/userName>)에서 다운로드 한다는 설정입니다.
+`package.json`파일에서 `@userName/sample-one`와 같이 @userName이 prefix로 붙는 패키지에 대해서 공식 npm 저장소(<https://registry/npmjs.org/>) 대신 GitHub Package Registry(<https://npm.pkg.github.com/userName>)에서 다운로드한다는 설정입니다.
 
 ### Token 발급
 
 GitHub Action에서 GitHub Package Registry에 배포하려면, package권한을 가진 토큰을 발급받아야 합니다. [가이드 문서](https://help.github.com/en/github/authenticating-to-github/creating-a-personal-access-token-for-the-command-line)를 참고하여 `write:packages` 와 `read:packages` 권한을 가진 토큰을 발급받습니다.
 
-> 토큰 생성 페이지를 떠나면 더이상 토큰 값을 알 수 없으니 잘 메모 해두어야 합니다.
+> 토큰 생성 페이지를 떠나면 더이상 토큰값을 알 수 없으니 잘 메모 해두어야 합니다.
 
 ### Action
 
 GitHub Actions를 사용해 master merge시 GitHub Package Registry로 배포되도록 설정할 수 있습니다.
 
-우선 위에서 발급 받았던 토큰을 Repo의 Secret으로 추가해 줍니다.
+우선 위에서 발급받았던 토큰을 Repo의 Secret으로 추가해 줍니다.
 
 ![github-secret](./images/monorepo/github-secret.png)
 
-그 다음, `.github/workflows`에 `release.yml`파일을 생성합니다.
+그다음, `.github/workflows`에 `release.yml`파일을 생성합니다.
 
 ```yaml{6,19,29,30,31}
 name: Release
@@ -342,7 +342,7 @@ master branch로 merge될 때 Release Action이 수행되고, 아까 추가했�
 
 ## 마무리
 
-간단하게 Monorepo에서 환경 설정하는 방법에 대해 살펴보았습니다. 최근 진행했던 프로젝트에서 처음으로 Monorepo에서 여러가지 패키지를 관리해 보았는데, 각 패키지에서 공통적으로 사용하는 config를 통합해서 관리할 수 있고 의존성 모듈도 쉽게 관리할 수 있 는 등, 여러 장점을 실감할 수 있었습니다.
+간단하게 Monorepo에서 환경 설정하는 방법에 대해 살펴보았습니다. 최근 진행했던 프로젝트에서 처음으로 Monorepo에서 여러 가지 패키지를 관리해 보았는데, 각 패키지에서 공통으로 사용하는 config를 통합해서 관리할 수 있고 의존성 모듈도 쉽게 관리할 수 있는 등, 여러 장점을 실감할 수 있었습니다.
 
 ## Ref
 
