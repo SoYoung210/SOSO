@@ -9,7 +9,13 @@ thumbnail: './images/monorepo/thumbnail.png'
 
 ## 들어가기 전에
 
-이 글은 Lerna를 사용한 Monorepo에서 package 환경 구축 방법을 소개하는 글입니다. Lerna는 Monorepo에서에서 다양한 패키지를 관리할 수 있도록 도와주는 라이브러리이며 프로젝트 전체를 빌드하거나 테스트를 수행하는 등 저장소에서 관리하는 패키지들을 한 번에 관리할 수 있도록 도와줍니다.
+이 글은 Lerna를 사용한 Monorepo에서 package 환경 구축 방법을 소개하는 글입니다. 들어가기에 앞서 Monorepo의 장점에 대해 간단히 소개하면, 프로젝트마다 반복되는 설정을 공유할 수 있고 모듈화된 패키지를 서로 참조할 수 있습니다.
+
+Monorepo로 구성되어 있는 대표적인 프로젝트인 [babel](https://github.com/babel/babel)패키지 중 [babel-external-helpers](https://github.com/babel/babel/blob/main/packages/babel-cli/src/babel-external-helpers.js)를 살펴보면 다음과 같이 `@babel/core`패키지를 참조해서 사용하고 있는 것을 확인할 수 있습니다.
+
+![babel-example](./images/monorepo/babel-example.png)
+
+Monorepo 저장소는 [Lerna](https://lerna.js.org/)를 통해 쉽게 구성할 수 있습니다. Monorepo에서에서 다양한 패키지를 관리할 수 있도록 도와주는 라이브러리이며 프로젝트 전체를 빌드하거나 테스트를 수행하는 등 저장소에서 관리하는 패키지들을 한 번에 관리할 수 있도록 도와줍니다.
 
 패키지별로 config를 구성하는 것이 아니라, root에 설정파일들을 두고, 각 패키지가 공유하는 방식에 대해 Step별로 소개할 예정입니다.
 
