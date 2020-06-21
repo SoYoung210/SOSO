@@ -180,6 +180,8 @@ read-pkg-up은 가장 가까운 위치의 `package.json`을 읽어오는 라이�
 
 Monorepo의 root에서 `lerna ${command}`를 수행하면 `lerna.json`의 `packages`의 경로를 순회하며 스크립트를 수행하는데, 이때 각 패키지의 `package.json`을 쉽게 읽어올 수 있도록 하기 위해 사용하였습니다.
 
+아래는 각 패키지의 `package.json`을 읽어와 `external`설정을 커스텀하게 적용해주는 예제 코드입니다.
+
 ```js
 // rollup.config.js
 const fs = require('fs');
