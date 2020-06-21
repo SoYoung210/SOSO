@@ -9,21 +9,20 @@ thumbnail: './images/monorepo/thumbnail.png'
 
 ## 들어가기 전에
 
-이 글은 Lerna를 사용한 mono repo에서 package 환경 구축방법을 소개하는 글입니다. Lerna는 단일 저장소(Repository)에서 다양한 package를 관리할 수 있도록 도와주는 라이브러리이며 프로젝트 전체를 빌드하거나 테스트를 수행하는 등 저장소에서 관리하고 있는 package들을 한번에 관리할 수 있도록 도와줍니다.
+이 글은 Lerna를 사용한 Monorepo에서 package 환경 구축방법을 소개하는 글입니다. Lerna는 Monorepo에서에서 다양한 패키지를 관리할 수 있도록 도와주는 라이브러리이며 프로젝트 전체를 빌드하거나 테스트를 수행하는 등 저장소에서 관리하고 있는 패키지들을 한번에 관리할 수 있도록 도와줍니다.
+
+각 패키지별로 config를 구성하는 것이 아니라, root에 설정파일들을 두고, 각 패키지들이 공유하는 방식에 대해 Step별로 소개할 예정입니다.
 
 이 글에 사용된 전체 코드는 [여기](https://github.com/SoYoung210/lerna-rollup-github-package-example)에서 확인하실 수 있습니다.
 
 ## 어떤 설정들을 공유하고 싶은가
 
-이 글에서 다루는 프로젝트는 Rollup을 번들러로 사용하고 있고, TypeScript를 사용하며 각각 CJS와 ESM형태를 지원해야 합니다. 따라서, 모든 패키지에 아래 설정 파일들이 필요합니다.
+이 글에서 다루는 프로젝트는 Rollup을 번들러로 사용하고 있고, TypeScript를 사용하며 각각 CJS와 ESM형태를 지원합니다. 따라서, 모든 패키지에 아래 설정 파일들이 필요합니다.
 
 - rollup.config.js
 - tsconfig.json
 
-## Step0. root위치에 config파일들 추가
-
-이 글에서는 각 package별로 config를 구성하는 것이 아니라, root에 위치시키고 이 설정파일을 package들이 공유하는 방식에 대해 소개할 예정입니다.
-Step별로 필요한 부분에 대해 소개할 예정입니다.
+## Step 0. root에 config파일들 추가
 
 우선, 프로젝트의 root에 각각 `rollup.config.js`, `tsconfig.json`를 추가합니다.
 
@@ -102,7 +101,7 @@ function buildJS(input, output, format) {
 },
 ```
 
-`npm run build`를 수행하면 각 package의 package.json에 명시된 `build` 스크립트를 수행합니다.
+`npm run build`를 수행하면 각 패키지의 package.json에 명시된 `build` 스크립트를 수행합니다.
 
 `packages/sample-one`에 `build`스크립트를 추가합니다.
 
@@ -113,9 +112,7 @@ function buildJS(input, output, format) {
 }
 ```
 
-root에 있는 rollup설정파일을 참조할것이기 때문에 상대경로로 참조해 주었습니다. ESModule과 CommonJS를 지원할 수 있도록 `main`과 `module`필드도 추가해 주고, type에 대한 내용도 추가합니다.
-
-> 이 설정을 읽어 rollup.config.js에 적용합니다.
+root에 있는 `rollup.config.js`을 사용하도록 설정했습니다. ESModule과 CommonJS를 지원할 수 있도록 `main`과 `module`필드도 추가해 주고, `types`에 대한 내용도 추가합니다.
 
 ```json
 // packages/sample-one/package.json
@@ -146,7 +143,7 @@ root에 위치한 config파일과 각 패키지를 이어주기 위해 환경변
 
 rollup.config.js에서 input의 경로를 환경변수로 사용하도록 변경합니다.
 
-```jsx
+```jsx{1,18}
 const input = process.env.INPUT_FILE;
 
 function buildJS(input, output, format) {
@@ -174,11 +171,11 @@ function buildJS(input, output, format) {
 
 read-pkg-up은 가장 가까운 위치의 `package.json`을 읽어오는 라이브러리입니다.
 
-mono repo의 root에서 `lerna build`와 같은 명령어를 수행하면 `lerna.json`의 `packages`를 참고하여 전체 프로젝트를 빌드하게 되는데, 이 때 각 package의 설정을 쉽게 읽어올 수 있도록 하기 위해 사용하였습니다.
+Monorepo의 root에서 `lerna ${command}`를 수행하면 `lerna.json`의 `packages`의 경로를 순회하며 스크립트를 수행하는데, 이 때 각 패키지의 `package.json`을 쉽게 읽어올 수 있도록 하기 위해 사용하였습니다.
 
 ## Step 3. Type 정의 파일 생성
 
-Step 0에서 추가한 rollup.config.js를 살펴보면, cjs 포맷과 esm 포맷을 지원하고 있습니다.
+[Step 0](https://so-so.dev/pattern/mono-repo-config/#step-0-root%EC%97%90-config%ED%8C%8C%EC%9D%BC%EB%93%A4-%EC%B6%94%EA%B0%80)에서 추가한 rollup.config.js를 살펴보면, CommonJS 포맷과 ES Module포맷을 지원하고 있습니다.
 
 `lerna build`를 수행하여 프로젝트를 빌드하면 다음과 같은 결과를 확인할 수 있습니다.
 
@@ -194,17 +191,25 @@ packages/sample-one
 +--    +-- index.js.map
 ```
 
-esm과 cjs폴더를 만들어 분리해둔 형태입니다. esm을 지원하는 type definition파일이 추가되고 프로젝트의 root에 위치하도록 설정해야 합니다.
+esm과 cjs폴더를 만들어 분리해둔 형태입니다. `dist/`경로에 ES Modules을 지원하는 type definition파일이 추가되어야 합니다.
 
-`index.d.ts`파일이 root에 위치하지 않으면 아래와 같이 import했을 때 모듈을 찾을 수 없다는 에러가 발생합니다.
+`index.d.ts`파일이 `dist/`에 위치하지 않으면 아래와 같이 모듈을 import했을 때 찾을 수 없다는 에러가 발생합니다.
 
 ![./images/monorepo/import-error.png](./images/monorepo/import-error.png)
 
-[rollup-plugin-typescript2](https://www.npmjs.com/package/rollup-plugin-typescript2)를 사용하는 방법도 있지만, dist의 root위치에 d.ts가 생성되지 않고 esm하위에 생성되는 이슈가 있어 type build를 rollup에서 수행하는 것이 아닌, 별도로 수행하도록 해주었습니다.
+[rollup-plugin-typescript2](https://www.npmjs.com/package/rollup-plugin-typescript2)를 사용하는 방법도 있지만, `dist/`위치에 d.ts가 생성되지 않고 esm폴더하위에 생성되는 이슈가 있어 type build를 rollup에서 수행하지 않고 별도로 수행하도록 해주었습니다.
+
+```json{4}
+// packages/sample-one/package.json
+"scripts": {
+  "build": "npm run build:typings && NODE_ENV=production INPUT_FILE=./index.ts rollup -c ../../rollup.config.js",
+  "build:typings": "tsc -p ../../tsconfig.json --declarationDir dist"
+}
+```
 
 ### 패키지 내 절대경로 설정
 
-`import sth from '@sample-one/main`과 같은 형태로 참조하기 위해서 `tsconfig.json`에 path관련 설정을 추가해 주어야 합니다. ([참고](https://medium.com/@joshuaavalon/webpack-alias-in-typescript-declarations-81d2b6c0dcd6))
+패키지 내에서 `import { main } from '@sample-one/main`와 같이 절대경로로 참조하기 위해서 `tsconfig.json`에 path관련 설정을 추가해 주어야 합니다. ([참고](https://medium.com/@joshuaavalon/webpack-alias-in-typescript-declarations-81d2b6c0dcd6))
 
 ```json
 // tsconfig.json
@@ -223,25 +228,25 @@ esm과 cjs폴더를 만들어 분리해둔 형태입니다. esm을 지원하는 
 }
 ```
 
-> 🚨`packages`하위에 위치한 모든 패키지를 `paths`에 추가해주지 않으면 type build시 에러가 발생합니다.
+> 🚨 : packages하위에 위치한 모든 패키지를 `paths`에 추가해주지 않으면 type build시 에러가 발생합니다.
 
-### package build:typings 추가
+### package build:typings 수정
 
-절대경로로 참조한 모듈에 대해 d.ts가 정상적으로 생성되지 않는 이슈가 있어, [ttypescript](https://github.com/cevek/ttypescript/)와 [typescript-transform-paths](https://github.com/LeDDGroup/typescript-transform-paths)를 사용하도록 설정해줍니다.
+절대경로로 참조한 모듈에 대해 d.ts파일이 정상적으로 생성되지 않는 이슈가 있어, [ttypescript](https://github.com/cevek/ttypescript/)와 [typescript-transform-paths](https://github.com/LeDDGroup/typescript-transform-paths)를 사용하도록 설정해줍니다.
 
 ```bash
 npm i -D ttypescript typescript-transform-paths
 ```
 
-```json
+```diff
 // packages/sample-one/package.json
 "scripts": {
-  "build": "rm -rf dist && npm run build:typings && cross-env NODE_ENV=production INPUT_FILE=./index.ts rollup -c ../../rollup.config.js",
-  "build:typings": "ttsc -p ../../tsconfig.json --declarationDir dist"
+- "build:typings": "tsc -p ../../tsconfig.json --declarationDir dist",
++ "build:typings": "ttsc -p ../../tsconfig.json --declarationDir dist"
 },
 ```
 
-각 패키지는 root의 `tsconfig.json` 을 사용하도록 했고, `--declarationDir` 옵션으로 경로를 따로 넘겨주는 방식으로 `sample-one/dist` 위치에 d.ts파일이 생성되도록 했습니다.
+`--declarationDir` 옵션으로 경로를 따로 넘겨주는 방식으로 `sample-one/dist` 위치에 d.ts파일이 생성되도록 했습니다.
 
 ```json{10,11}
 packages/sample-one
@@ -261,13 +266,11 @@ packages/sample-one
 
 이 프로젝트를 GitHub Package Registry를 사용하여 배포되도록 설정해보겠습니다.
 
-GitHub 관련 설정을 적용하기 전, mono repo에서 가장 중요한 부분인 `package.json`의 name을 확인해야 합니다.
+GitHub 관련 설정을 적용하기 전, Monorepo에서 가장 중요한 부분인 `package.json`의 name을 확인해야 합니다.
 
 ![package-name](./images/monorepo/package-name.png)
 
-사진과 같이 `@${userName}/${packageName}` 형식으로 적어주어야 합니다.
-
-올바른 형식으로 적어주지 않으면 다음과 같은 Error가 발생합니다.
+사진과 같이 `@${userName}/${packageName}` 형식으로 적어주지 않으면 다음과 같은 Error가 발생합니다.
 
 ```
 lerna ERR! E400 scope 'test' in package name '@test/sample-two' does not match repo owner 'SoYoung210' in repository element in package.json
@@ -275,19 +278,19 @@ lerna ERR! E400 scope 'test' in package name '@test/sample-two' does not match r
 
 ### .npmrc 생성
 
-프로젝트 root위치에 .npmrc를 생성하고, 아래 내용을 입력해줍니다.
+프로젝트 root위치에 `.npmrc`파일을 생성하고, 아래 내용을 입력해줍니다.
 
 ```powershell
-echo "@userName:registry=https://npm.pkg.github.com/userName" >> ~/.npmrc
+@userName:registry=https://npm.pkg.github.com/userName
 ```
 
-- `package.json`파일에서 `@userName/sample-one`과 같이 @userName이 prefix로 붙는
+`package.json`파일에서 `@userName/sample-one`와 같이 @userName이 prefix로 붙는 패키지에 대해서 공식 npm 저장소(<https://registry/npmjs.org/>) 대신 GitHub Package Registry(<https://npm.pkg.github.com/userName>)에서 다운로드 한다는 설정입니다.
 
 ### Token 발급
 
 GitHub Action에서 GitHub Package Registry에 배포하려면, package권한을 가진 토큰을 발급받아야 합니다. [가이드 문서](https://help.github.com/en/github/authenticating-to-github/creating-a-personal-access-token-for-the-command-line)를 참고하여 `write:packages` 와 `read:packages` 권한을 가진 토큰을 발급받습니다.
 
-- 토큰 생성 페이지를 떠나면 더이상 토큰 값을 알 수 없으니 잘 메모 해두어야 합니다.
+> 토큰 생성 페이지를 떠나면 더이상 토큰 값을 알 수 없으니 잘 메모 해두어야 합니다.
 
 ### Action
 
@@ -297,9 +300,9 @@ GitHub Actions를 사용해 master merge시 GitHub Package Registry로 배포되
 
 ![github-secret](./images/monorepo/github-secret.png)
 
-프로젝트의 `.github/workflows`폴더에 `relese.yml`파일을 생성합니다.
+그 다음, `.github/workflows`에 `release.yml`파일을 생성합니다.
 
-```yaml{19,29,30,31}
+```yaml{6,19,29,30,31}
 name: Release
 
 on:
@@ -333,15 +336,13 @@ jobs:
         NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 ```
 
-Release Action이 수행될 때, 아까 추가했던 `PACKAGE_TOKEN`이 `.npmrc`에 추가되도록 합니다. 이 Token을 사용해 Action상에서 새로운 GitHub Package를 배포할 수 있습니다.
+master branch로 merge될 때 Release Action이 수행되고, 아까 추가했던 `PACKAGE_TOKEN`이 `.npmrc`에 추가됩니다. 이 Token을 사용해 Action상에서 새로운 GitHub Package를 배포할 수 있습니다.
 
 `npm run publish`가 수행되면서 `lerna publish`가 수행되고, packages중 version변화가 있는 패키지만 새롭게 배포됩니다.
 
 ## 마무리
 
-간단하게 mono repo에서 환경 설정하는 방법에 대해 살펴보았습니다. 최근 진행했던 프로젝트에서 Mono Repo에서 여러가지 패키지를 관리해 보았는데, 여러 장점을 실감할 수 있었습니다.
-
-각 패키지에서 공통적으로 사용하는 config를 통합해서 관리할 수 있고, 각 패키지의 의존성 모듈도 쉽게 관리할 수 있다고 생각했습니다.
+간단하게 Monorepo에서 환경 설정하는 방법에 대해 살펴보았습니다. 최근 진행했던 프로젝트에서 처음으로 Monorepo에서 여러가지 패키지를 관리해 보았는데, 각 패키지에서 공통적으로 사용하는 config를 통합해서 관리할 수 있고 의존성 모듈도 쉽게 관리할 수 있 는 등, 여러 장점을 실감할 수 있었습니다.
 
 ## Ref
 
