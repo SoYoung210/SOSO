@@ -1,5 +1,5 @@
 ---
-title: 'Mono Repo 환경 구축하기(w. lerna + rollup + typescript)'
+title: 'Monorepo 환경 구축하기(w. lerna + rollup + typescript)'
 date: 2020-06-20 00:03:61
 category: pattern
 thumbnail: './images/monorepo/thumbnail.png'
