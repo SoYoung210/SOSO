@@ -13,7 +13,7 @@ thumbnail: ''
       </span>
     </h1>
   </div>
-
+</article>
 <br/>
 
 웹 프론트엔드 개발자 이소영입니다.  
@@ -23,11 +23,9 @@ React를 주로 다루며, 문서화와 구조, 그리고 UX에 관심이 많습
 
 |            |                              |
 | :--------: | ---------------------------- |
-| **GitHub** | https://github.com/SoYoung210 |
-| **Blog** | https://so-so.dev |
+| **GitHub** | <https://github.com/SoYoung210> |
+| **Blog** | <https://so-so.dev> |
 | **E-mail** | ethdud1@gmail.com            |
-
-  </div>
 
 <div class="l-Header">
   <h1 class="Title">
@@ -61,7 +59,7 @@ React를 주로 다루며, 문서화와 구조, 그리고 UX에 관심이 많습
   * LightHouse기준(Slow 4G)40점에서 87점까지 향상.
   * Round Trip을 고려한 Code Splitting Guide 수립.
   * SSR이 필요한 프로젝트 예시와 예시 코드를 통한 React에서의 SSR 가이드 수립.
-  > 관련 저장소: https://github.com/SoYoung210/react-ssr-code-splitting
+  > 관련 저장소: <https://github.com/SoYoung210/react-ssr-code-splitting>
 
 * 웹 기반 서비스 [IaC](https://en.wikipedia.org/wiki/Infrastructure_as_code) 관련 가이드 수립
   * Kubernetes, Nginx 등 뱅크샐러드의 웹 기반 서비스들이 어떤 구조로 운영되고 있고, 어떻게 변경/개선 되는지 도식화 하여 문서 작성
@@ -105,7 +103,7 @@ React를 주로 다루며, 문서화와 구조, 그리고 UX에 관심이 많습
 
 ## soso-tip
 
-- GitHub Repository Link: https://github.com/SoYoung210/soso-tip
+- GitHub Repository Link: <https://github.com/SoYoung210/soso-tip>
 
 개발프로젝트는 아닙니다. 개발과정에서 만났던 이슈를 기록하고, 공유하는 용도의 저장소 입니다.  
 같은 실수를 반복하는 경험을 줄일 수 있고, 실수한 내용을 정리하는 과정에서 완벽히 이해할 수 있다고 생각합니다.
