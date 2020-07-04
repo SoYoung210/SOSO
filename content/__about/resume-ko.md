@@ -10,7 +10,7 @@ thumbnail: ''
 이소영 입니다.
 </h1>
 
-저는 이런 것들에 가치를 두고 있습니다.
+**저는 이런 것들에 가치를 두고 있습니다.**
 
 - 최고의 고객 경험을 만들어 가는 것
 - 확장성 있는 구조에 대한 고민
@@ -29,7 +29,7 @@ thumbnail: ''
 <span class='highlight'>Work Experiences</span>
 </h1>
 
-## Banksalad
+<h2 class='no-border'>Banksalad </h2>
 
 |              |                                                         |
 | -----------: | ------------------------------------------------------- |
@@ -65,17 +65,13 @@ thumbnail: ''
 
 MoneyFlow팀에서 사용하는 CMS입니다. 팀에서 사용하던 구조에서
 
-- 팀에서 사용하던 [Clean Architecture](https://speakerdeck.com/soyoung210/clean-architecture-in-banksalad) 하고 상태관리 라이브러리를 도입한 첫 번째 프로젝트
-
-> [발표자료](https://speakerdeck.com/soyoung210/heonjibjulge-saejibdao-riaegteu-peurojegteu-gujojojeong)
+- 팀에서 사용하던 [Clean Architecture](https://speakerdeck.com/soyoung210/clean-architecture-in-banksalad) 하고 상태관리 라이브러리를 도입한 첫 번째 프로젝트 ([발표자료](https://speakerdeck.com/soyoung210/heonjibjulge-saejibdao-riaegteu-peurojegteu-gujojojeong))
 
 - 기존 구조는 Repository, Service 등 의존성 주입 구조였는데 이 구조에서는 변경사항이 있을 때 프로젝트를 빠르게 파악하기 어렵다고 판단하여 이 부분을 제거하였습니다.
 
 ## About 테스트
 
 ### 단위테스트
-
-*Project*: 대출 추천 재개발, JS-Banksalad, web-scaffolding, etc.
 
 🗓: [Banksalad] ~ 현재
 
@@ -86,8 +82,6 @@ MoneyFlow팀에서 사용하는 CMS입니다. 팀에서 사용하던 구조에�
 - 이 외에 공통적으로 사용하는 util function등에 대해 '성공, 에러 반환, 극단 값, 이상한 값'등으로 나누어 테스트를 작성할 수 있도록 작성 가이드를 문서화 하였습니다.
 
 ### UI Test
-
-*Project*: 대출 추천 재개발, JS-Banksalad, web-scaffolding, etc.
 
 🗓: [Banksalad] ~ 현재
 
