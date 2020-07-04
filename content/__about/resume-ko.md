@@ -5,21 +5,19 @@ lang: 'ko'
 thumbnail: ''
 ---
 
-<article class="l-Wrapper">
-  <div class="l-Header">
-    <h1 class="Title">
-      <span class="u-shadow">
-        SOYOUNG LEE
-      </span>
-    </h1>
-  </div>
-</article>
-<br/>
+<h1 class='title'>
+안녕하세요, 프론트엔드 엔지니어 <br/>
+이소영 입니다.
+</h1>
 
-웹 프론트엔드 개발자 이소영입니다.  
-React를 주로 다루며, 문서화와 구조, 그리고 UX에 관심이 많습니다.
+저는 이런 것들에 가치를 두고 있습니다.
 
-`#TypeScript` `#React` `#RxJS` `#Redux` `#Documentation` `#Architecture`
+- 최고의 고객 경험을 만들어 가는 것
+- 확장성 있는 구조에 대한 고민
+- 안정성 있는 프로젝트를 위한 테스트 작성
+- 반복되는 일을 자동화 하여 생산성 높이기
+- 기술을 통해 비즈니스 가치에 기여하는 일
+- 지식과 경험 공유
 
 |            |                              |
 | :--------: | ---------------------------- |
@@ -27,15 +25,11 @@ React를 주로 다루며, 문서화와 구조, 그리고 UX에 관심이 많습
 | **Blog** | <https://so-so.dev> |
 | **E-mail** | ethdud1@gmail.com            |
 
-<div class="l-Header">
-  <h1 class="Title">
-    <span class="u-shadow">
-      Work Experiences
-    </span>
-  </h1>
-</div>
+<h1>
+<span class='highlight'>Work Experiences</span>
+</h1>
 
-<a class="u-link" href="https://rainist.com" target="_blank">Rainist</a>
+## Banksalad
 
 |              |                                                         |
 | -----------: | ------------------------------------------------------- |
@@ -43,80 +37,142 @@ React를 주로 다루며, 문서화와 구조, 그리고 UX에 관심이 많습
 | **position** | 웹 프론트엔드 개발자 |
 | **projects** | 8주 안정화 프로젝트, CMS, Static Web Generator, Project Generator |
 
-<div class="l-Header">
-  <h1 class="Title">
-    <span class="u-shadow">
-      Tech Experiences
-    </span>
-  </h1>
-</div>
+<h1>
+<span class='highlight'>Interested In</span>
+</h1>
 
-## 뱅크샐러드 8주 안정화 프로젝트
+## About 구조
 
-전사적으로 기술 부문의 안정화 프로젝트를 진행했고, Web팀에서 다음과 같은 일을 맡아서 진행했습니다.
+프로젝트의 안정적인 구조가 비즈니스의 핵심 가치에 기여할 수 있다고 믿습니다. 대출 추천 재개발, MoneyFlow CMS 등 여러 서비스에 거쳐 구조 개선에 참여했습니다.
 
-* Android / iOS 앱 내 웹뷰 [TTI](https://web.dev/interactive/) 개선(19.08 ~ 19.11)
-  * LightHouse기준(Slow 4G)40점에서 87점까지 향상.
-  * Round Trip을 고려한 Code Splitting Guide 수립.
-  * SSR이 필요한 프로젝트 예시와 예시 코드를 통한 React에서의 SSR 가이드 수립.
-  > 관련 저장소: <https://github.com/SoYoung210/react-ssr-code-splitting>
+### 대출 추천 재개발
 
-* 웹 기반 서비스 [IaC](https://en.wikipedia.org/wiki/Infrastructure_as_code) 관련 가이드 수립
-  * Kubernetes, Nginx 등 뱅크샐러드의 웹 기반 서비스들이 어떤 구조로 운영되고 있고, 어떻게 변경/개선 되는지 도식화 하여 문서 작성
-  * 웹 서비스에 사용하고 있던 legacy 설정 파일을 수정하고, 불필요하게 사용하고 있던 reverse proxy 세팅 제거
+🗓: [Banksalad] 2020.01~2020.04
 
-## CMS
+💻: *TypeScript*, *React*, *Redux*, *redux-saga, redux-toolkit*
 
-* 19.03~ 19.06
-* *TypeScript*, *React*, *Redux*, *redux-observable*
-* [기존에 사용하던 구조](https://speakerdeck.com/soyoung210/clean-architecture-in-banksalad)가 수정에 용이하지 않다는 문제를 인식하고, redux를 도입한 [새로운 구조](https://speakerdeck.com/soyoung210/heonjibjulge-saejibdao-riaegteu-peurojegteu-gujojojeong)도입.
-  * 불필요한 의존성 주입 구조 개선
+기존 대출 추천 서비스는 모든 State를 하나의 컴포넌트에서 관리하고 있어, 기능 추가와 유지보수가 어려운 프로젝트였습니다. 지속적으로 고도화 되어야 하는 프로젝트라고 생각해, 프로젝트의 재개발을 제안하여 진행했습니다.
 
-* 기획, 디자인, 개발 진행
-  * 기획: End User인 cm팀과 협업하여 상담에 편리한 cms기획
-  * 디자인: [ant.desing](https://ant.design/)을 활용하여 디자인
-  * 개발: 팀내에서 사용해보지 않았던 redux와 redux-middleware를 도입하고 해당 내용을 공유
+- components, domain, features 단위로 구성 된 플랫한 구조
+- View와 Data를 분리하고 모든 비즈니스 로직을 redux middleware에서 처리.
+- redux, redux-saga 적용 가이드를 공유하여 다른 프로젝트에도 적용
 
-## Project Generator
+### MoneyFlow CMS
+
+🗓: [Banksalad] 2019.09 ~ 2019.12
+
+💻: *TypeScript*, *React*, *Redux*, *redux-saga*
+
+MoneyFlow팀에서 사용하는 CMS입니다. 팀에서 사용하던 구조에서
+
+- 팀에서 사용하던 [Clean Architecture](https://speakerdeck.com/soyoung210/clean-architecture-in-banksalad) 하고 상태관리 라이브러리를 도입한 첫 번째 프로젝트
+
+> [발표자료](https://speakerdeck.com/soyoung210/heonjibjulge-saejibdao-riaegteu-peurojegteu-gujojojeong)
+
+- 기존 구조는 Repository, Service 등 의존성 주입 구조였는데 이 구조에서는 변경사항이 있을 때 프로젝트를 빠르게 파악하기 어렵다고 판단하여 이 부분을 제거하였습니다.
+
+## About 테스트
+
+### 단위테스트
+
+*Project*: 대출 추천 재개발, JS-Banksalad, web-scaffolding, etc.
+
+🗓: [Banksalad] ~ 현재
+
+💻: Storybook, testing-library
+
+- 대출 추천 재개발 프로젝트에서 프론트엔드의 비즈니스 로직등을 redux-saga로 분리하며 각 흐름에 대해 테스트 코드를 작성했습니다.
+- 모든 웹팀이 비즈니스 로직 흐름에 대한 테스트 코드를 작성할 수 있도록 테스트 코드 작성 가이드를 제공하였습니다.
+- 이 외에 공통적으로 사용하는 util function등에 대해 '성공, 에러 반환, 극단 값, 이상한 값'등으로 나누어 테스트를 작성할 수 있도록 작성 가이드를 문서화 하였습니다.
+
+### UI Test
+
+*Project*: 대출 추천 재개발, JS-Banksalad, web-scaffolding, etc.
+
+🗓: [Banksalad] ~ 현재
+
+💻: Storybook, testing-library
+
+복잡한 사용자의 조건, 상황을 다루는 서비스에서 Storybook을 도입하여 문서화와 UI Test를 작성하였습니다.
+
+- 페이지 단위로 스토리를 구성함으로서 사용자 조건에 따라 보여져야 하는 조건 정리
+- 디바이스별로 화면이 깨지지 않는 지, 극한 값이 들어왔을 때 이 값이 잘 처리 되는지 검증
+
+## About Performance & Infra
+
+뱅크샐러드 8주 안정화 프로젝트에서 전사적으로 기술 부문의 안정화 프로젝트를 진행했고, Web팀에서 다음과 같은 일을 진행했습니다.
+
+### Android / iOS 앱 내 웹뷰 [TTI](https://web.dev/interactive/) 개선
+
+🗓: [Banksalad] 2019.08 ~ 2019.11
+
+💻: SSR, Code Splitting, Chrome LightHouse
+
+- LightHouse기준(Slow 4G)40점에서 87점까지 향상.
+- Round Trip을 고려한 Code Splitting Guide 수립.
+- SSR이 필요한 프로젝트 예시와 예시 코드를 통한 React에서의 SSR 가이드 수립.
+
+*> 관련 저장소: <*<https://github.com/SoYoung210/react-ssr-code-splitting>*>*
+
+### 웹 기반 서비스 [IaC](https://en.wikipedia.org/wiki/Infrastructure_as_code) 관련 가이드 수립
+
+🗓: [Banksalad] 2019.08 ~ 2019.11
+
+💻: Kubernetes, Nginx, GitHub Actions
+
+- Kubernetes, Nginx 등 뱅크샐러드의 웹 기반 서비스들이 어떤 구조로 운영되고 있고, 어떻게 변경/개선 되는지 도식화 하여 문서 작성
+- 웹 서비스에 사용하고 있던 legacy 설정 파일을 수정하고, 불필요하게 사용하고 있던 reverse proxy 세팅 제거
+
+## About 자동화, 사내 라이브러리
+
+웹팀이 효율적으로 일할 수 있도록 자동화와 사내 라이브러리 구축에 기여했습니다. ~~BPL(Banksalad Product Language)과 웹팀에서 공통으로 사용하는 util function들과 custom hooks를 관리하기 위한 JS-Banksalad를 관리중 입니다.~~
+
+### BPL + UI 전면 개편
+
+🗓: [Banksalad] 2020.03 ~ 2020.06
+
+💻: emotion, tailiwndcss, rollup, recharts
+
+- 디자인, AND, iOS팀과 함께 디자인 시스템 설계 및 구현
+- 번들 사이즈 최적화를 통해 사이즈 30% 감소
+- 디자인 시스템 구축 후 투자 추천 서비스에 적용하여 2.0 UI로 개편
+
+### JS-Banksalad
+
+공통적으로 사용하는 Util Function을 제공하는 라이브러리.
+
+🗓: [Banksalad] 2020.06 ~ 현재
+
+💻: lerna, rollup, TypeScript
+
+- mono repo기반으로 여러가지 패키지 관리 ([설정](https://so-so.dev/pattern/mono-repo-config/))
+
+### 프로젝트 스캐폴딩(web-baedal)
 
 웹 프로젝트에 필요한 webpack, babel등의 설정파일을 포함한 프로젝트 전체 구조를 스캐폴딩 할 수 있는 도구.
 
-* cli를 통해 standard, standard - redux등 원하는 구조 선택.
-  * 프로젝트 빌드에 소요되는 시간을 5초로 단축
-  * 신규 입사자를 위한 구조 설명 도구로 활용
+🗓: [Banksalad] 2019.12
 
-## Static Web Generator(CMS)
+- cli를 통해 standard, standard-redux등 원하는 구조 선택.
+- 프로젝트 셋팅에 소요되는 시간을 5초로 단축
 
-이미지와 버튼으로 구성된 HTML을 만들어주는 도구.
+### 브릿지 페이지 제작 도구
 
-* S3 Image Upload
-* title, button position등 필요한 정보 입력
-* [UI](https://speakerdeck.com/soyoung210/jeolmang-deuribeun-seongjang-hamgge-ilhago-sipeun-gaebaljaga-doegiggaji?slide=44)
+🗓: [Banksalad] 2019.08 ~ 2019.11
 
-<div class="l-Header">
-  <h1 class="Title">
-    <span class="u-shadow">
-      Projects
-    </span>
-  </h1>
-</div>
+💻: S3 API
 
-## soso-tip
+개발자 없이 마케팅 팀에서 빠르게 정적 페이지를 생성할 수 있도록 하는 도구입니다. 배너 이미지와 버튼으로 구성 된 HTML을 만들어주는 도구를 제작했습니다.
 
-- GitHub Repository Link: <https://github.com/SoYoung210/soso-tip>
+- S3 Image Upload
+- title, button position등에 대한 커스텀 제공
+- [Demo Image](https://speakerdeck.com/soyoung210/jeolmang-deuribeun-seongjang-hamgge-ilhago-sipeun-gaebaljaga-doegiggaji?slide=44)
 
-개발프로젝트는 아닙니다. 개발과정에서 만났던 이슈를 기록하고, 공유하는 용도의 저장소 입니다.  
-같은 실수를 반복하는 경험을 줄일 수 있고, 실수한 내용을 정리하는 과정에서 완벽히 이해할 수 있다고 생각합니다.
+<h1>
+<span class='highlight'>Communities</span>
+</h1>
 
-<div class="l-Header">
-  <h1 class="Title">
-    <span class="u-shadow">
-      Activities
-    </span>
-  </h1>
-</div>
-
-<h2 class='u-link zero'>Presentation</h2>
+## Presentations
 
 ### [절망 드리븐 성장: 함께 일하고 싶은 개발자가 되기까지](https://speakerdeck.com/soyoung210/jeolmang-deuribeun-seongjang-hamgge-ilhago-sipeun-gaebaljaga-doegiggaji)
 
@@ -144,7 +200,14 @@ Rainist의 기술 컨퍼런스에서 발표한 내용입니다. 인턴 과정 �
 _[2019.02.19]_
 학부생에서 어떻게 처음 인턴개발자로 상륙했는지에 대한 내용을 공유합니다.
 
-<h2 class='u-link zero'>Communities</h2>
+## Activity
+
+### [FEConf Organizer](https://2019.feconf.kr/)
+
+|                 |                                                                                       |
+| --------------: | ------------------------------------------------------------------------------------- |
+|      **period** | 18.06. ~ current.                                                                     |
+| **description** | 페이스북 그룹인 '프론트엔드 개발 그룹'의 운영진이며 FEConf라는 컨퍼런스의 오거나이저. |
 
 ### [For.D Organizer](https://www.facebook.com/ForDeveloperKorea/)
 
