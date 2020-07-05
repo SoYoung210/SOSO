@@ -51,7 +51,7 @@ thumbnail: './resume_thumbnail.png'
 
 💻: *TypeScript*, *React*, *Redux*, *redux-saga, redux-toolkit*
 
-기존 대출 추천 서비스는 모든 State를 하나의 컴포넌트에서 관리하고 있어, 기능 추가와 유지보수가 어려운 프로젝트였습니다. 지속적으로 고도화 되어야 하는 프로젝트라고 생각해, 프로젝트의 재개발을 제안하여 진행했습니다.
+기존 서비스는 모든 State를 하나의 컴포넌트에서 관리하고 있어, 기능 추가와 유지보수가 어려운 상황이었습니다. 지속적으로 고도화 되어야 하는 프로젝트라고 생각해, 프로젝트의 재개발을 제안하여 진행했습니다.
 
 - components, domain, features 단위로 구성 된 플랫한 구조
 - View와 Data를 분리하고 모든 비즈니스 로직을 redux middleware에서 처리.
@@ -61,13 +61,11 @@ thumbnail: './resume_thumbnail.png'
 
 🗓: [Banksalad] 2019.09 ~ 2019.12
 
-💻: *TypeScript*, *React*, *Redux*, *redux-saga*
+💻: *TypeScript*, *React*, *Redux*, *redux-observable*
 
-MoneyFlow팀에서 사용하는 CMS입니다. 팀에서 사용하던 구조에서
+MoneyFlow팀에서 사용하는 CMS입니다. 팀에서 사용하고 있던 [구조](https://speakerdeck.com/soyoung210/clean-architecture-in-banksalad)의 한계를 인지하고 새로운 구조를 도입했던 첫 번째 프로젝트 입니다.
 
-- 팀에서 사용하던 [Clean Architecture](https://speakerdeck.com/soyoung210/clean-architecture-in-banksalad) 하고 상태관리 라이브러리를 도입한 첫 번째 프로젝트 ([발표자료](https://speakerdeck.com/soyoung210/heonjibjulge-saejibdao-riaegteu-peurojegteu-gujojojeong))
-
-- 기존 구조는 Repository, Service 등 의존성 주입 구조였는데 이 구조에서는 변경사항이 있을 때 프로젝트를 빠르게 파악하기 어렵다고 판단하여 이 부분을 제거하였습니다.
+- 상태관리 라이브러리를 도입한 첫 번째 프로젝트 ([발표자료](https://speakerdeck.com/soyoung210/heonjibjulge-saejibdao-riaegteu-peurojegteu-gujojojeong))
 
 ## About 테스트
 
@@ -75,10 +73,10 @@ MoneyFlow팀에서 사용하는 CMS입니다. 팀에서 사용하던 구조에�
 
 🗓: [Banksalad] ~ 현재
 
-💻: Storybook, testing-library
+💻: Jest, testing-library
 
-- 대출 추천 재개발 프로젝트에서 프론트엔드의 비즈니스 로직등을 redux-saga로 분리하며 각 흐름에 대해 테스트 코드를 작성했습니다.
-- 모든 웹팀이 비즈니스 로직 흐름에 대한 테스트 코드를 작성할 수 있도록 테스트 코드 작성 가이드를 제공하였습니다.
+- 대출 추천 서비스 재개발 프로젝트에서 프론트엔드의 비즈니스 로직을 redux-saga로 분리하고 각 로직에 대한 테스트 코드를 작성했습니다.
+- 모든 웹팀이 비즈니스 로직에 대한 테스트 코드를 작성할 수 있도록 테스트 코드 작성 가이드를 제공하였습니다.
 - 이 외에 공통적으로 사용하는 util function등에 대해 '성공, 에러 반환, 극단 값, 이상한 값'등으로 나누어 테스트를 작성할 수 있도록 작성 가이드를 문서화 하였습니다.
 
 ### UI Test
@@ -89,8 +87,9 @@ MoneyFlow팀에서 사용하는 CMS입니다. 팀에서 사용하던 구조에�
 
 복잡한 사용자의 조건, 상황을 다루는 서비스에서 Storybook을 도입하여 문서화와 UI Test를 작성하였습니다.
 
-- 페이지 단위로 스토리를 구성함으로서 사용자 조건에 따라 보여져야 하는 조건 정리
-- 디바이스별로 화면이 깨지지 않는 지, 극한 값이 들어왔을 때 이 값이 잘 처리 되는지 검증
+- Storybook redux addon을 제작하여 State mocking값에 따라 Story 구성
+- 페이지 단위로 Story를 구성하고 사용자 조건에 따라 보여져야 하는 조건 정리
+- [addon-viewport](https://www.npmjs.com/package/@storybook/addon-viewport)를 사용하여 디바이스에 따른 화면 테스트
 
 ## About Performance & Infra
 
@@ -104,22 +103,21 @@ MoneyFlow팀에서 사용하는 CMS입니다. 팀에서 사용하던 구조에�
 
 - LightHouse기준(Slow 4G)40점에서 87점까지 향상.
 - Round Trip을 고려한 Code Splitting Guide 수립.
-- SSR이 필요한 프로젝트 예시와 예시 코드를 통한 React에서의 SSR 가이드 수립.
+- SSR이 필요한 프로젝트 정리 및 React에서의 SSR 가이드 수립.
+  - [관련 저장소](https://github.com/SoYoung210/react-ssr-code-splitting)
 
-*> 관련 저장소: <*<https://github.com/SoYoung210/react-ssr-code-splitting>*>*
-
-### 웹 기반 서비스 [IaC](https://en.wikipedia.org/wiki/Infrastructure_as_code) 관련 가이드 수립
+### 웹 서비스 [IaC](https://en.wikipedia.org/wiki/Infrastructure_as_code) 가이드 수립
 
 🗓: [Banksalad] 2019.08 ~ 2019.11
 
 💻: Kubernetes, Nginx, GitHub Actions
 
-- Kubernetes, Nginx 등 뱅크샐러드의 웹 기반 서비스들이 어떤 구조로 운영되고 있고, 어떻게 변경/개선 되는지 도식화 하여 문서 작성
-- 웹 서비스에 사용하고 있던 legacy 설정 파일을 수정하고, 불필요하게 사용하고 있던 reverse proxy 세팅 제거
+- Kubernetes, Nginx 등 뱅크샐러드의 웹 서비스들이 어떤 구조로 운영되고 있고, 어떻게 변경/개선 되는지 도식화 하여 문서 작성
+- legacy 설정 파일을 수정하고, 불필요하게 사용하고 있던 reverse proxy 세팅 제거
 
 ## About 자동화, 사내 라이브러리
 
-웹팀이 효율적으로 일할 수 있도록 자동화와 사내 라이브러리 구축에 기여했습니다. ~~BPL(Banksalad Product Language)과 웹팀에서 공통으로 사용하는 util function들과 custom hooks를 관리하기 위한 JS-Banksalad를 관리중 입니다.~~
+웹팀이 효율적으로 일할 수 있도록 자동화와 사내 라이브러리 구축에 기여했습니다.
 
 ### BPL + UI 전면 개편
 
@@ -127,28 +125,29 @@ MoneyFlow팀에서 사용하는 CMS입니다. 팀에서 사용하던 구조에�
 
 💻: emotion, tailiwndcss, rollup, recharts
 
+모든 서비스에서 사용하고 있는 BPL(Banksalad Product Language) 설계 및 유지보수에 참여중입니다.
+
 - 디자인, AND, iOS팀과 함께 디자인 시스템 설계 및 구현
 - 번들 사이즈 최적화를 통해 사이즈 30% 감소
 - 디자인 시스템 구축 후 투자 추천 서비스에 적용하여 2.0 UI로 개편
 
 ### JS-Banksalad
 
-공통적으로 사용하는 Util Function을 제공하는 라이브러리.
-
 🗓: [Banksalad] 2020.06 ~ 현재
 
 💻: lerna, rollup, TypeScript
 
+- 프로젝트에서 중복으로 만들어 사용하고 있던 Util Function을 하나의 라이브러리로 제공
 - mono repo기반으로 여러가지 패키지 관리 ([설정](https://so-so.dev/pattern/mono-repo-config/))
 
 ### 프로젝트 스캐폴딩(web-baedal)
 
-웹 프로젝트에 필요한 webpack, babel등의 설정파일을 포함한 프로젝트 전체 구조를 스캐폴딩 할 수 있는 도구.
-
 🗓: [Banksalad] 2019.12
 
-- cli를 통해 standard, standard-redux등 원하는 구조 선택.
-- 프로젝트 셋팅에 소요되는 시간을 5초로 단축
+webpack, babel등의 설정파일을 포함한 프로젝트 전체 구조를 스캐폴딩 할 수 있는 도구입니다.
+
+- cli를 통해 standard, standard-redux 등 원하는 구조 선택.
+- 프로젝트 셋팅에 소요되는 시간을 90분에서 5초로 단축
 
 ### 브릿지 페이지 제작 도구
 
@@ -156,7 +155,7 @@ MoneyFlow팀에서 사용하는 CMS입니다. 팀에서 사용하던 구조에�
 
 💻: S3 API
 
-개발자 없이 마케팅 팀에서 빠르게 정적 페이지를 생성할 수 있도록 하는 도구입니다. 배너 이미지와 버튼으로 구성 된 HTML을 만들어주는 도구를 제작했습니다.
+마케팅 팀에서 개발자 없이 빠르게 정적 페이지를 생성할 수 있도록 하는 도구입니다. 배너 이미지와 버튼으로 구성 된 HTML을 만들어 줍니다.
 
 - S3 Image Upload
 - title, button position등에 대한 커스텀 제공
@@ -200,7 +199,7 @@ _[2019.02.19]_
 
 |                 |                                                                                       |
 | --------------: | ------------------------------------------------------------------------------------- |
-|      **period** | 18.06. ~ current.                                                                     |
+|      **period** | 20.03. ~ current.                                                                     |
 | **description** | 페이스북 그룹인 '프론트엔드 개발 그룹'의 운영진이며 FEConf라는 컨퍼런스의 오거나이저. |
 
 ### [For.D Organizer](https://www.facebook.com/ForDeveloperKorea/)
