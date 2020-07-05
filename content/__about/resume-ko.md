@@ -2,7 +2,7 @@
 title: 'about'
 date: 2019-11-25 16:21:13
 lang: 'ko'
-thumbnail: ''
+thumbnail: './resume_thumbnail.png'
 ---
 
 <h1 class='title'>
