@@ -35,7 +35,7 @@ thumbnail: './resume_thumbnail.png'
 | -----------: | ------------------------------------------------------- |
 |   **period** | 18.12 ~ Current                                         |
 | **position** | 웹 프론트엔드 개발자 |
-| **projects** | 8주 안정화 프로젝트, CMS, Static Web Generator, Project Generator |
+| **projects** | 대출 추천 서비스 재개발, Banksalad Product Language, 투자 추천 서비스 2.0 개편, 8주 안정화 프로젝트, CMS, Static Web Generator, Project Generator |
 
 <h1>
 <span class='highlight'>Interested In</span>
