@@ -33,9 +33,9 @@ thumbnail: './resume_thumbnail.png'
 
 |              |                                                         |
 | -----------: | ------------------------------------------------------- |
-|   **period** | 18.12 ~ Current                                         |
-| **position** | 웹 프론트엔드 개발자 |
-| **projects** | 대출 추천 서비스 재개발, Banksalad Product Language, 투자 추천 서비스 2.0 개편, 8주 안정화 프로젝트, CMS, Static Web Generator, Project Generator |
+|   **period** | 18.12 ~ current                                         |
+| **position** | Engineering Foundation 웹 프론트엔드 개발자 |
+| **projects** | BPL(Design System), 대출 추천 서비스, 투자 추천 서비스 2.0 |
 
 <h1>
 <span class='highlight'>Interested In</span>
@@ -51,11 +51,12 @@ thumbnail: './resume_thumbnail.png'
 
 💻: *TypeScript*, *React*, *Redux*, *redux-saga, redux-toolkit*
 
-기존 서비스는 모든 State를 하나의 컴포넌트에서 관리하고 있어, 기능 추가와 유지보수가 어려운 상황이었습니다. 지속적으로 고도화 되어야 하는 프로젝트라고 생각해, 프로젝트의 재개발을 제안하여 진행했습니다.
+// TODO: 나중에 좀더 읽어보기. 재개발 후 좋아진 점 넣기..
 
-- components, domain, features 단위로 구성 된 플랫한 구조
+비즈니스적으로 중요한 지표를 담당하는 프로젝트이기 때문에 재개발을 제안하여 진행.
+
 - View와 Data를 분리하고 모든 비즈니스 로직을 redux middleware에서 처리.
-- redux, redux-saga 적용 가이드를 공유하여 다른 프로젝트에도 적용
+- redux, redux-saga 적용 및 가이드 공유
 
 ### MoneyFlow CMS
 
@@ -63,23 +64,31 @@ thumbnail: './resume_thumbnail.png'
 
 💻: *TypeScript*, *React*, *Redux*, *redux-observable*
 
-MoneyFlow팀에서 사용하는 CMS입니다. 팀에서 사용하고 있던 [구조](https://speakerdeck.com/soyoung210/clean-architecture-in-banksalad)의 한계를 인지하고 새로운 구조를 도입했던 첫 번째 프로젝트 입니다.
+MoneyFlow팀에서 사용하는 CMS.
 
-- 상태관리 라이브러리를 도입한 첫 번째 프로젝트 ([발표자료](https://speakerdeck.com/soyoung210/heonjibjulge-saejibdao-riaegteu-peurojegteu-gujojojeong))
+// TODO: 문제점 진단 및 공유(주도성)를 한 단어로 정리해서 수정하기
+
+- [기존 프로젝트 구조](https://speakerdeck.com/soyoung210/clean-architecture-in-banksalad)의 문제점을 제기하고 새로운 구조를 도입한 프로젝트.
+
+- 상태관리 라이브러리 도입([발표자료](https://speakerdeck.com/soyoung210/heonjibjulge-saejibdao-riaegteu-peurojegteu-gujojojeong))
 
 ## About 테스트
 
-### 단위테스트
+// TODO: 테스트 인트로 문장 쓰기, 프로젝트 이름 통일
+
+### 단위 테스트
 
 🗓: [Banksalad] ~ 현재
 
 💻: Jest, testing-library
 
-- 대출 추천 서비스 재개발 프로젝트에서 프론트엔드의 비즈니스 로직을 redux-saga로 분리하고 각 로직에 대한 테스트 코드를 작성했습니다.
-- 모든 웹팀이 비즈니스 로직에 대한 테스트 코드를 작성할 수 있도록 테스트 코드 작성 가이드를 제공하였습니다.
-- 이 외에 공통적으로 사용하는 util function등에 대해 '성공, 에러 반환, 극단 값, 이상한 값'등으로 나누어 테스트를 작성할 수 있도록 작성 가이드를 문서화 하였습니다.
+- 대출 추천 서비스 재개발 프로젝트에서 프론트엔드의 비즈니스 로직을 redux-saga로 분리하고 각 로직에 대한 테스트 코드를 작성.
+- 모든 웹팀이 비즈니스 로직에 대한 테스트 코드를 작성할 수 있도록 테스트 코드 작성 가이드를 제공.
+- 이 외에 공통적으로 사용하는 공통 함수 등에 대해 '성공, 에러 반환, 극단 값, 이상한 값'등으로 나누어 테스트를 작성할 수 있도록 작성 가이드를 문서화.
 
 ### UI Test
+
+// TODO: State mocking값에 따라 Story 구성. 문장 다듬기
 
 🗓: [Banksalad] ~ 현재
 
@@ -87,15 +96,19 @@ MoneyFlow팀에서 사용하는 CMS입니다. 팀에서 사용하고 있던 [구
 
 복잡한 사용자의 조건, 상황을 다루는 서비스에서 Storybook을 도입하여 문서화와 UI Test를 작성하였습니다.
 
-- Storybook redux addon을 제작하여 State mocking값에 따라 Story 구성
-- 페이지 단위로 Story를 구성하고 사용자 조건에 따라 보여져야 하는 조건 정리
-- [addon-viewport](https://www.npmjs.com/package/@storybook/addon-viewport)를 사용하여 디바이스에 따른 화면 테스트
+- Storybook addon을 제작하여 State mocking값에 따라 Story 구성.
+- 페이지 단위로 Story를 구성하고 사용자 조건에 따라 보여져야 하는 화면 정리
+- [addon-viewport](https://www.npmjs.com/package/@storybook/addon-viewport)를 사용하여 디바이스에 따른 화면 테스트.
+
+## 📌TODO
+
+Pef & Infra가 조금 빈약한 것 같기도 해서 밑에 자동화랑 묶어서 About 플랫폼 엔지니어링(가제)으로 묶는 것은 어떨 지 고려.
 
 ## About Performance & Infra
 
-뱅크샐러드 8주 안정화 프로젝트에서 전사적으로 기술 부문의 안정화 프로젝트를 진행했고, Web팀에서 다음과 같은 일을 진행했습니다.
+뱅크샐러드 8주 안정화 프로젝트에서 전사적으로 기술 부문의 안정화 프로젝트를 진행했고, Engineering Foundation에서 TTI개선과 IaC 프로젝트를 진행했습니다.
 
-### Android / iOS 앱 내 웹뷰 [TTI](https://web.dev/interactive/) 개선
+### Webview [TTI](https://web.dev/interactive/) 개선
 
 🗓: [Banksalad] 2019.08 ~ 2019.11
 
@@ -113,23 +126,25 @@ MoneyFlow팀에서 사용하는 CMS입니다. 팀에서 사용하고 있던 [구
 💻: Kubernetes, Nginx, GitHub Actions
 
 - Kubernetes, Nginx 등 뱅크샐러드의 웹 서비스들이 어떤 구조로 운영되고 있고, 어떻게 변경/개선 되는지 도식화 하여 문서 작성
-- legacy 설정 파일을 수정하고, 불필요하게 사용하고 있던 reverse proxy 세팅 제거
+- GitHub Actions활용한 CI/CD구성
 
 ## About 자동화, 사내 라이브러리
 
 웹팀이 효율적으로 일할 수 있도록 자동화와 사내 라이브러리 구축에 기여했습니다.
 
-### BPL + UI 전면 개편
+### BPL
 
 🗓: [Banksalad] 2020.03 ~ 2020.06
 
-💻: emotion, tailiwndcss, rollup, recharts
+💻: emotion, tailwindcss, rollup, recharts
 
-모든 서비스에서 사용하고 있는 BPL(Banksalad Product Language) 설계 및 유지보수에 참여중입니다.
+디자인, AND, iOS팀과 함께 BPL(Banksalad Product Language)디자인 시스템 설계 및 구현
 
-- 디자인, AND, iOS팀과 함께 디자인 시스템 설계 및 구현
+// TODO: 번들 사이즈 버전 히스토리 (몇에서 몇인지) 추가
+
 - 번들 사이즈 최적화를 통해 사이즈 30% 감소
 - 디자인 시스템 구축 후 투자 추천 서비스에 적용하여 2.0 UI로 개편
+  - TODO: 3배..는 고민해보기.
 
 ### JS-Banksalad
 
@@ -137,7 +152,7 @@ MoneyFlow팀에서 사용하는 CMS입니다. 팀에서 사용하고 있던 [구
 
 💻: lerna, rollup, TypeScript
 
-- 프로젝트에서 중복으로 만들어 사용하고 있던 Util Function을 하나의 라이브러리로 제공
+- 프로젝트에서 중복으로 만들어 사용하고 있던 공통 함수들을 하나의 라이브러리로 제공
 - mono repo기반으로 여러가지 패키지 관리 ([설정](https://so-so.dev/pattern/mono-repo-config/))
 
 ### 프로젝트 스캐폴딩(web-baedal)
@@ -167,58 +182,46 @@ webpack, babel등의 설정파일을 포함한 프로젝트 전체 구조를 스
 
 ## Presentations
 
-### [절망 드리븐 성장: 함께 일하고 싶은 개발자가 되기까지](https://speakerdeck.com/soyoung210/jeolmang-deuribeun-seongjang-hamgge-ilhago-sipeun-gaebaljaga-doegiggaji)
+- [절망 드리븐 성장: 함께 일하고 싶은 개발자가 되기까지](https://speakerdeck.com/soyoung210/jeolmang-deuribeun-seongjang-hamgge-ilhago-sipeun-gaebaljaga-doegiggaji)  
+[2019.12.13] '2019 한빛 데브그라운드 주니어' 행사에서 발표한 내용입니다. 웹 공부를 시작할때부터 인턴, 그리고 지금까지 겪었던 절망과 그 절망에서 얻었던 성장을 공유합니다.
 
-_[2019.12.13]_
-'2019 한빛 데브그라운드 주니어' 행사에서 발표한 내용입니다.
-웹 공부를 시작할때부터 인턴, 그리고 지금까지 겪었던 절망과 그 절망에서 얻었던 성장을 공유합니다.
-
-### [헌집줄게, 새집다오 - FEConf2019](https://speakerdeck.com/soyoung210/heonjibjulge-saejibdao-riaegteu-peurojegteu-gujojojeong)
-
-_[2019.10.26]_
+- [헌집줄게, 새집다오 - FEConf2019](https://speakerdeck.com/soyoung210/heonjibjulge-saejibdao-riaegteu-peurojegteu-gujojojeong)  
+[2019.10.26]
 기존에 사용하던 구조에서 벗어나 새로운 구조를 도입하는 과정에 대한 과정을 소개합니다.
 
-### [Clean Architecture in Banksalad - XXIT Tech Talk](https://speakerdeck.com/soyoung210/clean-architecture-in-banksalad)
-
-_[2019.10.05]_
+- [Clean Architecture in Banksalad - XXIT Tech Talk](https://speakerdeck.com/soyoung210/clean-architecture-in-banksalad)  
+[2019.10.05]
 'Clean Architecture in Banksalad'에 대한 발표입니다.
 
-### [ConSalad - 4th Technical Conference in Rainist](https://speakerdeck.com/soyoung210/susuggeggiro-sugseongdoen-banana)
-
-_[2019.06.15]_
+- [ConSalad - 4th Technical Conference in Rainist](https://speakerdeck.com/soyoung210/susuggeggiro-sugseongdoen-banana  )  
+[2019.06.15]
 Rainist의 기술 컨퍼런스에서 발표한 내용입니다. 인턴 과정 이후 좋은 협업에 대해 고민한 내용을 공유합니다.
 
-### [인턴상륙작전 - GDG WebTech LightningTalk](https://speakerdeck.com/soyoung210/inteonsangryugjagjeon)
-
-_[2019.02.19]_
+- [인턴상륙작전 - GDG WebTech LightningTalk](https://speakerdeck.com/soyoung210/inteonsangryugjagjeon)  
+[2019.02.19]
 학부생에서 어떻게 처음 인턴개발자로 상륙했는지에 대한 내용을 공유합니다.
 
 ## Activity
 
-### [FEConf Organizer](https://2019.feconf.kr/)
+#### [FEConf Organizer](https://2019.feconf.kr/)
 
 |                 |                                                                                       |
 | --------------: | ------------------------------------------------------------------------------------- |
 |      **period** | 20.03. ~ current.                                                                     |
 | **description** | 페이스북 그룹인 '프론트엔드 개발 그룹'의 운영진이며 FEConf라는 컨퍼런스의 오거나이저. |
 
-### [For.D Organizer](https://www.facebook.com/ForDeveloperKorea/)
+#### [For.D Organizer](https://www.facebook.com/ForDeveloperKorea/)
 
 |             |                                                                                                                                                                                                                                                    |
 | ----------: | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 |      period | 17.12 ~ current                                                                                                                                                                                                                                    |
 | description | 주니어 개발자 커뮤니티입니다. 학부생에서 주니어 개발자가 되기까지 겪었던 어려움을 다른 분들은 덜 겪었으면 하는 마음에서 커뮤니티를 운영하고 있습니다. 나에게 어려웠던점은 누구에게도 어려울 수 있다는 생각에 경험과 어려움을 많은 사람들이 나누는 문화를 만들고 싶습니다.  |
 
-### [Django Girls Seoul](https://djangogirls.org/seoul/)
+#### [Django Girls Seoul](https://djangogirls.org/seoul/)
 
 |             |                                                                                  |
 | ----------: | -------------------------------------------------------------------------------- |
 |      period | 18.04. ~ 19.04.                                                                  |
 | description | 여성이 개발 분야로 나아가는 것을 돕는 '장고걸스 서울'의 운영진으로 활동하였습니다. |
 
-### [Coding Club Teacher](http://codingclubs.org/)
-
-|             |                                                                                                                                                    |
-| ----------: | -------------------------------------------------------------------------------------------------------------------------------------------------- |
-|      period | 16.02 ~ 16.09                                                                                                                                      |
-| description | 아이들에게 소프트웨어로 무엇이든 만들 수 있다는 철학으로 교육을 펼치는 '코딩클럽'의 청년샘 2기로 활동하였습니다. |
+// TODO: 마지막에 뭔가 마무리? Last Updated도 괜찮을 듯.
