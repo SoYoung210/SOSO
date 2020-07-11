@@ -12,11 +12,11 @@ thumbnail: './resume_thumbnail.png'
 
 **저는 이런 것들에 가치를 두고 있습니다.**
 
-- 최고의 고객 경험을 만들어 가는 것
-- 확장성 있는 구조에 대한 고민
-- 안정성 있는 프로젝트를 위한 테스트 작성
-- 반복되는 일을 자동화 하여 생산성 높이기
-- 기술을 통해 비즈니스 가치에 기여하는 일
+- 최고의 고객 경험
+- 확장성 있는 구조
+- 테스트와 안정성
+- 자동화와 생산성
+- 비즈니스 임팩트
 - 지식과 경험 공유
 
 |            |                              |
@@ -43,7 +43,7 @@ thumbnail: './resume_thumbnail.png'
 
 ## About 구조
 
-프로젝트의 안정적인 구조가 비즈니스의 핵심 가치에 기여할 수 있다고 믿습니다. 대출 추천 재개발, MoneyFlow CMS 등 여러 서비스에 거쳐 구조 개선에 참여했습니다.
+프로젝트의 안정적인 구조가 비즈니스의 핵심 가치에 기여할 수 있다고 믿습니다. 비즈니스 요구사항을 빠르게 수용하며 임팩트를 낼 수 있다고 생각합니다.
 
 ### 대출 추천 재개발
 
@@ -51,22 +51,20 @@ thumbnail: './resume_thumbnail.png'
 
 💻: *TypeScript*, *React*, *Redux*, *redux-saga, redux-toolkit*
 
-// TODO: 나중에 좀더 읽어보기. 재개발 후 좋아진 점 넣기..
+// TODO: 나중에 좀더 읽어보기. 재개발 후 좋아진 점 넣기.. (좋아진 점을 뭘로 넣지.)
 
-비즈니스적으로 중요한 지표를 담당하는 프로젝트이기 때문에 재개발을 제안하여 진행.
+비즈니스적으로 중요한 지표를 담당하는 프로젝트이지만 레거시화 되어 있어 요구사항을 빠르게 수용하기 어려웠습니다. 빠르게 임팩트를 추구하기 어렵다고 판단해 재개발을 제안하여 진행했습니다.
 
 - View와 Data를 분리하고 모든 비즈니스 로직을 redux middleware에서 처리.
 - redux, redux-saga 적용 및 가이드 공유
 
-### MoneyFlow CMS
+### MoneyFlow Back office
 
 🗓: [Banksalad] 2019.09 ~ 2019.12
 
 💻: *TypeScript*, *React*, *Redux*, *redux-observable*
 
-MoneyFlow팀에서 사용하는 CMS.
-
-// TODO: 문제점 진단 및 공유(주도성)를 한 단어로 정리해서 수정하기
+MoneyFlow팀에서 사용하는 Back office.
 
 - [기존 프로젝트 구조](https://speakerdeck.com/soyoung210/clean-architecture-in-banksalad)의 문제점을 제기하고 새로운 구조를 도입한 프로젝트.
 
@@ -74,7 +72,7 @@ MoneyFlow팀에서 사용하는 CMS.
 
 ## About 테스트
 
-// TODO: 테스트 인트로 문장 쓰기, 프로젝트 이름 통일
+테스트 코드 작성을 통해 새로운 개발자가 빠르게 프로젝트를 파악할 수 있고 새로운 기능을 안정성 있게 추가할 수 있다고 생각합니다.
 
 ### 단위 테스트
 
@@ -84,6 +82,7 @@ MoneyFlow팀에서 사용하는 CMS.
 
 - 대출 추천 서비스 재개발 프로젝트에서 프론트엔드의 비즈니스 로직을 redux-saga로 분리하고 각 로직에 대한 테스트 코드를 작성.
 - 모든 웹팀이 비즈니스 로직에 대한 테스트 코드를 작성할 수 있도록 테스트 코드 작성 가이드를 제공.
+- 기존 테스트 커버리지 10%에서 70%로 상승
 - 이 외에 공통적으로 사용하는 공통 함수 등에 대해 '성공, 에러 반환, 극단 값, 이상한 값'등으로 나누어 테스트를 작성할 수 있도록 작성 가이드를 문서화.
 
 ### UI Test
@@ -96,8 +95,7 @@ MoneyFlow팀에서 사용하는 CMS.
 
 복잡한 사용자의 조건, 상황을 다루는 서비스에서 Storybook을 도입하여 문서화와 UI Test를 작성하였습니다.
 
-- Storybook addon을 제작하여 State mocking값에 따라 Story 구성.
-- 페이지 단위로 Story를 구성하고 사용자 조건에 따라 보여져야 하는 화면 정리
+- Storybook Redux Addon을 제작하여 State값에 따라 Story를 구성하고, 페이지 단위로 Story에서 사용자 조건에 따라 보여져야 하는 화면 정리
 - [addon-viewport](https://www.npmjs.com/package/@storybook/addon-viewport)를 사용하여 디바이스에 따른 화면 테스트.
 
 ## 📌TODO
@@ -115,6 +113,7 @@ Pef & Infra가 조금 빈약한 것 같기도 해서 밑에 자동화랑 묶어�
 💻: SSR, Code Splitting, Chrome LightHouse
 
 - LightHouse기준(Slow 4G)40점에서 87점까지 향상.
+  - TTI 2.5초에서 0.2초로 상승
 - Round Trip을 고려한 Code Splitting Guide 수립.
 - SSR이 필요한 프로젝트 정리 및 React에서의 SSR 가이드 수립.
   - [관련 저장소](https://github.com/SoYoung210/react-ssr-code-splitting)
@@ -140,11 +139,8 @@ Pef & Infra가 조금 빈약한 것 같기도 해서 밑에 자동화랑 묶어�
 
 디자인, AND, iOS팀과 함께 BPL(Banksalad Product Language)디자인 시스템 설계 및 구현
 
-// TODO: 번들 사이즈 버전 히스토리 (몇에서 몇인지) 추가
-
-- 번들 사이즈 최적화를 통해 사이즈 30% 감소
+- 0.0.28버전에서 0.0.29 버전 업데이트에서 번들 사이즈 최적화를 통해 사이즈 30% 감소
 - 디자인 시스템 구축 후 투자 추천 서비스에 적용하여 2.0 UI로 개편
-  - TODO: 3배..는 고민해보기.
 
 ### JS-Banksalad
 
@@ -161,7 +157,7 @@ Pef & Infra가 조금 빈약한 것 같기도 해서 밑에 자동화랑 묶어�
 
 webpack, babel등의 설정파일을 포함한 프로젝트 전체 구조를 스캐폴딩 할 수 있는 도구입니다.
 
-- cli를 통해 standard, standard-redux 등 원하는 구조 선택.
+- cli를 통해 원하는 구조 선택.
 - 프로젝트 셋팅에 소요되는 시간을 90분에서 5초로 단축
 
 ### 브릿지 페이지 제작 도구
@@ -224,4 +220,13 @@ Rainist의 기술 컨퍼런스에서 발표한 내용입니다. 인턴 과정 �
 |      period | 18.04. ~ 19.04.                                                                  |
 | description | 여성이 개발 분야로 나아가는 것을 돕는 '장고걸스 서울'의 운영진으로 활동하였습니다. |
 
-// TODO: 마지막에 뭔가 마무리? Last Updated도 괜찮을 듯.
+<h1>
+<span class='highlight'>Last Updated</span>
+</h1>
+
+At 2020.07.11  
+
+<div align="center" class="final">
+
+_감사합니다._
+</div>
