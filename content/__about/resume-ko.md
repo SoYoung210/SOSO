@@ -221,7 +221,7 @@ Rainist의 기술 컨퍼런스에서 발표한 내용입니다. 인턴 과정 �
 <span class='highlight'>Last Updated</span>
 </h1>
 
-At 2020.07.11  
+2020.07.11  
 
 <div align="center" class="final">
 
