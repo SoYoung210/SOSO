@@ -98,11 +98,7 @@ MoneyFlow팀에서 사용하는 Back office.
 - Storybook Redux Addon을 제작하여 State값에 따라 Story를 구성하고, 페이지 단위로 Story에서 사용자 조건에 따라 보여져야 하는 화면 정리
 - [addon-viewport](https://www.npmjs.com/package/@storybook/addon-viewport)를 사용하여 디바이스에 따른 화면 테스트.
 
-## 📌TODO
-
-Pef & Infra가 조금 빈약한 것 같기도 해서 밑에 자동화랑 묶어서 About 플랫폼 엔지니어링(가제)으로 묶는 것은 어떨 지 고려.
-
-## About Performance & Infra
+## About Platform Engineering
 
 뱅크샐러드 8주 안정화 프로젝트에서 전사적으로 기술 부문의 안정화 프로젝트를 진행했고, Engineering Foundation에서 TTI개선과 IaC 프로젝트를 진행했습니다.
 
@@ -118,13 +114,14 @@ Pef & Infra가 조금 빈약한 것 같기도 해서 밑에 자동화랑 묶어�
 - SSR이 필요한 프로젝트 정리 및 React에서의 SSR 가이드 수립.
   - [관련 저장소](https://github.com/SoYoung210/react-ssr-code-splitting)
 
-### 웹 서비스 [IaC](https://en.wikipedia.org/wiki/Infrastructure_as_code) 가이드 수립
+### 웹 서비스 [IaC](https://en.wikipedia.org/wiki/Infrastructure_as_code) 작업
 
 🗓: [Banksalad] 2019.08 ~ 2019.11
 
 💻: Kubernetes, Nginx, GitHub Actions
 
-- Kubernetes, Nginx 등 뱅크샐러드의 웹 서비스들이 어떤 구조로 운영되고 있고, 어떻게 변경/개선 되는지 도식화 하여 문서 작성
+- 배포 시 필요한 Kubernetes template파일 작성과 웹팀에 Sidecar 도입
+- Kubernetes, Nginx 등 뱅크샐러드의 웹 서비스 구조를 도식화 하여 문서 작성
 - GitHub Actions활용한 CI/CD구성
 
 ## About 자동화, 사내 라이브러리
