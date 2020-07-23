@@ -11,7 +11,12 @@ module.exports = {
     facebook: '',
   },
   icon: `content/assets/favicon.png`, // Add your favicon
-  keywords: [`blog`],
+  resume: {
+    title: 'About soso',
+    description: 'docs: Update RESUME.md for introducing myself',
+    thumbnail: 'https://so-so.dev/resume_thumbnail.png',
+  },
+  keywords: [`blog`, `frontend`, `react`, `developer`],
   comment: {
     disqusShortName: '', // Your disqus-short-name. check disqus.com.
     utterances: 'SoYoung210/SOSO', // Your repository for archive comment
