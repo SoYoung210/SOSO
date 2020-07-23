@@ -1,6 +1,6 @@
 ---
 title: 'about'
-date: 2019-11-25 16:21:13
+date: 2020-07-23 16:21:13
 lang: 'ko'
 thumbnail: './resume_thumbnail.png'
 ---
@@ -43,7 +43,7 @@ thumbnail: './resume_thumbnail.png'
 
 ## About 구조
 
-프로젝트의 안정적인 구조가 비즈니스의 핵심 가치에 기여할 수 있다고 믿습니다. 비즈니스 요구사항을 빠르게 수용하며 임팩트를 낼 수 있다고 생각합니다.
+프로젝트의 안정적인 구조가 비즈니스의 핵심 가치에 기여할 수 있다고 믿습니다. 안정적 구조 기반에서 비즈니스 요구사항을 빠르게 수용하며 임팩트를 낼 수 있다고 생각하기 때문입니다.
 
 ### 대출 추천 재개발
 
@@ -51,9 +51,7 @@ thumbnail: './resume_thumbnail.png'
 
 💻: *TypeScript*, *React*, *Redux*, *redux-saga, redux-toolkit*
 
-// TODO: 나중에 좀더 읽어보기. 재개발 후 좋아진 점 넣기.. (좋아진 점을 뭘로 넣지.)
-
-비즈니스적으로 중요한 지표를 담당하는 프로젝트이지만 레거시화 되어 있어 요구사항을 빠르게 수용하기 어려웠습니다. 빠르게 임팩트를 추구하기 어렵다고 판단해 재개발을 제안하여 진행했습니다.
+기존 프로젝트는 레거시화 되어 있어 비즈니스 로직을 파악하기 어려웠고 노후된 설정등으로 인해 개발단계에서 많은 에러가 발생하는 프로젝트였습니다. 빠르게 임팩트를 추구하기 어렵다고 판단해 재개발을 제안하여 진행했습니다.
 
 - View와 Data를 분리하고 모든 비즈니스 로직을 redux middleware에서 처리.
 - redux, redux-saga 적용 및 가이드 공유
@@ -87,20 +85,27 @@ MoneyFlow팀에서 사용하는 Back office.
 
 ### UI Test
 
-// TODO: State mocking값에 따라 Story 구성. 문장 다듬기
-
 🗓: [Banksalad] ~ 현재
 
 💻: Storybook, testing-library
 
 복잡한 사용자의 조건, 상황을 다루는 서비스에서 Storybook을 도입하여 문서화와 UI Test를 작성하였습니다.
 
-- Storybook Redux Addon을 제작하여 State값에 따라 Story를 구성하고, 페이지 단위로 Story에서 사용자 조건에 따라 보여져야 하는 화면 정리
+- Storybook Redux Addon을 제작하여 State Mocking값에 따라 Story를 구성할 수 있도록 하고, 페이지 단위로 Story에서 사용자 조건에 따라 보여져야 하는 화면 정리
 - [addon-viewport](https://www.npmjs.com/package/@storybook/addon-viewport)를 사용하여 디바이스에 따른 화면 테스트.
 
 ## About Platform Engineering
 
-뱅크샐러드 8주 안정화 프로젝트에서 전사적으로 기술 부문의 안정화 프로젝트를 진행했고, Engineering Foundation에서 TTI개선과 IaC 프로젝트를 진행했습니다.
+Engineering Foundation에서 웹팀에서 필요한 Platform업무를 수행했습니다.
+
+### 정적파일(JS, CSS)업로드 구조 변경
+
+🗓: [Banksalad] 2020.07
+
+💻: Terraform, Docker, Kubernetes, GitHub Actions
+
+- 정적파일까지 Docker Image로 관리해서 발생했던 순단 이슈를 해결하기 위해 bundle된 JS파일과 CSS파일을 S3에서 관리하도록 수정
+- GitHub Actions를 사용하여 배포 프로세스 수정
 
 ### Webview [TTI](https://web.dev/interactive/) 개선
 
@@ -120,7 +125,8 @@ MoneyFlow팀에서 사용하는 Back office.
 
 💻: Kubernetes, Nginx, GitHub Actions
 
-- 배포 시 필요한 Kubernetes template파일 작성과 웹팀에 Sidecar 도입
+- 배포 시 필요한 Kubernetes template파일 작성
+- 웹서비스를 모니터링할 수 있는 Sidecar 도입
 - Kubernetes, Nginx 등 뱅크샐러드의 웹 서비스 구조를 도식화 하여 문서 작성
 - GitHub Actions활용한 CI/CD구성
 
