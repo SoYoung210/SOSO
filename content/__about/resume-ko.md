@@ -151,7 +151,7 @@ Engineering Foundation에서 웹팀에서 필요한 Platform업무를 수행했�
 
 💻: lerna, rollup, TypeScript
 
-- 프로젝트에서 중복으로 만들어 사용하고 있던 공통 함수들을 하나의 라이브러리로 제공
+- 각 프로젝트에서 중복으로 만들어 사용하고 있던 공통 함수들을 하나의 라이브러리로 제공
 - mono repo기반으로 여러가지 패키지 관리 ([설정](https://so-so.dev/pattern/mono-repo-config/))
 
 ### 프로젝트 스캐폴딩(web-baedal)
@@ -227,7 +227,7 @@ Rainist의 기술 컨퍼런스에서 발표한 내용입니다. 인턴 과정 �
 <span class='highlight'>Last Updated</span>
 </h1>
 
-2020.07.11  
+2020.07.24  
 
 <div align="center" class="final">
 
