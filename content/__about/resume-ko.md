@@ -6,17 +6,13 @@ thumbnail: ''
 ---
 
 <h1 class='title'>
-안녕하세요,
-<br/>
-프론트엔드 엔지니어
-<br/>
-이소영 입니다.
+안녕하세요, 이소영 입니다.
 </h1>
 
 **저는 이런 것들에 가치를 두고 있습니다.**
 
-- 좋은 UX
-- 확장성 있는 구조
+- 사용자 경험
+- 좋은 설계와 코드
 - 테스트와 안정성
 - 자동화와 생산성
 - 비즈니스 임팩트
@@ -38,7 +34,7 @@ thumbnail: ''
 | -----------: | ------------------------------------------------------- |
 |   **period** | 18.12 ~ current                                         |
 | **position** | Engineering Foundation 웹 프론트엔드 개발자 |
-| **projects** | BPL(Design System), 대출 추천 서비스, 투자 추천 서비스 2.0 |
+| **projects** | BPL(Design System), 카드 추천 서비스, 대출 추천 서비스, 투자 추천 서비스 2.0 |
 
 <h1>
 <span class='highlight'>Interested In</span>
@@ -82,33 +78,21 @@ MoneyFlow팀에서 사용하는 Back office.
 
 ## About 테스트
 
-테스트 코드 작성을 통해 새로운 개발자가 빠르게 프로젝트를 파악할 수 있고 새로운 기능을 안정성 있게 추가할 수 있다고 생각합니다.
-
-### 단위 테스트
+테스트 코드는 다른 개발자가 빠르게 프로젝트를 파악할 수 있도록 돕고, 새로운 기능추가와 리팩토링의 발판이 되어준다고 생각합니다.
 
 🗓: [Banksalad] ~ 현재
 
-💻: Jest, testing-library
+💻: Jest, testing-library, Storybook, msw
 
-- 대출 추천 서비스 재개발 프로젝트에서 프론트엔드의 비즈니스 로직을 redux-saga로 분리하고 각 로직에 대한 테스트 코드를 작성.
-- 모든 웹팀이 비즈니스 로직에 대한 테스트 코드를 작성할 수 있도록 테스트 코드 작성 가이드를 제공.
+- 대출 추천 서비스 재개발 프로젝트에서 비즈니스 로직을 redux-saga로 분리하고 테스트 코드 작성.
+- 테스트 코드 작성 가이드를 제공.
 - 기존 테스트 커버리지 10%에서 70%로 상승
-- 이 외에 공통적으로 사용하는 공통 함수 등에 대해 '성공, 에러 반환, 극단 값, 이상한 값'등으로 나누어 테스트를 작성할 수 있도록 작성 가이드를 문서화.
-
-### UI Test
-
-🗓: [Banksalad] ~ 현재
-
-💻: Storybook, testing-library
-
-복잡한 사용자의 조건, 상황을 다루는 서비스에서 Storybook을 도입하여 문서화와 UI Test를 작성하였습니다.
-
-- Storybook Redux Addon을 제작하여 State Mocking값에 따라 Story를 구성할 수 있도록 하고, 페이지 단위로 Story에서 사용자 조건에 따라 보여져야 하는 화면 정리
-- [addon-viewport](https://www.npmjs.com/package/@storybook/addon-viewport)를 사용하여 디바이스에 따른 화면 테스트.
+- Storybook을 통한 UI 검증 프로세스 간소화
+- [msw](https://github.com/mswjs/msw)와 [testing-library](https://testing-library.com/)를 사용하여 Integration Test진행.
 
 ## About Platform Engineering
 
-Engineering Foundation에서 웹팀에서 필요한 Platform업무를 수행했습니다.
+Engineering Foundation에서 Platform업무를 수행했습니다.
 
 ### 정적파일(JS, CSS)업로드 구조 변경
 
@@ -116,8 +100,7 @@ Engineering Foundation에서 웹팀에서 필요한 Platform업무를 수행했�
 
 💻: Terraform, Docker, Kubernetes, GitHub Actions
 
-- 정적파일까지 Docker Image로 관리해서 발생했던 순단 이슈를 해결하기 위해 bundle된 JS파일과 CSS파일을 S3에서 관리하도록 수정
-- GitHub Actions를 사용하여 배포 프로세스 수정
+- 웹 서비스 무중단 배포를 지원하기 위해 정적파일을 S3에서 관리하도록 수정
 
 ### Webview [TTI](https://web.dev/interactive/) 개선
 
@@ -127,8 +110,7 @@ Engineering Foundation에서 웹팀에서 필요한 Platform업무를 수행했�
 
 - LightHouse기준(Slow 4G)40점에서 87점까지 향상.
   - TTI 2.5초에서 0.2초로 상승
-- Round Trip을 고려한 Code Splitting Guide 수립.
-- SSR이 필요한 프로젝트 정리 및 React에서의 SSR 가이드 수립.
+- SSR 가이드 공유
   - [관련 저장소](https://github.com/SoYoung210/react-ssr-code-splitting)
 
 ### 웹 서비스 [IaC](https://en.wikipedia.org/wiki/Infrastructure_as_code) 작업
@@ -138,13 +120,12 @@ Engineering Foundation에서 웹팀에서 필요한 Platform업무를 수행했�
 💻: Kubernetes, Nginx, GitHub Actions
 
 - 배포 시 필요한 Kubernetes template파일 작성
-- 웹서비스를 모니터링할 수 있는 Sidecar 도입
 - Kubernetes, Nginx 등 뱅크샐러드의 웹 서비스 구조를 도식화 하여 문서 작성
 - GitHub Actions활용한 CI/CD구성
 
 ## About 자동화, 사내 라이브러리
 
-웹팀이 효율적으로 일할 수 있도록 자동화와 사내 라이브러리 구축에 기여했습니다.
+자동화와 사내 라이브러리에 기여했습니다.
 
 ### BPL
 
@@ -154,8 +135,8 @@ Engineering Foundation에서 웹팀에서 필요한 Platform업무를 수행했�
 
 디자인, AND, iOS팀과 함께 BPL(Banksalad Product Language)디자인 시스템 설계 및 구현
 
+- CI/CD 구성
 - 0.0.28버전에서 0.0.29 버전 업데이트에서 번들 사이즈 최적화를 통해 사이즈 30% 감소
-- 디자인 시스템 구축 후 투자 추천 서비스에 적용하여 2.0 UI로 개편
 
 ### JS-Banksalad
 
@@ -221,25 +202,11 @@ Rainist의 기술 컨퍼런스에서 발표한 내용입니다. 인턴 과정 �
 |      **period** | 20.03. ~ current.                                                                     |
 | **description** | 페이스북 그룹인 '프론트엔드 개발 그룹'의 운영진이며 FEConf라는 컨퍼런스의 오거나이저. |
 
-#### [For.D Organizer](https://www.facebook.com/ForDeveloperKorea/)
-
-|             |                                                                                                                                                                                                                                                    |
-| ----------: | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-|      period | 17.12 ~ current                                                                                                                                                                                                                                    |
-| description | 주니어 개발자 커뮤니티입니다. 학부생에서 주니어 개발자가 되기까지 겪었던 어려움을 다른 분들은 덜 겪었으면 하는 마음에서 커뮤니티를 운영하고 있습니다. 나에게 어려웠던점은 누구에게도 어려울 수 있다는 생각에 경험과 어려움을 많은 사람들이 나누는 문화를 만들고 싶습니다.  |
-
-#### [Django Girls Seoul](https://djangogirls.org/seoul/)
-
-|             |                                                                                  |
-| ----------: | -------------------------------------------------------------------------------- |
-|      period | 18.04. ~ 19.04.                                                                  |
-| description | 여성이 개발 분야로 나아가는 것을 돕는 '장고걸스 서울'의 운영진으로 활동하였습니다. |
-
 <h1>
 <span class='highlight'>Last Updated</span>
 </h1>
 
-2020.07.24  
+2020.10.27  
 
 <div align="center" class="final">
 
