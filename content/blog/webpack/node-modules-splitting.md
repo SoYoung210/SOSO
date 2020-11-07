@@ -1,7 +1,7 @@
 ---
 title: 'node modules splitting'
 date: 2020-08-30 16:00:09
-category: react
+category: webpack
 thumbnail: './images/node-modules-splitting/thumbnail.png'
 ---
 

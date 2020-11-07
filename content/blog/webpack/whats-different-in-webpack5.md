@@ -1,7 +1,7 @@
 ---
 title: 'Webpack5, 무엇이 달라졌을까?'
 date: 2020-11-07 00:00:09
-category: react
+category: webpack
 thumbnail: './images/whats-diff-in-webpack5/thumbnail.png'
 ---
 
