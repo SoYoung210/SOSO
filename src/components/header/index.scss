@@ -13,14 +13,12 @@
   color: inherit;
 
   &:after {
-    position: absolute;
-    right: -65px;
-    top: 7px;
+    background: url('../../../content/assets/christmas-wreath.png');
     display: inline-block;
-    // background: url('../../../content/assets/flamingo.png') no-repeat;
+    width: 39px;
     background-size: contain;
-    width: 55px;
-    height: 49px;
+    height: 39px;
     content: "";
+    margin-left: 6px;
   }
 }
