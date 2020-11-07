@@ -7,14 +7,11 @@ thumbnail: './images/whats-diff-in-webpack5/thumbnail.png'
 
 ![image-thumbnail](./images/whats-diff-in-webpack5/thumbnail.png)
 
-이 글은 [webpack5 Release 글](https://webpack.js.org/blog/2020-10-10-webpack-5-release/)을 정리한 글이며, 원글의 몇 가지 내용은 포함되지 않았습니다. 모든 변경사항을 알고 싶으신 분은 원글의 내용을 참고해주세요.
-
-## 보충 할것 목록
-- Real Content Hash
+이 글은 [webpack5 Release 글](https://webpack.js.org/blog/2020-10-10-webpack-5-release/)을 정리한 글이며, 원글의 몇 가지 내용은 포함되지 않았습니다. 모든 변경사항을 알고 싶으신 분은 원글의 내용을 참고해주세요. v4에서 v5 migration에 대한 가이드는 [이 글](https://webpack.js.org/migrate/5/)에 정리되어 있습니다.
 
 ## Breaking Changes의 의미
 
-webpack 내부 아키텍처를 업데이트 하고 향후 추가될 기능을 위한 기반을 준비하기 위한 리팩토링입니다. 기능 면에서의 Breaking Changes도 있지만, 내부적으로 준비를 하기 위한 업데이트였다고 생각되었습니다.
+webpack 내부 아키텍처를 업데이트하고 향후 추가될 기능을 위한 기반을 준비하기 위한 리팩토링입니다. 기능 면에서의 Breaking Changes도 있지만, 내부적으로 준비를 하기 위한 업데이트였다고 생각되었습니다.
 
 ## General Direction
 
@@ -30,15 +27,15 @@ webpack4버전 이하에서는 브라우저 호환성을 위해 Node.js 모듈�
 
 Package maintainer에게 package.json에 browser필드를 추가하여 브라우저 호환성을 명시할 것을 당부하고 있습니다.
 
-> 실제 사례: crypto를 사용하는(혹은 사용하는 dependency중에서 사용하는 패키지가 있는 경우) 이 변경사항을 대응하지 않으면 프로젝트 빌드가 정상적으로 수행되지 않습니다.
+> 실제 사례: crypto를 사용하는(혹은 사용하는 dependency중에서 사용하는 패키지가 있는 경우) 이 변경사항에 대응하지 않으면 프로젝트 빌드가 정상적으로 수행되지 않습니다.
 
 제외된 package목록은 [webpack5 - Do not polyfill node bindings by default PR](https://github.com/webpack/webpack/pull/8460/commits/a68426e9255edcce7822480b78416837617ab065) 에서 확인하실 수 있습니다.
 
 Ref: [https://medium.com/@sanchit3b/how-to-polyfill-node-core-modules-in-webpack-5-905c1f5504a0](https://medium.com/@sanchit3b/how-to-polyfill-node-core-modules-in-webpack-5-905c1f5504a0)
 
-## Long Term Caching
+## 🚀 Long Term Caching
 
-webpack production mode에서 자동으로 활성화 되는 기능 중 하나입니다. 아래 설정들로 빌드 속도를 향상시켰습니.
+webpack production mode에서 자동으로 활성화되는 기능 중 하나입니다. 아래 설정들로 빌드 속도를 향상시켰습니.
 
 ### Chunk and module IDs
 
@@ -56,9 +53,9 @@ webpack5에서는 가장 기본값을 사용하는 것이 권장됩니다. `chun
 
 ### Real Content Hash
 
-파일 내용과 관련없이 자체적으로 hash를 생성했던것과 달리, webpack5에서는 `[contenthash]`를 사용할 때 파일 내용의 실제 해시를 사용합니다. content hash방식은 주석이나 변수명만 변경되었을 때에 긍정적인 효과를 줄 수 있습니다.
+파일 내용과 관련 없이 자체적으로 hash를 생성했던 것과 달리, webpack5에서는 `[contenthash]`를 사용할 때 파일 내용의 실제 해시를 사용합니다. content hash방식은 주석이나 변수명만 변경되었을 때에 긍정적인 효과를 줄 수 있습니다.
 
-## Development Support
+## ✨ Development Support
 
 ### Named Chunk IDs
 
@@ -66,7 +63,7 @@ webpack mode에 따라 bundle된 JS파일의 이름을 해시값으로 할지, r
 
 더이상 디버깅을 위해 **import (/ * webpackChunkName : "name"* / "module") 구문을 사용할 필요가 없습니다.**
 
-> production 환경에서도 유의미한 이름으로 보고싶다면 여전히 사용해야 하는 옵션입니다. production에서 `chunkIds: named`를 사용할 수는 있지만 민감한 정보를 노출시키지 않는 것이 권장됩니다.
+> production 환경에서도 유의미한 이름으로 보고 싶다면 여전히 사용해야 하는 옵션입니다. production에서 `chunkIds: named`를 사용할 수는 있지만 민감한 정보를 노출하지 않는 것이 권장됩니다.
 
 ### Module Federation
 
@@ -172,11 +169,11 @@ export default () => (
 - [https://github.com/nsebhastian/module-federation-react/tree/starter](https://github.com/nsebhastian/module-federation-react/tree/starter)
 - [https://blog.bitsrc.io/revolutionizing-micro-frontends-with-webpack-5-module-federation-and-bit-99ff81ceb0](https://blog.bitsrc.io/revolutionizing-micro-frontends-with-webpack-5-module-federation-and-bit-99ff81ceb0)
 
-## New Web Platform Features
+## ✨ New Web Platform Features
 
 ### Asset modules
 
-이미지나 아이콘 asset module에 대한 syntax를 기본적으로 지원합니다. build후에 별도 파일로 생성하거나 DataURI로 변환하게 되는데, 이 때 여러 포맷으로 사용할 수 있습니다.
+이미지나 아이콘 asset module에 대한 syntax를 기본적으로 지원합니다. build후에 별도 파일로 생성하거나 DataURI로 변환하게 되는데, 이때 여러 포맷으로 사용할 수 있습니다.
 
 - [예전 방식] `import url from "./image.png"` 로 사용하고 `module.rules` 에서  `type: "asset"` 를 사용합니다.
 - [새로운 방식] `new URL("./image.png", import.meta.url)`
@@ -185,13 +182,13 @@ export default () => (
 
 `new URL` 과 `new Worker / new SharedWorker / navigator.serviceWorker.register` 를 함께 사용하면 webpack은 자동으로 web worker에 대한 새로운 entry point를 생성합니다.
 
-## New Node.js Ecosystem Features
+## ✨ New Node.js Ecosystem Features
 
 ### Resolving
 
-package.json에서의 `exports` 와 `imports` field를 사용할수 있으며, [Yarn PnP](https://classic.yarnpkg.com/en/docs/pnp/)도 지원됩니다.
+package.json에서의 `exports` 와 `imports` field를 사용할 수 있으며, [Yarn PnP](https://classic.yarnpkg.com/en/docs/pnp/)도 지원됩니다.
 
-## Optimization
+## 🚀 Optimization
 
 ### Nested tree-shaking
 
@@ -272,7 +269,7 @@ development mode에서 이 문제를 찾을 수 있다면 더 빠르고 쉽게 �
 
 ### Improved target option
 
-webpack4에서 `target` 은 `web` 과 `node` (및 기타 몇 가지)에서 대략적으로 선택할 수 있었습니다. webpack5에서는 더 많은 옵션을 제공합니다.
+webpack4에서 `target` 은 `web` 과 `node` (및 기타 몇 가지)에서 선택할 수 있었습니다. webpack5에서는 더 많은 옵션을 제공합니다.
 
 target옵션은 번들된 코드에 대해 영향을 줍니다.
 
@@ -285,15 +282,15 @@ target옵션은 번들된 코드에 대해 영향을 줍니다.
 - 생성된 코드에서 사용하는 ECMAScript기능 / 구문
 - 일부 Node.js 동작(global, __filename, __dirname)
 
-위 목록의 결정을 하는데에 `web`과 `node` 라는 선택지는 충분하지 않았기 때문에 webpack5에서는 `node10.13`과 같이 최소버전을 명시할 수 있습니다.
+`web`과 `node` 라는 두 가지 선택지는 위 방식들을 모두 결정하기에 충분하지 않았기 때문에 webpack5에서는 `node10.13`과 같이 최소버전을 명시할 수 있습니다.
 
 target에 `"browserlist"` 를 사용할 수도 있습니다. 이 속성은 프로젝트에서 이미 사용하고 있는 `broswerlist` 속성이 있는 경우에도 webpack.config.js에서 적용한 값으로 사용됩니다.
 
-## Performance
+## ✨ Performance
 
 ### persistent caching
 
-기본적으로 다음과 같은 구성을 통해 활성화 할 수 있습니다.
+다음과 같은 구성을 통해 활성화 할 수 있습니다.
 
 ```js
 module.exports = {
@@ -316,7 +313,7 @@ module.exports = {
 
 기본적으로 타임 스탬프는 개발 모드의 스냅 샷 및 프로덕션 모드의 파일 해시에 사용됩니다. 파일 해시를 사용하면 CI에서도 영구 캐싱을 사용할 수 있습니다.
 
-## experiments
+## 🧪 experiments
 
 webpack5에서는 실험 기능을 분리하고, 설정에 따라 활성화 할 수 있는 옵션을 제공합니다.
 
@@ -327,111 +324,84 @@ webpack5에서는 실험 기능을 분리하고, 설정에 따라 활성화 할 
 - [Top Level Await](https://github.com/tc39/proposal-top-level-await) Stage 3 proposal (`experiments.topLevelAwait`)
 - bundle을 module로 제공 (`experiments.outputModule`)
 
-## Node.js
+## ⚠️ Node.js
 
 webpack에서 지원하는 Node.js 최소버전이 6에서 10.3.0으로 변경되었습니다.
 
 ## Config Change
 
-- `cache: Object` 제거: memory-cache 설정 옵션이 제거되었습니다.
-- `cache.type` 추가:  `"memory"` 와 `"filesystem"` 중 선택할 수 있습니다.
-- `cache.type = "filesystem"` 관련 설정 추가:
-    - `cache.cacheDirectory`
-    - `cache.name`
-    - `cache.version`
-    - `cache.store`
-    - `cache.hashAlgorithm`
-    - `cache.idleTimeout`
-    - `cache.idleTimeoutForInitialStore`
-    - `cache.buildDependencies`
-- `resolve.cache` 추가
-- `resolve.concord` 제거
-- `resolve.alias` 의 값은 배열 혹은  `false` 로 설정할 수 있습니다.
-- `resolve.fallback` 추가:
-- Node.js 자동 polyfil제거
-    - `node.Buffer` 제거
-    - `node.console` 제거
-    - `node.process` 제거
-    - `node.*` (Node.js native module) 제거
-    - **MIGRATION**: `resolve.alias` 와 `ProvidePlugin` 을 사용할 수 있습니다. 에러 발생 시 설정 옵션에 대한 hint가 제공됩니다. (Refer to [node-libs-browser](https://github.com/webpack/node-libs-browser) for polyfills & mocks used in v4)
-- `output.filename` 을 함수로 사용할 수 있습니다.
-- `devtool`
-    - 옵션: `false | eval | [inline-|hidden-|eval-][nosources-][cheap-[module-]]source-map`
-- `optimization.chunkIds: "deterministic"` 추가
-- `optimization.moduleIds: "deterministic"` 추가
-- `optimization.moduleIds: "hashed"` deprecated
-- `optimization.moduleIds: "total-size"` 제거
-- 모듈 및 chunk id에 대한 속성 제거
-    - `optimization.hashedModuleIds` 제거
-    - `optimization.namedChunks` 제거 (`NamedChunksPlugin` 도)
-    - `optimization.namedModules` 제거 (`NamedModulesPlugin` 도)
-    - `optimization.occurrenceOrder` 제거
-    - **MIGRATION**:  `chunkIds` 와 `moduleIds` 사용
-- `optimization.splitChunks` `test` 더 이상 청크 이름과 일치하지 않습니다.
-    - **MIGRATION**: test 함수를 사용하세요. `(module, { chunkGraph }) => chunkGraph.getModuleChunks(module).some(chunk => chunk.name === "name")`
-- `optimization.splitChunks` `minRemainingSize` 추가
-- `optimization.splitChunks` `filename` 함수로 사용할 수 있습니다.
-- `optimization.splitChunks` 타입에 따라 object로 사용할 수 있습니다.
-    - `minSize`
-    - `minRemainingSize`
-    - `maxSize`
-    - `maxAsyncSize`
-    - `maxInitialSize`
-- `optimization.splitChunks` `maxAsyncSize` 와 `maxInitialSize` 가 `maxSiz` 에 추가
-- `optimization.splitChunks` `name: true` 제거: 자동으로 이름을 결정하는 속성이 제거되었습니다.
-    - **MIGRATION**: 기본설정을 사용하세요. `chunkIds: "named"`
-- `optimization.splitChunks.cacheGroups[].idHint` 추가
-- `optimization.splitChunks` `automaticNamePrefix` 제거
-    - **MIGRATION**:  `idHint` 를 사용하세요.
-- `optimization.mangleExports` 추가
-- `optimization.noEmitOnErrors` 이 `optimization.emitOnErrors` 로 변경되었습니다.
-- `optimization.realContentHash` 추가
-- `module.rule` 에서 `query` 와 `loaders` 삭제
-- `module.rules` `options` 에 string으로 넘기는 옵션 삭제
-    - **MIGRATION**: object로 넘겨야하며, loaders옵션은 삭제되었습니다.
-- `module.rules` `mimetype` 추가
-- `module.rules` `descriptionData` 추가
-- `SourceMapDevToolPlugin` `lineToLine` 삭제
-- `[hash]` 전체 컴파일에 사용되는 hash는 지원중단
-    - **MIGRATION**: `[fullhash]` 사용
-- `[modulehash]` 지원 중단
-    - **MIGRATION**: `[hash]` 사용
-- `[moduleid]` 지원 중단
-    - **MIGRATION**: `[id]` 사용
-- `[filebase]` 삭제
-    - **MIGRATION**: `[base]` 사용
-- file-based템플릿을 위한 새로운 옵션 추가 (i. e. SourceMapDevToolPlugin)
-    - `[name]`
-    - `[base]`
-    - `[path]`
-    - `[ext]`
-- `experiments` 추가 (실험 단계 기능들 사용가능)
-- `watchOptions.followSymlinks` 추가
-- `watchOptions.ignored` 에 정규표현식 기능 추가
+몇 가지 알아두면 좋을만한 Configuration Change를 소개합니다.
 
-### **Changes to the Defaults**
+### resolve.fallback
 
-- `target` 정보는 borwserlist config에 대한 정보가 있다면  `"browserslist"` 를 기본값으로 사용합니다.
-- `module.unsafeCache` 의 기본값은 `node_modules`
-- `optimization.moduleIds` 의 기본값은 production mode에서는 `deterministic` 이고, 아닐 경우 `size`
-- `optimization.chunkIds` 의 기본값은 production mode에서 `deterministic` 이고, 아닐 경우 `total-size`
-- `optimization.nodeEnv` 의 기본값은 `node` mode일 경우 `false`
-- `optimization.splitChunks.minSize` 기본값은 production mode에서 `20k`
-- `optimization.splitChunks.enforceSizeThreshold` 기본값은 production mode에서 `50k`
-- `optimization.splitChunks` `minRemainingSize` 기본값은 `minSize`
-    - webpack설정에 따라 분할되어야 하는 부분이 작을 경우 청크가 덜 분할됩니다.
-- `optimization.splitChunks` `maxAsyncRequests` and `maxInitialRequests` defaults was been increased to 30
-- `optimization.splitChunks.cacheGroups.vendors` 삭제 →  `optimization.splitChunks.cacheGroups.defaultVendors` 로 변경.
-- `optimization.splitChunks.cacheGroups.defaultVendors.reuseExistingChunk` 기본값 `true`
-- `optimization.minimizer` 타겟은 terser option에서 `compress.passes: 2` 를 기본 값으로 씁니다.
+Node.js 기본 Polyfill이 제거되었기 때문에, 다음과 같이 polyfill옵션을 추가해야 할 수 있습니다.
+
+```js
+module.exports = () => {
+  module: {
+    resolve: {
+      fallback: {
+        crypto: require.resolve('crypto-browserify')
+      }
+    }
+  }
+}
+```
+
+### output.filename
+
+번들된 결과물의 파일 이름을 설정해주는 옵션인 `output.filename`을 string혹은 **함수**로 설정할 수 있습니다.
+
+```js
+module.exports = () => {
+  //...
+  output: {
+    // name과 contenthash를 쓰는 방식
+    filename: '[name].[contenthash].bundle.js',
+    // 함수로 쓰는 방식
+    filename: (pathData, assetInfo) => {
+      return pathData.chunk.name === 'main' ? '[name].js': '[name]/[name].js';
+    }
+  }
+}
+```
+
+### optimization
+
+chunk에 대한 설정 옵션이 추가되면서 몇 가지 설정은 deprecated되었습니다.
+
+```js
+module.exports = () => {
+  optimization: {
+    hashedModuleIds,
+    namedChunks,
+    occurrenceOrder,
+  }
+}
+```
+
+splitChunk에서 `vendors`가 `defaultVendors`로 변경되었습니다.
+
+```js
+module.exports = () => {
+  optimization: {
+    splitChunks: {
+      // 🙅🏻‍♀️
+      vendors: false,
+      // 🙆🏻‍♀️
+      defaultVendors: false,
+    }
+  }
+}
+```
 
 ## 후기
 
-운영중인 프로젝트에서 webpack5로 올려봤을 때 build콘솔에 여러가지 warning이 발생했다. Build와 Runtime에서 에러는 없었지만 약간의 찝찝함이 있다.(?)
+운영중인 프로젝트에서 webpack5로 올려봤을 때 build콘솔에 여러 warning이 발생했습니다.
 
-[wepack-cli에서 대응중인 warning](https://github.com/webpack/webpack-cli/issues/1918)도 있는것 같고, 각종 plugin에서 아직 webpack5대응이 완벽하게 되어 있지 않은것 같다.
+[webpack-cli에서 대응 중인 warning](https://github.com/webpack/webpack-cli/issues/1918)도 있는것 같고, 각종 plugin에서 아직 webpack5대응이 완벽하게 되어 있지 않은 것 같습니다.
 
-CRA를 사용하고 있지 않다면, 역시 Major Update에 대한 반영을 프로젝트에 완전히 가져갈 수 있는 시기는 조금 늦춰서 봐도 좋을것 같다.
+CRA를 사용하고 있지 않다면, 역시 Major Update에 대한 반영을 프로젝트에 완전히 가져갈 수 있는 시기는 조금 늦춰서 봐도 좋을 것 같습니다.
 
 2020.11.07 Update: webpack-cli에서 대응중이던 Warning은 [4.2.0 Release](https://github.com/webpack/webpack-cli/releases/tag/webpack-cli%404.2.0)에서 Fix되었습니다.
 
