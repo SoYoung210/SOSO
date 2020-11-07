@@ -1,13 +1,16 @@
 ---
-title: 'whats-different-in-webpack5'
+title: 'Webpack5, 무엇이 달라졌을까?'
 date: 2020-11-07 00:00:09
 category: react
 thumbnail: './images/whats-diff-in-webpack5/thumbnail.png'
 ---
 
-![image-thumbnail](./images/node-modules-splitting/thumbnail.png)
+![image-thumbnail](./images/whats-diff-in-webpack5/thumbnail.png)
 
 이 글은 [webpack5 Release 글](https://webpack.js.org/blog/2020-10-10-webpack-5-release/)을 정리한 글이며, 원글의 몇 가지 내용은 포함되지 않았습니다. 모든 변경사항을 알고 싶으신 분은 원글의 내용을 참고해주세요.
+
+## 보충 할것 목록
+- Real Content Hash
 
 ## Breaking Changes의 의미
 
@@ -23,11 +26,11 @@ webpack 아키텍처를 업데이트 하고 향후 추가될 기능을 위한 �
 
 ## Node.js 자동 Polyfill 제거
 
-webpack4버전 이하에서는 브라우저 호환성을 위해 Node.js 모듈에 대한 polyfill을 자동으로 제공했지만 대부분의 polyfill이 불필요하게 적용되어 bundle size를 증가시킨다고 생각해 이를 제거하였다고 합니다.
+webpack4버전 이하에서는 브라우저 호환성을 위해 Node.js 모듈에 대한 polyfill을 자동으로 제공했지만 대부분의 polyfill이 불필요하게 적용되어 bundle size를 증가시키기 때문에 이를 제거하였습니다.
 
 Package maintainer에게 package.json에 browser필드를 추가하여 브라우저 호환성을 명시할 것을 당부하고 있습니다.
 
-실제 사례: crypto를 사용하는(혹은 사용하는 dependency중에서 사용하는 패키지가 있는 경우) 이 변경사항을 대응하지 않으면 프로젝트 빌드가 정상적으로 수행되지 않습니다.
+> 실제 사례: crypto를 사용하는(혹은 사용하는 dependency중에서 사용하는 패키지가 있는 경우) 이 변경사항을 대응하지 않으면 프로젝트 빌드가 정상적으로 수행되지 않습니다.
 
 제외된 package목록은 [webpack5 - Do not polyfill node bindings by default PR](https://github.com/webpack/webpack/pull/8460/commits/a68426e9255edcce7822480b78416837617ab065) 에서 확인하실 수 있습니다.
 
@@ -35,7 +38,7 @@ Ref: [https://medium.com/@sanchit3b/how-to-polyfill-node-core-modules-in-webpack
 
 ## Long Term Caching
 
-webpack production mode에서 자동으로 활성화 되는 기능 중 하나이다. 아래 설정들로 빌드 속도를 향상시켰다.
+webpack production mode에서 자동으로 활성화 되는 기능 중 하나입니다. 아래 설정들로 빌드 속도를 향상시켰습니.
 
 ### Chunk and module IDs
 
@@ -45,17 +48,15 @@ webpack production mode에서 자동으로 활성화 되는 기능 중 하나이
 
 3~4글자 정도의 ID를 모듈 및 청크에 할당, bundle size와 long term caching간의 trade-off
 
-moduleIds/chunkIds/magleExports: false는 기본 동작을 비활성화 하고 플러그인을 통해 커스텀한 알고리즘을 지정할 수 있다.
+moduleIds/chunkIds/mangleExports: false는 기본 동작을 비활성화 하고 플러그인을 통해 커스텀한 알고리즘을 지정할 수 있습니다.
 
-webpack4 modulesIds / chunkIds: false에서 커스텀 플러그인이 없어도 빌드 오류가 없었지만 webpack5에서는 필수로 필요하다. 
+webpack4에서는 `modulesIds / chunkIds: false`옵션 설정 시 커스텀 플러그인이 없어도 빌드 오류가 없었지만 webpack5에서는 필수로 필요합니다.
 
-webpack5의 가장 기본값을  사용하는 것이 권장됨. `chunkIds: "size"` 를 적용할 경우 더 작은 번들이 생성되지만 캐싱에 비효율적일 수 있다.
-
-참고: webpack4에서 해시된 모듈 Id는 gzip성능이 좋지 않았음. 모듈 순서와 관련이 있으며 webpack5 beta.1이후 수정되었다.
+webpack5에서는 가장 기본값을 사용하는 것이 권장됩니다. `chunkIds: "size"` 를 적용할 경우 더 작은 번들이 생성되지만 캐싱에 비효율적일 수 있습니다.
 
 ### Real Content Hash
 
-webpack5에서는 `[contenthash]`를 사용할 때 파일 내용의 실제 해시를 사용한다. 이전에는 파일 내용과 관련없이 자체적으로 hash를 생성했다. content hash방식은 주석이나 변수명만 변경되었을 때에 긍정적인 효과를 줄 수 있다.
+파일 내용과 관련없이 자체적으로 hash를 생성했던것과 달리, webpack5에서는 `[contenthash]`를 사용할 때 파일 내용의 실제 해시를 사용합니다. content hash방식은 주석이나 변수명만 변경되었을 때에 긍정적인 효과를 줄 수 있습니다.
 
 ## Development Support
 
@@ -63,15 +64,15 @@ webpack5에서는 `[contenthash]`를 사용할 때 파일 내용의 실제 해�
 
 webpack mode에 따라 bundle된 JS파일의 이름을 해시값으로 할지, readable하게 유지할지 자동으로 결정하며, id는 file path로 결정됩니다.
 
-더이상 디버깅을 위해 **import (/ * webpackChunkName : "name"* / "module") 구문을 사용할 필요가 없습니다.** 
+더이상 디버깅을 위해 **import (/ * webpackChunkName : "name"* / "module") 구문을 사용할 필요가 없습니다.**
 
-- production 환경에서도 유의미한 이름으로 보고싶다면 여전히 사용해야 하지만, 프로덕션에서 `chunkIds: named`를 사용할 수는 있지만 민감한 정보를 노출시키지 않는 것이 권장됩니다.
+> production 환경에서도 유의미한 이름으로 보고싶다면 여전히 사용해야 하는 옵션입니다. production에서 `chunkIds: named`를 사용할 수는 있지만 민감한 정보를 노출시키지 않는 것이 권장됩니다.
 
 ### Module Federation
 
-'Module Federation'이라는 새로운 기능이 추가되었다. 여러 webpack build를 서로 공유할 수 있는 기능이며 다른 webpack build결과물을  component혹은 라이브러리처럼 사용할 수 있다.
+여러 webpack build를 서로 공유할 수 있는 기능이며 다른 webpack build결과물을  component혹은 라이브러리처럼 사용할 수 있습니다.
 
-```jsx
+```js{14,15,18,20}
 // Header컴포넌트를 공유하는 App1의 webpack.config.js
 
 const { ModuleFederationPlugin } = require("webpack").container;
@@ -105,7 +106,7 @@ Module Federation의 옵션은 다음과 같습니다.
 - `exposes`: 다른 앱에서 사용될 때 쓰이는 이름과 대상 파일
 - `shared`: 공유할 module이름(위 예시에서 react와 react-dom을 중복호출하지 않습니다.)
 
-```jsx
+```jsx{16}
 // Header컴포넌트를 사용하는 App2의 webpack.config.js
 
 const { ModuleFederationPlugin } = require("webpack").container;
@@ -136,7 +137,7 @@ module.exports = {
 
 App2의 HTML파일에 `App1`에서 Expose된 `remoteEntry.js`파일을 가져오는 스크립트를 추가합니다.
 
-```jsx
+```html{4}
 // App2 index.html
 <html>
   <head>
@@ -150,7 +151,7 @@ App2의 HTML파일에 `App1`에서 Expose된 `remoteEntry.js`파일을 가져오
 
 이제 App2에서 app1의 Header컴포넌트를 사용할 수 있습니다.
 
-```jsx
+```jsx{3}
 import React from 'react';
 
 const Header = React.lazy(() => import('app1/Header'));
@@ -164,11 +165,9 @@ export default () => (
 );
 ```
 
-지금까지는 컴포넌트들을 각 Application에서 공유하여 사용하고 싶다면 별도 npm package로 제작한 후 각 서비스에서 이 package를 install해서 사용하는 방식으로 사용했습니다.
+지금까지는 컴포넌트들을 각 Application에서 공유하여 사용하고 싶다면 별도 npm package로 제작한 후 각 서비스에서 이 package를 install해서 사용하는 방식으로 사용했습니다. 각 서비스에서 패키지를 항상 최신 버전으로 유지해주어야만 공통된 UI를 적용할 수 있는 반면, Module Federation방식으로는 **별도 install없이 계속 최신 상태를 유지할 수 있습니다.**
 
-이 방식에서는 각 서비스에서 패키지를 항상 최신 버전으로 유지해주어야만 공통된 UI를 적용할 수 있는 반면, Module Federation방식으로는 별도 install없이 계속 최신을 유지할 수 있습니다.
-
-위 코드에 대한 자세한 내용과 예시는 아래 Reference에 자세히 설명되어 있습니다.
+위 코드에 대한 자세한 내용과 예시는 아래 Reference를 참고해 주세요.
 
 - [https://github.com/nsebhastian/module-federation-react/tree/starter](https://github.com/nsebhastian/module-federation-react/tree/starter)
 - [https://blog.bitsrc.io/revolutionizing-micro-frontends-with-webpack-5-module-federation-and-bit-99ff81ceb0](https://blog.bitsrc.io/revolutionizing-micro-frontends-with-webpack-5-module-federation-and-bit-99ff81ceb0)
@@ -184,23 +183,21 @@ export default () => (
 
 ### Native Worker support
 
-`new URL` 과 `new Worker / new SharedWorker / navigator.serviceWorker.register` 를 함께 사용하면 webpack은 자동으로 web worker에 대한 새로운 enptrypoint를 생성합니다.
+`new URL` 과 `new Worker / new SharedWorker / navigator.serviceWorker.register` 를 함께 사용하면 webpack은 자동으로 web worker에 대한 새로운 entry point를 생성합니다.
 
-## New Node.js Ecosystme Features
+## New Node.js Ecosystem Features
 
 ### Resolving
 
-package.json에서의 `exports` 와 `imports` field를 사용할수 있습니다.
-
-Yarn PnP도 지원됩니다.
+package.json에서의 `exports` 와 `imports` field를 사용할수 있으며, Yarn PnP도 지원됩니다.
 
 ## Optimization
 
 ### Nested tree-shaking
 
-webpack5에서 중첩된 속성에 대한 내용까지 파악하여 tree-shaking을 지원합니다.
+중첩된 속성에 대한 내용까지 파악하여 tree-shaking을 지원합니다.
 
-```jsx
+```jsx{2,3,11}
 // inner.js
 export const a = 1;
 export const b = 2;
@@ -218,7 +215,7 @@ console.log(module.inner.a);
 
 ### Inner-module tree-shaking
 
-```jsx
+```jsx{1,7}
 import { something } from './something';
 
 function usingSomething() {
@@ -230,7 +227,7 @@ export function test() {
 }
 ```
 
-`something` 모듈은  `test` 함수가 불려야 사용된다고 볼 수 있습니다. webpack5에서는 export된 `test` 함수가 사용되는지 여부를 판단하여 사용되지 않았을 경우 `something` 모듈까지 제거합니다. 
+`something` 모듈은  `test` 함수가 불려야 사용된다고 볼 수 있습니다. webpack5에서는 export된 `test` 함수가 사용되는지 여부를 판단하여 사용되지 않았을 경우 `something` 모듈까지 제거합니다.
 
 아래 symbol들을 지원합니다.
 
