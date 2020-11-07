@@ -14,7 +14,7 @@ thumbnail: './images/whats-diff-in-webpack5/thumbnail.png'
 
 ## Breaking Changes의 의미
 
-webpack 아키텍처를 업데이트 하고 향후 추가될 기능을 위한 기반을 준비하기 위한 리팩토링입니다. 기능 면에서의 Breaking Changes도 있지만, 내부적으로 준비를 하기 위한 업데이트였다고 생각되었습니다.
+webpack 내부 아키텍처를 업데이트 하고 향후 추가될 기능을 위한 기반을 준비하기 위한 리팩토링입니다. 기능 면에서의 Breaking Changes도 있지만, 내부적으로 준비를 하기 위한 업데이트였다고 생각되었습니다.
 
 ## General Direction
 
@@ -24,7 +24,7 @@ webpack 아키텍처를 업데이트 하고 향후 추가될 기능을 위한 �
 - 웹 플랫폼과의 호환성 향상
 - 내부 구조 정리
 
-## Node.js 자동 Polyfill 제거
+## ⚠️ Node.js 자동 Polyfill 제거
 
 webpack4버전 이하에서는 브라우저 호환성을 위해 Node.js 모듈에 대한 polyfill을 자동으로 제공했지만 대부분의 polyfill이 불필요하게 적용되어 bundle size를 증가시키기 때문에 이를 제거하였습니다.
 
@@ -189,7 +189,7 @@ export default () => (
 
 ### Resolving
 
-package.json에서의 `exports` 와 `imports` field를 사용할수 있으며, Yarn PnP도 지원됩니다.
+package.json에서의 `exports` 와 `imports` field를 사용할수 있으며, [Yarn PnP](https://classic.yarnpkg.com/en/docs/pnp/)도 지원됩니다.
 
 ## Optimization
 
@@ -232,33 +232,27 @@ export function test() {
 아래 symbol들을 지원합니다.
 
 - 함수, 클래스
-- export default 혹은 변수 정의
+- export default 혹은 아래 표현과 함께 사용된 변수들
   - 함수, 클래스
-  - 시퀀스 표현(??)
+  - [시퀀스 표현](https://krasimirtsonev.com/blog/article/meet-sequence-expression)
   - /*#**PURE***/ expressions
   - 지역변수
   - import binding
-
-(성욱님한테 물어봐야지)
-
-Using `eval()` will bail-out this optimization for a module, because evaled code could reference any symbol in scope.
-
-This optimization is also known as Deep Scope Analysis.
 
 ### CommonJs Tree Shaking
 
 몇 가지 CommonJs에 대한 Tree Shaking을 지원합니다.
 
-- `exports|this|module.exports.xxx = ...`
-- `exports|this|module.exports = require("...")` (reexport)
-- `exports|this|module.exports.xxx = require("...").xxx` (reexport)
-- `Object.defineProperty(exports|this|module.exports, "xxx", ...)`
-- `require("abc").xxx`
-- `require("abc").xxx()`
-- importing from ESM
-- `require()` a ESM
-- `Object.defineProperty(exports|this|module.exports, "__esModule", { value: true|!0 })`
-- `exports|this|module.exports.__esModule = true|!0`
+- exports|this|module.exports.xxx = ...
+- exports|this|module.exports = require("...") (reexport)
+- exports|this|module.exports.xxx = require("...").xxx (reexport)
+- Object.defineProperty(exports|this|module.exports, "xxx", ...)
+- require("abc").xxx
+- require("abc").xxx()
+- ESM import
+- ESM을 `require()` 형태로 import하는 것
+- Object.defineProperty(exports|this|module.exports, "__esModule", { value: true|!0 })
+- exports|this|module.exports.__esModule = true|!0
 
 ### Side-Effect analysis
 
@@ -280,7 +274,7 @@ development mode에서 이 문제를 찾을 수 있다면 더 빠르고 쉽게 �
 
 webpack4에서 `target` 은 `web` 과 `node` (및 기타 몇 가지)에서 대략적으로 선택할 수 있었습니다. webpack5에서는 더 많은 옵션을 제공합니다.
 
-target옵션은 번들러로 생성된 코드에 대해 더 많은 영향을 줍니다.
+target옵션은 번들된 코드에 대해 영향을 줍니다.
 
 - 청크 로딩 방법
 - 청크 형식
@@ -291,7 +285,7 @@ target옵션은 번들러로 생성된 코드에 대해 더 많은 영향을 줍
 - 생성된 코드에서 사용하는 ECMAScript기능 / 구문
 - 일부 Node.js 동작(global, __filename, __dirname)
 
-위 목록에 대한 결정을 하는데에 `web`과 `node` 라는 선택지는 충분하지 않습니다. 따라서 `node10.13` 과 같이 최소버전을 명시할 수 있습니다.
+위 목록의 결정을 하는데에 `web`과 `node` 라는 선택지는 충분하지 않았기 때문에 webpack5에서는 `node10.13`과 같이 최소버전을 명시할 수 있습니다.
 
 target에 `"browserlist"` 를 사용할 수도 있습니다. 이 속성은 프로젝트에서 이미 사용하고 있는 `broswerlist` 속성이 있는 경우에도 webpack.config.js에서 적용한 값으로 사용됩니다.
 
@@ -301,7 +295,7 @@ target에 `"browserlist"` 를 사용할 수도 있습니다. 이 속성은 프�
 
 기본적으로 다음과 같은 구성을 통해 활성화 할 수 있습니다.
 
-```jsx
+```js
 module.exports = {
   cache: {
     // 1. Set cache type to filesystem
@@ -326,7 +320,7 @@ module.exports = {
 
 webpack5에서는 실험 기능을 분리하고, 설정에 따라 활성화 할 수 있는 옵션을 제공합니다.
 
-실험으로 제공되는 기능에 대한 추가는 webpack minor release로 제공됩니다. 
+실험으로 제공되는 기능에 대한 추가는 webpack minor release로 제공됩니다.
 
 - 구버전 WebAssembly 지원 (`experiments.syncWebAssembly`)
 - 새로운 WebAssembly [updated spec](https://github.com/WebAssembly/esm-integration) (`experiments.asyncWebAssembly`)
