@@ -40,7 +40,7 @@ export const ThemeSwitch = () => {
   useEffect(() => {
     const checked = Storage.getTheme(Dom.hasClassOfBody(THEME.DARK))
 
-    handleChange(checked)
+    handleChange(true)
   }, [])
 
   return (
