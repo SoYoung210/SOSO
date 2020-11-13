@@ -249,7 +249,7 @@ User-Agent는 [polyfill-useragent-normaliser](https://github.com/Financial-Times
 
 실제로, polyfill을 가져오는 함수는 getPolyfillString polyfill-library에서 `npm run test-node` 를 수행하여 다음과 같은 script가 생성되는 것을 확인할 수 있다.
 
-![https://s3-us-west-2.amazonaws.com/secure.notion-static.com/a5d55eec-1005-4c2d-82bf-ed79b36586cd/Untitled.png](https://s3-us-west-2.amazonaws.com/secure.notion-static.com/a5d55eec-1005-4c2d-82bf-ed79b36586cd/Untitled.png)
+![test-node-result.png](./images/you-dont-know-polyfill/test-node-result.png)
 
 [polyfill.io](http://polyfill.io) 의 기본 설정으로 사용한다면 html파일에 script tag를 추가해주면 된다.
 
