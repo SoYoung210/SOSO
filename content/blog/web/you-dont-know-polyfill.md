@@ -1,13 +1,13 @@
 ---
-title: 'You don\'t know polyfill'
-date: 2020-11-13 08:00:09
+title: "You don't know polyfill"
+date: 2020-11-11 08:00:09
 category: web
 thumbnail: './images/you-dont-know-polyfill/thumbnail.png'
 ---
 
 ![image-thumbnail](./images/you-dont-know-polyfill/thumbnail.png)
 
-Babel은  ECMAScript2015+ 코드를 ECMAScript5 버전으로 변환하는 도구이다. 이 문장만 읽으면 Babel이 polyfill과 동일한 개념이라고 쉽게 오해할 수 있지만, Babel이 곧 Polfyill을 의미하는 것은 아니다.
+Babel은  ECMAScript2015+ 코드를 ECMAScript5 버전으로 변환하는 도구이다. 이 문장만 읽으면 Babel이 polyfill과 동일한 개념이라고 쉽게 오해할 수 있지만, Babel이 곧 Polyfill을 의미하는 것은 아니다.
 
 ES5에 존재하지 않는 ES6의 메서드나 생성자까지 지원하지 않기 때문인데, 예를 들어 ES6에 추가된 Promise, Object.assign, Array.from등은 ES5로 taranpiling하여도 대체할 ES5 Syntax가 없기 때문에 그대로 남아있게 된다.
 
