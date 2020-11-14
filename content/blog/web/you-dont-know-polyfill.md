@@ -7,9 +7,9 @@ thumbnail: './images/you-dont-know-polyfill/thumbnail.png'
 
 ![image-thumbnail](./images/you-dont-know-polyfill/thumbnail.png)
 
-Babel은  ECMAScript2015+ 코드를 ECMAScript5 버전으로 변환하는 도구이다. 이 문장만 읽으면 Babel이 polyfill과 동일한 개념이라고 쉽게 오해할 수 있지만, Babel이 곧 Polyfill을 의미하는 것은 아니다. ES5에 존재하지 않는 ES6의 메서드나 생성자까지 지원하지 않기 때문이다.
+Babel은  ECMAScript2015+ 코드를 ECMAScript5 버전으로 변환하는 도구이다. 이 문장만 읽으면 Babel이 폴리필과 동일한 개념이라고 쉽게 오해할 수 있지만, Babel이 곧 폴리필을 의미하는 것은 아니다. ES5에 존재하지 않는 ES6의 메서드나 생성자까지 지원하지 않기 때문이다.
 
-예를 들어 ES6에 추가된 Promise, Object.assign, Array.from등은 ES5로 taranpiling하여도 대체할 ES5 Syntax가 없기 때문에 그대로 남아있게 된다.
+예를 들어 ES6에 추가된 Promise, Object.assign, Array.from등은 ES5로 transpile해도 대체할 ES5 Syntax가 없기 때문에 그대로 남아있게 된다.
 
 ```jsx{2,7,13,18}
 // Yes! I can Do!
@@ -37,17 +37,17 @@ const helloPromise = new Promise(resolve => {
 
 `Promise`구문은 바뀌지 않았다. ES6를 지원하지 않는 IE에서 이 코드가 실행될 경우 에러가 발생된다.
 
-Babel이 변환할 수 없는 부분을 채우는 것이 바로 polyfill이다. polyfill은 여러가지 방법으로 추가할 수 있는데, 이 글에서는 babel을 사용하는 방법과 polyfill.io를 사용하는 방법을 소개한다.
+이렇게 Babel이 변환할 수 없는 부분을 채우는 것이 바로 폴리필이다. 이 글에서는 babel을 사용하는 방법과 polyfill.io를 사용하는 방법을 소개한다.
 
 ## babel
 
-babel 7.4.0 이전과 이후로 babel을 사용하여 polyfill을 적용하는 방식이 바뀌었다. babel@7.4.0 이전에는 `@babel/polyfill`을 많이 사용했지만 밑에서 소개할 여러 문제로, 이제는 `@babel/preset-env`로 통합하여 사용한다.
+babel@7.4.0 이전에는 `@babel/polyfill`을 많이 사용했지만 밑에서 소개할 문제로, 이제는 `@babel/preset-env`로 통합하여 사용한다.
 
 > @babel/polyfill은 babel@7.4.0에서 deprecated되었다.
 
 ### @babel/polyfill
 
-@babel/polyfill은 [regenerator runtime](https://www.npmjs.com/package/regenerator-runtime)과 ES5/6/7 폴리필인 [core-js](https://www.npmjs.com/package/core-js)를 dependency로 가지고 있는 패키지이다. @babel/polyfill의 코드는 매우 간단하다.
+@babel/polyfill은 제너레이터 폴리필[regenerator runtime](https://www.npmjs.com/package/regenerator-runtime)과 ES5/6/7 폴리필인 [core-js](https://www.npmjs.com/package/core-js)를 dependency로 가지고 있는 패키지이다.
 
 ```jsx
 // core-js@2.6.
@@ -66,11 +66,11 @@ import "regenerator-runtime/runtime";
 
 ```
 
-@babel/polyfill의 장점으로는 먼저 전역에 폴리필을 추가하기전에 해당 기능이 있는지를 체크하므로, polyfill이 필요없는 최신 브라우저에서는 polyfill없이 동작하게 되어 babel-plugin-transform-runtime를 사용하는 것에 비해서는 빠르다.
+[@babel/polyfill의 코드](https://github.com/babel/babel/blob/master/packages/babel-polyfill/src/noConflict.js)는 매우 간단하다. 폴리필 모듈인 `core-js`와 `regenerator-runtime`을 import하는 역할만 한다.
 
-> 번들은 우선 포함되고, 사용하는 코드만 core-js를 사용할지, 브라우저 코드를 사용하는 지 달라진다.
+`core-js`는 먼저 전역에 폴리필을 추가하기전에 해당 기능이 있는지를 체크하므로, 폴리필이 필요없는 최신 브라우저에서는 폴리필없이 동작하게 되어 (babel-plugin-transform-runtime 를 사용하는 것에 비해) 빠르다.
 
-```jsx
+```jsx{6,9}
 // https://github.com/zloirock/core-js/blob/v2/modules/_export.js
 
 var $export = function (type, name, source) {
@@ -84,20 +84,10 @@ var $export = function (type, name, source) {
     exp = IS_BIND && own ? ctx(out, global) : IS_PROTO && typeof out == 'function' ? ctx(Function.call, out) : out;
     // extend global
     if (target) redefine(target, key, out, type & $export.U);
-    // export
-    if (exports[key] != out) hide(exports, key, exp);
-    if (IS_PROTO && expProto[key] != out) expProto[key] = out;
+    /* 생략 */
   }
 }
 ```
-
-하지만 @babel/polyfill에는 크게 두 가지 문제가 있다.
-
-#### Bundle Size
-
-`import "core-js/es6"` 구문을 통해 모든 polyfill을 load하게 되므로 필연적으로 번들 사이즈가 커진다. ([core-js es6/index.js](https://github.com/zloirock/core-js/blob/v2/es6/index.js))
-
-#### global 객체
 
 @babel/polyfill 에서 사용했던 core-js@2.6.5의 코드를 간단히 살펴보면, 전역 객체를 직접 수정하는 방식임을 알 수 있다.
 
@@ -110,10 +100,31 @@ $export($export.P, 'Array', {
 });
 ```
 
-이렇게 전역 객체를 직접 수정하는 방식이기 때문에, babel/polyfill은 딱 한번만 import되어야 한다. 두 개 이상의 @babel/polyfill을 import하게 되면 아래와 같이 오류를 발생 시킨다.
+전역 객체를 직접 수정하기 때문에 Array.prototype.includes 등 ES2015+에서 새로 추가된 프로토타입 메서드도 문제없이 사용 가능하고, 덕분에 내가 짠 코드가 아닌 npm에서 디펜던시로 받은 라이브러리가 ES2015+ 에서 새롭게 추가된 객체나 프로토타입 메서드를 사용하는지 신경쓸 필요가 없게 되어 개발할 때도 편리하다.
+
+하지만, @babel/polyfill에는 크게 두 가지 문제가 있다.
+
+#### Bundle Size
+
+`import "core-js/es6"` 구문을 통해 사용하지 않는 폴리필도 번들에 포함되어 사이즈가 커진다. ([core-js es6/index.js](https://github.com/zloirock/core-js/blob/v2/es6/index.js))
+
+#### 주의해야 하는 부분
+
+@babel/polyfill은 딱 한번만 import되어야 한다. 두 개 이상의 @babel/polyfill을 import하게 되면 아래와 같이 오류를 발생 시킨다.
 
 ```text
 :rotating_light: Uncaught Error : only one instance of babel-polyfill is allowed
+```
+
+내부적으로 전역변수를 두어 2개 이상의 폴리필이 로드 되면 무조건 에러를 발생시키도록 했다.
+
+```js
+if (global._babelPolyfill && typeof console !== "undefined" && console.warn) {
+  console.warn(
+    "@babel/polyfill is loaded more than once on this page. This is probably not desirable/intended " +
+      /* ... */
+  );
+}
 ```
 
 @babel/polyfill의 디펜던시인 core-js 의 ES6/7 폴리필의 경우 두 번 호출되면 내부적으로 오류가 발생되어 정상적으로 폴리필이 적용되지 않는다.
@@ -125,13 +136,11 @@ babel-plugin-transform 플러그인은 transpile과정에서 polyfill이 필요�
 
 core-js를 디펜던시로 가지고 있고, [alias를 생성](https://github.com/babel/babel/blob/master/packages/babel-plugin-transform-runtime/src/runtime-corejs2-definitions.js)해서 전역 객체 변경 없이 polyfill이 적용 되도록 한다.
 
-예를 들어, 아래 코드는
-
 ```jsx
 new Promise(resolve => resolve(1))
 ```
 
-transpile과정을 거치면 다음과 같이 변한다.
+위 코드는 transpile과정을 거치면 다음과 같이 변한다.
 
 ```jsx
 var _promise = require("babel-runtime/core-js/promise");
