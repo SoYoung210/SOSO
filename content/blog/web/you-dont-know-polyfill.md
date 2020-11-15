@@ -7,9 +7,9 @@ thumbnail: './images/you-dont-know-polyfill/thumbnail.png'
 
 ![image-thumbnail](./images/you-dont-know-polyfill/thumbnail.png)
 
-Babel은  ECMAScript2015+ 코드를 ECMAScript5 버전으로 변환하는 도구이다. 이 문장만 읽으면 Babel이 폴리필과 동일한 개념이라고 쉽게 오해할 수 있지만, Babel이 곧 폴리필을 의미하는 것은 아니다. ES5에 존재하지 않는 ES6의 메서드나 생성자까지 지원하지 않기 때문이다.
+Babel은  ECMAScript2015+ 코드를 ECMAScript5 버전으로 변환하는 도구이다. 이 문장만 읽으면 Babel이 폴리필과 동일한 개념이라고 오해할 수 있지만, Babel이 곧 폴리필을 의미하는 것은 아니다. ES5에 존재하지 않는 ES6의 메서드나 생성자는 지원하지 않기 때문이다.
 
-예를 들어 ES6에 추가된 Promise, Object.assign, Array.from등은 ES5로 transpile해도 대체할 ES5 Syntax가 없기 때문에 그대로 남아있게 된다.
+예를 들어 ES6에 추가된 `Promise`, `Object.assign`, `Array.from`등은 ES5로 transpile해도 대체할 ES5 Syntax가 없기 때문에 변환되지 않는다.
 
 ```jsx{2,7,13,18}
 // Yes! I can Do!
@@ -35,15 +35,15 @@ const helloPromise = new Promise(resolve => {
 })
 ```
 
-`Promise`구문은 바뀌지 않았다. ES6를 지원하지 않는 IE에서 이 코드가 실행될 경우 에러가 발생된다.
+`Promise`구문은 바뀌지 않았다. 이 코드는 ES6를 지원하지 않는 브라우저에서 에러가 발생한다.
 
-이렇게 Babel이 변환할 수 없는 부분을 채우는 것이 바로 폴리필이다. 이 글에서는 babel을 사용하는 방법과 polyfill.io를 사용하는 방법을 소개한다.
+이렇게 Babel이 변환할 수 없는 부분을 채우는 것이 바로 폴리필이다. 이 글에서는 [babel](https://github.com/babel/babel)과 [polyfill.io](https://polyfill.io/)에 대해 소개한다.
 
 ## babel
 
 babel@7.4.0 이전에는 `@babel/polyfill`을 많이 사용했지만 밑에서 소개할 문제로, 이제는 `@babel/preset-env`로 통합하여 사용한다.
 
-> @babel/polyfill은 babel@7.4.0에서 deprecated되었다.
+> ⚠️  @babel/polyfill은 babel@7.4.0에서 deprecated되었다.
 
 ### @babel/polyfill
 
@@ -68,7 +68,7 @@ import "regenerator-runtime/runtime";
 
 [@babel/polyfill의 코드](https://github.com/babel/babel/blob/master/packages/babel-polyfill/src/noConflict.js)는 매우 간단하다. 폴리필 모듈인 `core-js`와 `regenerator-runtime`을 import하는 역할만 한다.
 
-`core-js`는 먼저 전역에 폴리필을 추가하기전에 해당 기능이 있는지를 체크하므로, 폴리필이 필요없는 최신 브라우저에서는 폴리필없이 동작하게 되어 (babel-plugin-transform-runtime 를 사용하는 것에 비해) 빠르다.
+`core-js`는 전역에 폴리필을 추가하기 전에 해당 기능이 있는지를 체크하기 때문에 최신 브라우저에서는 폴리필 없이 동작하게 되어 (babel-plugin-transform-runtime 를 사용하는 것에 비해) 빠르다.
 
 ```jsx{6,9}
 // https://github.com/zloirock/core-js/blob/v2/modules/_export.js
@@ -100,23 +100,23 @@ $export($export.P, 'Array', {
 });
 ```
 
-전역 객체를 직접 수정하기 때문에 Array.prototype.includes 등 ES2015+에서 새로 추가된 프로토타입 메서드도 문제없이 사용 가능하고, 덕분에 내가 짠 코드가 아닌 npm에서 디펜던시로 받은 라이브러리가 ES2015+ 에서 새롭게 추가된 객체나 프로토타입 메서드를 사용하는지 신경쓸 필요가 없게 되어 개발할 때도 편리하다.
+전역 객체를 직접 수정하기 때문에 `Array.prototype.includes` 등 새로 추가된 프로토타입 메서드도 문제없이 사용 가능하고, 라이브러리가 어떤 프로토타입 메서드를 사용하는지 신경 쓸 필요가 없다.
 
 하지만, @babel/polyfill에는 크게 두 가지 문제가 있다.
 
-#### Bundle Size
+#### 문제점 1. Bundle Size
 
 `import "core-js/es6"` 구문을 통해 사용하지 않는 폴리필도 번들에 포함되어 사이즈가 커진다. ([core-js es6/index.js](https://github.com/zloirock/core-js/blob/v2/es6/index.js))
 
 #### 주의해야 하는 부분
 
-@babel/polyfill은 딱 한번만 import되어야 한다. 두 개 이상의 @babel/polyfill을 import하게 되면 아래와 같이 오류를 발생 시킨다.
+@babel/polyfill은 딱 한번만 import해야 한다. 두 개 이상의 @babel/polyfill가 import되면 아래와 같은 오류가 발생한다.
 
 ```text
 :rotating_light: Uncaught Error : only one instance of babel-polyfill is allowed
 ```
 
-내부적으로 전역변수를 두어 2개 이상의 폴리필이 로드 되면 무조건 에러를 발생시키도록 했다.
+내부에 `global._babelPolyfill` 이라는 전역 변수를 두고 2개 이상의 폴리필이 로드되면 에러를 발생하도록 해뒀다.
 
 ```js
 if (global._babelPolyfill && typeof console !== "undefined" && console.warn) {
@@ -127,7 +127,7 @@ if (global._babelPolyfill && typeof console !== "undefined" && console.warn) {
 }
 ```
 
-@babel/polyfill의 디펜던시인 core-js 의 ES6/7 폴리필의 경우 두 번 호출되면 내부적으로 오류가 발생되어 정상적으로 폴리필이 적용되지 않는다.
+@babel/polyfill의 디펜던시인 core-js 의 ES6/7 폴리필의 경우, 두 번 호출되면 내부적으로 오류가 발생되어 정상적으로 폴리필이 적용되지 않는다.
 따라서 @babel/polyfill 이 두 번 호출되지 않도록 주의해야 한다.
 
 ### babel-plugin-transform-runtime
@@ -170,7 +170,7 @@ babel/preset-env@7.12.1 기준, babel/preset-env으로 polyfill을 설정할 수
 
 #### useBuiltIns
 
-`useBuiltIns` 옵션은 어떤 방식으로 polyfill을 사용할 지 설정하는 옵션이다. 기본 값은 false이므로 이 값을 설정하지 않으면 번들 결과물에 아무런 polyfill도 추가되지 않는다.
+`useBuiltIns` 옵션은 어떤 방식으로 polyfill을 넣어줄 지 설정하는 옵션이다. 기본값은 `false`이므로 이 값을 설정하지 않으면 polyfill이 추가되지 않는다.
 
 #### entry
 
@@ -228,7 +228,7 @@ target이 매우 구형 브라우저일 경우 과도한 polyfill이 추가되�
 
 실제 코드에서 사용하는 polyfill만 import하는 설정이다.
 
-[test-polyfill/babel-preset-env](https://github.com/SoYoung210/test-polyfill/blob/babel-preset-env/index.js) 에서 `npm run build:modern:usage`를 수행하면 아래와 같은 결과를 확인할 수 있습니다.
+[test-polyfill/babel-preset-env](https://github.com/SoYoung210/test-polyfill/blob/babel-preset-env/index.js) 에서 `npm run build:modern:usage`를 수행하면 아래와 같은 결과를 확인할 수 있다.
 
 ```jsx
 // Input
@@ -250,7 +250,7 @@ require("core-js/modules/es.string.iterator");
 require("core-js/modules/web.dom-collections.iterator");
 ```
 
-`usage`옵션은 사용하는 코드만 polyfill대상으로 보기 때문에, 사용하는 `node_modules`의 dependency에서 polyfill이 적용되지 않은 코드가 있다면 에러가 발생할 수 있다.
+`usage`옵션은 사용하는 코드만 polyfill 대상으로 보기 때문에, 사용하는 `node_modules`의 dependency에서 polyfill이 적용되지 않은 코드가 있다면 에러가 발생할 수 있다.
 
 또, 아래와 같은 코드에서 babel은 `fooArrayOrObject`이 string에 필요한 지 array에 필요한 지 판단할 수 없기 때문에 두 가지 polyfill을 모두 import한다.
 
@@ -271,7 +271,7 @@ console.log(_test.fooArrayOrObject.includes());
 
 ## [polyfill.io]((http://polyfill.io))
 
-[polyfill.io](http://polyfill.io) service는 요청하는 브라우저의 User-Agent를 확인하여 필요한 polyfill script만 다운로드할 수 있는 서비스이다. 지원되는 브라우저는 [polyfill.io 페이지](https://polyfill.io/v3/supported-browsers/) 에서 확인할 수 있는데, IE 10이하는 지원하지 않는다.
+[polyfill.io](http://polyfill.io) service는 요청하는 브라우저의 [User-Agent](https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/User-Agent)를 확인하여 필요한 polyfill 만 가져올 수 있는 서비스이다. 지원되는 브라우저는 [polyfill.io 페이지](https://polyfill.io/v3/supported-browsers/) 에서 확인할 수 있는데, IE 10이하는 지원하지 않는다.
 
 User-Agent는 [polyfill-useragent-normaliser](https://github.com/Financial-Times/polyfill-useragent-normaliser/blob/master/lib/normalise-user-agent.vcl)를 통해 확인하고, [getPolyfillString 함수](https://github.com/Financial-Times/polyfill-library/blob/e9cfb03a55ae343e1d6fb2e4f06176eee691298b/lib/index.js#L235)를 통해 필요한 polyfill을 모두 생성한다.
 
@@ -350,6 +350,7 @@ flags=always,gated
 ### Security
 
 쿼리파라미터로 옵션을 명시하는 방식이다보니, [XSS 공격](https://developer.mozilla.org/en-US/docs/Glossary/Cross-site_scripting)에 대한 취약점이 우려될 수 있다. polyfill.io는 옵션값들을 escape처리하여 공격을 방지하고 있다. script 문자인 `<` 는 `&lt`,  `>` 는 `&gt` 로 escape하여 코드상에 스크립트 태그등이 있더라도 HTML로 해석되지 않도록 한다.
+
 > 자세한 내용은 [이 글](https://snyk.io/vuln/npm:polyfill-service:20160126)에 정리되어 있다.
 
 polyfill-service는 [이 커밋](https://github.com/financial-times/polyfill-service/commit/aadd8d08b50f7f9c02b431d06f6ee2158902c53c)을 통해 XSS공격 방지 기능을 추가했고, polyfill-service 3.1.2 version부터 대응되어 있다.
