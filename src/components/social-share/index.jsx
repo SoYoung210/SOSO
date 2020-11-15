@@ -5,18 +5,19 @@ import { shareToTwitter, shareToFacebook } from '../../utils/share'
 
 import './index.scss'
 
-export const SocialShare = ({ title, author }) => {
-  const text = `Recommend on "${title}" written by @${author}`
+export const SocialShare = ({ title, author, social}) => {
+  const text = (author) =>
+    `Recommend on "${title}" written by @${author}`
 
   const onClickTwitterIcon = e => {
     e.preventDefault()
 
-    return shareToTwitter(window.location.href, text)
+    return shareToTwitter(window.location.href, text(social.twitter))
   }
 
   const onClickFacebookIcon = e => {
     e.preventDefault()
-    return shareToFacebook(window.location.href, text)
+    return shareToFacebook(window.location.href, text(social.facebook))
   }
 
   return (
