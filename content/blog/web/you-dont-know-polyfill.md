@@ -7,9 +7,9 @@ thumbnail: './images/you-dont-know-polyfill/thumbnail.png'
 
 ![image-thumbnail](./images/you-dont-know-polyfill/thumbnail.png)
 
-Babel은  ECMAScript2015+ 코드를 ECMAScript5 버전으로 변환하는 도구이다. 이 문장만 읽으면 Babel이 폴리필과 동일한 개념이라고 오해할 수 있지만, Babel이 곧 폴리필을 의미하는 것은 아니다. ES5에 존재하지 않는 ES6의 메서드나 생성자는 지원하지 않기 때문이다.
+Babel은  ES6+ 코드를 ES5로 변환하는 도구이다. 이 문장만 읽으면 Babel이 polyfill과 동일한 개념이라고 오해할 수 있지만, Babel이 곧 polyfill을 의미하는 것은 아니다. ES5에 존재하지 않는 ES6의 메서드나 생성자는 지원하지 않기 때문이다.
 
-예를 들어 ES6에 추가된 `Promise`, `Object.assign`, `Array.from`등은 ES5로 transpile해도 대체할 ES5 Syntax가 없기 때문에 변환되지 않는다.
+예를 들어 `Promise`, `Object.assign`, `Array.from`등은 ES5로 대체할 Syntax가 없기 때문에 변환되지 않는다.
 
 ```jsx{2,7,13,18}
 // Yes! I can Do!
@@ -23,7 +23,7 @@ var helloBabel = function helloBabel() {
   return 'world';
 }
 
-// No I cant
+// No I can't
 // Before
 const helloPromise = new Promise(resolve => {
   return resolve('world')
@@ -37,7 +37,7 @@ const helloPromise = new Promise(resolve => {
 
 `Promise`구문은 바뀌지 않았다. 이 코드는 ES6를 지원하지 않는 브라우저에서 에러가 발생한다.
 
-이렇게 Babel이 변환할 수 없는 부분을 채우는 것이 바로 폴리필이다. 이 글에서는 [babel](https://github.com/babel/babel)과 [polyfill.io](https://polyfill.io/)에 대해 소개한다.
+이렇게 Babel이 변환할 수 없는 부분을 채우는 것이 바로 polyfill이다. 이 글에서는 [babel](https://github.com/babel/babel)과 [polyfill.io](https://polyfill.io/)에 대해 소개한다.
 
 ## babel
 
@@ -47,7 +47,7 @@ babel@7.4.0 이전에는 `@babel/polyfill`을 많이 사용했지만 밑에서 �
 
 ### @babel/polyfill
 
-@babel/polyfill은 제너레이터 폴리필[regenerator runtime](https://www.npmjs.com/package/regenerator-runtime)과 ES5/6/7 폴리필인 [core-js](https://www.npmjs.com/package/core-js)를 dependency로 가지고 있는 패키지이다.
+@babel/polyfill은 제너레이터 polyfill[regenerator runtime](https://www.npmjs.com/package/regenerator-runtime)과 ES5/6/7 polyfill인 [core-js](https://www.npmjs.com/package/core-js)를 dependency로 가지고 있는 패키지이다.
 
 ```jsx
 // core-js@2.6.
@@ -63,12 +63,11 @@ import "core-js/fn/array/flat-map";
 import "core-js/web";
 
 import "regenerator-runtime/runtime";
-
 ```
 
-[@babel/polyfill의 코드](https://github.com/babel/babel/blob/master/packages/babel-polyfill/src/noConflict.js)는 매우 간단하다. 폴리필 모듈인 `core-js`와 `regenerator-runtime`을 import하는 역할만 한다.
+[@babel/polyfill의 코드](https://github.com/babel/babel/blob/master/packages/babel-polyfill/src/noConflict.js)는 매우 간단하다. polyfill 모듈인 `core-js`와 `regenerator-runtime`을 import하는 역할만 한다.
 
-`core-js`는 전역에 폴리필을 추가하기 전에 해당 기능이 있는지를 체크하기 때문에 최신 브라우저에서는 폴리필 없이 동작하게 되어 (babel-plugin-transform-runtime 를 사용하는 것에 비해) 빠르다.
+`core-js`는 전역에 polyfill을 추가하기 전에 해당 기능이 있는지를 체크하기 때문에 최신 브라우저에서는 polyfill 없이 동작하게 되어 babel-plugin-transform-runtime 를 사용하는 것에 비해 빠르다.
 
 ```jsx{6,9}
 // https://github.com/zloirock/core-js/blob/v2/modules/_export.js
@@ -104,19 +103,25 @@ $export($export.P, 'Array', {
 
 하지만, @babel/polyfill에는 크게 두 가지 문제가 있다.
 
-#### 문제점 1. Bundle Size
+#### 문제점 1
 
-`import "core-js/es6"` 구문을 통해 사용하지 않는 폴리필도 번들에 포함되어 사이즈가 커진다. ([core-js es6/index.js](https://github.com/zloirock/core-js/blob/v2/es6/index.js))
+```js
+import "core-js/es6"
+/* ...생략 */
+import "regenerator-runtime/runtime";
+```
 
-#### 주의해야 하는 부분
+@babel/polyfill에서는 위와 같이 모듈을 import하기 때문에, 사용하지 않는 polyfill도 번들에 포함되어 사이즈가 커진다. @babel/polyfill을 import하는 순간, [core-js es6/index.js](https://github.com/zloirock/core-js/blob/v2/es6/index.js)하위의 많은 모듈이 모두 번들에 포함되는 것이다.
 
-@babel/polyfill은 딱 한번만 import해야 한다. 두 개 이상의 @babel/polyfill가 import되면 아래와 같은 오류가 발생한다.
+#### 문제점 2
+
+@babel/polyfill은 딱 한번만 import해야 한다. 두 개 이상의 @babel/polyfill이 import되면 아래와 같은 오류가 발생한다.
 
 ```text
 :rotating_light: Uncaught Error : only one instance of babel-polyfill is allowed
 ```
 
-내부에 `global._babelPolyfill` 이라는 전역 변수를 두고 2개 이상의 폴리필이 로드되면 에러를 발생하도록 해뒀다.
+내부에 `global._babelPolyfill` 이라는 전역 변수를 두고 2개 이상의 polyfill이 로드되면 에러를 발생하도록 해뒀다.
 
 ```js
 if (global._babelPolyfill && typeof console !== "undefined" && console.warn) {
@@ -127,14 +132,14 @@ if (global._babelPolyfill && typeof console !== "undefined" && console.warn) {
 }
 ```
 
-@babel/polyfill의 디펜던시인 core-js 의 ES6/7 폴리필의 경우, 두 번 호출되면 내부적으로 오류가 발생되어 정상적으로 폴리필이 적용되지 않는다.
+@babel/polyfill의 디펜던시인 `core-js`의 ES6/7 polyfill의 경우, 두 번 호출되면 내부적으로 오류가 발생되어 정상적으로 polyfill이 적용되지 않는다.
 따라서 @babel/polyfill 이 두 번 호출되지 않도록 주의해야 한다.
 
 ### babel-plugin-transform-runtime
 
 babel-plugin-transform 플러그인은 transpile과정에서 polyfill이 필요한 부분의 동작을 내부 helper함수로 치환하는 것이다. ([관련 코드](https://github.com/babel/babel/blob/6.x/packages/babel-plugin-transform-runtime/src/index.js#L4-L16))
 
-core-js를 디펜던시로 가지고 있고, [alias를 생성](https://github.com/babel/babel/blob/master/packages/babel-plugin-transform-runtime/src/runtime-corejs2-definitions.js)해서 전역 객체 변경 없이 polyfill이 적용 되도록 한다.
+`core-js`를 디펜던시로 가지고 있고, [alias를 생성](https://github.com/babel/babel/blob/master/packages/babel-plugin-transform-runtime/src/runtime-corejs2-definitions.js)해서 전역 객체 변경 없이 polyfill이 적용 되도록 한다.
 
 ```jsx
 new Promise(resolve => resolve(1))
@@ -156,7 +161,7 @@ new _promise2.default(function (resolve) {
 
 이 방식을 사용할 땐 한 가지 주의할 점이 있다.
 
-예를 들어, axios를 디펜던시로 사용하는 프로젝트에서는 `node_modules/axios`까지 transpile범위에 포함되도록 해야한다. axios는 내부적으로 Promise를 사용하는 라이브러리인데, **babel-plugin-transform-runtime은 Promise전역 객체를 생성하지 않으므로 에러**가 발생한다.
+예를 들어, `axios`를 디펜던시로 사용하는 프로젝트에서는 `node_modules/axios`까지 transpile범위에 포함되도록 해야한다. axios는 내부적으로 Promise를 사용하는 라이브러리인데, **babel-plugin-transform-runtime은 Promise전역 객체를 생성하지 않으므로 에러**가 발생한다.
 
 @babel/polyfill과 달리 필요한 부분에만 polyfill을 적용하기 때문에 bundle size 측면에서 이점이 있으나, 개발자가 많은 부분을 신경써야 한다.
 
@@ -172,7 +177,7 @@ babel/preset-env@7.12.1 기준, babel/preset-env으로 polyfill을 설정할 수
 
 `useBuiltIns` 옵션은 어떤 방식으로 polyfill을 넣어줄 지 설정하는 옵션이다. 기본값은 `false`이므로 이 값을 설정하지 않으면 polyfill이 추가되지 않는다.
 
-#### entry
+#### useBuiltIns: entry
 
 ```jsx
 // index.js
@@ -210,7 +215,7 @@ module.exports = {
 
 ```
 
-`ie >=10`설정에는 `es/object.set-prototype-of` 폴리필이 추가된다.
+`ie >=10`설정에는 `es/object.set-prototype-of` polyfill이 추가된다.
 
 ```diff
 // modern browser
@@ -224,7 +229,7 @@ target이 매우 구형 브라우저일 경우 과도한 polyfill이 추가되�
 
 > [test-polyfill/babel-preset-env](https://github.com/SoYoung210/test-polyfill/tree/babel-preset-env) 에서 target에 IE ≥ 10이 포함되어 있는 번들과 그렇지 않은 번들의 차이를 직접 확인할 수 있다.
 
-#### usage
+#### useBuiltIns: usage
 
 실제 코드에서 사용하는 polyfill만 import하는 설정이다.
 
@@ -269,9 +274,9 @@ var _test = require("./test");
 console.log(_test.fooArrayOrObject.includes());
 ```
 
-## [polyfill.io]((http://polyfill.io))
+## polyfill.io
 
-[polyfill.io](http://polyfill.io) service는 요청하는 브라우저의 [User-Agent](https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/User-Agent)를 확인하여 필요한 polyfill 만 가져올 수 있는 서비스이다. 지원되는 브라우저는 [polyfill.io 페이지](https://polyfill.io/v3/supported-browsers/) 에서 확인할 수 있는데, IE 10이하는 지원하지 않는다.
+[polyfill.io](http://polyfill.io) service는 요청하는 브라우저의 [User-Agent](https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/User-Agent)를 확인하여 필요한 polyfill만 추가할 수 있는 서비스이다. 지원되는 브라우저는 [polyfill.io 페이지](https://polyfill.io/v3/supported-browsers/) 에서 확인할 수 있는데, IE 10이하는 지원하지 않는다.
 
 User-Agent는 [polyfill-useragent-normaliser](https://github.com/Financial-Times/polyfill-useragent-normaliser/blob/master/lib/normalise-user-agent.vcl)를 통해 확인하고, [getPolyfillString 함수](https://github.com/Financial-Times/polyfill-library/blob/e9cfb03a55ae343e1d6fb2e4f06176eee691298b/lib/index.js#L235)를 통해 필요한 polyfill을 모두 생성한다.
 
@@ -310,8 +315,6 @@ Object.defineProperty(O, P, newDesc);
 ```
 
 ### Options
-
-babel-preset-env에서는 browser target을 지정하여 필요한 polyfill을 load하는 방식이었다면, polyfill.io는 기본적으로 브라우저 [User-Agent](https://developer.mozilla.org/ko/docs/Web/HTTP/User_agent%EB%A5%BC_%EC%9D%B4%EC%9A%A9%ED%95%9C_%EB%B8%8C%EB%9D%BC%EC%9A%B0%EC%A0%80_%EA%B0%90%EC%A7%80)를 확인하고 필요한 폴리필을 추가하는 방식이다.
 
 ```text
 https://polyfill.io/v3/polyfill.min.js?features=default
