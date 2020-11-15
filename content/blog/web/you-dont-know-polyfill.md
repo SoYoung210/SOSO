@@ -159,6 +159,38 @@ new _promise2.default(function (resolve) {
 });
 ```
 
+Babel은 ES6+ 구문을 ES5로 치환하기 위해 여러 헬퍼 함수들을 생성하는데, @babel/plugin-transform-runtime은 트랜스파일 과정에서 이 헬퍼함수들을 `@babel/runtime`모듈을 참조하도록 변경한다.
+
+```js
+class Circle {}
+```
+
+일반적으로 위 코드는 트랜스파일을 거치면 아래와 같이 변한다.
+
+```js
+function _classCallCheck(instance, Constructor) {
+  //...
+}
+
+var Circle = function Circle() {
+  _classCallCheck(this, Circle);
+};
+```
+
+`class`를 포함하는 모든 코드는 매번 `_classCallCheck`함수를 반복적으로 생성하게 된다.
+
+하지만 `@babel/plugin-transform-runtime`을 사용하면 헬퍼함수를 매번 생성하지 않고 `@babel/runtime` 내부 모듈을 참조하는 방식으로 변경된다.
+
+```js
+var _classCallCheck = require("@babel/runtime/helpers/classCallCheck");
+
+var Circle = function Circle() {
+  _classCallCheck(this, Circle);
+};
+```
+
+https://github.com/babel/babel/blob/main/packages/babel-plugin-transform-runtime/src/index.js#L265-L272
+
 이 방식을 사용할 땐 한 가지 주의할 점이 있다.
 
 예를 들어, `axios`를 디펜던시로 사용하는 프로젝트에서는 `node_modules/axios`까지 transpile범위에 포함되도록 해야한다. axios는 내부적으로 Promise를 사용하는 라이브러리인데, **babel-plugin-transform-runtime은 Promise전역 객체를 생성하지 않으므로 에러**가 발생한다.
