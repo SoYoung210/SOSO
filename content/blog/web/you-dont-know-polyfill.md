@@ -411,6 +411,12 @@ polyfill필요 여부는 Application레벨에서는 쉽게 제어할 수 있지�
 
 ## 마무리
 
+babel은 polyfill을 추가하는 가장 쉽고 확실한 방법이지만 polyfill이 필요없는 최신 브라우저에서는 불필요하게 번들 사이즈가 증가한다.
+
+[SPA](https://developer.mozilla.org/en-US/docs/Glossary/SPA)에서 신경써야 하는 부분 중 하나인 '번들 사이즈'에 고민이 있다면, User-Agent기반으로 필요한 polyfill만 로드하는 방식인 polyfill.io도 선택지가 될 수 있다.
+
+다만, polyfill.io를 선택할 때는 추가적인 서버 관리 비용에 대한 고려와 core-js maintainer "zloirock"가 언급한 [부정확한 polyfill](https://github.com/babel/website/issues/1366#issuecomment-326543755)이슈는 없는지 충분한 테스트가 필요할것 같다.
+
 ## References
 
 - [https://programmingsummaries.tistory.com/](https://programmingsummaries.tistory.com/)
