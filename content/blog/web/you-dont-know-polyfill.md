@@ -426,6 +426,7 @@ babel은 polyfill을 추가하는 가장 쉽고 확실한 방법이지만 polyfi
 - [https://github.com/babel/babel/blob/master/packages/babel-polyfill/package.json](https://github.com/babel/babel/blob/master/packages/babel-polyfill/package.json)
 - [https://github.com/zloirock/core-js](https://github.com/zloirock/core-js)
 - [https://3perf.com/blog/polyfills/](https://3perf.com/blog/polyfills/)
+- [https://babeljs.io/docs/en/babel-plugin-transform-runtime](https://babeljs.io/docs/en/babel-plugin-transform-runtime)
 - [https://github.com/Financial-Times/polyfill-library](https://github.com/Financial-Times/polyfill-library)
 - [https://slides.com/odyss/deck-8](https://slides.com/odyss/deck-8)
 - [https://www.youtube.com/watch?v=8GcVBTBI4Ew&list=PLZl3coZhX98oeg76bUDTagfySnBJin3FE&index=12](https://www.youtube.com/watch?v=8GcVBTBI4Ew&list=PLZl3coZhX98oeg76bUDTagfySnBJin3FE&index=12)
