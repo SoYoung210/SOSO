@@ -410,7 +410,7 @@ polyfill필요 여부는 Application레벨에서는 쉽게 제어할 수 있지�
 
 ## 마무리
 
-## Ref
+## References
 
 - [https://programmingsummaries.tistory.com/](https://programmingsummaries.tistory.com/)
 - [https://github.com/babel/babel/blob/master/packages/babel-polyfill/package.json](https://github.com/babel/babel/blob/master/packages/babel-polyfill/package.json)
