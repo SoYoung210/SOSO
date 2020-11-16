@@ -67,7 +67,9 @@ import "regenerator-runtime/runtime";
 
 [@babel/polyfill의 코드](https://github.com/babel/babel/blob/master/packages/babel-polyfill/src/noConflict.js)는 매우 간단하다. polyfill 모듈인 `core-js`와 `regenerator-runtime`을 import하는 역할만 한다.
 
-`core-js`는 전역에 polyfill을 추가하기 전에 해당 기능이 있는지를 체크하기 때문에 최신 브라우저에서는 polyfill 없이 동작하게 되어 babel-plugin-transform-runtime 를 사용하는 것에 비해 빠르다.
+`core-js`는 전역에 polyfill을 추가하기 전에 해당 기능이 있는지를 체크하기 때문에 최신 브라우저에서는 polyfill 없이 동작하게 되어 babel-plugin-transform-runtime(corejs: false)를 사용하는 것에 비해 빠르다.
+
+> babel-plugin-transform-runtime에서도 `corejs: 2 | 3 | false`를 적용할 수 있다. 이 내용은 [@babel/plugin-transform-runtime](https://so-so.dev/web/you-dont-know-polyfill#babel-plugin-transform-runtime)에서 자세히 다룬다.
 
 ```jsx{6,9}
 // https://github.com/zloirock/core-js/blob/v2/modules/_export.js
@@ -159,15 +161,15 @@ new _promise2.default(function (resolve) {
 });
 ```
 
-Babel은 ES6+ 구문을 ES5로 치환하기 위해 여러 헬퍼 함수들을 생성하는데, @babel/plugin-transform-runtime은 트랜스파일 과정에서 이 헬퍼함수들을 `@babel/runtime`모듈을 참조하도록 변경한다.
+Babel은 ES6+ 구문을 ES5로 치환하기 위해 여러 helper 함수들을 생성하는데, @babel/plugin-transform-runtime은 트랜스파일 과정에서 이 헬퍼함수들이 다른 모듈을 참조하도록 변경한다.
 
 ```js
 class Circle {}
 ```
 
-일반적으로 위 코드는 트랜스파일을 거치면 아래와 같이 변한다.
+@babel/plugin-transform-runtime이 없을 때는 아래와 같이 변환된다.
 
-```js
+```js{1,6}
 function _classCallCheck(instance, Constructor) {
   //...
 }
@@ -179,17 +181,46 @@ var Circle = function Circle() {
 
 `class`를 포함하는 모든 코드는 매번 `_classCallCheck`함수를 반복적으로 생성하게 된다.
 
-하지만 `@babel/plugin-transform-runtime`을 사용하면 헬퍼함수를 매번 생성하지 않고 `@babel/runtime` 내부 모듈을 참조하는 방식으로 변경된다.
+`@babel/plugin-transform-runtime`을 사용하면 매번 helper함수를 생성하지 않고 `@babel/runtime`, 혹은 `corejs`를 참조하는 방식으로 변경된다.
 
-```js
-var _classCallCheck = require("@babel/runtime/helpers/classCallCheck");
+```js{1,9}
+var _classCallCheck2 = require("@babel/runtime/helpers/classCallCheck");
 
-var Circle = function Circle() {
-  _classCallCheck(this, Circle);
+var _classCallCheck3 = _interopRequireDefault(_classCallCheck2);
+
+function _interopRequireDefault(obj) {
+  return obj && obj.__esModule ? obj : { default: obj };
+}
+
+var Person = function Person() {
+  (0, _classCallCheck3.default)(this, Person);
 };
 ```
 
-https://github.com/babel/babel/blob/main/packages/babel-plugin-transform-runtime/src/index.js#L265-L272
+어떤 모듈을 참조할지는 [`corejs`옵션 값](https://babeljs.io/docs/en/babel-plugin-transform-runtime#corejs)에 따라 달라지는데, 기본 값 `false`로 적용될 경우 `@babel/runtime`을 참조한다. ([코드](https://github.com/babel/babel/blob/main/packages/babel-plugin-transform-runtime/src/index.js#L165-L169))
+
+```js
+const moduleName = injectCoreJS3 // corejs === 3 ?
+  ? "@babel/runtime-corejs3"
+  : injectCoreJS2 // corejs === 2 ?
+  ? "@babel/runtime-corejs2"
+  : "@babel/runtime";
+
+this.addDefaultImport(
+  `${modulePath}/${helpersDir}/${name}`,
+  name,
+  blockHoist,
+);
+// `${modulePath}/${helpersDir}/${name}` example:
+// @babel/runtime/helpers/esm/${toArray}.js
+```
+
+## TODO
+
+babel-plugin- 표기법 통일하고,
+라이브러리에서 장점이 있다는 내용을 여기랑 밑에서 언급하기.
+
+(주의할 점)은 babel/runtime일때만일듯.
 
 이 방식을 사용할 땐 한 가지 주의할 점이 있다.
 
