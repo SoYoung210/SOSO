@@ -113,16 +113,6 @@ Engineering Foundation에서 Platform업무를 수행했습니다.
 - SSR 가이드 공유
   - [관련 저장소](https://github.com/SoYoung210/react-ssr-code-splitting)
 
-### 웹 서비스 [IaC](https://en.wikipedia.org/wiki/Infrastructure_as_code) 작업
-
-🗓: [Banksalad] 2019.08 ~ 2019.11
-
-💻: Kubernetes, Nginx, GitHub Actions
-
-- 배포 시 필요한 Kubernetes template파일 작성
-- Kubernetes, Nginx 등 뱅크샐러드의 웹 서비스 구조를 도식화 하여 문서 작성
-- GitHub Actions활용한 CI/CD구성
-
 ## About 자동화, 사내 라이브러리
 
 자동화와 사내 라이브러리에 기여했습니다.
