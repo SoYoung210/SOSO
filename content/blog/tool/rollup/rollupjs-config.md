@@ -7,7 +7,7 @@ thumbnail: './images/rollupjs-config/thumbnail.png'
 
 ![image-thumbnail](./images/rollupjs-config/thumbnail.png)
 
-이 글에서는 디자인 시스템 개발 환경을 구축하는 단계에서 [rollup.js](https://rollupjs.org/)과 라이브러리 설정에 대한 내용을 정리하는 글입니다. 하지만 환경설정에 대한 튜토리얼은 아니기 때문에 필요한 모든 내용을 다루지는 않습니다.
+이 글에서는 디자인 시스템 개발 환경을 구축하는 단계에서 [rollup.js](https://rollupjs.org/)과 라이브러리 설정에 관한 내용을 정리하는 글입니다. 하지만 환경설정에 대한 튜토리얼은 아니기 때문에 필요한 모든 내용을 다루지는 않습니다.
 
 이 글에서 구성한 환경 구축 내용만 보고 싶으시다면 [@soyoung/design-system-config](https://github.com/SoYoung210/design-system-config) 에서 보실 수 있습니다.
 
@@ -101,7 +101,7 @@ export default inputSrc
 
 - [@rollup/plugin-babel](https://www.npmjs.com/package/@rollup/plugin-babel): rollup에서 babel을 사용할 수 있게 해주는 플러그인입니다.
 - [@rollup/plugin-node-resolve](https://www.npmjs.com/package/@rollup/plugin-node-resolve): 라이브러리 내에서 써드파티 모듈(package.json내의 dependencies)을 사용하는 용도로 사용하며, js이외의 확장자(ts, tsx) 파일을 불러오기 위해서도 사용합니다. 외부 모듈에 대한 Tree Shaking또한 지원합니다.
-- [@rollup/plugin-commonjs](https://www.npmjs.com/package/@rollup/plugin-commonjs): CommonJS 형태로 이루어진 모듈의 코드를 ES6로 변환하여 결과물에 포함될 수있게 해줍니다. 예시 프로젝트에서 `commonjs` 플러그인을 제외하고 빌드시 아래와 같은 에러를 확인할 수 있습니다.
+- [@rollup/plugin-commonjs](https://www.npmjs.com/package/@rollup/plugin-commonjs): CommonJS 형태로 이루어진 모듈의 코드를 ES6로 변환하여 결과물에 포함될 수 있게 해줍니다. 예시 프로젝트에서 `commonjs` 플러그인을 제외하고 빌드 시 아래와 같은 에러를 확인할 수 있습니다.
 
   ![cjs-error](./images/rollupjs-config/cjs-error.png)
 
@@ -125,7 +125,8 @@ rollup.js의 `preserveModules`옵션을 `true`로 지정할 경우 번들 결과
 
 공식문서에 따르면, **이 값은 Tree shaking지원에 영향을 주지 않습니다.** `cjs` 혹은 `amd` 포맷에서 특정 요소만 사용할 시 모든 코드를 import하지 않는다는 차이점이 있습니다.
 
-- ⚠️ 공식문서에서는 '`preserveModule: true`**도** tree shaking을 지원한다.' 라고 명시되어 있습니다. 하지만, `preserveModules: true`로 설정할 경우 한 파일에서 treeshake가 실패하더라도 다른 파일까지 실패하지 않도록 영향범위를 최소화해주기 때문에, 실제 번들에서 테스트 해보시는 것을 추천합니다. (관련 이슈: [webpack - tree shaking not working es module library](https://github.com/webpack/webpack/issues/9337))
+> ⚠️ 공식문서에서는 '**preserveModule: true 설정도** tree shaking을 지원한다.' 라고 명시되어 있습니다.  
+> 하지만, `preserveModules: true`로 설정할 경우 한 파일에서 treeshake가 실패하더라도 다른 파일까지 실패하지 않도록 영향범위를 최소화해주기 때문에, 실제 번들에서 테스트해 보시는 것을 추천합니다. (관련 이슈: [webpack - tree shaking not working es module library](https://github.com/webpack/webpack/issues/9337))
 
 ```jsx
 // Before
@@ -138,9 +139,9 @@ const Card = require('@soyoung210/design-system-config/dist/cjs/react/card/card3
 render(Card);
 ```
 
-cjs는 별도 tree shaking이 지원되지 않기 때문에, 단일 파일에서 모든 코드를 포함하고 있을 경우 어플리케이션의 번들 사이즈가 커질 수 있습니다.
+cjs는 별도 tree shaking이 지원되지 않기 때문에, 단일 파일에서 모든 코드를 포함하고 있으면 어플리케이션의 번들 사이즈가 커질 수 있습니다.
 
-- :tmi: 이 옵션의 탄생 배경은 "Ember.js"를 사용하는 어플리케이션에서의 트리 쉐이킹을 지원하기 위해 만들어진 것입니다. ([관련 PR](https://github.com/rollup/rollup/pull/1878))
+> 📝 이 옵션의 탄생 배경은 "Ember.js"를 사용하는 어플리케이션에서의 트리 쉐이킹을 지원하기 위해 만들어진 것입니다. ([관련 PR](https://github.com/rollup/rollup/pull/1878))
 
 ### babel
 
@@ -154,19 +155,18 @@ babel({
 }),
 ```
 
-[@rollup/plugin-babel](https://www.npmjs.com/package/@rollup/plugin-babel) 의 옵션 중 `babelHelpers` 는 4가지 값을 가질 수 있습니다.
+[@rollup/plugin-babel](https://www.npmjs.com/package/@rollup/plugin-babel)의 옵션 중 `babelHelpers` 는 4가지 값을 가질 수 있습니다.
 
 - **runtime:** 공식 document에서 '라이브러리 빌드 시' 추천하는 옵션입니다. [@babel/plugin-transform-runtime](https://www.npmjs.com/package/@babel/plugin-transform-runtime) 과 함께 사용해야 하며, 라이브러리의 디펜던시로 @babel/rutime을 명시해야 합니다.  
 @babel/plugin-transform-runtime에 대해 궁금하다면 [공식문서](https://babeljs.io/docs/en/babel-plugin-transform-runtime)와 [you don'k know polyfill - babel/plugin-transform-runtime](https://so-so.dev/web/you-dont-know-polyfill/#babelplugin-transform-runtime)글을 참고해주세요.
-  > ⚠️ 이 옵션을 사용할 경우 `external: [/@babel\/runtime/]` 을 추가해야 합니다.
+  > ⚠️ 이 옵션을 사용할 경우 `external: [/@babel\/runtime/]`을 추가해야 합니다.
 - **bundled:** babel helper함수들이 번들 결과물에 포함되도록 하는 옵션입니다. 주로 어플리케이션 개발 시 사용합니다.
-각주: babel/runtime의 결과물이 번들 파일내에 포함되는데, 이렇게 되면 하나의 JS파일이 커질 수 있습니다.
 - **external:** 이 옵션은 주의해서 사용할 것을 당부하고 있습니다. 내부 helper function을 자동으로 생성하는 것이 아니라, 커스텀하게 설정할 수 있는 옵션입니다. 이 옵션에 대한 자세한 내용은 [이 글](https://brunoscopelliti.com/a-simple-babel-optimization-i-recently-learned/) 을 참고해주세요.
 - **inline:** 이 옵션은 권장되지 않습니다. helper function이 각 파일에 중복적으로 생성되기 때문입니다.
 
-4가지 옵션 중 `runtime` 옵션과 `bundled` 옵션에 대해 좀더 자세히 알아보겠습니다.
+4가지 옵션 중 `runtime` 옵션과 `bundled` 옵션에 대해 자세히 알아보겠습니다.
 
-빌드 테스트에 사용되는 [예시 코드](https://github.com/SoYoung210/design-system-config) 는  react와 css만을 사용해 만든 `Button1`컴포넌트와 `react-spring`을 사용한 `Card`컴포넌트로 구성되어 있습니다.
+빌드 테스트에 사용되는 [예시 코드](https://github.com/SoYoung210/design-system-config)는 react와 css만을 사용해 만든 `Button1`컴포넌트와 `react-spring`을 사용한 `Card`컴포넌트로 구성되어 있습니다.
 
 #### babelHelpers: bundled
 
@@ -183,7 +183,7 @@ export default [
 ]
 ```
 
-이렇게 설정할 경우, 번들 결과물에 babel helper fuction이 포함됩니다. 번들 결과물은 다음과 같습니다.
+이렇게 설정할 경우, 번들 결과물에 babel helper function이 포함됩니다. 번들 결과물은 다음과 같습니다.
 
 ```jsx
 function _objectWithoutPropertiesLoose(source, excluded) {
@@ -197,7 +197,7 @@ const Button1 = (_ref) => {
       props = _objectWithoutPropertiesLoose(_ref, ["children"]);
 ```
 
-`_objectWithoutPropertiesLoose`함수가 파일에 포함된  것을 확인할 수 있습니다.
+`_objectWithoutPropertiesLoose`함수가 파일에 포함된 것을 확인할 수 있습니다.
 
 #### babelHelpers: bundled + external: [/@babel\/runtime/]
 
@@ -229,7 +229,7 @@ function _objectWithoutPropertiesLoose(source, excluded) {
 }
 ```
 
-`_objectWithoutPropertiesLoose$1`은 `@babel/runtime`모듈에서 참조하도록 변경 되었고, `_objectWithoutPropertiesLoose`은 내부에 생성되었습니다.
+`_objectWithoutPropertiesLoose$1`은 `@babel/runtime`모듈에서 참조하도록 변경되었고, `_objectWithoutPropertiesLoose`은 내부에 생성되었습니다.
 
 `_objectWithoutPropertiesLoose$1` 은 `node_modules/react-spring`에서 참조하고 있습니다. 외부 모듈(이 글에서의 예시 프로젝트에서 포함 한react-spring)에서 참조하는 `@babel/runtime` 은 '외부'로 유지되었습니다.
 
@@ -301,7 +301,7 @@ const Button1 = (_ref) => {
 
 ## Tree Shaking Result
 
-라이브러리에서 중요한 것 중 하나는 Tree Shaking입니다. 유저가 라이브러리 코드 중 일부만 사용했는데, 전체가 번들 결과물에 포함되어 불필요하게 용량을 증가 시킨다면 아무리 잘 만든 라이브러리라도 선뜻 사용하기 어려울 것입니다.
+라이브러리에서 중요한 것 중 하나는 Tree Shaking입니다. 유저가 라이브러리 코드 중 일부만 사용했는데, 전체가 번들 결과물에 포함되어 불필요하게 용량을 증가시킨다면 아무리 잘 만든 라이브러리라도 선뜻 사용하기 어려울 것입니다.
 
 하나의 파일로 번들링 될 경우 Bundle Analyzer에서 결과를 확인하기 어려운데, 이 경우 어플리케이션의 최종 번들 결과물을 확인해보면 Tree Shaking적용 여부를 알 수 있습니다.
 
@@ -317,7 +317,7 @@ const Button1 = (_ref) => {
 
 ![no_card.png](./images/rollupjs-config/no_card.png)
 
-`Card` 컴포넌트를 이루는 코드는 사라졌지만, `Card` 컴포넌트에서 사용한 `react-spring` 관련 코드들은 포함되었습니다. 이는 [react-spring의 이슈](https://github.com/pmndrs/react-spring/issues/1158) 같기도 하지만, preserverModules 섹션에서 언급한 하나의 파일에서 tree shake가 실패하여 전체에 영향을 주는 예시입니다.
+`Card` 컴포넌트를 이루는 코드는 사라졌지만, `Card` 컴포넌트에서 사용한 `react-spring` 관련 코드들은 포함되었습니다. 이는 [react-spring의 이슈](https://github.com/pmndrs/react-spring/issues/1158) 같기도 하지만, [preserverModules](https://so-so.dev/tool/rollup/rollupjs-config/#preservemodules)에서 언급한 하나의 파일에서 tree shake가 실패하여 전체에 영향을 주는 예시입니다.
 
 Tree Shaking에 관해 자세한 내용이 궁금하시다면 [이 글](https://medium.com/@craigmiller160/how-to-fully-optimize-webpack-4-tree-shaking-405e1c76038)을 읽어보시는 것을 추천드립니다.
 
@@ -358,7 +358,7 @@ import { useSpring, animated as extendedAnimated } from '../../../node_modules/r
 
 ### 상황 2: custom style sheet
 
-컴포넌트 내에서 style sheet를 사용하는 경우. 번들러는 스타일 파일을 해석해서 적절히 변환하지만 babel은 변환하지 않습니다.
+컴포넌트 내에서 style sheet를 사용하는 경우. 번들러는 스타일 파일을 해석해서 적절히 변환하지만, babel은 그렇지 않습니다.
 
 ```jsx
 // babel cli
@@ -389,7 +389,7 @@ export default css_248z;
 
 ## TypeScript
 
-TypeScript코드를 다룰 때는 JS 변환과정을 추가해야하고, type definition파일을 생성해야 합니다.
+TypeScript코드를 다룰 때는 JS 변환과정을 추가해야 하고, type definition파일을 생성해야 합니다.
 
 JS 변환은 앞서 설정한 `@rollup/plugin-babel`혹은 `rollup-plugin-typescript2`를 통해 수행할 수 있고, type defnition파일은 `tsc`를 통해 간단하게 수행할 수 있습니다. 먼저, `tsc`를 통한 type defnition생성에 대해 알아보겠습니다.
 
@@ -441,9 +441,9 @@ Rollup과 TypeScript를 함께 사용할 때, `rollup-plugin-typescript2`를 사
 
 어느 쪽을 선택해도 큰 차이는 없습니다. 이 글에서 다루는 프로젝트는 babel을 transpiler로 사용하고 `tsc`로 type definition파일만 생성하는 전략을 가져가고 있어 `@rollup/plugin-babel`만 사용했습니다.
 
-> 📝: rollup-plugin-typescript2는 rollup의 공식 TypeScript도구인 `@rollup/plugin-typescript`에서 TypeScript compile error 기능을 포함하기 위해 fork하여 제작된 라이브러리입니다. TypeScript의 강력한 기능을 사용할 수 있지만, [빌드 속도가 많이 느리다는 이슈](https://github.com/ezolenko/rollup-plugin-typescript2/issues/148)가 있습니다.
+> 📝: rollup-plugin-typescript2는 rollup의 공식 TypeScript도구인 `@rollup/plugin-typescript`에서 TypeScript compile error 기능을 포함하기 위해 fork하여 제작된 라이브러리입니다. TypeScript의 강력한 기능을 사용할 수 있지만, [빌드 속도가 아주 느리다는 이슈](https://github.com/ezolenko/rollup-plugin-typescript2/issues/148)가 있습니다.
 
-> ⚠️  Tree Shaking과정에서 `/*#__PURE__ */` annonation이 있을 경우 sideEffect가 없다고 판단하여 제거하는데, [babel은 v7부터 pure annotation을 지원](https://babeljs.io/blog/2018/08/27/7.0.0#pure-annotation-support)하지만 TypeScript는 아직 지원하지 않습니다. 번들 결과물에서 annotation포함 여부도 확인해보는 것이 좋습니다.
+> ⚠️  Tree Shaking과정에서 `/*#__PURE__ */` annotation이 있으면 sideEffect가 없다고 판단하여 제거하는데, [babel은 v7부터 pure annotation을 지원](https://babeljs.io/blog/2018/08/27/7.0.0#pure-annotation-support)하지만, TypeScript는 아직 지원하지 않습니다. 번들 결과물에서 pure annotation포함 여부도 확인해보는 것이 좋습니다.
 
 ## 마무리
 
