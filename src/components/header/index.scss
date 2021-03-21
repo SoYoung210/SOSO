@@ -13,12 +13,14 @@
   color: inherit;
 
   &:after {
-    background: url('../../../content/assets/christmas-wreath.png');
+    position: absolute;
+    right: -65px;
+    top: 7px;
     display: inline-block;
-    width: 39px;
+    background: url('../../../content/assets/spring-icon.png');
     background-size: contain;
-    height: 39px;
+    width: 55px;
+    height: 49px;
     content: "";
-    margin-left: 6px;
   }
 }
