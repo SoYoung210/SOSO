@@ -402,7 +402,7 @@ const ParentForm = () => {
   return (
     <FormProvider {...methods}>
       <기본정보 />
-			<급여정보 />
+      <급여정보 />
     </FormProvider>
   )
 }
@@ -460,7 +460,7 @@ const ParentForm = () => {
 
 ## 🧐 react-hook-form 내부 살펴보기
 
- react-hook-form의 동작방식은 HTML Element값을 직접 가져와서 내부 `ref` 로 관리하는 방식이다. 
+ react-hook-form의 동작방식은 HTML Element값을 직접 가져와서 내부 `ref` 로 관리하는 방식이다.
 
 ```tsx
 
@@ -531,7 +531,7 @@ const assignWatchFields = (
 };
 ```
 
-`watch` 를 수행하면 `watchFields.add(fieldName);` 에 의해 fieldName에 해당하는 input의 ref Set에 추가한다. 
+`watch` 를 수행하면 `watchFields.add(fieldName);` 에 의해 fieldName에 해당하는 input의 ref Set에 추가한다.
 
 ```tsx
 handleChangeRef.current = async ({ type, target }: Event) => {
@@ -541,8 +541,8 @@ handleChangeRef.current = async ({ type, target }: Event) => {
   if (field) {
     /** 생략... */
     let shouldRender =
-		  !isEmptyObject(state) ||
-		  (!isBlurEvent && isFieldWatched(name as FieldName<TFieldValues>));
+      !isEmptyObject(state) ||
+      (!isBlurEvent && isFieldWatched(name as FieldName<TFieldValues>));
   }
 };
 ```
