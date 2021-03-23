@@ -7,15 +7,15 @@ thumbnail: './images/form-handling/thumbnail.png'
 
 ![image-thumbnail](./images/form-handling/thumbnail.png)
 
-웹 서비스에서 해결해야 하는 복잡한 문제 중 하나로 사용자의 입력 데이터를 받아 처리하는 Form이 있습니다. 이 글에서는 Form의 복잡성을 다루는 여러 방법을 소개 합니다.
+웹 서비스의 복잡한 문제 중 하나는 사용자의 입력 데이터를 받아 처리하는 Form입니다. 이 글에서는 Form을 다루는 여러 방법과 대표적 form라이브러리 중 하나인 [react-hook-form](https://react-hook-form.com/)에 대해 소개합니다.
 
 ## 간단한 Form
 
-가장 단순한 예시는 Email과 Password를 받는 Login Form이다.
+Form에서 떠올릴 수 있는 가장 단순한 예시는 Email과 Password를 받는 Login Form이다.
 
 ![simple-login](./images/form-handling/simple-login.png)
 
-이 경우 input의 `value` 를 다룰 state와 handler를 정의하고 넘겨주는 방식으로 구현할 수 있다.
+이 경우 각 input의 `value` 를 다룰 state와 handler를 정의하고 넘겨주는 방식으로 구현할 수 있다.
 
 ```jsx
 const EasyLoginForm = () => {
@@ -49,7 +49,7 @@ const EasyLoginForm = () => {
 }
 ```
 
-이 방식을 **Controlled** **Component**라고 부른다.
+위 예제에서 사용된 `input`들은 **Controlled** **Component**이다.
 
 ### Controlled Component
 
@@ -59,14 +59,14 @@ Controlled Component에서 form데이터는 컴포넌트의 상태로 관리된�
 *https://goshakkk.name/controlled-vs-uncontrolled-inputs-react/*
 
 - 처음 상태는 빈 문자열이다. `''`
-- `a` 를 입력하면 `handleNameChange` 가 a를 가져오고, `input`은 a 값을 value로 가지도록 리렌더된다.
-- `b`를 입력하면 `handleNameChange` 는 `ab` 값을 가져와서 상태로 저장한다. input은 `ab` 값을 가지도록 리렌더된다.
+- `a` 를 입력하면 `handleNameChange` 가 `a`를 가져오고, input은 a 값을 value로 가지도록 리렌더된다.
+- `b`를 입력하면 `handleNameChange` 는 `ab`값을 가져와서 상태로 저장한다. input은 `ab`값을 가지도록 리렌더된다.
 
 input의 value변경을 항상 **push하는 방식이기 때문에** data(state)와 UI(input)가 항상 동기화 되고, 이로 인해 input의 value값을 바로 참조할 수 있다.
 
 ## 복잡해지는 Form - Part1
 
-form 개수가 늘어나고 복잡해질수록 필요한 코드 양이 늘어나며 필요에따라 [state lifting](https://reactjs.org/docs/lifting-state-up.html)(상태 끌어올리기)이 필요할 수 있다. 이 경우 상위 컴포넌트에 상태가 집중되며 하위 컴포넌트들은 필연적으로 handler와 state를 주입받아야 하는 형태가 되기 때문에 컴포넌트 단위 재사용이 어려워진다.
+form 개수가 늘어나고 복잡해질수록 필요한 코드 양이 늘어나며 필요에따라 [state lifting](https://reactjs.org/docs/lifting-state-up.html)이 필요할 수 있다. 이 경우 상위 컴포넌트에 상태가 집중되며 하위 컴포넌트들은 필연적으로 handler와 state를 주입받아야 하는 형태가 되기 때문에 컴포넌트 단위 재사용이 어려워진다.
 
 ```jsx
 const HardRegisterForm = () => {
@@ -87,7 +87,7 @@ const HardRegisterForm = () => {
 };
 ```
 
-모든 책임이 `HardRegisterForm` 로 집중되었다. 값을 다루는 것 외에 validation check등이 추가되면 이 컴포넌트는 더 장황해질것이다. 이 문제를 해결하기 위해 react의 [useImpertavieHandle](https://reactjs.org/docs/hooks-reference.html#useimperativehandle) hooks를 사용하여 form을 나누고 각자의 상태를 관리하도록 격리시킬 수 있다.
+모든 책임이 `HardRegisterForm`로 집중되었다. 값을 다루는 것 외에 validation check등이 추가되면 이 컴포넌트는 더 장황해질것이다. 이 문제를 해결하기 위해 react의 [useImperativeHandle](https://reactjs.org/docs/hooks-reference.html#useimperativehandle) hooks를 사용하여 form을 나누고 각자의 상태를 관리하도록 격리시킬 수 있다.
 
 ```jsx
 const BasicInformationFormGroup = (
@@ -120,7 +120,7 @@ const BasicInformationFormGroup = (
 };
 ```
 
-기본 정보에 해당하는 부분을 별도 컴포넌트로 분리한 후, `useImperativeHandle` 을 통해 **각 form의 value만** 외부에 노출시켰다. 부모 컴포넌트에서는 `BasicInformationFormGroup` 에 넘긴 `ref` 를 통해 값에 접근할 수 있다. 정보를 격리시킴으로써 각 컴포넌트의 책임을 적절히 분산시킬 수 있다.
+form을 분리하고 `useImperativeHandle` 을 통해 **각 input의 value만** 외부에 노출시켰다. 부모 컴포넌트에서는 `BasicInformationFormGroup` 에 넘긴 `ref` 를 통해 값에 접근할 수 있다. 정보를 격리시킴으로써 각 컴포넌트의 책임을 적절히 분산시킬 수 있다.
 
 이 외에도, 중첩된 컴포넌트 내부에서 값의 계산에 따른 처리가 필요할 때 관련 로직을 응집도 있게 처리할 수 있게 된다. 예를 들어, 선택된 은행 이름에 따라 해당 은행의 전체 정보가 필요한 경우를 생각해보자.
 
