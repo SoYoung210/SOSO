@@ -15,7 +15,9 @@ thumbnail: './images/thumbnail.png'
 
 ![what-is-css-in-js](./images/css-in-js/what-is-css-in-js.png)
 
-> https://css-tricks.com/a-thorough-analysis-of-css-in-js/
+<div align="right">
+  <sup><a>https://css-tricks.com/a-thorough-analysis-of-css-in-js/</a></sup>
+</div>
 
 **CSS in JS**는 단어 그대로 JavaScript코드에서 CSS를 작성하는 방식을 말합니다. 기존 CSS관리의 어려움을 해결하기 위해 소개된 개념으로 이 개념을 구현한 다양한 라이브러리가 등장했습니다.
 
@@ -230,7 +232,7 @@ styled-components와 비슷한 방식으로, 초기 페이지 렌더링에 필�
 
 ### Linaria
 
-zero-runtime으로 동작하는 linaria는 빌드 시 [mini-css-extract-plugin](https://github.com/webpack-contrib/mini-css-extract-plugin)과 같은 플러그인을 사용하여 critical css를 추출합니다. 
+zero-runtime으로 동작하는 linaria는 빌드 시 [mini-css-extract-plugin](https://github.com/webpack-contrib/mini-css-extract-plugin)과 같은 플러그인을 사용하여 critical css를 추출합니다.
 
 code splitting을 사용하지 않거나 initial css chunk가 초기로드에 필요한 css가 아닐경우 즉, mini-css-extract-plugin에 의해 critical css를 판단할 수 없는 경우 linaria에서 제공하는 collect를 사용할 수 있습니다.
 
@@ -262,20 +264,16 @@ stitches의 특징에 대해 더 알고싶으신 분은 [공식문서](https://s
 
 결과가 다른 이유는 두 라이브러리에서 style을 주입하는 방식이 다르기 때문입니다. (참고: 위 예제는 development mode로 빌드되어 다르지만, production mode에서는 동일합니다.)
 
-1. `<style>` tag (dom injection)
+1. **`style` tag (dom injection)**  
+  이 방식은 DOM(`<head>`또는 `<body>`어딘가)에 `<style>`tag를 추가하고  [appendChild](https://developer.mozilla.org/en-US/docs/Web/API/Node/appendChild) 를 style node를 추가하는 방식입니다. `textContent` , `.innerHTML` 을 추가하여 `<style>`태그를 업데이트 합니다.
 
-이 방식은 DOM(`<head>`또는 `<body>`어딘가)에 `<style>`tag를 추가하고  [appendChild](https://developer.mozilla.org/en-US/docs/Web/API/Node/appendChild) 를 style node를 추가하는 방식입니다. `textContent` , `.innerHTML` 을 추가하여 `<style>`태그를 업데이트 합니다.
+2. **CSSStyleSheet API**  
+  CSSStylesSheet.insertRule 을 사용하여 CSSOM에 직접 삽입합니다.  
+  이 접근 방식을 사용하면 `<style>`태그에서는 빈 내용이 보여지게 되고, DevTools에서 직접 선택하여 rule을 확인해야만 결과를 볼 수 있습니다.  
 
-2. CSSStyleSheet API
+  ![cssom-result](./images/css-in-js/cssom-result.png)
 
-CSSStylesSheet.insertRule 을 사용하여 CSSOM에 직접 삽입합니다
-이 접근 방식을 사용하면 `<style>`태그에서는 빈 내용이 보여지게 되고, DevTools에서 직접 선택하여 rule을 확인해야만 결과를 볼 수 있습니다.
-
-![cssom-result](./images/css-in-js/cssom-result.png)
-
-**Reference**
-
-- [https://github.com/andreipfeiffer/css-in-js/blob/main/README.md#1-using-style-tags](https://github.com/andreipfeiffer/css-in-js/blob/main/README.md#1-using-style-tags)
+**Reference** : [andreipfeiffer/1-using-style-tags](https://github.com/andreipfeiffer/css-in-js/blob/main/README.md#1-using-style-tags)
 
 ## Performance
 
@@ -306,7 +304,9 @@ const ButtonView = styled('buton')(props => {
 
 ![emotion-benchmark-result](./images/css-in-js/emotion-benchmark-result.png)
 
-> https://itnext.io/how-to-increase-css-in-js-performance-by-175x-f30ddeac6bce
+<div align="right">
+  <sup><a>https://itnext.io/how-to-increase-css-in-js-performance-by-175x-f30ddeac6bce/</a></sup>
+</div>
 
 `emotion` 코드 분석에 3.6초가 걸린것을 확인할 수 있습니다.
 
@@ -438,7 +438,7 @@ CSS생태계가 발전하면서 기존 도구들의 단점을 개선한 새로�
 
 모든 상황에 항상 정답인 '은총알'은 어떤 도구일지 결론을 내릴 수 있다면 좋겠지만 아직까지의 결론은 '없다'라고 생각합니다. 각 도구들은 저마다 선택한 trade-off가 있고, 만들고 있는 서비스의 특성을 고려하여 적절한 CSS전략을 세우는 것이 필요합니다.
 
-만들고 있는 서비스에서 redering 최적화가 필요하지 않은 정도의 컴포넌트들만 다룬다면 runtime overhead는 무시할만한 수준일 수 있고, 오히려 runtime이 존재하지 않음으로서 이를 따로 해결해주어야 하는 상황을 만날 수 있습니다. 그렇기 때문에, 무조건 '좋다 나쁘다'로 나눌 수 없으며 모든 개선이 측정 후 이루어져야 하듯, 서비스의 특성과 계획을 고려하여 알맞은 CSS사용방법을 선택해야 할 것입니다.
+만들고 있는 서비스에서 rendering 최적화가 필요하지 않은 정도의 컴포넌트들만 다룬다면 runtime overhead는 무시할만한 수준일 수 있고, 오히려 runtime이 존재하지 않음으로서 이를 따로 해결해주어야 하는 상황을 만날 수 있습니다. 그렇기 때문에, 무조건 '좋다 나쁘다'로 나눌 수 없으며 모든 개선이 측정 후 이루어져야 하듯, 서비스의 특성과 계획을 고려하여 알맞은 CSS사용방법을 선택해야 할 것입니다.
 
 ## References
 
