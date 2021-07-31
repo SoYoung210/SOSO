@@ -184,8 +184,8 @@ const Container = styled.div`
 
 완전히 '정적인' css-in-js에서 상태에 따른 동적 스타일링이 가능한 이유는, 내부적으로 css variable을 사용하고 있기 때문입니다.
 
-<video controls="true" allowfullscreen="true">
-  <source src="./linaria-dynamic-style.mp4" type="video/mp4">
+<video style="width:100%;" controls="true" allowfullscreen="true">
+  <source src="./images/css-in-js/linaria-dynamic-style.mp4" type="video/mp4">
 </video>
 
 이처럼 동적인 스타일은 [CSS Variable](https://developer.mozilla.org/ko/docs/Web/CSS/var())에 의해 결정되기 때문에 동적인 스타일을 사용하는 부분은 [IE11에서 사용할 수 없습니다.](https://github.com/callstack/linaria#trade-offs)
@@ -208,8 +208,8 @@ css-in-js가 4th generation을 넘어 발전하면서 FE생태계도 함께 발�
 
 [collectStyles](https://github.com/styled-components/styled-components/blob/30dab74acedfd26d227eebccdcd18c92a1b3bd9b/packages/styled-components/src/models/ServerStyleSheet.tsx#L37) api를 통해 현재 페이지에서 사용되고 있는 스타일을 style tag로 만들어줍니다.
 
-<video controls="true" allowfullscreen="true">
-  <source src="./styled-components-dynamic-style.mp4" type="video/mp4">
+<video style="width:100%;" controls="true" allowfullscreen="true">
+  <source src="./images/css-in-js/styled-components-dynamic-style.mp4" type="video/mp4">
 </video>
 
 동적인 스타일은 변경될때 style tag에 동적으로 삽입됩니다.
