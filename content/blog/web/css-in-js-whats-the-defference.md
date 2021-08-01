@@ -74,21 +74,6 @@ return (
 
 2세대에서 inline-style방식을 선택하며 마주한 '사용할 수 있는 css syntax 제한'에 대한 한계를 극복하기 위해 [aphrodite](https://github.com/Khan/aphrodite/blob/master/src/inject.js#L35-L39), [glamor](https://github.com/threepointone/glamor)등의 라이브러리에서는 다른 방식으로 스타일을 생성합니다. JavaScript 템플릿으로 CSS를 작성하면 빌드 과정에서 [`<style>` 태그를 생성하여](https://github.com/Khan/aphrodite/blob/225f43c5802259a9e042b384a1f4f2e5b48094ea/src/inject.js#L35-L39) 주입합니다.
 
-```jsx
-// aphrodite: https://github.com/Khan/aphrodite
-const styles = StyleSheet.create({
-  red: {
-    backgroundColor: 'red'
-    },
-
-  hover: {
-    ':hover': {
-      backgroundColor: 'red'
-    }
-  },
-});
-```
-
 pseudo element, media query 등 부족했던 CSS Spec을 지원하기 시작했으나, **동적으로 변경되는 스타일은 정의하기 까다로웠습니다.**
 
 ### 4th Generation
