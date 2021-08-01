@@ -2,7 +2,7 @@
 title: 'CSS-in-JS, 무엇이 다른가요?'
 date: 2021-07-31 16:00:09
 category: web
-thumbnail: './images/thumbnail.png'
+thumbnail: './images/css-in-js/thumbnail.png'
 ---
 
 ![image-thumbnail](./images/css-in-js/thumbnail.png)
