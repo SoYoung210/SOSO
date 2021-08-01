@@ -72,7 +72,7 @@ return (
 
 ### 3rd Generation
 
-2세대에서 inline-style방식을 선택하며 마주한 '사용할 수 있는 css syntax 제한'에 대한 한계를 극복하기 위해 [aphrodite](https://github.com/Khan/aphrodite/blob/master/src/inject.js#L35-L39), [glamor](https://github.com/threepointone/glamor)등의 라이브러리에서는 빌드 결과물을 다른 방식으로 생성합니다. JS템플릿으로 CSS를 작성하고 빌드시 [`<style>` 태그를 생성하여](https://github.com/Khan/aphrodite/blob/225f43c5802259a9e042b384a1f4f2e5b48094ea/src/inject.js#L35-L39) 주입하는 방식으로 동작합니다.
+2세대에서 inline-style방식을 선택하며 마주한 '사용할 수 있는 css syntax 제한'에 대한 한계를 극복하기 위해 [aphrodite](https://github.com/Khan/aphrodite/blob/master/src/inject.js#L35-L39), [glamor](https://github.com/threepointone/glamor)등의 라이브러리에서는 빌드 결과물을 다른 방식으로 생성합니다. JS템플릿으로 CSS를 작성하고 빌드 시 [`<style>` 태그를 생성하여](https://github.com/Khan/aphrodite/blob/225f43c5802259a9e042b384a1f4f2e5b48094ea/src/inject.js#L35-L39) 주입하는 방식으로 동작합니다.
 
 ```jsx
 // aphrodite: https://github.com/Khan/aphrodite
@@ -89,7 +89,7 @@ const styles = StyleSheet.create({
 });
 ```
 
-pseudo element, media query등 부족했던 기능들을 지원하기 시작했으나, **동적으로 변경되는 JS변수에 대한 스타일은 정의할 수 없었습니다.**
+pseudo element, media query 등 부족했던 기능들을 지원하기 시작했으나, **동적으로 변경되는 JS변수에 대한 스타일은 정의할 수 없었습니다.**
 
 ### 4th Generation
 
@@ -111,7 +111,7 @@ templateFunction.attrs = <Props = OuterProps>(attrs: Attrs<Props>) =>
 
 ### Next Generation
 
-Runtime overhead를 해결하기 위한 방법중 하나로, **zero-runtime css-in-js** 라이브러리들이 등장합니다.
+Runtime overhead를 해결하기 위한 방법 중 하나로, **zero-runtime css-in-js** 라이브러리들이 등장합니다.
 
 #### zero-runtime css-in-js
 
@@ -168,7 +168,7 @@ zero-runtime에서 상태에 따른 동적 스타일링이 가능한 이유는, 
   <source src="./images/css-in-js/linaria-dynamic-style.mp4" type="video/mp4">
 </video>
 
-4세대를 넘어가며 runtime overhead를 줄이기 위해 css를 build time에 생성하는 방식이 등장했지만, css는 runtime뿐만 아니라 초기 렌더링 최적화를 위해 **현재 화면에서 필요한 CSS만 효율적으로 먼저 로딩하는 방법**도 고려되어야 합니다. 각 라이브러리들에서는 어떻게 Critical CSS를 판단하고 있을까요?
+4세대를 넘어가며 runtime overhead를 줄이기 위해 css를 build time에 생성하는 방식이 등장했지만, css는 runtime뿐만 아니라 초기 렌더링 최적화를 위해 **현재 화면에서 필요한 CSS만 효율적으로 먼저 로딩하는 방법**도 고려되어야 합니다. 각 라이브러리에서는 어떻게 Critical CSS를 판단하고 있을까요?
 
 ## Critical CSS와 CSS-in-JS
 
@@ -178,7 +178,7 @@ zero-runtime에서 상태에 따른 동적 스타일링이 가능한 이유는, 
 
 ![styled-components-critical-css-result](./images/css-in-js/styled-components-critical-css-result.png)
 
-[Next.js 공식예제](https://github.com/vercel/next.js/tree/master/examples/with-styled-components)에 따라 테스트할 경우, 페이지에서 사용하는 css만 head에 style tag로 삽입된 것을 확인할 수 있습니다. ([Demo 프로젝트](https://stackblitz.com/edit/github-zmyryx?file=pages%2Fabout.js))
+[Next.js 공식 예제](https://github.com/vercel/next.js/tree/master/examples/with-styled-components)에 따라 테스트할 경우, 페이지에서 사용하는 css만 head에 style tag로 삽입된 것을 확인할 수 있습니다. ([Demo 프로젝트](https://stackblitz.com/edit/github-zmyryx?file=pages%2Fabout.js))
 
 [collectStyles](https://github.com/styled-components/styled-components/blob/30dab74acedfd26d227eebccdcd18c92a1b3bd9b/packages/styled-components/src/models/ServerStyleSheet.tsx#L37) api를 통해 현재 페이지에서 사용되고 있는 스타일만 별도의 스타일 시트로 생성합니다.
 
@@ -214,17 +214,17 @@ import { collect } from '@linaria/server';
 const { critical, other }  = collect(html, css);
 ```
 
-`linaria/server` 모듈에서 제공하는 `collect` API는 HTML과 CSS 문자열을 각각 받아 CSS 중 실제로 HTML 에서 사용된 것을 `critical`, 나머지를 `other`로 구분합니다.
+`linaria/server` 모듈에서 제공하는 `collect` API는 HTML과 CSS 문자열을 각각 받아 CSS 중 실제로 HTML에서 사용된 것을 `critical`, 나머지를 `other`로 구분합니다.
 
 추출된 Critical CSS는 주요 렌더링 경로에서 사용하므로 문서 상단에 주입하고, 나머지는 `<link>` 태그로 로드하여 렌더링을 막지 않고 비동기로 로드할 수 있습니다.
 
-SSR 런타임을 사용하지 않는 Gatsby환경에서의 스타일 시트 최적화는 김혜성님의 ["Jamstack에서 스타일시트를 최적화하는 법"](https://blog.cometkim.kr/posts/css-optimization-in-jamstack/)을 참고하세요.
+SSR 런타임을 사용하지 않는 Gatsby환경에서의 스타일 시트 최적화는 김혜성 님의 ["Jamstack에서 스타일시트를 최적화하는 법"](https://blog.cometkim.kr/posts/css-optimization-in-jamstack/)을 참고하세요.
 
 ## Performance
 
-위에서 정리한대로, css-in-js의 동작방식은 크게 runtime / zero-runtime으로 나누어집니다.
+위에서 정리한 대로, css-in-js의 동작 방식은 크게 runtime / zero-runtime으로 나누어집니다.
 
-각각의 Performance에 대해 정리하기에 앞서, **runtime이 반드시 성능저하를 초래하는 것은 아니며** 프로젝트 규모와 상황에 따라 달라질 수 있기 때문에 반드시 **측정 후 개선**하는 것을 추천합니다.
+각각의 Performance에 대해 정리하기에 앞서, **runtime이 반드시 성능 저하를 초래하는 것은 아니며** 프로젝트 규모와 상황에 따라 달라질 수 있기 때문에 반드시 **측정 후 개선**하는 것을 추천합니다.
 
 ### runtime
 
@@ -257,13 +257,13 @@ const ButtonView = styled('buton')(props => {
 
 ![emotion-benchmark-result-1](./images/css-in-js/emotion-benchmark-result-1.png)
 
-emotion은 Button hover시 Tooltip을 렌더링 하는 상황에서 리렌더링이 발생하여 **css를 다시 parsing합니다.**
+emotion은 Button hover 시 Tooltip을 렌더링하는 상황에서 리렌더링이 발생하여 **css를 다시 parsing합니다.**
 
-컴포넌트가 runtime 로직을 가진다면 그 때마다 css parsing으로 인해 blocking되는 시간이 발생합니다. 그리고 이 시간은 emotion의 동작방식에 의한 것(runtime)이기 때문에 최적화 하기 어렵습니다.
+컴포넌트가 runtime 로직을 가진다면 그때마다 css parsing으로 인해 blocking되는 시간이 발생합니다. 그리고 이 시간은 emotion의 동작방식에 의한 것(runtime)이기 때문에 최적화하기 어렵습니다.
 
 #### runtime css-in-js의 style inject방식
 
-css parsing으로 인해 blocking되는 시간을 최대한 줄이는 노력이 필요했습니다. 브라우저는 DOM및 CSSOM트리를 결합하여 렌더링 트리를 형성하고 레이아웃을 계산한 뒤 렌더링하게 되는데, **DOM트리는 수정하지 않고 CSSOM을 수정하는 방식을 선택하여** DOM트리 parsing에 소요되는 시간을 줄입니다. (참고: [render-tree construction, layout and paint](https://developers.google.com/web/fundamentals/performance/critical-rendering-path/render-tree-construction))
+css parsing으로 인해 blocking되는 시간을 최대한 줄이는 노력이 필요했습니다. 브라우저는 DOM및 CSSOM트리를 결합하여 렌더링 트리를 형성하고 레이아웃을 계산한 뒤 렌더링하게 되는데, **DOM트리는 수정하지 않고 CSSOM을 수정하는 방식을 선택하여** DOM트리 parsing에 드는되는 시간을 줄입니다. (참고: [render-tree construction, layout and paint](https://developers.google.com/web/fundamentals/performance/critical-rendering-path/render-tree-construction))
 
 emotion, styled-components 모두 production build에서는 CSSOM수정 방식을 선택했지만 development mode에서는 DOM수정 방식을 선택하고 있습니다. 편한 비교를 위해 development mode에서도 CSSOM수정 방식을 사용하는 [stitches.js](https://stitches.dev/)와 차이를 살펴봅니다.
 
@@ -271,14 +271,14 @@ emotion, styled-components 모두 production build에서는 CSSOM수정 방식�
 
 [styled-components, stitches.js를 사용한 데모 프로젝트](https://yrhkm.csb.app/)에서 `StitchesButton` 에 적용된 `.c-bvsTsv` 스타일이 적용된 곳을 따라가면 빈 tag로 표현되는 것을 볼 수 있습니다.
 
-바로 밑에 styled-components에 의해 생성된 style의 내용은 바로 볼 수 있는 반면, stitches에 적용된 스타일만 볼 수없습니다. 위에서 언급했듯, 두 라이브러리는 스타일 시트를 생성하는 방식에 차이가 있습니다.
+바로 밑에 styled-components에 의해 생성된 style의 내용은 바로 볼 수 있는 반면, stitches에 적용된 스타일만 볼 수 없습니다. 위에서 언급했듯, 두 라이브러리는 스타일 시트를 생성하는 방식에 차이가 있습니다.
 
 1. **DOM injection (styled-components:)**  
-  이 방식은 DOM(`<head>`또는 `<body>`어딘가)에 `<style>`tag를 추가하고  [appendChild](https://developer.mozilla.org/en-US/docs/Web/API/Node/appendChild) 를 style node를 추가하는 방식입니다. [textContent](https://developer.mozilla.org/ko/docs/Web/API/Node/textContent) , [innerHTML](https://developer.mozilla.org/ko/docs/Web/API/Element/innerHTML) 을 추가하여 스타일 시트를 업데이트 합니다.
+  이 방식은 DOM(`<head>`또는 `<body>`어딘가)에 `<style>`tag를 추가하고  [appendChild](https://developer.mozilla.org/en-US/docs/Web/API/Node/appendChild) 를 style node를 추가하는 방식입니다. [textContent](https://developer.mozilla.org/ko/docs/Web/API/Node/textContent) , [innerHTML](https://developer.mozilla.org/ko/docs/Web/API/Element/innerHTML) 을 추가하여 스타일 시트를 업데이트합니다.
 
 2. **CSSStyleSheet API (stitches.js)**  
   [CSSStylesSheet.insertRule](https://developer.mozilla.org/en-US/docs/Web/API/CSSStyleSheet/insertRule) 을 사용하여 CSSOM에 직접 삽입합니다.  
-  이 접근 방식을 사용하면 `<style>`태그에서는 빈 내용이 보여지게 되고, DevTools에서 직접 선택하여 rule을 확인해야만 결과를 볼 수 있습니다.  
+  이 접근 방식을 사용하면 `<style>`태그에서는 빈 내용이 보이게 되고, DevTools에서 직접 선택하여 rule을 확인해야만 결과를 볼 수 있습니다.  
 
   ![cssom-result](./images/css-in-js/cssom-result.png)
 
@@ -286,7 +286,7 @@ emotion, styled-components 모두 production build에서는 CSSOM수정 방식�
 
 ### zero-runtime
 
-runtime overhead를 제거하기 위해 linaria나 [compiled](https://compiledcssinjs.com/)같은 zero-runtime css-in-js를 고려할 수 있습니다. 하지만, 진행중인 프로젝트에서 기술스택을 pivot하기는 어려울 수 있으니 성능상 **병목을 일으키는 부분에 부분적으로 zero-runtime개념을 도입하여** 개선할 수도 있습니다.
+runtime overhead를 제거하기 위해 linaria나 [compiled](https://compiledcssinjs.com/) 등의 zero-runtime css-in-js를 고려할 수 있습니다. 하지만, 진행중인 프로젝트에서 기술스택을 pivot하기는 어려울 수 있으니 성능상 **병목을 일으키는 부분에 부분적으로 zero-runtime개념을 도입하여** 개선할 수도 있습니다.
 
 ```tsx
 const composedStyle = {
@@ -318,19 +318,19 @@ const ButtonView = styled.button`
 
 ![emotion-to-cssvar](./images/css-in-js/emotion-to-cssvar.png)
 
-기존 3.6초 소요되는 css parsing시간이 200ms정도로 단축된 것을 확인할  수 있습니다.
+기존 3.6초 소요되는 css parsing시간이 200ms 정도로 단축된 것을 확인할  수 있습니다.
 
 ![linaria-sc-performance](./images/css-in-js/linaria-sc-performance.png)
 
-[styled-components와 linaria의 퍼포먼스 비교](https://pustelto.com/blog/css-vs-css-in-js-perf/) 에서도 확인할 수 있듯, 분명하게 linaria가 여러가지 지표에서 앞서지만 도구의 한계가 명확하기 때문에 이를 Production level에서 선택할지에 대해서는 trade-off를 고려한 선택이 필요합니다.
+[styled-components와 linaria의 퍼포먼스 비교](https://pustelto.com/blog/css-vs-css-in-js-perf/)에서도 확인할 수 있듯, 분명하게 linaria가 여러 가지 지표에서 앞서지만, 도구의 한계가 명확하기 때문에 이를 Production level에서 선택할지에 대해서는 trade-off를 고려한 선택이 필요합니다.
 
 ### +) near-zero runtime(stitches.js)
 
-runtime과 zero-runtime외에 near-zero runtime을 표방하는 라이브러리들이 등장합니다. 그 중 하나인 [stitches.js](https://stitches.dev/)에 대해 소개합니다.
+runtime과 zero-runtime외에 near-zero runtime을 표방하는 라이브러리들이 등장합니다. 그중 하나인 [stitches.js](https://stitches.dev/)에 대해 소개합니다.
 
-stitches.js는 styled-components와 유사한 api를 가진 css-in-js라이브러리이지만 **near-zero runtime**을 표방하고 있습니다. 단어 그대로 runtime을 아예 가지지 않는 것은 아니지만, component prop에 의한 interpolation을 최소화 하는 방향의 API를 제공합니다.
+stitches.js는 styled-components와 유사한 api를 가진 css-in-js라이브러리이지만 **near-zero runtime**을 표방하고 있습니다. 단어 그대로 runtime을 아예 가지지 않는 것은 아니지만, component prop에 의한 interpolation을 최소화하는 방향의 API를 제공합니다.
 
-예를 들어, styled-components에서는 prop에 의한 완전한 동적 스타일링이 가능했지만 stitches는 사전에 정의한 [variants](https://stitches.dev/docs/variants)에 의한 스타일링만 가능합니다.
+예를 들어, styled-components에서는 prop에 의한 완전한 동적 스타일링이 가능하지만, stitches는 사전에 정의한 [variants](https://stitches.dev/docs/variants)에 의한 스타일링만 가능합니다.
 
 ```jsx
 /* 💅  styled-components */
@@ -364,11 +364,11 @@ const Button = styled('button', {
 
 stitches.js도 emotion의 extractCritical과 유사한 역할을 하는 [getCssString](https://stitches.dev/docs/api#getcssstring)을 제공합니다. [root의 styleSheet를 분석하여](https://github.com/modulz/stitches/blob/ce8e61e25fb26492e53c39d8bd396e899a32fdbe/packages/core/src/sheet.js#L32-L35) style sheet를 생성합니다.
 
-이 글에서는 stitches.js의 모든 특징에 대해 다루지 않으니, 더 알고싶으신 분은 [공식문서](https://stitches.dev/)와 [이 글](https://www.javascript.christmas/2020/15)을 참고하시는 것을 추천합니다.
+이 글에서는 stitches.js의 모든 특징에 대해 다루지 않으니, 더 알고 싶으신 분은 [공식문서](https://stitches.dev/)와 [이 글](https://www.javascript.christmas/2020/15)을 참고하시는 것을 추천합니다.
 
 ## Atomic CSS
 
-runtime, zero-runtime css-in-js모두 trade-off가 있는 선택지입니다. css-in-js가 반드시 정답은 아니므로, css최적화를 위해 다른 방법도 생각해볼 수 있습니다. 그 중 한 사례로, [Facebook에서는 Atomic CSS 도입으로 style sheet사이즈를 80% 줄인 사례](https://engineering.fb.com/2020/05/08/web/facebook-redesign/)가 있습니다.
+runtime, zero-runtime css-in-js모두 trade-off가 있는 선택지입니다. css-in-js가 반드시 정답은 아니므로, css최적화를 위해 다른 방법도 생각해볼 수 있습니다. 그중 한 사례로, [Facebook에서는 Atomic CSS 도입으로 style sheet사이즈를 80% 줄인 사례](https://engineering.fb.com/2020/05/08/web/facebook-redesign/)가 있습니다.
 
 ```tsx
 const styles = stylex.create({
@@ -402,7 +402,7 @@ function MyComponent(props) {
 
 ### tailwindcss
 
-대표적인 atomic css로는 [tailwindcss](https://tailwindcss.com/)가 있습니다. 미리 정의 된 `className`을 조합하여 스타일링 하는 방식으로, 기본적인 사용법은 다음과 같습니다.
+대표적인 atomic css로는 [tailwindcss](https://tailwindcss.com/)가 있습니다. 미리 정의된 `className`을 조합하여 스타일링 하는 방식으로, 기본적인 사용법은 다음과 같습니다.
 
 ```jsx
 <p class="text-lg text-black font-semibold">
@@ -410,11 +410,11 @@ function MyComponent(props) {
 </p>
 ```
 
-tailwindcss에서 제공하는 많은 utility class중 사용하지 않는 스타일은 빌드 결과에 포함되지 않아야 합니다. [tailwindcss - optimization for production](https://tailwindcss.com/docs/optimizing-for-production) 문서에서 설명하는 `purge` 설정을 통해 사용하지 않는 스타일은 결과물에서 제외할 수 있지만 Critical CSS에 대한 판단을 할 수 없습니다.
+tailwindcss에서 제공하는 많은 utility class중 사용하지 않는 스타일은 빌드 결과에 포함되지 않아야 합니다. [tailwindcss - optimization for production](https://tailwindcss.com/docs/optimizing-for-production) 문서에서 설명하는 `purge` 설정을 통해 사용하지 않는 스타일은 결과물에서 제외할 수 있지만, Critical CSS에 대해 판단을 할 수 없습니다.
 
 ### tailwind + twin.macro
 
-[twin.macro](https://github.com/ben-rogerson/twin.macro)는 tailwind css로 작성한 스타일을 css-in-js로 전달해주는 도구입니다. 중간 매개체 역할을 하기 때문에, styled-components, emotion등과 함께 사용하는 형태입니다.
+[twin.macro](https://github.com/ben-rogerson/twin.macro)는 tailwind css로 작성한 스타일을 css-in-js로 전달해주는 도구입니다. 중간 매개체 역할이므로, styled-components, emotion 등과 함께 사용하는 형태입니다.
 
 ```jsx
 import "twin.macro"
@@ -444,7 +444,7 @@ runtime에 스타일이 동적으로 생성되기 때문에 최초에는 필요�
 
 ### stitches.js
 
-위에서 소개했던 stitches.js역시 반복되는 스타일에 대해 atomics class로 변환하여 동일한 class를 사용할 수 있도록 최적화 해줍니다.
+위에서 소개했던 stitches.js역시 반복되는 스타일에 대해 atomics class로 변환하여 같은 class를 사용할 수 있도록 최적화해줍니다.
 
 ```tsx
 const StitchesDiv = styled("div", {
@@ -483,15 +483,15 @@ const StitchesButton = styled("button", {
 
 ![stitches-atomic-class](./images/css-in-js/stitches-atomic-class.png)
 
-하지만 같은 style이더라도 내부 순서가 변경되면 동일한 class를 사용하지 않으므로 style-lint를 적용하거나 [stitches - util](https://stitches.dev/docs/utils)로 정의해 활용하는 방향이 필요합니다.
+하지만 같은 style이더라도 내부 순서가 변경되면 같은 class를 사용하지 않으므로 style-lint를 적용하거나 [stitches - util](https://stitches.dev/docs/utils)로 정의해 활용하는 방향이 필요합니다.
 
 ## 마무리
 
 CSS생태계가 발전하면서 기존 도구들의 단점을 개선한 새로운 도구가 등장하기도 하고, 아예 새로운 개념을 가진 도구들도 많이 등장했습니다.
 
-모든 상황에 항상 정답인 '은총알'은 어떤 도구일지 결론을 내릴 수 있다면 좋겠지만 아직까지의 결론은 '없다'라고 생각합니다. 각 도구들은 저마다 선택한 trade-off가 있고, 만들고 있는 서비스의 특성을 고려하여 적절한 CSS전략을 세우는 것이 필요합니다.
+모든 상황에 항상 정답인 '은총알'은 어떤 도구일지 결론을 내릴 수 있다면 좋겠지만 지금까지의 결론은 '없다'라고 생각합니다. 각 도구는 저마다 선택한 trade-off가 있고, 만들고 있는 서비스의 특성을 고려하여 적절한 CSS전략을 세우는 것이 필요합니다.
 
-만들고 있는 서비스에서 rendering 최적화가 필요하지 않은 정도의 컴포넌트들만 다룬다면 runtime overhead는 무시할만한 수준일 수 있고, 오히려 runtime이 존재하지 않음으로서 이를 따로 해결해주어야 하는 상황을 만날 수 있습니다. 그렇기 때문에, 무조건 '좋다 나쁘다'로 나눌 수 없으며 모든 개선이 측정 후 이루어져야 하듯, 서비스의 특성과 계획을 고려하여 알맞은 CSS사용방법을 선택해야 할 것입니다.
+만들고 있는 서비스에서 rendering 최적화가 필요하지 않은 정도의 컴포넌트들만 다룬다면 runtime overhead는 무시할만한 수준일 수 있고, 오히려 runtime이 존재하지 않음으로써 이를 따로 해결해주어야 하는 상황을 만날 수 있습니다. 그렇기 때문에, 무조건 '좋다 나쁘다'로 나눌 수 없으며 모든 개선이 측정 후 이루어져야 하듯, 서비스의 특성과 계획을 고려하여 알맞은 CSS사용방법을 선택해야 할 것입니다.
 
 ## References
 
