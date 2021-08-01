@@ -44,7 +44,7 @@ const Button = () => {
 
 ### 2nd Generation
 
-JS변수를 활용하여 CSS를 작성할 수 있는 [Radium](https://formidable.com/open-source/radium/)과 같은 라이브러리가 등장합니다. 컴포넌트에서 스타일을 제어할 수 있는 형태였지만, inline style을 사용하므로 `:before` , `:nth-child` 등의 pseudo selector를 사용할 수 없는 등 **CSS의 모든 기능을 사용할 수 없다는 한계**가 있었습니다.
+JS변수를 활용하여 CSS를 작성할 수 있는 [Radium](https://formidable.com/open-source/radium/)과 같은 라이브러리가 등장합니다. 컴포넌트에서 스타일을 제어할 수 있는 형태였지만, inline style을 사용하므로 `:before` , `:nth-child` 등의 pseudo selector를 사용할 수 없는 등 **CSS의 모든 spec을 사용할 수 없습니다ㅏ.**
 
 ```jsx
 // Radium: https://formidable.com/open-source/radium
@@ -89,7 +89,7 @@ const styles = StyleSheet.create({
 });
 ```
 
-pseudo element, media query 등 부족했던 기능들을 지원하기 시작했으나, **동적으로 변경되는 JS변수에 대한 스타일은 정의할 수 없었습니다.**
+pseudo element, media query 등 부족했던 CSS Spec을 지원하기 시작했으나, **동적으로 변경되는 스타일은 정의하기 까다로웠습니다.**
 
 ### 4th Generation
 
@@ -107,15 +107,19 @@ templateFunction.attrs = <Props = OuterProps>(attrs: Attrs<Props>) =>
   });
 ```
 
-위 코드는 [styled-components](https://styled-components.com/)의 일부로, `prop`이 변할 때마다 스타일을 동적으로 생성하는 코드입니다. 이렇게 Runtime에 스타일을 생성하는 방식은 대부분의 경우 문제가 되지 않지만, 계산 비용이 커지는 방식이기 때문에 복잡한 구조의 컴포넌트에서는 차이가 발생할 수 있습니다. (참고: [necolas/react-native-web#benchmark](https://necolas.github.io/react-native-web/benchmarks/))
+위 코드는 [styled-components](https://styled-components.com/)의 일부 코드입니다. `prop`가 변할 때마다 스타일을 **동적으로 생성**하여 JavaScript 코드로 동적인 스타일링이 가능합니다. 즉, build time에서 모든 스타일을 생성하는 것이 아닌, runtime을 활용한 것입니다.
+
+runtime에 스타일을 생성하는 방식은 대부분 문제가 없지만, 스타일 계산 비용이 커지기 때문에 스타일이 복잡한 컴포넌트에서는 차이가 발생합니다. (참고: [necolas/react-native-web#benchmark](https://necolas.github.io/react-native-web/benchmarks/))
 
 ### Next Generation
 
-Runtime overhead를 해결하기 위한 방법 중 하나로, **zero-runtime css-in-js** 라이브러리들이 등장합니다.
+복잡한 스타일 계산에서 발생하는 Runtime overhead를 해결하기 위해 **zero-runtime**을 주장하는 라이브러리들이 등장합니다. (빌드 타임에서 동적인 스타일링을 줄 수 없는 한계로 런타임(runtime)을 도입했는데, 다시 zero runtime이 등장합니다(!))
 
 #### zero-runtime css-in-js
 
-[Linaria](https://linaria.dev/)는 styled-components에서 영감을 받아 유사한 API를 가진 CSS-in-JS라이브러리 중 하나이지만, styled-components와 다르게 zero-runtime으로 동작합니다. zero-runtime이란 styled-components의 runtime과 동작이 없다는 것을 뜻하며, [linaria - how it works](https://github.com/callstack/linaria/blob/master/docs/HOW_IT_WORKS.md)에서 설명하는대로 babel plugin과 webpack loader를 통해 사용된 css코드를 추출해 **정적인 스타일시트**를 생성합니다.
+zero-runtime이란 말 그대로 앞서 설명한 runtime에서의 동작이 없다는 것을 뜻합니다. 즉 동적으로 스타일을 생성하지 않습니다.
+
+[Linaria](https://linaria.dev/)는 styled-components에서 영감을 받아 유사한 API를 가진 CSS-in-JS라이브러이고, zero-runtime으로 동작합니다. [linaria - how it works](https://github.com/callstack/linaria/blob/master/docs/HOW_IT_WORKS.md)에서 설명하는대로 babel plugin과 webpack loader를 통해 사용된 css코드를 추출해 **정적인 스타일시트**를 생성합니다.
 
 ```tsx
 import { styled } from '@linaria/react';
@@ -162,7 +166,9 @@ const Container = styled.div`
 
 1세대 zero-runtime css-in-js에서는 할 수 없었던 prop, state에 따른 동적인 스타일링이 가능합니다.
 
-zero-runtime에서 상태에 따른 동적 스타일링이 가능한 이유는, linaria가 내부적으로 [css variable](https://developer.mozilla.org/ko/docs/Web/CSS/var())을 사용하고 있기 때문입니다. 조건에 의해 스타일이 달라질 때 스타일 시트 자체를 새로 만드는 것이 아니라, css variable만 수정하는 방식으로 동작합니다.
+이것이 가능한 이유는, linaria가 내부적으로 [css variable](https://developer.mozilla.org/ko/docs/Web/CSS/var())을 사용하고 있기 때문인데, 스타일 시트(Style Sheet)를 새로 만들지 않고 css variable만 수정하여 달라지는 조건에 대해 스타일을 다르게 줄 수 있는 것입니다.
+
+(아쉽게도 '그 브라우저'는 지원하지 않네요.)
 
 <video style="width:100%;" controls="true" allowfullscreen="true">
   <source src="./images/css-in-js/linaria-dynamic-style.mp4" type="video/mp4">
@@ -260,11 +266,11 @@ const ButtonView = styled('buton')(props => {
 
 emotion은 Button hover 시 Tooltip을 렌더링하는 상황에서 리렌더링이 발생하여 **css를 다시 parsing합니다.**
 
-컴포넌트가 runtime 로직을 가진다면 그때마다 css parsing으로 인해 blocking되는 시간이 발생합니다. 그리고 이 시간은 emotion의 동작방식에 의한 것(runtime)이기 때문에 최적화하기 어렵습니다.
+컴포넌트에서 runtime에 스타일을 수정한다면 그때마다 css를 parsing하는 시간이 필요하고, 이 시간만큼 렌더링이 blocking 됩니다. 그리고 이 시간은 emotion의 동작(runtime)이기 때문에 최적화하기 쉽지 않습니다.
 
 #### runtime css-in-js의 style inject방식
 
-css parsing으로 인해 blocking되는 시간을 최대한 줄이는 노력이 필요했습니다. 브라우저는 DOM및 CSSOM트리를 결합하여 렌더링 트리를 형성하고 레이아웃을 계산한 뒤 렌더링하게 되는데, **DOM트리는 수정하지 않고 CSSOM을 수정하는 방식을 선택하여** DOM트리 parsing에 드는되는 시간을 줄입니다. (참고: [render-tree construction, layout and paint](https://developers.google.com/web/fundamentals/performance/critical-rendering-path/render-tree-construction))
+css parsing으로 인해 blocking되는 시간을 최대한 줄이는 노력이 필요했습니다. 브라우저는 DOM및 CSSOM트리를 결합하여 렌더링 트리를 형성하고 레이아웃을 계산한 뒤 렌더링하게 되는데, **DOM트리는 수정하지 않고 CSSOM을 수정하는 방식을 선택하여** DOM트리 parsing에 드는 시간을 줄입니다. (참고: [render-tree construction, layout and paint](https://developers.google.com/web/fundamentals/performance/critical-rendering-path/render-tree-construction))
 
 emotion, styled-components 모두 production build에서는 CSSOM수정 방식을 선택했지만 development mode에서는 DOM수정 방식을 선택하고 있습니다. 편한 비교를 위해 development mode에서도 CSSOM수정 방식을 사용하는 [stitches.js](https://stitches.dev/)와 차이를 살펴봅니다.
 
