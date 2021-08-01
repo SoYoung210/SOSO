@@ -24,7 +24,7 @@ thumbnail: './images/thumbnail.png'
   <sup><a href="https://css-tricks.com/a-thorough-analysis-of-css-in-js" target="_blank">https://css-tricks.com/a-thorough-analysis-of-css-in-js</a></sup>
 </div>
 
-**CSS-in-JS**는 단어 그대로 JavaScript코드에서 CSS를 작성하는 방식을 말합니다. 2014년 Facebook 개발자인 [Christopher Chedeau aka Vjeux 의 발표](http://blog.vjeux.com/2014/javascript/react-css-in-js-nationjs.html)에서 소개되었으며, 기존 CSS관리의 어려움을 해결한 Facebook의 사례를 소개하고 있고 이 발표 이후  개념이 발전하면서 많은 라이브러리가 등장했습니다.
+**CSS-in-JS**는 단어 그대로 JavaScript코드에서 CSS를 작성하는 방식을 말합니다. 2014년 Facebook 개발자인 [Christopher Chedeau aka Vjeux 의 발표](http://blog.vjeux.com/2014/javascript/react-css-in-js-nationjs.html)에서 소개되었으며, 기존 CSS관리의 어려움을 해결한 Facebook의 사례를 소개하고 있고 이 발표 이후 개념이 발전하면서 많은 라이브러리가 등장했습니다.
 
 라이브러리 간에 가장 중요한 차별화 요소는 **'스타일을 얼마나 동적으로  작성할 수 있는가'** - JS변수를 사용할 수 있는지, 사용할 수 있다면 그 범위는 어디인지 - 입니다. 이 특징을 중심으로 CSS-in-JS를 4세대 + a로 정리할 수 있습니다.
 
@@ -40,7 +40,7 @@ const Button = () => {
 }
 ```
 
-위와 같은 방식은 CSS를 정적으로 분석하여 별도의 CSS파일로 추출하는 방식이고, 이후 세대에서 등장한 'runtime 동작'이 없기 때문에 **zero runtime css-in-js** 라고 부르기도 합니다.
+위와 같은 방식은 CSS를 정적으로 분석하여 별도의 CSS파일로 추출하는 방식입니다. 이후에 설명할 'runtime에서의 동작'이 없기 때문에 **zero runtime css-in-js** 의 특징을 갖습니다.
 
 ### 2nd Generation
 
@@ -72,7 +72,7 @@ return (
 
 ### 3rd Generation
 
-2세대에서 inline-style방식을 선택하며 마주한 '사용할 수 있는 css syntax 제한'에 대한 한계를 극복하기 위해 [aphrodite](https://github.com/Khan/aphrodite/blob/master/src/inject.js#L35-L39), [glamor](https://github.com/threepointone/glamor)등의 라이브러리에서는 빌드 결과물을 다른 방식으로 생성합니다. JS템플릿으로 CSS를 작성하고 빌드 시 [`<style>` 태그를 생성하여](https://github.com/Khan/aphrodite/blob/225f43c5802259a9e042b384a1f4f2e5b48094ea/src/inject.js#L35-L39) 주입하는 방식으로 동작합니다.
+2세대에서 inline-style방식을 선택하며 마주한 '사용할 수 있는 css syntax 제한'에 대한 한계를 극복하기 위해 [aphrodite](https://github.com/Khan/aphrodite/blob/master/src/inject.js#L35-L39), [glamor](https://github.com/threepointone/glamor)등의 라이브러리에서는 다른 방식으로 스타일을 생성합니다. JavaScript 템플릿으로 CSS를 작성하면 빌드 과정에서 [`<style>` 태그를 생성하여](https://github.com/Khan/aphrodite/blob/225f43c5802259a9e042b384a1f4f2e5b48094ea/src/inject.js#L35-L39) 주입합니다.
 
 ```jsx
 // aphrodite: https://github.com/Khan/aphrodite
@@ -93,7 +93,7 @@ pseudo element, media query 등 부족했던 기능들을 지원하기 시작했
 
 ### 4th Generation
 
-3세대에서 해결하지 못했던 'JS Component범위에서의 동적 스타일링'을 runtime개념을 도입하며 해결했습니다.
+4세대에서는 3세대의 한계인 'JavaScript 코드로 제어하는 동적인 스타일링'을 runtime 개념을 도입하여 해결했습니다.
 
 #### Runtime CSS-in-JS
 
@@ -168,9 +168,10 @@ zero-runtime에서 상태에 따른 동적 스타일링이 가능한 이유는, 
   <source src="./images/css-in-js/linaria-dynamic-style.mp4" type="video/mp4">
 </video>
 
-4세대를 넘어가며 runtime overhead를 줄이기 위해 css를 build time에 생성하는 방식이 등장했지만, css는 runtime뿐만 아니라 초기 렌더링 최적화를 위해 **현재 화면에서 필요한 CSS만 효율적으로 먼저 로딩하는 방법**도 고려되어야 합니다. 각 라이브러리에서는 어떻게 Critical CSS를 판단하고 있을까요?
 
 ## Critical CSS와 CSS-in-JS
+
+초기 렌더링 최적화를 위해 **현재 화면에서 필요한 CSS만 효율적으로 먼저 로딩하는 방법**도 고려되어야 합니다. 각 라이브러리에서는 어떻게 Critical CSS를 판단하고 있을까요?
 
 대표적인 runtime css-in-js인 styled-components와 [emotion](https://emotion.sh/docs/introduction), zero-runtime css-in-js인 linaria에서 이 문제를 어떻게 해결하고 있는지 정리해봅니다.
 
