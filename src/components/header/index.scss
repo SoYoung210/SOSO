@@ -15,10 +15,12 @@
   &:after {
     position: absolute;
     right: -65px;
-    top: 7px;
+    top: 50%;
+    transform: translateY(-55%);
     display: inline-block;
-    background: url('../../../content/assets/spring-icon.png');
+    background: url('../../../content/assets/flamingo.png');
     background-size: contain;
+    background-repeat: no-repeat;
     width: 55px;
     height: 49px;
     content: "";

@@ -114,7 +114,7 @@ const BasicInformationFormGroup = (
     <>
       <Input name="이름" value={name} onChange={setName} />
       <Input name="내소개" value={aboutMe} onChange={setAboutMe} />
-      <Input name="이름" value={phoneNumber} onChange={setPhoneNumber} />
+      <Input name="전화번호" value={phoneNumber} onChange={setPhoneNumber} />
     </>
   );
 };
@@ -268,7 +268,7 @@ const BasicInformationFormGroup = (
     <>
       <Input ref={nameRef} name="이름" />
       <Input ref={aboutMeRef} name="내소개" />
-      <Input ref={phoneNumberRef} name="이름" />
+      <Input ref={phoneNumberRef} name="전화번호" />
     </>
   );
 };
