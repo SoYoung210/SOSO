@@ -245,7 +245,7 @@ const ButtonView = styled('buton')(props => {
   <sup><a href="https://itnext.io/how-to-increase-css-in-js-performance-by-175x-f30ddeac6bce" target="_blank">https://itnext.io/how-to-increase-css-in-js-performance-by-175x-f30ddeac6bce</a></sup>
 </div>
 
-`emotion` 코드 분석에 3.6초가 소요됐습니다.
+`emotion` 코드 분석에 36초가 소요됐습니다.
 
 ![emotion-benchmark-result-1](./images/css-in-js/emotion-benchmark-result-1.png)
 
@@ -310,7 +310,7 @@ const ButtonView = styled.button`
 
 ![emotion-to-cssvar](./images/css-in-js/emotion-to-cssvar.png)
 
-기존 3.6초 소요되는 css parsing시간이 200ms 정도로 단축된 것을 확인할  수 있습니다.
+기존 36초 소요되는 css parsing시간이 200ms 정도로 단축된 것을 확인할  수 있습니다.
 
 ![linaria-sc-performance](./images/css-in-js/linaria-sc-performance.png)
 
