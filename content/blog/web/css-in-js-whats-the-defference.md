@@ -44,7 +44,7 @@ const Button = () => {
 
 ### 2nd Generation
 
-JS변수를 활용하여 CSS를 작성할 수 있는 [Radium](https://formidable.com/open-source/radium/)과 같은 라이브러리가 등장합니다. 컴포넌트에서 스타일을 제어할 수 있는 형태였지만, inline style을 사용하므로 `:before` , `:nth-child` 등의 pseudo selector를 사용할 수 없는 등 **CSS의 모든 spec을 사용할 수 없습니다ㅏ.**
+JS변수를 활용하여 CSS를 작성할 수 있는 [Radium](https://formidable.com/open-source/radium/)과 같은 라이브러리가 등장합니다. 컴포넌트에서 스타일을 제어할 수 있는 형태였지만, inline style을 사용하므로 `:before` , `:nth-child` 등의 pseudo selector를 사용할 수 없는 등 **CSS의 모든 spec을 사용할 수 없습니다.**
 
 ```jsx
 // Radium: https://formidable.com/open-source/radium
