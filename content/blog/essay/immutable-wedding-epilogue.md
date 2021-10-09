@@ -36,12 +36,6 @@ thumbnail: './images/immutable-wedding-epilogue/thumbnail.jpg'
 
 한정된 기간 내에서 바닥부터 디자인을 잡기는 어렵다는 판단하에, 디자인 템플릿을 사용하기로 했고 **"우리의 이야기를 잘 보여줄 수 있는 컨셉"**의 디자인을 고민하다가 instagram디자인을 차용하게 되었습니다.
 
-<div style='display:flex;'>
-  <img src='./images/immutable-wedding-epilogue/sparkle_heart.gif' />
-  <img src='./images/immutable-wedding-epilogue/check.gif' />
-  <img src='./images/immutable-wedding-epilogue/page_animation.gif' />
-</div>
-
 그래도 사이드프로젝트인만큼 평소에 도전해보고 싶었던 영역에 대한 도전도 있었습니다. 수용가능한 이질감 범위 내의 새로운 기술들도 사용해보고, 애니메이션에 대한 여러가지 도전을 해봤습니다. (더 자세한 이야기는 '기술'편에서..)
 
 ## 구현 이야기
@@ -93,3 +87,9 @@ framer-motion api와 예제들을 많이 찾아보면서 컨텐츠를 넘기는 
 한정된 시간 내에서 하다보니 세부적인 ux나 큰 맥락의 부분은 아쉬운 점들이 있지만, 모든 프로젝트가 그렇듯 첫 번째 런칭 후 조금씩 보완하며 더 좋은 모습이 될 수 있을거라 생각합니다. (CODIV19사태가 끝나는 시점에 다시 열어볼 것 같네요🥲)
 
 이 프로젝트의 데모는 [여기](https://immutable-wedding-git-js-weddinglog-soso02.vercel.app/)서 확인하실 수 있습니다.
+
+## 맺으며
+
+프로젝트를 함께한 동료는 전체 디자인뿐만 아니라 컨텐츠 기획, 개발에도 기여해주었습니다.
+
+영원한 동료이자 가장 친한 친구일 [Jbee](https://jbee.io/)님께 고마움과 사랑을 전합니다.
