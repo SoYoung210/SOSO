@@ -69,9 +69,6 @@ raw한 svg에서 애니메이션을 구성해 본 경험이 많이 없어서 헤
 
 
 ![pagination_animation](./images/immutable-wedding-epilogue/pagination_animation.gif)
-<video style="width:100%;" poster="" controls="true" allowfullscreen="true">
-  <source src="./images/immutable-wedding-epilogue/paginate_animation_video.mp4" type="video/mp4">
-</video>
 
 페이지 전환 애니메이션에 가장 많은 시간이 소요됐습니다. (그러나 아직도 존재하는 버그..)
 
