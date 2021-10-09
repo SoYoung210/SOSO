@@ -30,7 +30,7 @@ thumbnail: './images/immutable-wedding-epilogue/thumbnail.jpg'
 
 디자인 Board에서 알 수 있듯... 전체 컨셉은 인스타그램입니다. 바닥부터 디자인을 해봤는데..
 
-![figma_design_board_old](./images/immutable-wedding-epilogue/figma_design_board_old.png)
+![figma_design_board_old](./images/immutable-wedding-epilogue/figma_design_borad_old.png)
 
 백지에서 그리려니 정말 어려웠습니다. (세상의 모든 디자이너분들을 존경합니다.)
 
