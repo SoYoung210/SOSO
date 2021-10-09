@@ -52,17 +52,14 @@ thumbnail: './images/immutable-wedding-epilogue/thumbnail.jpg'
 
 ### 애니메이션들
 
-<video style="width:100%;" poster="" controls="true" allowfullscreen="true">
-  <source src="./images/immutable-wedding-epilogue/sparkle_heart.mp4" type="video/mp4">
-</video>
+![heart_animation](./images/immutable-wedding-epilogue/heart_animation.gif)
 
 1초도 안되는 짧은 애니메이션이지만, 이 애니메이션에 대략 하루 정도의 시간을 사용했던 것 같습니다. css부터 애니메이션 sequence, 스파클의 적용 범위, 타이밍 등의 요소를 고민하느라 이 프로젝트에서 두 번째로 손이 많이갔던 부분이었습니다. 전체적으로 stitches.js를 사용했지만, 이 부분은 디테일한 애니메이션 잡기가 어려워 [sass](https://sass-lang.com/documentation)를 사용했습니다. 
 
 [🔗 LikeIcon Component](https://github.com/SoYoung210/immutable.wedding/blob/456d9ab020/src/pages/feeds/components/feed/icon/LikeIcon.tsx)
 
-<video style="width:100%;" poster="" controls="true" allowfullscreen="true">
-  <source src="./images/immutable-wedding-epilogue/check_video.mp4" type="video/mp4">
-</video>
+
+![check_animation](./images/immutable-wedding-epilogue/check_animation.gif)
 
 원이 그려지고 체크 표시가 되는 애니메이션에는 대략 2~3일이 걸렸는데, 인스타그램 디자인 템플릿에서 제공된 아이콘이 원하는 애니메이션에 적합한 형태가 아니었기 때문에 직접 제작까지 하면서 생각보다 많은 시간이 소요됐습니다.
 
@@ -70,6 +67,8 @@ thumbnail: './images/immutable-wedding-epilogue/thumbnail.jpg'
 
 raw한 svg에서 애니메이션을 구성해 본 경험이 많이 없어서 헤맨 부분이기도 한데, 이 애니메이션을 구현하면서 간단히 svg구성 요소와 동작 방식에 대해 mdn문서와 책을 살펴보며 공부했던 계기(?)가 되기도 했습니다.
 
+
+![pagination_animation](./images/immutable-wedding-epilogue/pagination_animation.gif)
 <video style="width:100%;" poster="" controls="true" allowfullscreen="true">
   <source src="./images/immutable-wedding-epilogue/paginate_animation_video.mp4" type="video/mp4">
 </video>
