@@ -9,15 +9,23 @@ thumbnail: './images/tree-shaking-module-system/thumbnail.jpg'
 
 ## 들어가며
 
-어플리케이션은 다양한 코드조각들 - 직접 작성한 코드와 외부 모듈 포함 - 로 이루어져 있습니다.  어플리케이션이 복잡해질수록 '필요한 코드'만 남기기 위한 작업, 흔히 Tree Shaking이라고 불리는 과정이 수반되어야 합니다.
+어플리케이션은 다양한 코드조각들(직접 작성한 코드, 라이브러리 등)로 이루어져 있습니다.  어플리케이션이 복잡해질수록 '필요한 코드'만 남기기 위한 작업, 흔히 Tree Shaking이라고 불리는 과정이 수반되어야 합니다.
 
 이 글에서는 Tree Shaking에 대한 기본 개념과 Tree Shaking을 보장하기 위한 요소들에 대해 알아봅니다.
 
 ## Tree Shaking이란?
 
-우리가 흔히 명명하는 Tree Shaking이란, 최종 번들 결과물 관점에서 불필요한 코드가 없어지는 과정입니다. 
+우리가 흔히 명명하는 Tree Shaking이란 최종 번들 결과물 관점에서 불필요한 코드가 없어지는 과정입니다. 
 
-[MDN문서](https://developer.mozilla.org/en-US/docs/Glossary/Tree_shaking)에서는 "ES2015(ES6)의 import/export문에 의존하여 JavaScript파일간의 참조여부를 판단한다."라고 설명되어 있습니다. Tree Shaking은 ES6부터 도입된 ES Modules라고 불리는 모듈시스템에 의존적이고, 이 말은 곧 우리가 알고 있는 많은 모듈 형식 중 'ESM'이 Tree Shaking을 가능하게 하는 차별점이 있다는 것을 의미합니다. ESM은 어떻게 Tree Shaking을 가능하게 하는것인지, 다른 모듈 시스템과의 차이점이 무엇인지 알아봅니다.
+> It relies on the import and export statements in ES2015 to detect if code modules are exported and imported for use between JavaScript files.
+>
+> [mdn/glossary/tree-shaking](https://developer.mozilla.org/en-US/docs/Glossary/Tree_shaking)
+
+"ES2015(ES6)의 import/export문에 의존하여 JavaScript파일간의 참조여부를 판단한다."라고 설명되어 있습니다.
+
+Tree Shaking은 ES6부터 도입된 ES Modules라고 불리는 모듈시스템에 의존적이고, 이 말은 곧 우리가 알고 있는 많은 모듈 형식 중 'ESM'이 Tree Shaking을 가능하게 하는 차별점이 있다는 것을 의미합니다.
+
+ESM은 어떻게 Tree Shaking을 가능하게 하는것인지, 다른 모듈 시스템과의 차이점이 무엇인지 알아봅니다.
 
 ## 모듈
 
@@ -25,13 +33,13 @@ ESM에 대한 구체적인 이야기를 하기에 앞서, 모듈에 대한 개�
 
 ### 모듈이란?
 
-모듈이란 '재활용 가능한 코드 단위'라고 말할 수 있습니다. '재활용'가능하다는 것은 모듈의 범위 내에 있는 동작들이 어디에서 사용되더라도 같은 동작이 보장되는것이고, 모듈이 '코드 단위'라는 것은 하나의 어플리케이션을 작성하는데에 있어 N개의 모듈 집합으로 구성할 수 있다는 것을 의미합니다.
+모듈이란 **'재활용 가능한 코드 단위'**라고 말할 수 있습니다. '재활용'가능하다는 것은 모듈의 범위 내에 있는 동작들이 어디에서 사용되더라도 같은 동작이 보장되는것이고, 모듈이 '코드 단위'라는 것은 하나의 어플리케이션을 작성하는데에 있어 N개의 모듈 집합으로 구성할 수 있다는 것을 의미합니다.
 
 ## JavaScript의 모듈 시스템 톺아보기
 
 ![모듈_전역변수_공유](./images/tree-shaking-module-system/global_share.png)
 
-JavaScript에는 모듈 개념이 뒤늦게 도입되었습니다. 모듈 개념이 도입되기 이전에 foo.js와 bar.js가 공통변수 foo를 공유하는 가장 쉬운 방법'전역'범위로 변수를 끌어올리는 것이었습니다. 
+JavaScript에는 모듈 개념이 뒤늦게 도입되었습니다. 모듈 개념이 도입되기 이전에 `foo.js`와 `bar.js`가 공통변수 foo를 공유하는 가장 쉬운 방법'전역'범위로 변수를 끌어올리는 것이었습니다. 
 
 이런 해결책은 전역에 선언된 변수의 상태나 선언시점을  제어할 수 없기 때문에 JS 로드 순서에 의존적이고 변수참조에 대한 의존성 관리가 어려워집니다. 
 
