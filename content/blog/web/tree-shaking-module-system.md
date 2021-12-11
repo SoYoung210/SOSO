@@ -80,7 +80,7 @@ CommonJS는 모든 파일이 로컬에 있어 필요할 때 바로 불러올 수
 
 AMD그룹은 자바스크립트 모듈의 비동기 처리에 대해 CJS 그룹과 논의하다 합의점을 찾지 못해 독립한 그룹입니다. CJS는 자바스크립트를 브라우저 밖으로 꺼내기 위해 탄생한 그룹이고, AMD는 브라우저에 중점을 둔 그룹이라고 할 수 있습니다.
 
-(TODO: 그래서 AMD가 뭔지는 없음.)
+'Asynchronous Module Definition'이라는 말에서 알 수 있듯이, AMD는 비동기 모듈(필요한 모듈을 네트워크를 통해 내려받을 수 있도록 하는 것)에 대한 표준안을 다루고 있습니다.
 
 ### UMD(Universal Module Definition)
 
@@ -318,8 +318,90 @@ console.log((0,_utils__WEBPACK_IMPORTED_MODULE_0__/* .add */ .IH)(1, 2));
 
 위와같은 CJS코드를 빌드하면 번들 결과물에 `__webpack_require__` 가 포함되어 있는 것을 확인할 수 있습니다. 모듈을 동적으로 사용하기 위한 코드이며, 최종적으로 `fns` 내에 정의된 모든 모듈을포함하는 형태입니다. (`__webpack_require__` 등 이에 대한 자세한 내용은 [이 글](https://ui.toast.com/weekly-pick/ko_20190418) 을 참고해주세요.)
 
-// TODO: 부록으로 빼거나 webpack과 같이 일반적인 트리쉐이킹 방식에 대해 정리하기
-### [Rollup] plugin-commonjs
+### [Rollup] AST분석
+
+#### TL;DR
+
+`rollup`의 번들링 과정은 의존성 관계를 파악하여 Graph를 만들고, 이 그래프를 AST(Abstract Syntax Tree)로 치환하여 구문 분석 후 옵션에 맞게 결과물을 만드는 과정으로 이루어 집니다.
+
+> rollup의 전체 과정에 대해서는 [이 글](https://programmerall.com/article/2523859516/)을 참고해주세요.
+
+(표현을 다듬어야겠군)
+Tree Shaking은 AST트리의 각 노드를 순회하는 단계에서 수행되며, 포함되어야 하는 모듈에 마킹한 뒤 chunk파일을 생성합니다.
+
+#### Step 1. 구문분석
+
+AST 변환 결과를 통해 `import`, `export`, `re-export` 구문에 대해 모듈 요청 경로를 파악할 수 있습니다.
+
+```ts
+function createResolveId(preserveSymlinks: boolean) {
+	return function(source: string, importer: string) {
+		if (importer !== undefined && !isAbsolute(source) && source[0] !== '.') return null;
+
+		 // Finally call path.resolve to convert the legal path fragment into an absolute path
+		return addJsExtensionIfNecessary(
+			resolve(importer ? dirname(importer) : resolve(), source),
+			preserveSymlinks
+		);
+	};
+}
+```
+
+이 과정을 통해 얻은 모듈 경로를 바탕으로 `rollup`내부에서 사용 하는 모듈 인스턴스를 생성합니다.
+
+```ts
+const module: Module = new Module(
+  this.graph,
+  id,
+  moduleSideEffects,
+  syntheticNamedExports,
+  isEntry
+);
+```
+
+#### Step 2. `included`여부 결정
+
+AST구문 내용에 따라 [getNodeConstructor](https://github.com/rollup/rollup/blob/ce3de491b8ff0f61789c1ab61287ca06c9d19382/src/ast/nodes/shared/Node.ts#L216)를 호출하여 각 구문에 맞는 처리를 수행합니다.
+
+[rollup의 각 AST모듈](https://github.com/rollup/rollup/tree/ca86df280288656c66a948e122c36ccee7e06aca/src/ast)에는 공통적으로 `include`메서드와 `this.included = true;`구문이 포함되어 있습니다.
+
+이는 class가 생성되는 순간 가장 super class인 [ExpressionEntity의 included값이 false](https://github.com/rollup/rollup/blob/ce3de491b8ff0f61789c1ab61287ca06c9d19382/src/ast/nodes/shared/Expression.ts#L16)인 것을 `true`로 변경하는 동작입니다.
+
+각 AST모듈에는 코드블록이 포함되는 경우 `included`값을 true로 설정하고 현재 코드블록의 모든 es노드를 순회하여 필요한 조건에 따라 `included`값을 결정하는 코드가 공통적으로 구현되어 있습니다.
+
+```ts
+// 예시 ast/nodes/LabelStatement.ts
+include(context: InclusionContext, includeChildrenRecursively: IncludeChildren): void {
+	this.included = true;
+	const brokenFlow = context.brokenFlow;
+	this.body.include(context, includeChildrenRecursively);
+	if (includeChildrenRecursively || context.includedLabels.has(this.label.name)) {
+		this.label.include();
+		context.includedLabels.delete(this.label.name);
+		context.brokenFlow = brokenFlow;
+	}
+}
+```
+
+#### Step 3. 번들파일 write 
+
+```ts
+function render(code: MagicString, options: RenderOptions) {
+  if (this.label.included) {
+    this.label.render(code, options);
+  } else {
+    code.remove(
+      this.start,
+      findFirstOccurrenceOutsideComment(code.original, ':', this.label.end) + 1
+    );
+  }
+  this.body.render(code, options);
+}
+```
+
+번들파일을 생성하는 과정에서는 Step 2에서 판단한 `included`값에 따라 판단합니다. 
+
+#### +) @rollup/plugin-commonjs
 
 rollup의 [이슈](https://github.com/rollup/rollup-plugin-commonjs/issues/362)에 따르면, [rollup/plugin-commonjs](https://github.com/rollup/plugins/tree/master/packages/commonjs)를 사용하여 ES6로 변환할 경우 tree-shaking대상에 포함될 수 있지만 `module.exports` 사용 방식에 따라 지원여부가 달라집니다.
 
@@ -471,3 +553,4 @@ var __WEBPACK_AMD_DEFINE_RESULT__;/**
 - [https://web.dev/commonjs-larger-bundles/](https://web.dev/commonjs-larger-bundles/)
 - [https://blog.theodo.com/2021/04/library-tree-shaking/](https://blog.theodo.com/2021/04/library-tree-shaking/)
 - [https://medium.com/@Rich_Harris/tree-shaking-versus-dead-code-elimination-d3765df85c80](https://medium.com/@Rich_Harris/tree-shaking-versus-dead-code-elimination-d3765df85c80)
+- [https://www.smashingmagazine.com/2021/05/tree-shaking-reference-guide/](https://www.smashingmagazine.com/2021/05/tree-shaking-reference-guide/)
