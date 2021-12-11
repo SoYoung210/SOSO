@@ -1,6 +1,6 @@
 ---
 title: 'Tree Shaking과 Module System'
-date: 2021-12-05 08:00:09
+date: 2021-12-11 08:00:09
 category: web
 thumbnail: './images/tree-shaking-module-system/thumbnail.jpg'
 ---
@@ -9,7 +9,7 @@ thumbnail: './images/tree-shaking-module-system/thumbnail.jpg'
 
 ## 들어가며
 
-어플리케이션은 다양한 코드조각들(직접 작성한 코드, 라이브러리 등)로 이루어져 있습니다.  어플리케이션이 복잡해질수록 '필요한 코드'만 남기기 위한 작업, 흔히 Tree Shaking이라고 불리는 과정이 수반되어야 합니다.
+어플리케이션은 개발자가 직접 작성한 코드, 외부 라이브러리 등 다양한 코드조각들로 이루어져 있습니다.  어플리케이션이 복잡해질수록 **필요한 코드**만 남기기 위한 작업, 흔히 Tree Shaking이라고 불리는 과정이 수반되어야 합니다.
 
 이 글에서는 Tree Shaking에 대한 기본 개념과 Tree Shaking을 보장하기 위한 요소들에 대해 알아봅니다.
 
@@ -21,33 +21,33 @@ thumbnail: './images/tree-shaking-module-system/thumbnail.jpg'
 >
 > [mdn/glossary/tree-shaking](https://developer.mozilla.org/en-US/docs/Glossary/Tree_shaking)
 
-"ES2015(ES6)의 import/export문에 의존하여 JavaScript파일간의 참조여부를 판단한다."라고 설명되어 있습니다.
+ES2015(ES6)의 import/export문에 의존하여 JavaScript파일간의 참조여부를 판단한다고 설명되어 있습니다.
 
-Tree Shaking은 ES6부터 도입된 ES Modules라고 불리는 모듈시스템에 의존적이고, 이 말은 곧 우리가 알고 있는 많은 모듈 형식 중 'ESM'이 Tree Shaking을 가능하게 하는 차별점이 있다는 것을 의미합니다.
+Tree Shaking은 ES6부터 도입된 ES Modules라고 불리는 모듈시스템에 의존적이고, 이 말은 곧 우리가 알고 있는 많은 모듈 형식 중 `ESM`형식이 Tree Shaking을 가능하게 하는 차별점이 있다는 것을 의미합니다.
 
 ESM은 어떻게 Tree Shaking을 가능하게 하는것인지, 다른 모듈 시스템과의 차이점이 무엇인지 알아봅니다.
 
 ## 모듈
 
-ESM에 대한 구체적인 이야기를 하기에 앞서, 모듈에 대한 개념과 다른 모듈 시스템들에 대해 간단히 소개합니다.
+`ESM`에 대한 구체적인 이야기를 하기에 앞서, 모듈에 대한 개념과 다른 모듈 시스템들에 대해 간단히 소개합니다.
 
 ### 모듈이란?
 
-모듈이란 **'재활용 가능한 코드 단위'**라고 말할 수 있습니다. '재활용'가능하다는 것은 모듈의 범위 내에 있는 동작들이 어디에서 사용되더라도 같은 동작이 보장되는것이고, 모듈이 '코드 단위'라는 것은 하나의 어플리케이션을 작성하는데에 있어 N개의 모듈 집합으로 구성할 수 있다는 것을 의미합니다.
+모듈이란 **'재활용 가능한 코드 단위'**라고 할 수 있습니다. **재활용** 가능하다는 것은 모듈이 어디에서 사용되도라도 같은 동작이 보장되어야 하는 것이고, 모듈이 **코드 단위**라는 것은 하나의 어플리케이션을 작성하는데에 있어 N개의 모듈 집합으로 구성할 수 있다는 것을 의미합니다.
+
+모듈은 변수와 함수를 구성하는 더 나은 방법을 제공합니다. 함수와 변수를 모듈 스코프 내에서 관리하고, 모듈 스코프를 통해 모듈간에 변수를 공유하는것도 가능합니다.
 
 ## JavaScript의 모듈 시스템 톺아보기
 
 ![모듈_전역변수_공유](./images/tree-shaking-module-system/global_share.png)
 
-JavaScript에는 모듈 개념이 뒤늦게 도입되었습니다. 모듈 개념이 도입되기 이전에 `foo.js`와 `bar.js`가 공통변수 foo를 공유하는 가장 쉬운 방법'전역'범위로 변수를 끌어올리는 것이었습니다. 
+JavaScript에 모듈 개념이 도입되기 이전에 `foo.js`와 `bar.js`가 공통변수 `foo`를 공유하는 가장 쉬운 방법은 변수를 전역범위로 끌어올리는 것이었습니다. 
 
-이런 해결책은 전역에 선언된 변수의 상태나 선언시점을  제어할 수 없기 때문에 JS 로드 순서에 의존적이고 변수참조에 대한 의존성 관리가 어려워집니다. 
+이런 해결책은 전역에 선언된 변수의 상태나 선언시점을 제어할 수 없기 때문에 JS 로드 순서에 의존적이고 변수참조에 대한 의존성 관리가 어려워집니다.
 
-모듈은 변수와 함수를 구성하는 더 나은 방법을 제공합니다. 함수와 변수를 모듈 스코프 내에서 관리하고, 모듈 스코프를 통해 모듈간에 변수를 공유하는것도 가능합니다.
+JavaScript에 모듈 시스템을 도입하려는 움직임이 시작되면서 클라이언트 사이드와 서버 사이드로 나뉘어져 모듈 시스템 도입이 고려되었고 이런 상황에서 제안된 것이 [CommonJS](http://www.commonjs.org/)와 [AMD(Asynchronous Module Definition)](https://github.com/amdjs/amdjs-api/wiki/AMD)입니다.
 
-JavaScript를 클라이언트 사이드에 국한하지 않고 범용적으로 사용하고자 하는 움직임이 생기면서 모듈 기능은 반드시 해결해야 하는 핵심과제가 되었고, 이런 상황에서 제안된 것이 [CommonJS](http://www.commonjs.org/)와 [AMD(Asynchronous Module Definition)](https://github.com/amdjs/amdjs-api/wiki/AMD)입니다.
-
-JavaScript 모듈화는 크게 CommonJS와 AMD진영으로 나뉘게 되었고, 브라우저에서 모듈을 사용하기 위해서는 CommonJS 혹은 AMD를 구현한 모듈 로더 라이브러리를 사용해야 하는 상황이 되었습니다.
+JavaScript 모듈화는 크게 `CommonJS`와 `AMD`진영으로 나뉘게 되었고, 브라우저에서 모듈을 사용하기 위해서는 CommonJS 혹은 AMD를 구현한 모듈 로더 라이브러리를 사용해야 하는 상황이 되었습니다.
 
 ### CJS(CommonJS)
 
@@ -61,9 +61,11 @@ module.exports = function doSomething(n) {
 }
 ```
 
-서버 사이드 JavaScrtip런타임 환경인 Node.js는 CommonJS를 채택하였습니다. (덧붙임: [Node.js 17버전에서는 ECMASCript module지원이 추가](https://nodejs.org/api/esm.html#modules-ecmascript-modules)되었습니다.) 특징은 **정적인 바인딩, 동기(synchronous) import**를 꼽을 수 있습니다.
+서버 사이드 JavaScript 환경인 Node.js는 `CommonJS`를 채택하였습니다. 특징은 **정적인 바인딩, 동기(synchronous) import**를 꼽을 수 있습니다.
 
-> 정적인 바인딩: 'require' 를 통해 가져온 값의 복사본을 제공합니다. 이는 'module.exports' 를 수행한 쪽에서 값의 변경이 있더라도 최초 'require'이후에는 변경된 값을 사용할 수 없다는 것을 의미합니다.
+> **정적인 바인딩:** `require`를 통해 가져온 값의 복사본을 제공합니다. 이는 `module.exports` 를 수행한 쪽에서 값의 변경이 있더라도 최초 'require'이후에는 변경된 값을 사용할 수 없다는 것을 의미합니다.
+
+> 덧붙임: [Node.js 17버전에서는 ECMASCript module지원이 추가](https://nodejs.org/api/esm.html#modules-ecmascript-modules)되었습니다.
 
 ### AMD(Asynchronous Module Definition)
 
@@ -74,11 +76,11 @@ define(['dep1', 'dep2'], function (dep1, dep2) {
 });
 ```
 
-CommonJS는 모든 파일이 로컬에 있어 필요할 때 바로 불러올 수 있는 상황을 전제로 합니다. 즉 동기적인 동작이 가능한 서버사이드 자바스크립트 환경을 전제로 하는 것입니다.
+`CommonJS`는 모든 파일이 로컬에 있어 필요할 때 바로 불러올 수 있는 상황을 전제로 합니다. 즉, 동기적인 동작이 가능한 서버사이드 자바스크립트 환경을 전제로 하는 것입니다.
 
 브라우저에서는 이런 방식으로 인해 **모듈이 모두 다운로드 될 때 까지 아무것도 할 수 없는** 상태가 만들어질 수 있고, 이는 치명적인 단점이 됩니다.
 
-AMD그룹은 자바스크립트 모듈의 비동기 처리에 대해 CJS 그룹과 논의하다 합의점을 찾지 못해 독립한 그룹입니다. CJS는 자바스크립트를 브라우저 밖으로 꺼내기 위해 탄생한 그룹이고, AMD는 브라우저에 중점을 둔 그룹이라고 할 수 있습니다.
+AMD그룹은 자바스크립트 모듈의 비동기 처리에 대해 CommonJS그룹과 논의하다 합의점을 찾지 못해 독립한 그룹입니다. CommonJS는 자바스크립트를 브라우저 밖으로 꺼내기 위해 탄생한 그룹이고, AMD는 브라우저에 중점을 둔 그룹이라고 할 수 있습니다.
 
 'Asynchronous Module Definition'이라는 말에서 알 수 있듯이, AMD는 비동기 모듈(필요한 모듈을 네트워크를 통해 내려받을 수 있도록 하는 것)에 대한 표준안을 다루고 있습니다.
 
@@ -116,17 +118,17 @@ export const function1() {...};
 export const function2() {...};
 ```
 
-ESM은 ECMAScript에서 지원하는 JavaScript공식 모듈 시스템이며, 대부분의 모던 브라우저에서 지원하는 형식입니다. (역시  '그 브라우저'는 지원하지 않습니다.)
+ESM은 ECMAScript에서 지원하는 JavaScript공식 모듈 시스템이며, 대부분의 모던 브라우저에서 지원하는 형식입니다. ('그 브라우저' ~~IE11~~ 는 지원하지 않습니다.)
 
-ESM은 모듈 로더를 비동기 환경에서 실행할 수 있고, 스크립트를 바로 실행하지 않고 `import` 와 `export` 구문을 찾아서 스크립트를 파싱하여 모듈 dependency그래프를 만든 이후 실행합니다.
+ESM은 모듈 로더를 비동기 환경에서 실행할 수 있고 스크립트를 바로 실행하지 않고 `import` 와 `export` 구문을 찾아서 스크립트를 파싱하여 모듈 dependency그래프를 만든 이후 실행합니다.
 
 ## ESM의 특징들
 
 ### TL;DR
 
 - ES6에서는 정적 import / export를 강제
-    - '정적 구조'를 가지고 있기 때문에 조건부로 로드된 모듈이 없다는 것을 의미
-- `import` 는 `export` 에 대한 읽기전용 속성으로 여겨지기 때문에, 값을 직접 복사하지 않고 레퍼런스만 참조
+  - '정적 구조'를 가지고 있기 때문에 조건부로 로드된 모듈이 없다.
+- `import` 는 `export` 에 대한 읽기전용 속성으로 여겨지기 때문에 값을 직접 복사하지 않고 레퍼런스만 참조
 
 ### 동작 방식
 
@@ -134,17 +136,19 @@ ESM 시스템은 **구성, 인스턴스화, 평가** 세 단계로 이루어집�
 
 #### 구성
 
-가장 첫 단계로 모듈의 종속성 트리를 구성합니다. 종속성 그래프는 브라우저 또는 노드가 로드해야 하는 모듈(코드)을 파악하는 재료가 됩니다.
+가장 첫 단계로 모듈의 종속성 트리를 구성합니다. 종속성 그래프는 로드해야 하는 모듈을 파악하는 재료가 됩니다.
 
-그래프의 시작점이 될 파일을 명시하고 시작점에서 import문을 따라가며 종속성 트리를 생성합니다.
+그래프의 시작점이 될 파일을 명시하고 시작점에서 `import`문을 따라가며 종속성 트리를 생성합니다.
 
 ![module_record](./images/tree-shaking-module-system/module_record.png)
 
-import로 연결된 파일 자체는 브라우저가 사용할 수없으므로 [Module Record](https://262.ecma-international.org/6.0/#sec-source-text-module-records)(export, import정보가 담긴 데이터 구조)로 변환합니다. 이 과정에서 모든 파일을 찾아 로드하고 Module Record로 변환하기 위해 구문분석을 수행합니다.
+`import`로 연결된 파일 자체는 브라우저가 사용할 수없으므로 [Module Record](https://262.ecma-international.org/6.0/#sec-source-text-module-records)(export, import정보가 담긴 데이터)구조로 변환해야 합니다. 이 과정에서 모든 파일을 찾아 로드하고 모듈 레코드로 변환하기 위해 구문분석을 수행합니다.
 
 #### 인스턴스화
 
-그 다음 모듈 레코드를 모듈 인스턴스로 변환합니다. (인스턴스: 'code'와 'state'라는 두 가지를 결합한 형태) import할 모든 값을 할당할 메모리 공간을 찾는 과정이며, export, import모두 해당 메모리를 가리키도록 합니다.
+그 다음 모듈 레코드를 모듈 인스턴스로 변환합니다. import할 모든 값을 할당할 메모리 공간을 찾는 과정이며, `export / import`모두 해당 메모리를 가리키도록 합니다.
+
+> **모듈 인스턴스:** 'code'와 'state'라는 두 가지를 결합한 형태
 
 #### 평가
 
@@ -154,7 +158,7 @@ import로 연결된 파일 자체는 브라우저가 사용할 수없으므로 [
 
 상태는 특정 시점에서의 변수의 실제 '값'이 됩니다.('상태'라고 표현했지만, 메모리라고 표현하는 것이 좀 더 정확합니다.) '평가'과정이 이 값을 채우는 과정입니다.
 
-구성 · 인스턴스화 · 평가는 개별적으로, 비동기적으로 수행될 수 있습니다.
+**구성 · 인스턴스화 · 평가는**의 각 단계는 개별적으로, 또 비동기적으로 수행될 수 있습니다.
 
 ### 특징 1. 정적 구조
 
@@ -163,16 +167,16 @@ var lib = require('lib');
 lib.someFunc(); // property lookup
 ```
 
-`lib.someFunc` 를 통해 lib에 접근할 때, lib는 동적인 값이기 때문에 property lookup을 수행해야 합니다.
+`lib.someFunc` 를 통해 `lib`에 접근할 때, `lib`는 동적인 값이기 때문에 property lookup을 수행해야 합니다.
 
 ```jsx
 import * as lib from 'lib';
 lib.someFunc(); // 정적분석 가능
 ```
 
-ES6는 이와 반대로, lib를 가져올 때 lib의 정보를 정적으로 알 수 있고 이로 인해 access를 최적화 할 수 있습니다.
+ESM은 이와 반대로 lib를 가져올 때 lib의 정보를 정적으로 파악할 수 있기 때문에 access를 최적화 할 수 있습니다.
 
-`CommonJS` 와 달리 export문은 ES6모듈의 최상위 레벨에만 위치할 수 있습니다. 컴파일러가 ES6모듈을 좀 더 쉽게 해석할 수 있게 하기 위한 제한이지만 메서드 호출 기반으로 api를 동적으로 정의하고 `export`해야만 하는 경우는 많지 않기 때문에 좋은 제한이기도 합니다.
+`CommonJS` 와 달리 `export`문은 ESM의 최상위 레벨에만 위치할 수 있습니다. 컴파일러가 ESM을 좀 더 쉽게 해석할 수 있게 하기 위한 제한이지만 메서드 호출 기반으로 api를 동적으로 정의하고 `export`해야만 하는 경우는 많지 않기 때문에 좋은 제한이기도 합니다.
 
 ```jsx
 function foo () {
@@ -183,11 +187,11 @@ foo()
 
 ### 특징 2. Bindings, Not Values
 
-[ESM동작방식 - 평가](#평가)단락에서 언급했듯, import와 export는 모두 같은 메모리 주소를 바라봅니다.
+[ESM동작방식 - 평가](#평가)단락에서 언급했듯, `import`와 `export`는 모두 같은 메모리 주소를 바라봅니다.
 
 ![esm_binding](./images/tree-shaking-module-system/esm_binding.png)
 
-`export`한 곳에서 값을 변경하면 해당 변경사항이 `import`한 곳에서도 반영됩니다. `export`하는 모듈에서는 값을 변경할 수 있지만, `import`하는 쪽에서는 값을 변경할 수 없습니다.
+`export`한 곳에서 값을 변경하면 해당 변경사항이 `import`한 곳에서도 변경한 값이 반영됩니다. `export`하는 모듈에서는 값을 변경할 수 있지만, `import`하는 쪽에서는 값을 변경할 수 없습니다.
 
 ![esm_binding_update](./images/tree-shaking-module-system/esm_binding_update.png)
 
@@ -202,45 +206,46 @@ console.log('a', a); // AAA
 setTimeout(() => console.log('a', a), 1000); // ABC
 ```
 
-위 예제에서 `a`변수는 0.5초간 AAA이지만, 1초 후에는 ABC로 변경되며, 이 모듈을 사용한 곳에서도 같은 변경사항을 적용받을 수 있습니다.
+위 예제에서 `a`변수는 0.5초간 `AAA`이지만, 1초 후에는 `ABC`로 변경되며, 이 모듈을 사용한 곳에서도 같은 변경사항을 적용받을 수 있습니다.
 
-이 방식은 CommonJS와 큰 차이가 있는데, CommonJS에서는 `require`로 로드한 모듈의 **값**을 사용합니다. 같은 메모리를 바라보고 있지 않기 때문에, `export`된쪽에서 값을 변경해도 `require`한 쪽에서는 변경된 값으로 사용할 수 없습니다.
+`CommonJS`에서는 `require`로 로드한 모듈의 **값**을 사용합니다. 같은 메모리를 바라보고 있지 않기 때문에, `export`된쪽에서 값을 변경해도 `require`한 쪽에서는 변경된 값으로 사용할 수 없습니다.
 
 ![cjs_binding](./images/tree-shaking-module-system/cjs_binding.png)
 
-모듈 시스템을 사용할 때 모듈간에 참조 관계를 해석하고 위와같이 메모리에 할당하는 작업, 즉 종속성 그래프를 만드는 작업이 수행됩니다. 이 때 순환참조가 발생한 모듈은 어떻게 평가될까요?
+모듈 시스템을 사용할 때 모듈간에 참조 관계를 해석하고 위와같이 메모리에 할당하는 작업, 즉 종속성 그래프를 만드는 작업이 수행됩니다. 이 때, 순환참조가 발생한 모듈은 어떻게 평가될까요?
 
 ![circular_reference](./images/tree-shaking-module-system/circular_reference.png)
 
-우선 CommonJS에서의 동작방식을 살펴봅니다.
+우선 `CommonJS`에서의 동작방식을 살펴봅니다.
 
-`main.js` 가 실행되고 코드의 첫 줄인 `require("./counter.js")` 를 수행합니다. 이 코드는 `counter` 모듀을 로드하게 됩니다.
+`main.js`가 실행되고 코드의 첫 줄인 `require("./counter.js")` 를 수행합니다. 이 코드는 `counter` 모듈을 로드합니다.
 
-counter 모듈은 main에서 가져온 `message` 변수에 접근하려고 하지만, **main모듈이 아직 완전히 실행되지 않았기 때문에 message의 값은 undefiend입니다.**
+counter모듈은 main에서 가져온 `message` 변수에 접근하려고 하지만, **main모듈이 아직 완전히 실행되지 않았기 때문에 message의 값은 undefined입니다.**
 
-cjs에서 `export/require`는 같은 메모리 주소를 바라보지 않기 때문에 main모듈에서 갑싱 업데이트 되었다고 해도 counter모듈에서는 계속 undefined값이 출력될 것입니다.
+CJS에서 `export/require`는 같은 메모리 주소를 바라보지 않기 때문에 main모듈에서 값이 업데이트 되었다고 해도 counter모듈에서는 계속 undefined값이 출력될 것입니다.
 
 반대로 ESM은 `export/import`가 같은 메모리 주소를 바라보기 때문에 `counter.js`의 `message`변수는 undefined에서 'main complete'값으로 변경될 것입니다.
 
 ### 정리
 
-ESM의 여러 특징들에 대해 정리해보았는데, ESM은 '정적인 구조'를 가지고 있다는 점이 가장 중요합니다.
+ESM의 여러 특징들에 대해 정리해보았는데, ESM은 **정적인 구조**를 가지고 있다는 점이 가장 중요합니다.
 
 정적인 구조를 가졌기 때문에 빌드 타임에 모듈간 관계를 파악할 수 있고, 이를 기반으로 사용되지 않는 코드를 제거하는 작업도 가능하기 때문입니다.
 
-다음 단락에서는 이 특징과 Tree Shaking관계 그리고 번들러의 Tree Shaking방식에 대해서 정리해봅니다.
+다음 단락에서는 이 특징과 Tree Shaking관계, 그리고 webpack과 rollup의 Tree Shaking방식에 대해서 정리해봅니다.
 
 ## Tree Shaking
 
-일반적으로 Tree Shaking이라는 단어는 루트 노드에 연결되지 않은 노드(메소드/변수)를 제거하는 과정으로 정의 됩니다.
+일반적으로 Tree Shaking이라는 단어는 루트 노드에 연결되지 않은 노드(메소드/변수)를 제거하는 과정을 의미합니다.
 
 ![node_tree](./images/tree-shaking-module-system/node_tree.png)
 
-이 개념을  처음 도입한 Rollup에서는 Tree Shaking에 대한 정의를 다르게 사용하고 있습니다.
+// TODO: 이 단락의 위치가 좀 고민된다..
+하지만 이 개념을 처음 도입한 Rollup에서는 Tree Shaking에 대한 정의를 다르게 사용하고 있습니다.
 
 "루트 노드에 연결되지 않은 노드(메소드/변수)를 제거하는 과정"은 **Dead code elimination**(죽은 코드 제거)이지만 Rollup의 Tree Shaking은 **live code inclusion**(필요한 코드만 쌓아나가는 것)입니다.
 
-즉, 번들러 관점에서는Tree-Shaking이란 '어떤 모듈이 필요한지 평가하는 과정'입니다. ([* 부록 2. Dead code elimination vs Tree Shaking](#부록-2-dead-code-elimination죽은코드-없애기-vs-tree-shaking))
+즉, 번들러 관점에서는 Tree-Shaking이란 '어떤 모듈이 필요한지 평가하는 과정'입니다. ([* 부록 2. Dead code elimination vs Tree Shaking](#부록-2-dead-code-elimination죽은코드-없애기-vs-tree-shaking))
 
 ### 지원모듈
 
@@ -250,13 +255,13 @@ Tree Shaking은 기본적으로 모듈 구조를 정적으로 분석할 수 있�
 module.exports[localStorage.getItem(Math.random())] = () => { … };
 ```
 
-CommonJS에서는 위와같이 runtime에서 결정되는 모듈구조를 다룰 수 있기 때문에 번들러가 어떤 모듈을 포함할지, 포함하지 않을지 쉽게 결정할 수 없습니다.
+CommonJS에서는 위와같이 runtime에서 어떤 모듈을 로드할지 결정할 수 있기 때문에 빌드 단계에서는 번들러가 어떤 모듈을 포함할지, 포함하지 않을지 쉽게 결정할 수 없습니다.
 
-번들러마다 Tree Shaking의 내부 원리는 조금씩 다를 수 있지만,  **"정적으로 분석할 수 있는 모듈 시스템에 대해서 더 잘 지원할 수 있다."**는 사실은 동일합니다.
+번들러마다 Tree Shaking의 내부 원리는 조금씩 다를 수 있지만, **'정적으로 분석할 수 있는 모듈 시스템에 대해서 더 잘 지원할 수 있다.'**는 사실은 동일합니다.
 
 ### [webpack] ModuleConcatenationPlugin
 
-[webpack의 ModuleConcatenationPlugin](https://webpack.js.org/plugins/module-concatenation-plugin/)의 동작을 살펴보면 CJS, ESM형태가 최종 번들 결과물에 미치는 영향을 좀더 이해할 수 있습니다.
+[webpack의 ModuleConcatenationPlugin](https://webpack.js.org/plugins/module-concatenation-plugin/)의 동작을 살펴보면 CJS, ESM형태가 최종 번들 결과물에 미치는 영향을 좀 더 이해할 수 있습니다.
 
 ```jsx
 // utils.js
@@ -287,9 +292,7 @@ console.log(add(1, 2));**
 /******/ })();
 ```
 
-minimize가 true로 설정되면 위 결과물에서 참조되지 않는 함수 제거, 주석/공백제거 등의 작업이 수행되며 여기서 **"참조되지 않는 함수가 제거된 결과"**를 Tree Shaking된 결과라고  해석할 수 있습니다.
-
-참조되지 않는 함수가 최종 번들에 포함되지 않도록 하는 작업이 가능한 이유는 모든 모듈이 정적으로 분석될 수 있었기 때문이고, 반대로 모듈을 동적인 형태로 선언할 수 있는 CJS형태의 모듈은 Tree Shaking을 적용하기 어렵습니다.
+`minimize`가 true로 설정되면 위 결과물에서 참조되지 않는 함수 제거, 주석/공백제거 등의 작업이 수행되며 여기서 **"참조되지 않는 함수가 제거된 결과"**를 Tree Shaking된 결과라고 해석할 수 있습니다.
 
 ```jsx
 const { maxBy } = require('lodash-es');
@@ -316,7 +319,7 @@ console.log((0,_utils__WEBPACK_IMPORTED_MODULE_0__/* .add */ .IH)(1, 2));
 })();
 ```
 
-위와같은 CJS코드를 빌드하면 번들 결과물에 `__webpack_require__` 가 포함되어 있는 것을 확인할 수 있습니다. 모듈을 동적으로 사용하기 위한 코드이며, 최종적으로 `fns` 내에 정의된 모든 모듈을포함하는 형태입니다. (`__webpack_require__` 등 이에 대한 자세한 내용은 [이 글](https://ui.toast.com/weekly-pick/ko_20190418) 을 참고해주세요.)
+CJS코드를 빌드하면 번들 결과물에 `__webpack_require__` 가 포함됩니다. 모듈을 동적으로 사용하기 위한 코드이며, 최종적으로 `fns`내에 정의된 모든 모듈을포함하는 형태입니다. (`__webpack_require__` 등 이에 대한 자세한 내용은 [이 글](https://ui.toast.com/weekly-pick/ko_20190418) 을 참고해주세요.)
 
 ### [Rollup] AST분석
 
@@ -380,7 +383,7 @@ include(context: InclusionContext, includeChildrenRecursively: IncludeChildren):
 }
 ```
 
-#### Step 3. 번들파일 write 
+#### Step 3. 파일생성
 
 ```ts
 function render(code: MagicString, options: RenderOptions) {
