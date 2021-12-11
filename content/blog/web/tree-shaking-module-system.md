@@ -324,10 +324,7 @@ console.log((0,_utils__WEBPACK_IMPORTED_MODULE_0__/* .add */ .IH)(1, 2));
 
 `rollup`의 번들링 과정은 의존성 관계를 파악하여 Graph를 만들고, 이 그래프를 AST(Abstract Syntax Tree)로 치환하여 구문 분석 후 옵션에 맞게 결과물을 만드는 과정으로 이루어 집니다.
 
-> rollup의 전체 과정에 대해서는 [이 글](https://programmerall.com/article/2523859516/)을 참고해주세요.
-
-(표현을 다듬어야겠군)
-Tree Shaking은 AST트리의 각 노드를 순회하는 단계에서 수행되며, 포함되어야 하는 모듈에 마킹한 뒤 chunk파일을 생성합니다.
+불필요한 번들을 제거시키는 방식이 아니라, 최종 번들파일에서 포함되어야 한다고 판단된 모듈을 포함하는 원리로 수행됩니다.
 
 #### Step 1. 구문분석
 
@@ -554,3 +551,4 @@ var __WEBPACK_AMD_DEFINE_RESULT__;/**
 - [https://blog.theodo.com/2021/04/library-tree-shaking/](https://blog.theodo.com/2021/04/library-tree-shaking/)
 - [https://medium.com/@Rich_Harris/tree-shaking-versus-dead-code-elimination-d3765df85c80](https://medium.com/@Rich_Harris/tree-shaking-versus-dead-code-elimination-d3765df85c80)
 - [https://www.smashingmagazine.com/2021/05/tree-shaking-reference-guide/](https://www.smashingmagazine.com/2021/05/tree-shaking-reference-guide/)
+- [https://programmerall.com/article/7904967526/](https://programmerall.com/article/7904967526/)
