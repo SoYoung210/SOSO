@@ -9,7 +9,7 @@ thumbnail: './images/tree-shaking-module-system/thumbnail.jpg'
 
 ## 들어가며
 
-어플리케이션은 개발자가 직접 작성한 코드, 외부 라이브러리 등 다양한 코드조각들로 이루어져 있습니다.  어플리케이션이 복잡해질수록 번들 사이즈에 신경을 쓰게 되는데요, 이 때 **필요한 코드**만 남기기 위한 작업, 흔히 Tree Shaking이라고 불리는 과정이 수반되어야 합니다.
+어플리케이션은 개발자가 직접 작성한 코드, 외부 라이브러리 등 다양한 코드조각들로 이루어져 있습니다.  어플리케이션이 복잡해질수록 번들 사이즈에 신경을 쓰게 되는데요, 이때 **필요한 코드**만 남기기 위한 작업, 흔히 Tree Shaking이라고 불리는 과정이 수반되어야 합니다.
 
 이 글에서는 Tree Shaking에 대한 기본 개념과 Tree Shaking을 보장하기 위한 요소들에 대해 알아봅니다.
 
@@ -25,7 +25,7 @@ MDN의 설명에 따르면 Tree Shaking은 ES2015(ES6)의 import/export문에 �
 
 Tree Shaking은 ES6부터 도입된 ES Modules(ESM)라고 불리는 모듈 시스템에 의존적이고, 이 말은 곧 우리가 알고 있는 많은 모듈 형식 중 `ESM`형식이 Tree Shaking을 가능하게 한다는 것을 의미합니다.
 
-ESM은 어떻게 Tree Shaking을 가능하게 하는것인지, 다른 모듈 시스템과의 차이점이 무엇인지 알아봅니다.
+ESM은 어떻게 Tree Shaking을 가능하게 하는 것인지, 다른 모듈 시스템과의 차이점이 무엇인지 알아봅니다.
 
 ## 모듈
 
@@ -35,17 +35,17 @@ ESM은 어떻게 Tree Shaking을 가능하게 하는것인지, 다른 모듈 시
 
 모듈이란 **'재활용 가능한 코드 단위'**라고 할 수 있습니다. **재활용 가능**하다는 것은 어디에서 사용되더라도 동작의 일관성이 보장된다는 것이고, **코드 단위**라는 것은 하나의 어플리케이션이 N개의 모듈 집합으로 구성된다는 것을 의미합니다.
 
-모듈은 변수와 함수를 구성하는 더 나은 방법을 제공합니다. 함수와 변수를 모듈 스코프 내에서 관리하고, 모듈 스코프를 통해 모듈간 변수를 공유하는것도 가능합니다.
+모듈은 변수와 함수를 구성하는 더 나은 방법을 제공합니다. 함수와 변수를 모듈 스코프 내에서 관리하고, 모듈 스코프를 통해 모듈 간 변수를 공유하는 것도 가능합니다.
 
 ## JavaScript의 모듈 시스템 톺아보기
 
 ![모듈_전역변수_공유](./images/tree-shaking-module-system/global_share.png)
 
-JavaScript에 모듈 개념이 도입되기 이전에 `foo.js`와 `bar.js`가 공통변수 `foo`를 공유하는 가장 쉬운 방법은 변수를 전역범위로 끌어올리는 것이었습니다. 
+JavaScript에 모듈 개념이 도입되기 이전에 `foo.js`와 `bar.js`가 공통변수 `foo`를 공유하는 가장 쉬운 방법은 변수를 전역 범위로 끌어올리는 것이었습니다. 
 
-이런 해결책은 전역에 선언된 변수의 상태나 선언시점을 제어할 수 없기 때문에 JS 로드 순서에 의존적이고 변수참조에 대한 의존성 관리가 어려워집니다.
+이런 해결책은 전역에 선언된 변수의 상태나 할당시점을 제어할 수 없기 때문에 JS 로드 순서에 의존적이고 변수 참조에 대한 의존성 관리가 어려워집니다.
 
-JavaScript에 모듈 시스템을 도입하려는 움직임이 시작되면서 클라이언트 사이드와 서버 사이드로 나뉘어져 모듈 시스템 도입이 고려되었고 이런 상황에서 제안된 것이 [CommonJS](http://www.commonjs.org/)와 [AMD(Asynchronous Module Definition)](https://github.com/amdjs/amdjs-api/wiki/AMD)입니다.
+JavaScript에 모듈 시스템을 도입하려는 움직임이 시작되면서 클라이언트 사이드와 서버 사이드로 나누어져 모듈 시스템 도입이 고려되었고 이런 상황에서 제안된 것이 [CommonJS](http://www.commonjs.org/)와 [AMD(Asynchronous Module Definition)](https://github.com/amdjs/amdjs-api/wiki/AMD)입니다.
 
 JavaScript 모듈화는 크게 `CommonJS`와 `AMD`진영으로 나뉘게 되었고, 브라우저에서 모듈을 사용하기 위해서는 CommonJS 혹은 AMD를 구현한 모듈 로더 라이브러리를 사용해야 하는 상황이 되었습니다.
 
@@ -76,9 +76,9 @@ define(['dep1', 'dep2'], function (dep1, dep2) {
 });
 ```
 
-`CommonJS`는 모든 파일이 로컬에 있어 필요할 때 바로 불러올 수 있는 상황을 전제로 합니다. 즉, 동기적인 동작이 가능한 서버사이드 자바스크립트 환경을 전제로 하는 것입니다.
+`CommonJS`는 모든 파일이 로컬에 있어 필요할 때 바로 불러올 수 있는 상황을 전제로 합니다. 즉, 동기적인 동작이 가능한 서버사이드 자바스크립트 환경을 전제로 합니다.
 
-브라우저에서는 이런 방식으로 인해 **모듈이 모두 다운로드 될 때 까지 아무것도 할 수 없는** 상태가 만들어질 수 있고, 이는 치명적인 단점이 됩니다.
+브라우저에서는 CommonJS 방식으로 모듈을 로드(load)할 경우, 메인스레드가 모듈을 모두 불러올 때까지 아무것도 할 수 없는 상태**(blocking)가 될 수 있고, 이는 CommonJS의 치명적인 단점으로 볼 수 있습니다.
 
 AMD그룹은 자바스크립트 모듈의 비동기 처리에 대해 CommonJS그룹과 논의하다 합의점을 찾지 못해 독립한 그룹입니다. CommonJS는 자바스크립트를 브라우저 밖으로 꺼내기 위해 탄생한 그룹이고, AMD는 브라우저에 중점을 둔 그룹이라고 할 수 있습니다.
 
@@ -104,7 +104,7 @@ AMD그룹은 자바스크립트 모듈의 비동기 처리에 대해 CommonJS그
 }));
 ```
 
-AMD와 CJS진영이 나뉘어지다보니 서로 호환되지 않는 문제가 발생했고, 이를 해결하기 위한 패턴으로 UMD가 제안되었습니다. UMD는 사실상 **모듈 시스템에 따라 다른 구현을 정의하고 있는 형태**에 가깝습니다.
+AMD와 CJS진영이 나누어지다보니 서로 호환되지 않는 문제가 발생했고, 이를 해결하기 위한 패턴으로 UMD가 제안되었습니다. UMD는 사실상 **모듈 시스템에 따라 다른 구현을 정의하고 있는 형태**에 가깝습니다.
 
 ### ESM
 
@@ -120,15 +120,7 @@ export const function2() {...};
 
 ESM은 ECMAScript에서 지원하는 JavaScript공식 모듈 시스템이며, 대부분의 모던 브라우저에서 지원하는 형식입니다. ('그 브라우저' ~~IE11~~ 는 지원하지 않습니다.)
 
-ESM은 모듈 로더를 비동기 환경에서 실행할 수 있고 스크립트를 바로 실행하지 않고 `import` 와 `export` 구문을 찾아서 스크립트를 파싱하여 모듈 dependency그래프를 만든 이후 실행합니다.
-
 ## ESM의 특징들
-
-### TL;DR
-
-- ES6에서는 정적 import / export를 강제
-  - '정적 구조'를 가지고 있기 때문에 조건부로 로드된 모듈이 없다.
-- `import` 는 `export` 에 대한 읽기전용 속성으로 여겨지기 때문에 값을 직접 복사하지 않고 레퍼런스만 참조
 
 ### 동작 방식
 
@@ -136,7 +128,7 @@ ESM 시스템은 **구성, 인스턴스화, 평가** 세 단계로 이루어집�
 
 #### 1. 구성
 
-가장 첫 단계로 모듈의 종속성 트리를 구성합니다. 종속성 그래프는 로드해야 하는 모듈을 파악하는 재료가 됩니다.
+가장 첫 단계로 로드해야 하는 모듈을 파악하기 위해 종속성 트리를 구성합니다.
 
 그래프의 시작점이 될 파일을 명시하고 시작점에서 `import`문을 따라가며 종속성 트리를 생성합니다.
 
@@ -146,7 +138,7 @@ ESM 시스템은 **구성, 인스턴스화, 평가** 세 단계로 이루어집�
 
 #### 2. 인스턴스화
 
-그 다음 모듈 레코드를 모듈 인스턴스로 변환합니다. import할 모든 값을 할당할 메모리 공간을 찾는 과정이며, `export / import`모두 해당 메모리를 가리키도록 합니다.
+그다음 모듈 레코드를 모듈 인스턴스로 변환합니다. import할 모든 값을 할당할 메모리 공간을 찾는 과정이며, `export / import`모두 해당 메모리를 가리키도록 합니다.
 
 > **모듈 인스턴스:** 'code'와 'state'라는 두 가지를 결합한 형태
 
@@ -163,7 +155,8 @@ ESM 시스템은 **구성, 인스턴스화, 평가** 세 단계로 이루어집�
 ### 특징 1. 정적 구조
 
 ```jsx
-var lib = require('lib');
+var foo = 'foo';
+var lib = require(`lib/${foo}`);
 lib.someFunc(); // property lookup
 ```
 
@@ -183,6 +176,11 @@ function foo () {
   export default 'bar' // SyntaxError
 }
 foo()
+```
+
+```js
+// SyntaxError
+import foo from `lib/${foo}`;
 ```
 
 ### 특징 2. Bindings, Not Values
@@ -212,7 +210,7 @@ setTimeout(() => console.log('a', a), 1000); // ABC
 
 ![cjs_binding](./images/tree-shaking-module-system/cjs_binding.png)
 
-모듈 시스템을 사용할 때 모듈간에 참조 관계를 해석하고 위와같이 메모리에 할당하는 작업, 즉 종속성 그래프를 만드는 작업이 수행됩니다. 이 때, 순환참조가 발생한 모듈은 어떻게 평가될까요?
+모듈 시스템을 사용할 때 모듈간에 참조 관계를 해석하고 위와같이 메모리에 할당하는 작업, 즉 종속성 트리를 만드는 작업이 수행됩니다. 이때, 순환참조가 발생한 모듈은 어떻게 평가될까요?
 
 ![circular_reference](./images/tree-shaking-module-system/circular_reference.png)
 
@@ -222,13 +220,13 @@ setTimeout(() => console.log('a', a), 1000); // ABC
 
 counter모듈은 main에서 가져온 `message` 변수에 접근하려고 하지만, **main모듈이 아직 완전히 실행되지 않았기 때문에 message의 값은 undefined입니다.**
 
-CJS에서 `export/require`는 같은 메모리 주소를 바라보지 않기 때문에 main모듈에서 값이 업데이트 되었다고 해도 counter모듈에서는 계속 undefined값이 출력될 것입니다.
+CJS에서 `export/require`는 같은 메모리 주소를 바라보지 않기 때문에 main모듈에서 값이 업데이트되었다고 해도 counter모듈에서는 계속 undefined값이 출력될 것입니다.
 
 반대로 ESM은 `export/import`가 같은 메모리 주소를 바라보기 때문에 `counter.js`의 `message`변수는 undefined에서 'main complete'값으로 변경될 것입니다.
 
 ### 정리
 
-ESM의 여러 특징들에 대해 정리해보았는데, ESM은 **정적인 구조**를 가지고 있다는 점이 가장 중요합니다.
+ESM의 여러 특징에 대해 정리해보았는데, ESM은 **정적인 구조**를 가지고 있다는 점이 가장 중요합니다.
 
 정적인 구조를 가졌기 때문에 빌드 타임에 모듈간 관계를 파악할 수 있고, 이를 기반으로 사용되지 않는 코드를 제거하는 작업도 가능하기 때문입니다.
 
@@ -236,16 +234,9 @@ ESM의 여러 특징들에 대해 정리해보았는데, ESM은 **정적인 구�
 
 ## Tree Shaking
 
-일반적으로 Tree Shaking이라는 단어는 루트 노드에 연결되지 않은 노드(메소드/변수)를 제거하는 과정을 의미합니다.
+일반적으로 Tree Shaking이란 단어는 루트 노드에 연결되지 않은 노드(메소드/변수)를 제거하는 과정을 의미합니다.
 
 ![node_tree](./images/tree-shaking-module-system/node_tree.png)
-
-// TODO: 이 단락의 위치가 좀 고민된다..
-하지만 이 개념을 처음 도입한 Rollup에서는 Tree Shaking에 대한 정의를 다르게 사용하고 있습니다.
-
-"루트 노드에 연결되지 않은 노드(메소드/변수)를 제거하는 과정"은 **Dead code elimination**(죽은 코드 제거)이지만 Rollup의 Tree Shaking은 **live code inclusion**(필요한 코드만 쌓아나가는 것)입니다.
-
-즉, 번들러 관점에서는 Tree-Shaking이란 '어떤 모듈이 필요한지 평가하는 과정'입니다. ([* 부록 2. Dead code elimination vs Tree Shaking](#부록-2-dead-code-elimination죽은코드-없애기-vs-tree-shaking))
 
 ### 지원모듈
 
@@ -255,9 +246,9 @@ Tree Shaking은 기본적으로 모듈 구조를 정적으로 분석할 수 있�
 module.exports[localStorage.getItem(Math.random())] = () => { … };
 ```
 
-CommonJS에서는 위와같이 runtime에서 어떤 모듈을 로드할지 결정할 수 있기 때문에 빌드 단계에서는 번들러가 어떤 모듈을 포함할지, 포함하지 않을지 쉽게 결정할 수 없습니다.
+CommonJS에서는 위처럼 runtime에서 어떤 모듈을 로드할지 결정할 수 있기 때문에 빌드 단계에서는 번들러가 어떤 모듈을 포함할지, 포함하지 않을지 쉽게 결정할 수 없습니다.
 
-번들러마다 Tree Shaking의 내부 원리는 조금씩 다를 수 있지만, **'정적으로 분석할 수 있는 모듈 시스템에 대해서 더 잘 지원할 수 있다.'**는 사실은 동일합니다.
+번들러마다 Tree Shaking의 내부 원리는 조금씩 다를 수 있지만, **'정적분석이 가능한 구조에 대해 더 잘 지원할 수 있다.'**는 사실은 동일합니다.
 
 ### [webpack] ModuleConcatenationPlugin
 
@@ -325,9 +316,9 @@ CJS코드를 빌드하면 번들 결과물에 `__webpack_require__` 가 포함�
 
 #### TL;DR
 
-`rollup`의 번들링 과정은 의존성 관계를 파악하여 Graph를 만들고, 이 그래프를 AST(Abstract Syntax Tree)로 치환하여 구문 분석 후 옵션에 맞게 결과물을 만드는 과정으로 이루어 집니다.
+`rollup`의 번들링 과정은 의존성 관계를 파악하여 그래프를 생성하고, 이 그래프를 AST(Abstract Syntax Tree)로 치환하여 구문 분석 후 옵션에 맞게 결과물을 만드는 과정으로 이루어집니다.
 
-불필요한 번들을 제거시키는 방식이 아니라, 최종 번들파일에서 포함되어야 한다고 판단된 모듈을 포함하는 원리로 수행됩니다.
+불필요한 번들을 제거하는 방식이 아니라, 최종 번들파일에서 포함되어야 한다고 판단된 모듈을 포함하는 원리로 수행됩니다.
 
 #### Step 1. 구문분석
 
@@ -338,7 +329,6 @@ function createResolveId(preserveSymlinks: boolean) {
 	return function(source: string, importer: string) {
 		if (importer !== undefined && !isAbsolute(source) && source[0] !== '.') return null;
 
-		 // Finally call path.resolve to convert the legal path fragment into an absolute path
 		return addJsExtensionIfNecessary(
 			resolve(importer ? dirname(importer) : resolve(), source),
 			preserveSymlinks
@@ -347,7 +337,7 @@ function createResolveId(preserveSymlinks: boolean) {
 }
 ```
 
-이 과정을 통해 얻은 모듈 경로를 바탕으로 `rollup`내부에서 사용 하는 모듈 인스턴스를 생성합니다.
+이 과정을 통해 얻은 모듈 경로를 바탕으로 `rollup`내부에서 사용하는 모듈 인스턴스를 생성합니다.
 
 ```ts
 const module: Module = new Module(
@@ -444,20 +434,20 @@ sideEffects를 가장 정확히 판단할 수 있는 주체는 아직까지 번�
 > "sideEffects is much more effective since it allows to skip whole modules/files and the complete subtree." ([webpack tree-shaking](https://webpack.js.org/guides/tree-shaking/#clarifying-tree-shaking-and-sideeffects))
 > 
 
-sideEffects는 전체 모듈/파일 및 전체 하위 트리를 **건너뛸 수 있으므로 효과적**입니다. 다시한번 webpack Tree Shaking에 영향을 주는 두 요소를 정리해보면,
+sideEffects는 전체 모듈/파일 및 전체 하위 트리를 **건너뛸 수 있으므로 효과적**입니다. 다시 한번 webpack Tree Shaking에 영향을 주는 두 요소를 정리해보면,
 
 - **sideEffects:** 사용한 모듈이 사용되지 않는 경우 skip
 - **usedExports:** 어떤 모듈에서도 사용되지 않는 모듈 제거
 
 `usedExports`결과가 정확하다면, `sideEffects`에 대한 판단없이도 최종 번들에 포함되는 코드는 동일할 것입니다. 그러나 어플리케이션에서 어떤 모듈이 사용되었는지 판단하는 것은 어플리케이션 크기가 조금만 커져도 복잡한 일이 되고 판단이 정확하지 않을 수 있습니다.
 
-그렇기 때문에 `sideEffects`에 대한 판단이 훨씩 효율적이고 효과적이며, 두 개의 결과를 종합하면 최적의 Tree Shaking결과를 얻을 수 있습니다. (부록 2. 참고)
+그렇기 때문에 `sideEffects`에 대한 판단이 훨씬 효율적이고 효과적이며, 두 개의 결과를 종합하면 최적의 Tree Shaking결과를 얻을 수 있습니다. (부록 2. 참고)
 
 #### 모듈 트리 유지
 
 sideEffects 최적화의 이점을 잘 활용할 수 있으려면, 모듈이 하나의 파일로 번들링 되지 않고 모듈 tree구조를 그대로 유지해야 합니다.
 
-단일 파일로 번들링 될경우 sideEffects가 없더라도 건너뛸 수 있는 모듈이 없기때문에 sideEffects최적화의 이점이 사라집니다. 
+단일 파일로 번들링 될 경우 sideEffects가 없더라도 건너뛸 수 있는 모듈이 없기 때문에 sideEffects최적화의 이점이 사라집니다. 
 
 ```jsx
 // userAccount.js
@@ -539,11 +529,19 @@ var __WEBPACK_AMD_DEFINE_RESULT__;/**
 
 [rollup에서는 preserveModules: true 설정](https://rollupjs.org/guide/en/#outputpreservemodules)으로 모듈 구조를 유지할 수 있고, 다른 번들러에서도 비슷한 기능을 제공합니다. 더 자세한 내용은 [How To Make Tree Shakable Libraries](https://blog.theodo.com/2021/04/library-tree-shaking/) 글을 참고해주세요.
 
-### [부록 2. Dead code elimination(죽은 코드 없애기) vs Tree Shaking](https://medium.com/@Rich_Harris/tree-shaking-versus-dead-code-elimination-d3765df85c80)
+### 부록 2. Dead code elimination(죽은 코드 제거) vs Tree Shaking
 
-'죽은 코드 없애기'과정은 달걀을 깨서 넣는 대신 계란 전체를 넣고 믹싱 볼에 넣고 **케이크를 만든 다음** 케이크에서 달걀껍질을 제거하는 과정이고 'Tree Shaking'은 케이크를 만들기 위해 **어떤 재료가 필요한지 판단해서** 넣는 것입니다. 즉, 죽은코드를 없애는 과정은 단순히 live bundle에서 어떤 코드가 필요하지 않은 지 판단하고, 반대로 Tree Shaking은 어떤 코드가 필요한지 판단합니다.
+[Tree Shaking](#tree-shaking)단락에서 'Tree Shaking이란 단어는 루트 노드에 연결되지 않은 노드(메소드/변수)를 제거하는 과정'이라고 설명했지만, 이 개념을 처음 도입한 Rollup에서는 Tree Shaking에 대한 정의를 다르게 사용하고 있습니다.
 
-두 과정의 최종 결과물(JS Bundle file)이 같을 것이라고 생각되자만 사실은 JavaScript정적분석의 한계로 인해 그렇지 않습니다.  두 과정 모두 필요하고, Bundler로 Tree Shaking후에 terser plugin을 통해서 죽은 코드를 제거하는 과정까지 수행하면 번들 사이즈 측면에서 가장 나은 결과를 얻을 수 있습니다. webpack 5에는 terser-webpack-plugin이 기본으로 제공되므로 이 두 과정이 기본적으로 항상 같이 수행된다고 볼 수 있습니다.
+![dead-code-elimination-vs-tree-shaking](./images/tree-shaking-module-system/dead-code-elimination-vs-tree-shaking.png)
+
+“루트 노드에 연결되지 않은 노드(메소드/변수)를 제거하는 과정”은 Dead code elimination(죽은 코드 제거)이지만 Rollup의 Tree Shaking은 live code inclusion(필요한 코드만 쌓아나가는 것)입니다.
+
+즉, rollup관점에서는 Tree-Shaking이란 ‘어떤 모듈이 필요한지 평가하는 과정’입니다.
+
+죽은 코드를 제거하는 과정은 단순히 live bundle에서 어떤 코드가 필요하지 않은지 판단하고, 반대로 Tree Shaking은 어떤 코드가 필요한지 판단합니다.
+
+두 과정의 최종 결과물(JS Bundle file)이 같을 것으로 생각되지만 사실은 JavaScript정적분석의 한계로 인해 그렇지 않습니다.  두 과정 모두 필요하고, Bundler로 Tree Shaking후에 terser plugin을 통해서 죽은 코드를 제거하는 과정까지 수행하면 번들 사이즈 측면에서 가장 나은 결과를 얻을 수 있습니다. webpack 5에는 terser-webpack-plugin이 기본으로 제공되므로 이 두 과정이 기본적으로 항상 같이 수행된다고 볼 수 있습니다.
 
 ## References
 
