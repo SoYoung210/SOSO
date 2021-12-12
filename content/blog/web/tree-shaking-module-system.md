@@ -394,27 +394,31 @@ function render(code: MagicString, options: RenderOptions) {
 
 #### +) @rollup/plugin-commonjs
 
-rollup의 [이슈](https://github.com/rollup/rollup-plugin-commonjs/issues/362)에 따르면, [rollup/plugin-commonjs](https://github.com/rollup/plugins/tree/master/packages/commonjs)를 사용하여 ES6로 변환할 경우 tree-shaking대상에 포함될 수 있지만 `module.exports` 사용 방식에 따라 지원여부가 달라집니다.
+rollup의 [이슈](https://github.com/rollup/rollup-plugin-commonjs/issues/362)에 따르면, [rollup/plugin-commonjs](https://github.com/rollup/plugins/tree/master/packages/commonjs)를 사용하여 ES6로 변환할 경우 Tree Shaking대상에 포함될 수 있지만 `module.exports` 사용 방식에 따라 지원여부가 달라집니다.
 
 ```jsx
-// ✅ tree-shaking가능
+// ✅ Tree Shaking가능
 const foo = require('./foo');
 
 module.exports = {
   bar: foo,
 }
 
-// ❌ tree-shaking불가능
+// ❌ Tree Shaking불가능
 const foo = require('./foo');
 
 module.exports = foo
 ```
 
-## 정리
+## 마무리
 
-스스로하자.
+최근 [Next.js](https://nextjs.org/blog/next-12#es-modules-support-and-url-imports), [Node.js](https://nodejs.org/api/esm.html#modules-ecmascript-modules)에서 ESM지원이 추가되었고, 이미 [대부분의 모던 브라우저에서는 ESM을 지원](https://caniuse.com/es6-module)합니다.
 
-### 부록 1. 라이브러리에서 tree shaking지원하기
+이 글은 JavaScript생태계에서 ESM지원에 대한 뉴스가 왜 중요하고 어떤 영향을 주는 지 이해하고자 작성된 글이며, 질문과 피드백은 환영입니다!
+
+## 부록
+
+### 1. 라이브러리에서 tree shaking지원하기
 
 [webpack 문서](https://webpack.js.org/guides/tree-shaking/#mark-the-file-as-side-effect-free)에 따르면 tree-shaking은 두 가지 옵션으로 적용될 수 있다고 설명하고 있습니다.
 
@@ -536,7 +540,7 @@ var __WEBPACK_AMD_DEFINE_RESULT__;/**
 
 [rollup에서는 preserveModules: true 설정](https://rollupjs.org/guide/en/#outputpreservemodules)으로 모듈 구조를 유지할 수 있고, 다른 번들러에서도 비슷한 기능을 제공합니다. 더 자세한 내용은 [How To Make Tree Shakable Libraries](https://blog.theodo.com/2021/04/library-tree-shaking/) 글을 참고해주세요.
 
-### 부록 2. Dead code elimination(죽은 코드 제거) vs Tree Shaking
+### 2. Dead code elimination(죽은 코드 제거) vs Tree Shaking
 
 [Tree Shaking](#tree-shaking)단락에서 'Tree Shaking이란 단어는 루트 노드에 연결되지 않은 노드(메소드/변수)를 제거하는 과정'이라고 설명했지만, 이 개념을 처음 도입한 Rollup에서는 Tree Shaking에 대한 정의를 다르게 사용하고 있습니다.
 
