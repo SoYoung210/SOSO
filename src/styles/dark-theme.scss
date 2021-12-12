@@ -67,11 +67,6 @@ body.dark {
     }
   }
 
-  // post
-  blockquote {
-    border-left: 4px solid rgba(255, 255, 255, 0.822);
-  }
-
   h1,
   h2 {
     border-bottom-color: rgba(255, 255, 255, 0.3);
@@ -81,6 +76,13 @@ body.dark {
     a {
       background-color: $navigator-background-color;
       color: $navigator-text-color;
+    }
+  }
+
+  blockquote {
+    color: $dark-blockquote-quote-color;
+    &::before {
+      background-image: $dark-blockquote-quote-image;
     }
   }
 }
