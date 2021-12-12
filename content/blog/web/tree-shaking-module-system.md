@@ -1,6 +1,6 @@
 ---
 title: 'Tree Shaking과 Module System'
-date: 2021-12-11 08:00:09
+date: 2021-12-12 08:00:09
 category: web
 thumbnail: './images/tree-shaking-module-system/thumbnail.jpg'
 ---
