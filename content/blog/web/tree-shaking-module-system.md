@@ -72,8 +72,8 @@ module.exports = function doSomething(n) {
 
 ```jsx
 define(['dep1', 'dep2'], function (dep1, dep2) {
-    //Define the module value by returning a value.
-    return function () {};
+  //Define the module value by returning a value.
+  return function () {};
 });
 ```
 
