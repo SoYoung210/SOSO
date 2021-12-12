@@ -18,8 +18,9 @@ thumbnail: './images/tree-shaking-module-system/thumbnail.jpg'
 우리가 흔히 명명하는 Tree Shaking이란 최종 번들 결과물 관점에서 봤을 때, 불필요한 코드가 없어지는 과정이라고 할 수 있습니다. 
 
 > It relies on the import and export statements in ES2015 to detect if code modules are exported and imported for use between JavaScript files.
->
-> [mdn/glossary/tree-shaking](https://developer.mozilla.org/en-US/docs/Glossary/Tree_shaking)
+<sup style="top: 0px;">
+  <a href="https://developer.mozilla.org/en-US/docs/Glossary/Tree_shaking" target="_blank" rel="noreferer">mdn/glossary/tree-shaking</a>
+</sup>
 
 MDN의 설명에 따르면 Tree Shaking은 ES2015(ES6)의 import/export문에 의존하여 JavaScript 파일 간의 참조 여부를 판단한다고 설명되어 있습니다.
 
@@ -409,6 +410,10 @@ const foo = require('./foo');
 module.exports = foo
 ```
 
+## 정리
+
+스스로하자.
+
 ### 부록 1. 라이브러리에서 tree shaking지원하기
 
 [webpack 문서](https://webpack.js.org/guides/tree-shaking/#mark-the-file-as-side-effect-free)에 따르면 tree-shaking은 두 가지 옵션으로 적용될 수 있다고 설명하고 있습니다.
@@ -431,8 +436,10 @@ sideEffects를 가장 정확히 판단할 수 있는 주체는 아직까지 번�
 
 대부분의 번들러는 `package.json` 의 sideEffects 속성을 읽어 판단하고, 명시되지 않은 경우 true(모든 모듈에 sideEffects가 있음)로 판단합니다. 
 
-> "sideEffects is much more effective since it allows to skip whole modules/files and the complete subtree." ([webpack tree-shaking](https://webpack.js.org/guides/tree-shaking/#clarifying-tree-shaking-and-sideeffects))
-> 
+> "sideEffects is much more effective since it allows to skip whole modules/files and the complete subtree."
+<sup style="top: 0px;">
+  <a href="https://webpack.js.org/guides/tree-shaking/#clarifying-tree-shaking-and-sideeffects" target="_blank" rel="noreferer">webpack/tree-shaking#clarifying-tree-shaking-and-sideeffects</a>
+</sup>
 
 sideEffects는 전체 모듈/파일 및 전체 하위 트리를 **건너뛸 수 있으므로 효과적**입니다. 다시 한번 webpack Tree Shaking에 영향을 주는 두 요소를 정리해보면,
 
