@@ -9,21 +9,21 @@ thumbnail: './images/tree-shaking-module-system/thumbnail.jpg'
 
 ## 들어가며
 
-어플리케이션은 개발자가 직접 작성한 코드, 외부 라이브러리 등 다양한 코드조각들로 이루어져 있습니다.  어플리케이션이 복잡해질수록 **필요한 코드**만 남기기 위한 작업, 흔히 Tree Shaking이라고 불리는 과정이 수반되어야 합니다.
+어플리케이션은 개발자가 직접 작성한 코드, 외부 라이브러리 등 다양한 코드조각들로 이루어져 있습니다.  어플리케이션이 복잡해질수록 번들 사이즈에 신경을 쓰게 되는데요, 이 때 **필요한 코드**만 남기기 위한 작업, 흔히 Tree Shaking이라고 불리는 과정이 수반되어야 합니다.
 
 이 글에서는 Tree Shaking에 대한 기본 개념과 Tree Shaking을 보장하기 위한 요소들에 대해 알아봅니다.
 
 ## Tree Shaking이란?
 
-우리가 흔히 명명하는 Tree Shaking이란 최종 번들 결과물 관점에서 불필요한 코드가 없어지는 과정입니다. 
+우리가 흔히 명명하는 Tree Shaking이란 최종 번들 결과물 관점에서 봤을 때, 불필요한 코드가 없어지는 과정이라고 할 수 있습니다. 
 
 > It relies on the import and export statements in ES2015 to detect if code modules are exported and imported for use between JavaScript files.
 >
 > [mdn/glossary/tree-shaking](https://developer.mozilla.org/en-US/docs/Glossary/Tree_shaking)
 
-ES2015(ES6)의 import/export문에 의존하여 JavaScript파일간의 참조여부를 판단한다고 설명되어 있습니다.
+MDN의 설명에 따르면 Tree Shaking은 ES2015(ES6)의 import/export문에 의존하여 JavaScript 파일 간의 참조 여부를 판단한다고 설명되어 있습니다.
 
-Tree Shaking은 ES6부터 도입된 ES Modules라고 불리는 모듈시스템에 의존적이고, 이 말은 곧 우리가 알고 있는 많은 모듈 형식 중 `ESM`형식이 Tree Shaking을 가능하게 하는 차별점이 있다는 것을 의미합니다.
+Tree Shaking은 ES6부터 도입된 ES Modules(ESM)라고 불리는 모듈 시스템에 의존적이고, 이 말은 곧 우리가 알고 있는 많은 모듈 형식 중 `ESM`형식이 Tree Shaking을 가능하게 한다는 것을 의미합니다.
 
 ESM은 어떻게 Tree Shaking을 가능하게 하는것인지, 다른 모듈 시스템과의 차이점이 무엇인지 알아봅니다.
 
@@ -33,9 +33,9 @@ ESM은 어떻게 Tree Shaking을 가능하게 하는것인지, 다른 모듈 시
 
 ### 모듈이란?
 
-모듈이란 **'재활용 가능한 코드 단위'**라고 할 수 있습니다. **재활용** 가능하다는 것은 모듈이 어디에서 사용되도라도 같은 동작이 보장되어야 하는 것이고, 모듈이 **코드 단위**라는 것은 하나의 어플리케이션을 작성하는데에 있어 N개의 모듈 집합으로 구성할 수 있다는 것을 의미합니다.
+모듈이란 **'재활용 가능한 코드 단위'**라고 할 수 있습니다. **재활용 가능**하다는 것은 어디에서 사용되더라도 동작의 일관성이 보장된다는 것이고, **코드 단위**라는 것은 하나의 어플리케이션이 N개의 모듈 집합으로 구성된다는 것을 의미합니다.
 
-모듈은 변수와 함수를 구성하는 더 나은 방법을 제공합니다. 함수와 변수를 모듈 스코프 내에서 관리하고, 모듈 스코프를 통해 모듈간에 변수를 공유하는것도 가능합니다.
+모듈은 변수와 함수를 구성하는 더 나은 방법을 제공합니다. 함수와 변수를 모듈 스코프 내에서 관리하고, 모듈 스코프를 통해 모듈간 변수를 공유하는것도 가능합니다.
 
 ## JavaScript의 모듈 시스템 톺아보기
 
@@ -104,7 +104,7 @@ AMD그룹은 자바스크립트 모듈의 비동기 처리에 대해 CommonJS그
 }));
 ```
 
-AMD와 CJS진영이 나뉘어지다보니 서로 호환되지 않는 문제가 발생합니다. 이를 해결하기 위한 패턴으로 UMD가 제안되었고, 이렇기 때문에 UMD는 사실상 **모듈 시스템에 따라 다른 구현을 정의하고 있는 형태**에 가깝습니다.
+AMD와 CJS진영이 나뉘어지다보니 서로 호환되지 않는 문제가 발생했고, 이를 해결하기 위한 패턴으로 UMD가 제안되었습니다. UMD는 사실상 **모듈 시스템에 따라 다른 구현을 정의하고 있는 형태**에 가깝습니다.
 
 ### ESM
 
@@ -134,7 +134,7 @@ ESM은 모듈 로더를 비동기 환경에서 실행할 수 있고 스크립트
 
 ESM 시스템은 **구성, 인스턴스화, 평가** 세 단계로 이루어집니다.
 
-#### 구성
+#### 1. 구성
 
 가장 첫 단계로 모듈의 종속성 트리를 구성합니다. 종속성 그래프는 로드해야 하는 모듈을 파악하는 재료가 됩니다.
 
@@ -142,15 +142,15 @@ ESM 시스템은 **구성, 인스턴스화, 평가** 세 단계로 이루어집�
 
 ![module_record](./images/tree-shaking-module-system/module_record.png)
 
-`import`로 연결된 파일 자체는 브라우저가 사용할 수없으므로 [Module Record](https://262.ecma-international.org/6.0/#sec-source-text-module-records)(export, import정보가 담긴 데이터)구조로 변환해야 합니다. 이 과정에서 모든 파일을 찾아 로드하고 모듈 레코드로 변환하기 위해 구문분석을 수행합니다.
+`import`로 연결된 파일 자체는 브라우저가 사용할 수 없으므로 [Module Record](https://262.ecma-international.org/6.0/#sec-source-text-module-records)(export, import정보가 담긴 데이터)구조로 변환해야 합니다. 이 과정에서 모든 파일을 찾아 로드하고 모듈 레코드로 변환하기 위해 구문분석을 수행합니다.
 
-#### 인스턴스화
+#### 2. 인스턴스화
 
 그 다음 모듈 레코드를 모듈 인스턴스로 변환합니다. import할 모든 값을 할당할 메모리 공간을 찾는 과정이며, `export / import`모두 해당 메모리를 가리키도록 합니다.
 
 > **모듈 인스턴스:** 'code'와 'state'라는 두 가지를 결합한 형태
 
-#### 평가
+#### 3. 평가
 
 코드를 실행하여 변수의 실제 값으로 메모리를 채우는 과정입니다.
 
@@ -539,11 +539,11 @@ var __WEBPACK_AMD_DEFINE_RESULT__;/**
 
 [rollup에서는 preserveModules: true 설정](https://rollupjs.org/guide/en/#outputpreservemodules)으로 모듈 구조를 유지할 수 있고, 다른 번들러에서도 비슷한 기능을 제공합니다. 더 자세한 내용은 [How To Make Tree Shakable Libraries](https://blog.theodo.com/2021/04/library-tree-shaking/) 글을 참고해주세요.
 
-### [부록 2. Dead code elimination(죽은코드 없애기) vs Tree Shaking](https://medium.com/@Rich_Harris/tree-shaking-versus-dead-code-elimination-d3765df85c80)
+### [부록 2. Dead code elimination(죽은 코드 없애기) vs Tree Shaking](https://medium.com/@Rich_Harris/tree-shaking-versus-dead-code-elimination-d3765df85c80)
 
 '죽은 코드 없애기'과정은 달걀을 깨서 넣는 대신 계란 전체를 넣고 믹싱 볼에 넣고 **케이크를 만든 다음** 케이크에서 달걀껍질을 제거하는 과정이고 'Tree Shaking'은 케이크를 만들기 위해 **어떤 재료가 필요한지 판단해서** 넣는 것입니다. 즉, 죽은코드를 없애는 과정은 단순히 live bundle에서 어떤 코드가 필요하지 않은 지 판단하고, 반대로 Tree Shaking은 어떤 코드가 필요한지 판단합니다.
 
-두 과정의 최종 결과물(JS Bundle file)이 같을 것이라고 생각되자만 사실은 JavaScript정적분석의 한계로 인해 그렇지 않습니다.  두 과정 모두 필요하고, Bundler로 Tree Shaking후에 terser plugin을 통해서 죽은 코드를 제거하는 과정까지 수행하면 번들 사이즈 측면에서 가장 나은 결과를 얻을 수 있습니다. webpack 5에는 terser-web-pack-plugin이 기본으로 제공되므로 이 두 과정이 기본적으로 항상 같이 수행된다고 볼 수 있습니다.
+두 과정의 최종 결과물(JS Bundle file)이 같을 것이라고 생각되자만 사실은 JavaScript정적분석의 한계로 인해 그렇지 않습니다.  두 과정 모두 필요하고, Bundler로 Tree Shaking후에 terser plugin을 통해서 죽은 코드를 제거하는 과정까지 수행하면 번들 사이즈 측면에서 가장 나은 결과를 얻을 수 있습니다. webpack 5에는 terser-webpack-plugin이 기본으로 제공되므로 이 두 과정이 기본적으로 항상 같이 수행된다고 볼 수 있습니다.
 
 ## References
 
