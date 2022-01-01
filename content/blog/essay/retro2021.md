@@ -2,10 +2,10 @@
 title: Deploy 2020
 date: 2020-12-30 17:12:76
 category: essay
-thumbnail: './images/2020_retro/thumbnail.png'
+thumbnail: './images/2021_retro/thumbnail.jpg'
 ---
 
-![image-0](./images/2020_retro/thumbnail.png)
+![thumbnail](./images/2021_retro/thumbnail.jpg)
 
 ## 작년에 썼던 이야기
 
