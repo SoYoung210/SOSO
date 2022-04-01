@@ -1,8 +1,8 @@
 module.exports = {
   title: `SOSOLOG`,
   description: `Blog posted about ...`,
-  author: `Jbee`,
-  introduction: `Web Engineer Interested in 설계.테스트.생산성.자동화.멘토링. FEConf Organizer @FEDG`,
+  author: `SO_YOUNG`,
+  introduction: `📝 소소하게 끄적이는 개발로그`,
   siteUrl: `https://so-so.dev`, // Your blog site url
   social: {
     twitter: `th096`, // Your Twitter account
