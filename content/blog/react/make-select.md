@@ -451,9 +451,9 @@ function useListNavigation() {
 
 방향키 탐색 시 다음 아이템에 `focusClassName` 을 부여하는 것으로 focus효과를 부여하고, 이 로직을 가진 hook은 아래 값들을 반환한다.
 
-- activeIndex: 현재 활성화 된(focus스타일을 가진) index
-- onKeyDown: 이전/다음 아이템을 탐색하는 keyDown Handler
-- aria-activedescendant: 현재 활성화 된 요소의 id
+- **activeIndex:** 현재 활성화 된(focus스타일을 가진) index
+- **onKeyDown:** 이전/다음 아이템을 탐색하는 keyDown Handler
+- **aria-activedescendant:** 현재 활성화 된 요소의 id
 
 이 hook을 재료로 “Enter시 아이템 선택”등의 추가 요구사항도 구현할 수 있다.
 
@@ -498,13 +498,15 @@ function useListNavigation() {
 
 `MultiSelect` 컴포넌트의 역할은 어떤 옵션들이 있는지 파악하는것, 값을 선택하는 것, 선택된 값들이 어떤 것인지 관리하는 것이며 구체적인 UI에는 관여하지 않음으로서 구현에 제약받지 않는 MultiSelect를 사용할 수 있다.
 
-## 번외 3) 기본 element는 생각보다 중요하다
+## 번외 3) 기본 element는 중요하다
 
-[![select_autofill](./images/make-select/select_autofill.png)](./images/make-select/select_autofill.mp4)
+<video controls style="width: 100%;" src="./images/make-select/select_autofill.mp4" type="video/mp4" poster="./images/make-select/select_autofill.png">
+   Sorry, your browser doesn't support embedded videos,
+</video>
 
 로그인 정보를 autofill했을 때 select의 값이 Student에서 Developer로 autoFill되고 있다. (1password의 섹션 > 라벨을 select의 name과 값을 저장한 후 [코드샌드박스 링크](https://codesandbox.io/s/autocomplete-example-bvqnwp?file=/src/App.tsx:189-229)에서 직접 테스트 해볼수 있다.)
 
-<details><summary>1password 저장정보</summary>
+<details style="margin-bottom: 10px;"><summary>1password 저장정보</summary>
   <img src="./images/make-select/1pw_info.png" />
 </details>
 
