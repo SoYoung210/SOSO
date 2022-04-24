@@ -2,8 +2,10 @@
 title: '<Select />'
 date: 2022-04-23 16:00:09
 category: react
-thumbnail: './images/make-select/thumbnail.png'
+thumbnail: './images/make-select/thumbnail.jpg'
 ---
+
+![image-thumbnail](./images/make-select/thumbnail.jpg)
 
 ## Intro
 
