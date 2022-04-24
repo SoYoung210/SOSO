@@ -194,7 +194,7 @@ function Options() {
 
 완성할 Component의 DOM구조는 대략 아래와 같은 모습이다.
 
-```jsx
+```html
 <button type="button">
   <span>Devon Webb</span>
 </button>
@@ -208,21 +208,21 @@ function Options() {
 
 버튼을 클릭하면 리스트가 열리고, 키보드 액션에 의해 리스트를 탐색하고 값을 선택하는 동작을 할 수 있지만 위 마크업만으로는 해당 기능을 스크린 리더에게 설명할 수 없다.
 
-```jsx
+```html
 <button
- type="button"
- id="select-box-1"
- aria-haspopup="true"
- aria-expanded="true"
- aria-controls="select-list"
+  type="button"
+  id="select-box-1"
+  aria-haspopup="true"
+  aria-expanded="true"
+  aria-controls="select-list"
 >
  <span>Devon Webb</span>
 </button>
 <ul aria-labelledby="select-box-1" id="select-list" role="listbox">
- <li>Wade Cooper</li>
- <li>Arlene Mccoy</li>
- <li>Tom Cook</li>
- <li>Tanya Fox</li>
+  <li>Wade Cooper</li>
+  <li>Arlene Mccoy</li>
+  <li>Tom Cook</li>
+  <li>Tanya Fox</li>
 </ul>
 ```
 
