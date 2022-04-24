@@ -1,5 +1,5 @@
 ---
-title: '<Select />'
+title: 'Select 컴포넌트'
 date: 2022-04-23 16:00:09
 category: react
 thumbnail: './images/make-select/thumbnail.jpg'
