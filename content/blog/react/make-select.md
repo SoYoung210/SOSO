@@ -15,6 +15,16 @@ thumbnail: './images/make-select/thumbnail.jpg'
 
 > ⚠️ 이 글에서 소개되는 코드는 모두 수도코드**(pseudo code)**입니다. 동작여부보다는 소개하고자하는 맥락을 중심으로 작성되었습니다.
 
+## Table of Contents
+
+- [Why](#why)
+- [What. (기능 정의)](#what-기능-정의)
+- [How. (구현)](#how-구현)
+- [번외 1) 자동완성 Select](#번외-1-자동완성-select)
+- [번외 2) Multi Select이되 UI와 결합 되지 않는](#번외-2-multi-select이되-ui와-결합-되지-않는)
+- [번외 3) 기본 element는 중요하다](#번외-3-기본-element는-중요하다)
+- [맺으며](#맺으며)
+
 ## Why
 
 ![headlessui.dev_react_listbox](./images/make-select/headlessui.dev_react_listbox.png)
