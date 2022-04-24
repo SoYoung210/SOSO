@@ -257,12 +257,12 @@ function Options() {
 
 ```jsx
 <Select open={open} defaultValue="value1">
- <Select.Trigger>open select</Select.Trigger>
- <Select.OptionList>
-  <Select.Option value="value1">value1</Select.Option>
-  <Select.Option value="value2">value2</Select.Option>
-  <Select.Option value="value3">value3</Select.Option>
- </Select.OptionList>
+  <Select.Trigger>open select</Select.Trigger>
+  <Select.OptionList>
+    <Select.Option value="value1">value1</Select.Option>
+    <Select.Option value="value2">value2</Select.Option>
+    <Select.Option value="value3">value3</Select.Option>
+  </Select.OptionList>
 </Select>
 ```
 
@@ -555,9 +555,9 @@ const VisullayHidden = styled('div', {
 
 ## 맺으며
 
-Select는 많은 웹앱에서 커스텀 컴포넌트로 필요성이 있는 컴포넌트라고 생각합니다.
+Select는 많은 웹앱에서 필요성이 있는 컴포넌트라고 생각합니다.
 
-하지만 이를 구현하는 과정을 생각해보면 native select element의 스타일을 오버라이드 하는 방식으로 구현하는 것이 어렵다보니 custom element를 생성하고 동작을 붙이는 방식으로 구현되는데, 이 과정에서 기존 select element가 가지고 있는 기능들을 포함하며 확장성 있는 컴포넌트로 고려하는 것은 결코 간단하다고 생각되지 않았습니다.
+native select element의 스타일을 오버라이드 하는 방식으로 구현하는 것이 어렵다보니 custom element를 생성하고 동작을 붙이는 방식으로 구현되는데, 이 과정에서 기존 select element가 가지고 있는 기능들을 포함하며 확장성 있는 컴포넌트로 고려하는 것은 결코 간단하다고 생각되지 않았습니다.
 
 이 글에서 소개한 개념과 구현체는 다수의 headless ui library들을 기반으로 합니다. 동작하는 코드와 더 자세한 구현원리가 궁금하신 분들은 Reference로 추가한 [radix-ui](https://www.radix-ui.com/), [headlessui](https://headlessui.dev/) 의 코드를 참고해보세요.
 
