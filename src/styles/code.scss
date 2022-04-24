@@ -61,6 +61,14 @@ pre[class*='language-'] {
   border-radius: 0.6em;
 }
 
+details summary {
+  cursor: pointer;
+}
+
+summary {
+  display: list-item;
+}
+
 @media screen and (max-width: 730px) {
   pre[class*='language-'] {
     margin: 1.5em -1.2rem;
