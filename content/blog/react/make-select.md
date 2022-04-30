@@ -72,12 +72,12 @@ Select컴포넌트에서 요구사항을 구현하기 어렵다는 이유로 `va
 - 키보드, 마우스 액션으로 옵션 리스트 영역을 열고 닫을 수 있다.
   - 옵션 렌더링 여부를 결정할 `open` 상태 필요
 - 리스트가 열려있는 상태일 때 선택 된 옵션에 포커스 되어있어야 하고 키보드로 옵션 탐색이 가능해야한다.
-  - 각 옵션은 ‘선택 되었는 지’에 대한 상태를 알아야 하고, 이 때 선택 되었는 지 여부는 `Select`컴포넌트의 `value` prop에따라 결정
+  - `Select`컴포넌트의 `value` prop에 따라 각 옵션의 ‘선택 되었는 지’ 여부를 판단한다.
   - 각 옵션의 [ref](https://reactjs.org/docs/refs-and-the-dom.html)와 value를 알 수 있어야 한다.
 - 옵션 검색이 가능해야한다.
   - 위와 동일
 - 키보드 액션을 통해 선택가능해야 한다.
-  - ‘Select의 선택된 value’를 Enter액션이 발생하는 옵션의 value로 변경해
+  - ‘Select의 선택된 value’상태를 Enter액션이 발생하는 옵션의 value로 변경해야 한다.
 
 ### Compound Component API
 
