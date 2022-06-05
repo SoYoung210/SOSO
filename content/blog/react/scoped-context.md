@@ -2,8 +2,10 @@
 title: 'Scoped Context'
 date: 2022-06-05 16:00:09
 category: react
-thumbnail: './images/scoped-context/thumbnail.png'
+thumbnail: './images/scoped-context/thumbnail.jpg'
 ---
+
+![image-thumbnail](./images/scoped-context/thumbnail.jpg)
 
 React Context API를 사용할 때 반드시 지켜야 하는 규칙 동작 법칙이 있다. 대표적인 규칙은 Provider가 Consumer의 상단에 위치해야 한다는 것이고, 동작 법칙은 **“Consumer는 가장 가까운 Provider기준으로 동작한다”는 것이다.**
 
