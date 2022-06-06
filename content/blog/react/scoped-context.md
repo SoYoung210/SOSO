@@ -27,7 +27,7 @@ Provider 하위컴포넌트에서 Context를 사용할 수 있다는 것은, **�
 </ThemeContext.Provider>
 ```
 
-`<Body />`에서는 ThemeContext의 값이 dark이고 `<Footer />`에서는 light이다. 이 경우는 ThemeContext의 값을 범위에 따라 재선언(overriding)했다고 볼 수 있다.
+`<Body />`에서는 ThemeContext의 값이 dark이고 `<Footer />`에서는 light이다. 이 경우는 ThemeContext의 값을 범위에 따라 재할당 했다고 볼 수 있다.
 
 이러한 React Context의 동작 방식은 어쩌면 당연하게 느껴지지만, 이 방식이 충족시키지 못하는 사용례가 존재한다.
 
