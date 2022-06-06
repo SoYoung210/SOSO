@@ -30,7 +30,7 @@ thumbnail: './images/make-select/thumbnail.jpg'
 ![headlessui.dev_react_listbox](./images/make-select/headlessui.dev_react_listbox.png)
 
 <div style="opacity: 0.5" align="right">
-    <sup><a>https://headlessui.dev/react/listbox</a></sup>
+    <sup><a href="https://headlessui.dev/react/listbox" target="_blank">https://headlessui.dev/react/listbox</a></sup>
 </div>
 
 **“디자인 시스템의 Select컴포넌트를 사용한다”**라는 문장에서 기대하는 바는 위 사진과 같이 유려한 ui를 가진 Select일것이다. 이 글에서 Select의 구현방법에 대해 자세히 다루는 이유는 기본 `<select>`요소를 위와 같이 유려한 ui와 함께 좋은 ux를 지원하는것이 다른 요소에 비해 간단하지 않기 때문이다.
