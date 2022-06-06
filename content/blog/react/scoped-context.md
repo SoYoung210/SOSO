@@ -1,23 +1,25 @@
 ---
 title: 'Scoped Context'
-date: 2022-06-05 16:00:09
+date: 2022-06-06 16:00:09
 category: react
 thumbnail: './images/scoped-context/thumbnail.jpg'
 ---
 
 ![image-thumbnail](./images/scoped-context/thumbnail.jpg)
 
-React Context API를 사용할 때 반드시 지켜야 하는 규칙 동작 법칙이 있다. 대표적인 규칙은 Provider가 Consumer의 상단에 위치해야 한다는 것이고, 동작 법칙은 **“Consumer는 가장 가까운 Provider기준으로 동작한다”는 것이다.**
+[React Context API](https://reactjs.org/docs/context.html)는 React 컴포넌트 트리 내의 전역적(global)인 데이터를 공유할 수 있는 방법이다. Provider가 선언된 컴포넌트 기준으로 하위 컴포넌트에서는 해당 Context의 값을 사용할 수 있다.
+
+Provider 하위컴포넌트에서 Context를 사용할 수 있다는 것은, **“Consumer는 가장 가까운 Provider기준으로 동작한다”는 것과 동일한 말이다.**
 
 > `useContext()`
  always looks for the closest provider *above*
  the component that calls it. It searches upwards and **does not**
- consider providers in the component from which you’re calling `useContext()` .
-[- React useContext Docs -](https://beta.reactjs.org/apis/usecontext#passing-data-deeply-into-the-tree)
+ consider providers in the component from which you’re calling `useContext()` .  
+[https://beta.reactjs.org/apis/usecontext#passing-data-deeply-into-the-tree](https://beta.reactjs.org/apis/usecontext#passing-data-deeply-into-the-tree)
 
-```jsx
+```tsx
 <ThemeContext.Provider value="dark">
-  ...
+  <Body />
   <ThemeContext.Provider value="light">
     <Footer />
   </ThemeContext.Provider>
@@ -25,29 +27,30 @@ React Context API를 사용할 때 반드시 지켜야 하는 규칙 동작 법�
 </ThemeContext.Provider>
 ```
 
-위와같이 의도적으로 Provider재선언을 통해 Consumer가 사용하는 값을 변경하고 싶은 경우에는 유용하겠지만, 이 동작법칙이 충족시키지 못하는 use-case가 존재한다.
+`<Body />`에서는 ThemeContext의 값이 dark이고 `<Footer />`에서는 light이다. 이 경우는 ThemeContext의 값을 범위에 따라 재선언(overriding)했다고 볼 수 있다.
 
-## UseCase: Context를 확장한 Composition Component
+이러한 React Context의 동작 방식은 어쩌면 당연하게 느껴지지만, 이 방식이 충족시키지 못하는 사용례가 존재한다.
 
-아래 내용은 **[RFC: Context scoping for compound components](https://github.com/facebook/react/issues/23287)**내용을 기반으로 정리한 것이다.
+## Case: Context를 확장한 Composition Component
 
-```jsx
-/* -------------------------------------------------------------------------- */
-/*                                    사전설명                                    */
-/* -------------------------------------------------------------------------- */
+> 아래 내용은 **[RFC: Context scoping for compound components](https://github.com/facebook/react/issues/23287)**내용을 기반으로 정리한 것이다.
+
+![dialog-alertdialog_관계](./images/scoped-context/dialog-alertdialog.jpg)
+
+```tsx
 
 /*  1. AlertDialog는 내부에서 Dialog 컴포넌트를 사용한다.                                            */
 /*  2. Dialog Context API를 사용하고 있고 Dialog.Trigger, Content에서 Dialog Context를 사용한다.     */
 /*  3. AlertDialog.Trigger와 Dialog.Trigger는 각 컴포넌트가 참조하는 Context의 open값을 true로 변경한다. */
 
-{/* 2️⃣ AlertDialog Provider */}
+{/* 🐯 AlertDialog Provider */}
 <AlertDialog.Root>
-  {/* 1️⃣ Dialog Provider */}
+  {/* 🦁 Dialog Provider */}
   <Dialog.Root>
-    {/* 1️⃣ Dialog를 Open하는 역할 */}
+    {/* 🦁 Dialog를 Open하는 역할 */}
     <Dialog.Trigger />
     <Dialog.Content>
-      {/* 2️⃣ AlertDialog를 Open하는 역할 */}
+      {/* 🐯 AlertDialog를 Open하는 역할 */}
       <AlertDialog.Trigger />
     </Dialog.Content>
   </Dialog.Root>
@@ -56,16 +59,23 @@ React Context API를 사용할 때 반드시 지켜야 하는 규칙 동작 법�
 </AlertDialog.Root>
 ```
 
-`AlertDialog`는 `Dialog`를 확장하여 만든 컴포넌트이고, 따라서 `AlertDialog.Root`는  `Dialog.Root`를 포함하며 DialogContext와 AlertDialog Context를 모두 가지고 있다. 
+`AlertDialog`는 `Dialog`를 확장하여 만든 컴포넌트이고, `AlertDialog.Root`에서 `Dialog.Root`를 가지고 있는 구조다.
 
 `AlertDialog.Trigger` 를 클릭했을 때 기대하는 동작은 `AlertDialog` 의 Context값이 변경되는 것이지만, **“Consumer는 가장 가까운 Provider기준으로 동작한다”**는 법칙에 의해 Dialog의 Context값을 변경하게 된다.
 
-```jsx
+Dialog와 AlertDialog가 관계를 끊고 각각 Context를 생성하게 되면 문제가 해결된 것처럼 보이지만, 이 컴포넌트를 사용하여 또 다른 Dialog를 만드는 경우를 생각해보면 여전히 문제가 해결되지 않았음을 확인할 수 있다.
+
+```tsx
+// Dialog Context생성
+const FeedbackDialog = Dialog;
+// Dialog Context생성
+const AnotherDialog = Dialog;
+
 <FeedbackDialog.Root>
   <AnotherDialog.Root>
     <AnotherDialog.Trigger />
     <AnotherDialog.Content>
-			{/* FeedbackDialog와 AnotherDialog가 관련있다는 점이 지나치게 외부로 드러남. */}
+      {/* 💥 AnotherDialog open */}
       <FeedbackDialog.Trigger />
     </AnotherDialog.Content>
   </AnotherDialog.Root>
@@ -73,15 +83,17 @@ React Context API를 사용할 때 반드시 지켜야 하는 규칙 동작 법�
 </FeedbackDialog.Root>
 ```
 
-모든 컴포넌트가 별도의 Context를 생성 하는것으로도 문제를 해결할 수 있지만, 사용하는 입장에서는 알기 어려운 배치 순서를 고려해야한다는 점에 있어서 좋은 API를 제공한다고 할 수 없다.
+<div style="opacity: 0.5; position: relative; top: -0.8em; left: -1em;" align="left">
+  <sup>Context를 각각 생성하는 것은 문제 해결이 아니라 문제 전이라고 볼 수 있겠다.</sup>
+</div>
 
-아직 이 현상이 문제인지, 문제라면 어떻게 해결 할지 공식적으로 정의된 부분은 없다. 이 현상을 문제로 바라본 라이브러리 몇 개의 해결책을 소개한다.
+Context간에 Scope가 필요하다는 문제를 해결한 두 가지 라이브러리와 각 해결책을 소개한다. (아직 이 현상이 문제인지, 문제라면 어떻게 해결할지 공식적으로 정의된 부분은 없다)
 
 ## Solution 1: [@radix-ui/context](https://github.com/radix-ui/primitives/tree/main/packages/react/context)
 
-기본적인 컨셉은 “컴포넌트에 어떤 Context를 참조해야하는 지 직접 전달하는 방식”이다.
+구현의 컨셉은 Context를 생성하는 컴포넌트의 prop으로 어떤 Context를 참조해야 하는지 직접 전달하는 것이다. 단순하게 아래와 같이 구현할 수도 있다.
 
-```jsx
+```tsx{6,11,22}
 /* -------------------------------------------------------------------------- */
 /*                                 Dialog                                     */
 /* -------------------------------------------------------------------------- */
@@ -120,8 +132,10 @@ function App() {
   return (
     <AlertDialog.Root name="MyAlertDialog">
       <Dialog.Root name="MyDialog">
+         {/* DialogContext: MyDialog */}
         <Dialog.Trigger />
         <Dialog.Content>
+          {/* DialogContext: MyAlertDialog */}
           <AlertDialog.Trigger />
         </Dialog.Content>
       </Dialog.Root>
@@ -132,29 +146,21 @@ function App() {
 }
 ```
 
-Dialog의 Root에서는 직접 Context를 생성하는 것이 아니라 파라미터로 Context를 주입받을 수 있도록 되어 있고 AlertDialog에서는 이 점을 활용하여 AlertDialogContext를 생성하여 Dialog.Root에 주입하고 있다.
+<div style="opacity: 0.5; position: relative; top: -0.8em; left: -1em;" align="left">
+  <sup><a href="https://codesandbox.io/s/stupefied-zhukovsky-etk9m" target="_blank">https://codesandbox.io/s/stupefied-zhukovsky-etk9m</a></sup>
+</div>
 
-### Context Scope
+`Dialog`의 `Root`는 항상 Context를 새로 생성하는 것이 아니라 prop으로 다른 Context를 주입받을 수 있고 Context를 참조할 때도 prop으로 전달받은 Context를 참조한다.
 
-radix-ui에서는 이 개념을 `createContextScope`로 구현했다.
+`AlertDialog`에서는 `AlertDialogContext`를 생성하여 DialogRoot에 전달함으로써 Dialog구성요소와는 다른 Context를 참조할 수 있게 되었다.
 
-```jsx
-// Dialog
-const [createDialogContext, createDialogScope] = createContextScope('Dialog');
+이 구현을 조금 더 정형화 한 것이 radix-ui의 [createContextScope](https://github.com/radix-ui/primitives/blob/285aa0837f2405a05e983fc8fffd55f4cc368b5e/packages/react/context/src/createContext.tsx#L30)이다.
 
-// AlertDialog
-const [
-  createAlertDialogContext,
-  createAlertDialogScope,
-] = createContextScope('AlertDialog', [createDialogScope]);
+### createContextScope
 
-const [AlertDialogContentProvider, useAlertDialogContentContext] =
-  createAlertDialogContext('AlertDialogContent');
-```
+radix-ui의 [AlertDialog](https://github.com/radix-ui/primitives/blob/285aa0837f2405a05e983fc8fffd55f4cc368b5e/packages/react/alert-dialog/src/AlertDialog.tsx#L19)와 [Dialog구현](https://github.com/radix-ui/primitives/blob/285aa0837f2405a05e983fc8fffd55f4cc368b5e/packages/react/dialog/src/Dialog.tsx#L27)을 살펴보면서 동작 방식을 정리해보자.
 
-DialogScope를 주입받으면서 AlertDialogContext를 생성하는 함수를 반환한다. context를 다루는 코드를 살펴보기 전에 Dialog와 AlertDialog컴포넌트간의 관계를 정리해보자.
-
-```jsx
+```tsx{10,24,27}
 // Dialog
 const [createDialogContext, createDialogScope] = createContextScope('Dialog');
 const [DialogProvider, useDialogContext] = createDialogContext('Dialog');
@@ -162,6 +168,7 @@ const [DialogProvider, useDialogContext] = createDialogContext('Dialog');
 const DialogRoot = (props) => {
   const { __scopeDialog } = props;
 
+  // 1️⃣
   return (
     <DialogProvider scope={__scopeDialog}>...</DialogProvider>
   )
@@ -169,28 +176,29 @@ const DialogRoot = (props) => {
 
 // AlertDialog
 const [createAlertDialogContext, createAlertDialogScope] = createContextScope(
-	'AlertDialog',
-	[createDialogScope]
+  'AlertDialog',
+  [createDialogScope]
 );
 const useDialogScope = createDialogScope();
 
 const AlertDialogRoot = (props) => {
-	const { __scopeAlertDialog } = props
-	const dialogScope = useDialogScope(__scopeAlertDialog);
+  const { __scopeAlertDialog } = props
+  // 2️⃣
+  const dialogScope = useDialogScope(__scopeAlertDialog);
 
-	return (
-		<Dialog __scopeDialog={dialogScope.__scopeDialog}>...</Dialog>
-	)
+  return (
+    <DialogRoot __scopeDialog={dialogScope.__scopeDialog}>...</DialogRoot>
+  )
 }
 ```
 
-- DialogProvider는 scope라는 prop이 존재하면 해당 scope의 Context를 참조하고, undefined라면 새로 생성한 Context를 참조한다.
-- AlertDialog에서는 useDialogScope hook을 사용해서 **Dialog Context를 새로 생성하고 이를 __scopeDialog라는 이름으로 Dialog에 전달한다.**
-- 컴포넌트 위계에 관계 없이 AlertDialog와 Dialog 하위 컴포넌트에서 각각 알맞은 context를 참조할 수 있다.
+- 1️⃣ DialogProvider는 scope라는 prop이 존재하면 해당 scope의 Context를 참조하고, undefined라면 새로 생성한 Context를 참조하도록 구성되어 있다.
+- 2️⃣ AlertDialog에서는 useDialogScope hook을 사용해서 **Dialog Context를 새로 생성하고 이를 __scopeDialog라는 이름으로 Dialog에 전달한다.**
+- 컴포넌트 위계에 관계없이 AlertDialog와 Dialog 하위 컴포넌트에서 각각 알맞은 context를 참조할 수 있다.
 
-이제 `createContextScope` 에서 return하는 **createContext**, **createScope**를 중심으로 ****세부적인 구현을 살펴보자.
+scope를 전달 받을 수 있도록 Context를 구성하는 함수(_createContext_)와 새로운 Context를 만들어 주입할 수 있는 함수(_createScope_)는 모두 **createContextScope**에서 반환하는 함수이다.
 
-```jsx
+```tsx
 function createContextScope(scopeName: string, createContextScopeDeps: CreateScope[] = []) {
   /* -----------------------------------------------------------------------------------------------
    * createContext
@@ -213,14 +221,16 @@ function createContextScope(scopeName: string, createContextScopeDeps: CreateSco
 }
 ```
 
-#### createContext
+내부 구현은 Provider와 useContext를 반환하는 `createContext`부분과 scope dependency와 새로 생성한 scope를 합쳐주는 `createScope / composeContextScopes`부분으로 나눌 수 있다.
 
-```jsx
+#### 1. createContext
+
+```tsx{11,17}
 function createContext<ContextValueType extends object | null>(
   rootComponentName: string,
   defaultContext?: ContextValueType
 ) {
-  const BaseContext = React.createContext<ContextValueType>(defaultContext);
+  const BaseContext = React.createContext(defaultContext);
   const index = defaultContexts.length;
   defaultContexts = [...defaultContexts, defaultContext];
 
@@ -231,7 +241,7 @@ function createContext<ContextValueType extends object | null>(
     return <Context.Provider value={value}>{children}</Context.Provider>;
   }
 
-  function useContext(consumerName: string, scope: Scope<ContextValueType | undefined>) {
+  function useContext(consumerName: string, scope: Scope<ContextValueType>) {
     const Context = scope?.[scopeName][index] || BaseContext;
     const context = React.useContext(Context);
 
@@ -244,13 +254,52 @@ function createContext<ContextValueType extends object | null>(
 
 Provider와 useContext에서 `scope?.[scopeName]` 값이 유효할 경우 해당 값을 Context로 사용하고 있다.
 
-#### createScope
+```tsx
+const [createDialogContext, createDialogScope] = createContextScope('Dialog');
 
-```jsx
+const DialogRoot = (props) => {
+  const { __scopeDialog } = props;
+
+  return (
+    <DialogProvider scope={__scopeDialog}>...</DialogProvider>
+  )
+}
+
+const [createAlertDialogContext, createAlertDialogScope] = createContextScope(
+  'AlertDialog',
+  [createDialogScope]
+);
+
+const AlertDialogRoot = (props) => {
+  const dialogScope = useDialogScope(__scopeAlertDialog);
+
+  return (
+    <DialogRoot __scopeDialog={dialogScope.__scopeDialog}>...</DialogRoot>
+  )
+}
+```
+
+앞서 살펴본 코드에서 Dialog Context에 전달되는 `scope`와 scopeName을 정리해보면
+
+**Dialog**
+  - scope: prop으로 전달받은 `__scopeDialog`
+  - scopeName: Dialog
+
+**AlertDialog**
+  - scope: `useDialogScope`의 반환값 `dialogScope.__scopeDialog`
+  - scopeName: Dialog
+
+`Dialog`를 사용했을 때는 `scope`값이 undefined이고 `AlertDialog`를 사용했을 때는 undefined가 아니다.
+
+#### 2. createScope / composeContextScopes
+
+```tsx{3,11,34}
+function createContextScope(scopeName: string, createContextScopeDeps: CreateScope[] = []) {
+  /* ... */
+  return [createContext, composeContextScopes(createScope, ...createContextScopeDeps)] as const;
+}
+
 const createScope: CreateScope = () => {
-  const scopeContexts = defaultContexts.map((defaultContext) => {
-    return React.createContext(defaultContext);
-  });
   return function useScope(scope: Scope) {
     const contexts = scope?.[scopeName] || scopeContexts;
 
@@ -260,75 +309,60 @@ const createScope: CreateScope = () => {
     );
   };
 };
+
+function composeContextScopes(...scopes: CreateScope[]) {
+  const createScope: CreateScope = () => {
+    const scopeHooks = scopes.map((createScope) => {
+      return {
+        useScope: createScope(),
+        scopeName: createScope.scopeName,
+      }
+    });
+
+    return function useComposedScopes(overrideScopes) {
+      const nextScopes = scopeHooks.reduce((nextScopes, { useScope, scopeName }) => {
+        const scopeProps = useScope(overrideScopes);
+        const currentScope = scopeProps[`__scope${scopeName}`];
+
+        return { ...nextScopes, ...currentScope };
+      }, {});
+
+      return React.useMemo(() => ({ [`__scope${baseScope.scopeName}`]: nextScopes }), [nextScopes]);
+    };
+  };
+
+  createScope.scopeName = baseScope.scopeName;
+  return createScope;
+}
 ```
 
-useScope에서 return되는 값을 살펴보면, `scope?.[scopeName]` 값을 참조하거나 defaultContexts 배열을 기준으로 새로운 context를 생성하고 있다.
+`createScope`함수는 위에서 살펴봤던 `__scope${scopeName}`변수를 만드는 일련의 과정을 담고 있다.
 
-앞서 살펴본 AlertDialog기준으로 흐름을 정리해보면 다음과 같다.
+`composeContextScopes(createScope, ...createContextScopeDeps)`에서 scope가 의존하는 다른 scope의 값을 현재 scope기준으로 context를 생성한 후 반환한다.
 
-```jsx
-/* -------------------------------------------------------------------------- */
-/*                   1️⃣ DialogContext, createDialogScope생성                   */
-/* -------------------------------------------------------------------------- */
-const [createDialogContext, createDialogScope] = createContextScope('Dialog');
-
-/* -------------------------------------------------------------------------- */
-/*                2️⃣ AlertDialog에서 별도의 Dialog Context Scope생성               */
-/* -------------------------------------------------------------------------- */
+```tsx
+// AlertDialog.tsx
 const [
   createAlertDialogContext,
-  createAlertDialogScope
+  createAlertDialogScope,
 ] = createContextScope('AlertDialog', [createDialogScope]);
-
-const useDialogScope = createDialogScope();
-
-/* -------------------------------------------------------------------------- */
-/*       3️⃣ AlertDialog에서 생성한 DialogContext를 DialogProvider에 prop으로 전달    */
-/* -------------------------------------------------------------------------- */
-
-const AlertDialogRoot = () => {
-  const dialogScope = useDialogScope();
-
-  return <Dialog.Root __scopeDialog={dialogScope.__scopeDialog} />
-}
-
-const DialogRoot = () => {
-  const { __scopeDialog } = props;
-  return <DialogProvider scope={__scopeDialog} />
-}
 ```
 
-`DialogProvider` 는 아까 살펴본 createContext에서 반환하는 Provider이다.
+여기서 `createContextScopeDeps`로 전달되는 값은 `createDialogScope`인데, `createAlertDialogContext`로 생성하고 사용하는 컴포넌트 안쪽에서 Dialog Context를 사용하고 있어서 dialog scope를 scopeDependency로 선언해준 것이다.
 
-```jsx
-/* -------------------------------------------------------------------------- */
-/*               4️⃣ scope?.[scopeName]에 Provider, Consumer가 존재함              */
-/* -------------------------------------------------------------------------- */
+이런 처리가 없다면 `createAlertDialogScope`를 사용하는 쪽에서 Dialog Context를 올바르게 참조할 수 없다는 에러가 발생할 것이다.
 
-function Provider(props) {
-  const { scope, children, ...context } = props;
-  const Context = scope?.[scopeName][index] || BaseContext;
+Dialog와 AlertDialog라는 간단한 예시이기 때문에 ScopedContext가 필요하지 않다고 느껴질 수 있으나, 하나의 컴포넌트가 더 많은 곳에서 공통으로 사용될수록 조합에 의한 Context 범위 문제는 다루기 어려워진다.
 
-  const value = React.useMemo(() => context, Object.values(context)) as ContextValueType;
-  return <Context.Provider value={value}>{children}</Context.Provider>;
-}
-```
+## Solution 2: [Jotai](https://jotai.org/docs/api/core#provider)
 
-AlertDialog에서 전달된 __scopeDialog에 Provider, Consumer가 존재하므로 AlertDialogRoot에서 사용하는 Dialog Provider는 Dialog에서 사용하는 Context와 다른 scope를 갖게 된다.
-
-> AlertDialog에서 __scopeDialog 값을 만들어내는 코드는 [composeContextScopes](https://github.com/radix-ui/primitives/blob/main/packages/react/context/src/createContext.tsx#L119-L124)를 통해 이뤄진다.
-
-
-Dialog와 AlertDialog라는 간단한 예시이기 때문에 ScopedContext가 필요하지 않다고 느껴질 수 있으나, 하나의 컴포넌트가 더 많은 곳에서 공통으로 사용될 수록 조합에 의한 Context 범위 문제는 다루기 어려워진다.
-
-## Solution 2: [jotai](https://jotai.org/docs/api/core#provider)
-
-상태관리 라이브러리인 Jotai에서도 Provider를 생성할 때 optional로 scope prop을 넘길 수 있다.
+상태관리 라이브러리인 Jotai에서는 Provider를 생성할 때 optional 인자로 scope prop을 넘길 수 있다.
 
 > A Provider accepts an optional prop `scope`
- that you can use for a scoped Provider. When using atoms with a scope, the provider with the same scope is used. The recommendation for the scope value is a unique symbol. The primary use case of scope is for library usage.
+ that you can use for a scoped Provider. When using atoms with a scope, the provider with the same scope is used. The recommendation for the scope value is a unique symbol. The primary use case of scope is for library usage.  
+[https://jotai.org/docs/api/core#provider](https://jotai.org/docs/api/core#provider)
 
-```jsx
+```tsx
 const myScope = Symbol('scope')
 
 const anAtom = atom('')
@@ -343,9 +377,9 @@ const LibraryRoot = ({ children }) => (
 )
 ```
 
-원리는 첫 번째 예시와 비슷하다.
+동작 방식은 첫 번째 예시와 유사하다.
 
-```jsx
+```tsx{4,18}
 // https://github.com/pmndrs/jotai/blob/main/src/core/Provider.ts
 
 export const Provider = () => {
@@ -378,11 +412,11 @@ export function useAtomValue<Value>(
 }
 ```
 
-scope값을 기준으로 새로운 Context를 생성하고 값을 사용할 때 (useAtomValue) scope값이 주어졌다면 해당 scope에 맞는 Context를 참조한다.
+scope값을 기준으로 새로운 Context를 생성하고, `useAtomValue`로 context에 접근할 때 scope값이 유효하다면 해당 scope에 맞는 Context를 참조하는 방식이다.
 
 ## 마무리
 
-radix-ui에서 처음 Scoped Context라는 개념을 접했을 때는 React의 Context의 기본 디자인과 맞지 않고, scope를 적용해야하는 사용법이 잘못된 것이 아닌가 하는 생각에 좀더 가까웠던 것 같다.
+radix-ui에서 처음 Scoped Context라는 개념을 접했을 때는 React의 Context의 기본 디자인과 맞지 않고, 의도와 다르게 사용한다고만 생각했다.
 
 하지만 모든 컴포넌트를 조합형으로 제공하는 상황에서는 Scope개념이 필요하다고 생각됐다. 예를 들어 Dropdown Item이 Popover혹은 ContextMenu의 Trigger로 쓰이는 경우에서 공통으로 사용되는 [react-popover](https://github.com/radix-ui/primitives/tree/main/packages/react/popover)나 [react-menu](https://github.com/radix-ui/primitives/tree/main/packages/react/menu)의 Context Scope을 지정해 줄 수 없다면 어떤 컴포넌트를 최상위 Provider로 선언할지 라이브러리 레벨에서 제공하는 z-index와 같은 위계 개념이 필요할 것이다.
 
