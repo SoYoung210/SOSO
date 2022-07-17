@@ -1,5 +1,5 @@
 // ===Color
-$green: #18CD8C;
+$theme: #0c243b;
 
 .about {
   .title {
@@ -14,7 +14,7 @@ $green: #18CD8C;
       width: 12px;
       height: 12px;
       border-radius: 50%;
-      background-color: $green;
+      background-color: $theme;
     }
   }
 
@@ -26,22 +26,43 @@ $green: #18CD8C;
       display: inline-block;
       position: absolute;
       height: 12px;
-      width: 108%;
+      width: 100%;
       bottom: 10px;
-      background-color: #18CD8C;
-      opacity: 0.2;
+      background-color: $theme;
+      opacity: 0.15;
       left: 0;
     }
   }
   h1, .no-border {
     border-bottom: transparent!important;
+    margin-top: 2.4em;
   }
 
   h2 {
     margin-top: 1.5em;
     margin-bottom: 0.5em;
-    font-size: 1.5em;
-    letter-spacing: -1px;
+    font-size: 1.9em;
+
+    border-bottom: 0;
+  }
+
+  h3 {
+    font-weight: 700;
+    margin-top: 1em;
+    margin-bottom: 0.5em;
+    font-size: 1.7em;
+
+    border-bottom: 0;
+  }
+
+  h4 {
+    font-weight: 600;
+    margin-top: 1.8em;
+    margin-bottom: 0.6em;
+    font-size: 1.4em;
+
+    padding-bottom: calc(0.4rem - 1px);
+    border-bottom: 1px solid hsla(0,0%,0%,0.07);
   }
 
   thead tr th{

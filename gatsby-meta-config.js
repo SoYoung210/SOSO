@@ -14,7 +14,7 @@ module.exports = {
   resume: {
     title: 'About soso',
     description: 'docs: Update RESUME.md for introducing myself',
-    thumbnail: 'https://so-so.dev/resume_thumbnail.png',
+    thumbnail: 'https://so-so.dev/resume_thumbnail.jpg',
   },
   keywords: [`blog`, `frontend`, `react`, `developer`],
   comment: {
