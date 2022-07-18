@@ -50,6 +50,10 @@ export function Head({
                 content: `summary_large_image`,
               },
               {
+                name: 'twitter:image',
+                content: thumbnail,
+              },
+              {
                 name: `twitter:creator`,
                 content: data.site.siteMetadata.author,
               },

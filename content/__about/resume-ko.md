@@ -2,7 +2,6 @@
 title: 'about'
 date: 2022-07-16 16:21:13
 lang: 'ko'
-thumbnail: ''
 ---
 
 <h1 class='title'>
