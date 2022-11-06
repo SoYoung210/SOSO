@@ -39,13 +39,15 @@ thumbnail: './images/design-system-decision-record/thumbnail.png'
 
 하나의 제품에서 사용될 것을 가정하고 만들어지는 디자인 시스템에서 제약은 통일성이라는 단어와 함께 유연함과 확장성만큼 중요하게 여겨진다.
 
-하지만, 이 글에서 소개할 결정 중 제약과 통일성을 고려한 결정은 매우 적다. 이 두 가지는 디자인 시스템 구현체에서 중요하게 보장해야 할 가치로 보지 않았기 때문이다.
+하지만, linear에서는 사용자의 실수는 막아주지만 통일성을 지키기 위해 강한 제약을 많이 두지 않았다.
 
-제약을 많이 두지 않는다는 결정에 단점이 없었던 것은 아니다. 파편화를 낳기도 했고, 사용자에게 커스텀 범위에 대한 혼란을 주기도 했다. 그럼에도 불구하고 제약보다 유연함을 중요하게 가져가는 큰 이유는 디자인 시스템도 변경에 유연해야 하는 제품이라고 생각하기 때문이다.
+제약을 많이 두지 않는다는 결정에 단점이 없었던 것은 아니다. 파편화를 낳기도 했고, 사용자에게 커스텀 범위에 대한 혼란을 주기도 했다.
+
+그럼에도 불구하고 제약보다 유연함을 중요하게 가져가는 큰 이유는 디자인 시스템도 변경에 유연해야 하는 제품이라고 생각하기 때문이다.
 
 변화하는 제품은 Iteration을 거치며 고객의 요구사항을 반영하거나 기존의 결정을 번복하고 다른 결정을 내리기도 한다. 변화하는 제품의 재료가 되는 디자인 시스템 역시 상대적으로 변화의 폭이 작을 수는 있지만 당연히 변경에 유연하게 대응할 수 있어야 한다.
 
-우리는 점진적 개선 없이 크게 변하기만 하는 제품을 사랑하지 않는다. 마찬가지로, 변경에 대응하는 방법이 항상 Breaking Change라면 디자인 시스템이라는 제품을 사용하는 고객들은 항상 큰 비용을 치러야 할 것이고, 디자인 시스템의 변경은 제품 개발의 병목이 될 것이다.
+제약에 의해 달성되는 통일성은 변경에 대응하기 어려운 시스템을 만들고, 많은 경우 변경에 큰 비용이 필요하다. 사용자가 크게 변하기만 하는 제품을 사랑하지 않듯, 디자인 시스템에서 변경에 대응하는 방법이 항상 Breaking Change라면 시스템의 사용자인 개발자들은 디자인 시스템을 사랑하지 않을 것이다.
 
 그렇기 때문에 현재 결정은 변할 수 있다는 전제로 바라보면서 시스템에서 보장해야 하는 부분과 그렇지 않은 부분을 나누어 생각해야 한다.
 
@@ -113,6 +115,7 @@ prop을 한 곳에서 전부 넘기는 방식은 다소 공급자 중심이다. 
 여러 컴포넌트에서 필요한 상태는 상위 레이어의 Context를 통해 공유할 수 있다.
 
 ```jsx
+// linear
 function Select({value: valueProp, defaultValue, onChange}) {
   const [value, setValue] = useControllableState({
     prop: valueProp,
@@ -129,6 +132,7 @@ function Select({value: valueProp, defaultValue, onChange}) {
   )
 }
 
+// linear
 function SelectOption(props) {
   const ctx = useSelectContext();
 
@@ -238,7 +242,7 @@ Slot은 고정된 영역에 표현될 수 있는 prop을 의미한다. 위치에
 
 어떤 컴포넌트에서는 slot 위치에 아이콘만 사용하는 것으로 특정되는 경우도 있을 수 있지만, 위치에 대한 인터페이스 통일성을 유지하는 것과 제약을 줄인다는 측면에서 무엇이든 올 수 있는 `slot`으로 바라본다.
 
-### 예시 2. state
+### 예시 2. 상태(error, success, warning)를 표현하는 방법
 
 ![error와 success 상태를 가지는 Alert과 toast컴포넌트 예시](./images/design-system-decision-record/state.png)
 
@@ -248,7 +252,7 @@ Slot은 고정된 영역에 표현될 수 있는 prop을 의미한다. 위치에
 // Alert
 <Alert leftSlot={<InfoIcon />} />
 <Alert.Error />
-<Alert.Sucess />
+<Alert.Success />
 
 // Toast
 const toast = useToast();
@@ -262,7 +266,7 @@ toast.error(<div>이 부분이 content입니다.</div>);
 toast.success(<div>이 부분이 content입니다.</div>);
 ```
 
-약속된 형태와 자유롭게 표현할 방법을 모두 제공한다.
+`Alert`과 `toast`의 인터페이스는 유사한 구성을 가지고 있다. 다양한 형태를 표현할 수 있는 `<Alert />`과 `toast.show`라는 기본 타입이 존재하며, 상태에 따른 약속된 형태는 Property를 참조하여 사용할 수 있다.
 
 ### 예시 3. PortalContainer
 
@@ -328,31 +332,41 @@ toast.success(<div>이 부분이 content입니다.</div>);
 
 컴포넌트를 사용하지 않겠다고 선언하는 가장 자연스러운 방법은 boolean prop이 아니라 실제로 사용하지 않는 것이다. 즉, CloseIconButton을 기본 기능으로 정의하지 않는 것이다.
 
-```jsx{5}
+```jsx{7,24}
 // CloseIconButton을 사용하는 경우
-<SidePeek
-  toolBar={
-    <Toolbar>
-      <CloseIconButton />
-      <ExpandIconButton />
-      <ModeToggleIconButton />
-    </Toolbar>
-  }
->
-  {...}
-</SidePeek>
+function MySidePeekWithCloseIconButton() {
+  return (
+    <SidePeek
+      toolBar={
+        <Toolbar>
+          <CloseIconButton />
+          <ExpandIconButton />
+          <ModeToggleIconButton />
+        </Toolbar>
+      }
+    >
+      {...}
+    </SidePeek>
+  )
+}
 
 // CloseIconButton을 사용하지 않는 경우
-<SidePeek
-  toolBar={
-    <Toolbar>
-      <ExpandIconButton />
-      <ModeToggleIconButton />
-    </Toolbar>
-  }
->
-  {...}
-</SidePeek>
+function MySidePeekWithoutCloseIconButton() {
+  return (
+      <SidePeek
+        toolBar={
+          <Toolbar>
+            {/*<CloseIconButton />*/}
+            <ExpandIconButton />
+            <ModeToggleIconButton />
+          </Toolbar>
+        }
+      >
+        {...}
+      </SidePeek>
+  )
+}
+
 ```
 
 반복되는 용례에 대한 선언은 다소 피로하게 느껴질 수도 있지만, 제외할 수 없는 기본기능에 대한 대응 비용이 많이 들고 대부분 예측이 어려운 방식으로 표현되므로 항상 포함되는 기능은 보수적으로 판단할 필요가 있다.
@@ -383,12 +397,12 @@ DependentTimePicker는 [ant.design의 Form.Item](https://ant.design/components/f
 // antd Form
 <Form>
   <Form.Item name='foo-field' />
-    <Form.Item>
-      {({ getFieldValue }) => {
-        const fooValue = getFieldValue('foo-field');
+  <Form.Item>
+    {({ getFieldValue }) => {
+      const fooValue = getFieldValue('foo-field');
 
-        return <input />
-      }}
+      return <input />
+    }}
   </Form.Item>
 </Form>
 ```
@@ -396,18 +410,34 @@ DependentTimePicker는 [ant.design의 Form.Item](https://ant.design/components/f
 Form컴포넌트 하위의 Form.Item간에 값을 공유할 수 있다. TimePicker 역시 Select컴포넌트간에 값을 공유할 수 있는 수단이 있다면 단일선택, 시작–종료 시간 선택 기능을 포함하여 N가지 시간 선택도 가능하다.
 
 ```jsx
-<TimePicker>
-  <TimePicker.Select id='start' />
-  <TimePicker.DependentSelect>
-    {({ getValue }) => {
-      const startValue = getValue('start');
+function MyRangeTimePicker() {
+  return (
+    <TimePicker>
+      {/* 시작 시간 선택 */}
+      <TimePicker.Select id='from' />
+      <TimePicker.DependentSelect>
+        {({ getValue }) => {
+          // 시작 시간을 기준으로
+          const startValue = getValue('from');
+          // 원하는 만큼 interval생성해서 사용
+           const endInterval = getTimeInterval({
+              start: addHours(startValue, 1),
+              end: addHours(startValue, 24),
+              step: 45,
+            });
 
-      return (
-        <TimePicker.Content />
-      )
-    }}
-  </TimePicker.DependentSelect>
-</TimePicker>
+          return (
+            <>
+              <TimePicker.Trigger />
+              <TimePicker.Content />
+            </>
+          )
+        }}
+      </TimePicker.DependentSelect>
+    </TimePicker>
+  )
+}
+
 ```
 
 DependentSelect의 `getValue`에서 Select에 전달하는 `id`를 통해 다른 Select값에 접근할 수 있다.
@@ -415,6 +445,8 @@ DependentSelect의 `getValue`에서 Select에 전달하는 `id`를 통해 다른
 ## 틀린 선택 막아주기
 
 제약보다는 유연함을 추구하는 것이 사용자(개발자)의 실수에 책임지지 않아도 된다는 뜻은 아니다. 표현의 제약은 줄이되, 틀린 표현을 하지 않도록 막아줄 책임은 있다.
+
+### 예시. TimePicker에서 새로운 옵션 생성하기
 
 ![timepicker 기간선택에서 새로운 옵션 생성시 최소 최대시간을 고려해야 한다는 사진](./images/design-system-decision-record/timepicker_new_option.png)
 
@@ -425,20 +457,26 @@ TimePicker에는 옵션에 없는 시간이더라도 유효한 입력이라면 �
 시간 입력 처리와 새로운 옵션 생성은 TimePicker가 담당해야 할 기본기능이므로 이 기능을 정확하게 사용할 수 있는 장치가 필요하다.
 
 ```jsx
+// 사용처에서 원하는 옵션을 생성해서 사용함
+function MyTimePicker() {
+  const timeInterval = getTimeInterval({
+    start: new Date(),
+    end: addHours(new Date(), 24),
+    step: 30,
+  });
 
-const timeInterval = getTimeInterval({
-  start: new Date(),
-  end: addHours(new Date(), 24),
-  step: 30,
-});
-
-<TimePicker.Select>
-  {timeInterval.map(time => {
-    return (
-      <TimePicker.Option key={time} value={time} />
-    )
-  })}
-</TimePicker.Select>
+  return (
+    <TimePicker>
+      <TimePicker.Select>
+        {timeInterval.map(time => {
+          return (
+            <TimePicker.Option key={time} value={time} />
+          )
+        })}
+      </TimePicker.Select>
+    </TimePicker>
+  );
+}
 ```
 
 TimePicker 역시 Select와 마찬가지로 어떤 Option을 렌더링할지는 사용처에서 결정되기 때문에 최소, 최대시간에 대한 정보를 바로 알아내기 어렵다.
@@ -448,6 +486,7 @@ TimePicker 역시 Select와 마찬가지로 어떤 Option을 렌더링할지는 
 사용자가 직접적으로 전달하지 않더라도 이미 표현되고 있는 정보가 있으니 TimePicker내부에서 알아내면 된다.
 
 ```jsx
+// linear
 function TimePickerOption(props) {
   return (
     <Collection.ItemSlot value={props.value}>
@@ -465,6 +504,7 @@ function TimePickerNewOptionContent(props) {
 [FEConf2022발표에서 언급한 Collection](https://speakerdeck.com/soyoung210/dijain-siseutem-hyeongtaereul-neomeoseo?slide=93) Context를 사용해서 TimePicker내부에서 옵션 목록을 알 수 있다.
 
 ```jsx
+// linear
 function TimePickerNewOptionContent(props) {
   const getItems = useCollection();
   const [min, setMin] = useState<Timestamp | undefined>(undefined);
@@ -500,10 +540,40 @@ function TimePickerNewOptionContent(props) {
 
     return baseOptions;
   }, [formattedSearchValue, max, min]);
+
+  return children({
+    hours: parseSearchValue(formattedSearchValue.value).hours,
+    mins: parseSearchValue(formattedSearchValue.value).mins,
+    options,
+  });
 }
 ```
 
 collection을 통해 TimePicker에서 렌더링한 전체 시간 목록을 알 수 있고, 새로운 옵션을 보여줄 때 최소/최대 시간 범위내의 시간만 렌더링할 수 있도록 처리해줄 수 있다.
+
+```jsx{9,10,11,12}
+function MyTimePickerWithNewOption() {
+  return (
+    <TimePicker>
+      <TimePicker.Select>
+        <TimePicker.Content affix={<TimePicker.SearchInput />}>
+          <TimePicker.Options />
+          {/* 검색 결과가 없을 때만 보이는 컴포넌트*/}
+          <TimePicker.SearchEmpty>
+            <TimePicker.NewOptionsContent>
+              {({ options }) => {
+                return options.map(() => <Select.Option />)
+              }}
+            </TimePicker.NewOptionsContent>
+          </TimePicker.SearchEmpty>
+        </TimePicker.Content>
+      </TimePicker.Select>
+    </TimePicker>
+  )
+}
+```
+
+입력값에 따라 렌더링 해야하는 옵션은 `NewOptionsContent`에서 계산되어 render props로 제공되기 때문에 사용처에서는 내부 구현디테일을 고려할 필요 없이 컴포넌트를 사용하는 것으로 올바른 선택옵션을 가진 TimePicker를 사용할 수 있다.
 
 ## 접근성
 
@@ -525,6 +595,7 @@ collection을 통해 TimePicker에서 렌더링한 전체 시간 목록을 알 �
 TextField의 역할을 스크린 리더기에 전달하기 위해 description, label의 id를 input컴포넌트의 `aria-describedby` , `aria-labelledby` 로 지원해야 한다.
 
 ```jsx
+// linear
 function TextField() {
   const [describedBy, setDescribeBy] = useState();
 
@@ -538,6 +609,7 @@ function TextField() {
   )
 }
 
+// linear
 function HelperText(props) {
   const helperTextId = useId(props.id);
 
@@ -548,6 +620,7 @@ function HelperText(props) {
   return (...)
 }
 
+// linear
 function Input() {
   const { describedBy } = useTextFieldContext();
 
