@@ -8,21 +8,18 @@ lang: 'ko'
 안녕하세요, 이소영 입니다.
 </h1>
 
+<div class='personal-links'>
+<a href='https://so-so.dev' target='_blank'>https://so-so.dev</a> / <a href='https://github.com/SoYoung210' target='_blank'>https://github.com/SoYoung210</a> / <a href='mailto:ethdud1@gmail.com' target='_blank'>ethdud1@gmail.com</a>
+</div>
+
 사람들의 생활을 편리하게 만들어주는 웹 서비스, Design System 그리고 글쓰기를 좋아하는 개발자입니다.
 
 언제나 같은 자원으로 최대한의 임팩트를 만들 방법을 고민하지만, 때로는 비효율적인 선택도 필요하다고 믿습니다. 변경에 유연하게 대응할 수 있는 설계, 시스템, 테스트, 자동화에 대한 투자가 중요하다고 믿고 이 요소들이 제품 개선과 함께 갈 수 있도록 노력합니다.
 
 경험과 지식 공유를 좋아합니다. 지식은 나눌 수 있을 때 내 것이 된다고 생각하고 공유의 선순환에 기여하고 싶습니다.
 
-|            |                              |
-| :--------: | ---------------------------- |
-| **Blog** | <https://so-so.dev> |
-| **GitHub** | <https://github.com/SoYoung210> |
-| **E-mail** | <ethdud1@gmail.com>            |
-
-
 <h2>
-<span class='highlight'>Work Experiences</span>
+<span>Work Experience</span>
 </h2>
 
 <h3 class='no-border' style='margin-top: 1em;'>
@@ -109,7 +106,7 @@ Design System2.0의 Lesson Learn을 바탕으로 새로운 디자인 시스템�
   - [관련 저장소](https://github.com/SoYoung210/react-ssr-code-splitting)
 
 <h2>
-<span class='highlight'>Communities</span>
+<span>Communities</span>
 </h2>
 
 #### Presentations

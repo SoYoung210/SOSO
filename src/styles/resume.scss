@@ -5,6 +5,8 @@ $theme: #0c243b;
   word-break: keep-all;
   .title {
     position: relative;
+    margin-bottom: 0;
+    padding-bottom: 0;
 
     &:after {
       content: "";
@@ -16,6 +18,15 @@ $theme: #0c243b;
       height: 12px;
       border-radius: 50%;
       background-color: $theme;
+    }
+  }
+
+  .personal-links {
+    margin-bottom: 20px;
+
+    a {
+      opacity: 0.5;
+      font-size: 14px;
     }
   }
 
@@ -42,7 +53,7 @@ $theme: #0c243b;
   h2 {
     margin-top: 1.5em;
     margin-bottom: 0.5em;
-    font-size: 1.9em;
+    font-size: 28px;
 
     border-bottom: 0;
   }
@@ -51,7 +62,7 @@ $theme: #0c243b;
     font-weight: 700;
     margin-top: 1em;
     margin-bottom: 0.5em;
-    font-size: 1.7em;
+    font-size: 24px;
 
     border-bottom: 0;
     display: flex;
@@ -62,7 +73,7 @@ $theme: #0c243b;
     font-weight: 600;
     margin-top: 1.8em;
     margin-bottom: 0.6em;
-    font-size: 1.4em;
+    font-size: 20px;
 
     padding-bottom: calc(0.4rem - 1px);
     border-bottom: 1px solid hsla(0,0%,0%,0.07);
