@@ -63,11 +63,13 @@ Design System2.0의 Lesson Learn을 바탕으로 새로운 디자인 시스템�
 - 유저 프로필, 구성원 추가/초대
   - 복잡한 Form을 Uncontrolled, Controlled의 조합으로 설계 및 개발
   - 권한을 단순하게 처리할 수 있도록 설계
+- 프로젝트 성능 TF
+  - 제품의 속도를 개선하기 위한 TF에서 패키지 bundle설정 개선으로 총 번들 사이즈 2.52MB에서 1.84MB로 개선
 
 #### Core HR
 
 - 많은 정보를 편리하게 수정할 수 있도록 [ag-grid](https://www.ag-grid.com/)를 활용하여 Editable Table을 공통 모듈화 하고, 이를 바탕으로 [인사/계약 정보 대량변경](https://userguide.flex.team/de413145-ae7a-4643-a7dd-a41e0d61870d#3927052f-651a-457e-926e-71925c9a9bbe) 기능 개발
-- 회사별 구성원 초대 템플릿을 관리할 수 있는 형태로 온보딩 기능 개선
+- 회사별 구성원 온보딩 과정의 커스텀이 불가능한 문제를 해결하기 위해 구성원 초대 템플릿을 관리할 수 있는 형태로 온보딩 기능 개선
 
 <h3 class='no-border'>
   <a href='https://www.banksalad.com/' target='_blank'>뱅크샐러드</a>
