@@ -2,19 +2,8 @@ import React from 'react'
 
 import './index.scss'
 
-export const SponsorButton = ({ sponsorId }) => (
+export const SponsorButton = () => (
   <div className="sponsor-button">
-    <a
-      className="bmc-button"
-      target="_blank"
-      rel="noopener noreferrer"
-      href={`https://www.buymeacoffee.com/${sponsorId}`}
-    >
-      <img
-        src="https://www.buymeacoffee.com/assets/img/BMC-btn-logo.svg"
-        alt="Buy me a coffee"
-      />
-      <span>Buy me a coffee</span>
-    </a>
+    <iframe src="https://github.com/sponsors/SoYoung210/button" title="Sponsor SoYoung210" height="35" width="116" style="border: 0;"></iframe>
   </div>
 )
