@@ -5,6 +5,8 @@ category: essay
 thumbnail: './images/2022_retro/thumbnail.jpg'
 ---
 
+![thumbnail](./images/2022_retro/thumbnail.jpg)
+
 매년 회고 글에서 ‘올해는 특별했다.’라고 적는 것 같지만, 이번 해는 좀 더 그렇다. 일(work)과 커리어, 개인의 삶에서 크고 작은 변화가 있었다. 여러 가지 변화 중 기억에 남는 몇 가지 키워드들로 회고를 작성했다.
 
 ## flex 2.0과 협업에 대한 고민
