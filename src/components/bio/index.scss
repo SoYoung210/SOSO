@@ -7,23 +7,22 @@
     display: flex;
     position: relative;
 
-    &::before {
-      position: absolute;
-      z-index: 999;
-      background: url('../../../content/assets/christmas_hat.png');
-      display: inline-block;
-      width: 55px;
-      background-size: contain;
-      height: 55px;
-      content: "";
-      transform: rotate(-34deg);
-      top: -11px;
-      left: -25px;
-    }
+    // &::before {
+    //   position: absolute;
+    //   z-index: 999;
+    //   background: url('../../../content/assets/christmas_hat.png');
+    //   display: inline-block;
+    //   width: 55px;
+    //   background-size: contain;
+    //   height: 55px;
+    //   content: "";
+    //   transform: rotate(-34deg);
+    //   top: -11px;
+    //   left: -25px;
+    // }
   }
 
   .author-image {
-    margin-top: 12px;
     margin-right: 12px;
     margin-bottom: 0;
     min-width: 72px;
