@@ -47,29 +47,29 @@ DOM Tree파싱 이후 브라우저는 CSS를 파싱해서 세 가지 단계로 �
 
 CSS는 px, %, em, rem등 다양한 단위로 작성할 수 있는데, rem등 상대적인 값은 픽셀로 치환되어 계산된다.
 
-이는 이후 설명할 렌더링 마지막 단계에서 화면에 비트맵으로 표현하기 때문이다.
+> '픽셀'로 표현하는 이유: 렌더링 마지막 단계에서 비트맵 데이터를 구성하는데, 비트맵 데이터가 픽셀로 구성되기 때문이다.
 
 #### Step 3. 스타일 계산
 
 ![style_calc](./images/browser-rendering-performance/style_calc.png)
 
-마지막으로, CSS 오버라이딩 등의 상황을 고려하여 요소의 최종 스타일을 계산한다.
+마지막으로, CSS 오버라이딩 등을 고려하여 요소의 최종 스타일을 계산한다.
 
 ### 3. Layout
 
 ![layout](./images/browser-rendering-performance/layout.png)
 
-이후 DOM 트리와 스타일 시트를 기반으로 **어떤 요소를 어디에** 렌더링 해야하는 지에 대한 정보를 담고 있는 레이아웃 트리를 구성한다.
+Layout단계에서는 DOM 트리와 스타일 시트를 기반으로 **어떤 요소를 어디에** 렌더링 해야하는 지에 대한 정보를 담고 있는 레이아웃 트리를 구성한다.
 
-레이아웃 트리는 DOM 트리와 유사하지만, 레이아웃 트리는 페이지에 렌더링 되는 정보만 포함하기 때문에 `display: none` 으로 처리된 요소는 레이아웃 트리에 포함되지 않는다.
+레이아웃 트리는 페이지에 렌더링 되는 정보만 포함하기 때문에 `display: none` 으로 처리된 요소는 포함되지 않는다.
 
 ![layout_cost](./images/browser-rendering-performance/layout_cost.gif)
 
-레이아웃 트리를 구성하는 과정은 결코 간단하지 않다. 영상처럼 간단한 페이지에서도 폰트 크기가 어느정도 되고, 단락의 어느 부분에서 줄바꿈이 되어야 하는지 등을 모두 계산해야 한다.
+레이아웃 트리를 구성하는 과정은 결코 간단하지 않다. 영상처럼 간단한 페이지에서도 폰트 크기에 따라 단락의 어느 부분에서 줄바꿈이 되어야 하는지 등을 모두 계산해야 하기 때문이다.
 
 ### 4. PrePaint
 
-PrePaint단계는 레이어를 위한 준비 단계로, 크게 두 가지 작업이 진행된다.
+PrePaint단계는 레이어를 구성하기 위한 준비 단계로, 크게 두 가지 작업이 진행된다.
 
 #### 1. Paint Invalidation
 
@@ -77,15 +77,17 @@ PrePaint단계는 레이어를 위한 준비 단계로, 크게 두 가지 작업
 
 이전 단계인 스타일, 레이아웃 단계 중 변화가 생겨 dirty bit이 생길 경우 이 단계에서 캐싱된 이전 paint기록을 무효화 한다.
 
+#### 2. Property Tree
+
 ![property_tree](./images/browser-rendering-performance/property_tree.png)
 
-Property Tree는 각 레이어에 할당되는 속성이다. 예를 들어 CSS속성 중 transform, opacity등의 속성을 적용할 경우 property tree에 반영되고 이후 레이어를 합치는 단계에서 필요한  효과를 빠르게 적용할 수 있다.
+Property Tree는 각 레이어에 할당되는 속성이다. 예를 들어 CSS속성 중 `transform`, `opacity`등의 속성을 적용할 경우 property tree에 반영되고 이후 레이어를 합치는 단계에서 필요한  효과를 빠르게 적용할 수 있다.
 
-기존에는 Property Tree에서 다뤄지는 데이터가 레이어에 함께 저장되어 있었다. 그래서 특정 노드의 속성이 변경되면 해당 노드의 하위 노드에도 변경된 값을 반영하면서 노드를 순회해야 했다. 최신 Blink엔진에서는 이런 속성만 별도로 관리하고 각 노드에서는 속성 트리의 노드를 참조하는 방식으로 변경되었다.
+기존에는 Property Tree에서 다뤄지는 데이터가 레이어에 함께 저장되어 있었기 때문에 특정 노드의 속성이 변경되면 해당 노드의 하위 노드에도 변경된 값을 반영하면서 노드를 순회해야 했다. 최신 Blink엔진에서는 이런 속성을 별도로 관리하고 각 노드에서는 Property Tree의 노드를 참조하는 방식으로 변경되었다.
 
 ### 5. Paint
 
-paint과정은 실제로 화면을 그리는 과정이 아니라 어떻게 그려야하는지에 대한 정보를 담고 있는 Paint Records를 생성하는 과정이다. 아래 세 가지 정보가 포함된다.
+paint과정은 실제로 화면을 그리는 과정이 아니라 어떻게 그려야하는지에 대한 정보를 담고 있는 `Paint Records`를 생성하는 과정이다. 아래 세 가지 정보가 포함된다.
 
 - Action (e.g. Draw Rect)
 - Position (e.g. 0, 0, 300, 300)
@@ -95,13 +97,13 @@ paint과정은 실제로 화면을 그리는 과정이 아니라 어떻게 그�
 
 ![composition_forest](./images/browser-rendering-performance/composition_forest.png)
 
-Layerize과정은 paint과정의 결과물을 사용해서 Composited Layer List라는 데이터를 생성하는 단계이다. layout단계에서 LayoutObject로 구성된 Layout Tree가 생성되고 Layout Object에서 아래 조건을 만족하면 별도의 Paint Layer가 생성된다.
+Layerize과정은 paint과정의 결과물을 사용해서 Composited Layer List라는 데이터를 생성하는 단계이다. layout단계에서 Layout Object로 구성된 Layout Tree가 생성되고 Layout Object에서 아래 조건을 만족하면 별도의 Paint Layer가 생성된다.
 
 - 최상위 요소(root element)
 - `position: relative, absolute` 사용
 - 3D(`translate3d`, `preserve-3d`, ,..)나 perspective transform 사용
 - `<video>`, `<canvas>` 태그 사용
-- CSS filter나 alpha mask 사용
+- CSS `filter`나 alpha mask 사용
 
 이 조건을 만족하지 않아 별도의 Paint Layer로 생성되지 않은 Layout Object는 가까운 상위 Pain Layer와 대응된다. (두 개 이상의 Layout Object가 하나의 Paint Layer로 다뤄질 수 있다.)
 
@@ -114,8 +116,8 @@ Paint Layer중 Compositing Trigger를 가지고 있거나 스크롤 가능한 �
 - `position: fixed`
 - CSS 트랜지션과 애니메이션을 사용해 구현한 `transform과opacity` 애니메이션
 - `position: fixed`
-- `[will-change](https://www.w3.org/TR/css-will-change-1/)`
-- `[filter](https://drafts.fxtf.org/filters/#FilterProperty)`
+- will-change
+- filter
 
 분리된 Graphics Layer들은 독립적인 픽셀화가 가능하며 프레임마다 후에 설명할 단계인 래스터(raster)과정을 다시 실행할 필요 없이 GPU연산이 가능하기 때문에 빠른 스크롤링과 애니메이션이 가능하다.
 
@@ -133,13 +135,13 @@ Paint Layer중 Compositing Trigger를 가지고 있거나 스크롤 가능한 �
 
 <iframe loading="lazy" width="300" height="280" src="https://sergeche.github.io/gpu-article-assets/examples/example1.html#.a:anim-left" frameborder="no" allowtransparency="true"></iframe>
 
-이 때, 요소의 Stacking Context에 의해 [암묵적 컴포지팅](https://www.smashingmagazine.com/2016/12/gpu-animation-doing-it-right/#implicit-compositing)이 필요하다면 브라우저는 컴포짓 레이어를 하나 더 생성하고, 레이어의 변경으로 Paint가 다시한번 발생하게 된다.
+요소의 Stacking Context에 의해 [암묵적 컴포지팅](https://www.smashingmagazine.com/2016/12/gpu-animation-doing-it-right/#implicit-compositing)이 필요하다면 브라우저는 컴포짓 레이어를 하나 더 생성하고, 레이어의 변경으로 Paint가 다시한번 발생하게 된다.
 
-CAP프로젝트로 이러한 문제를 개선한 프로젝트로, 더 자세한 내용은 [RenderingNG deep-dive: BlinkNG - Composite after paint](https://developer.chrome.com/articles/blinkng/#composite-after-paint-pipelining-paint-and-compositing) 문서와 [프로젝트에 대한 기술문서](https://docs.google.com/document/d/114ie7KJY3e850ZmGh4YfNq8Vq10jGrunZJpaG6trWsQ/edit#)에 설명되어 있다.
+CAP프로젝트는 이러한 문제를 개선하기 위한 프로젝트이다. 이에 대한 자세한 내용은 [RenderingNG deep-dive: BlinkNG - Composite after paint](https://developer.chrome.com/articles/blinkng/#composite-after-paint-pipelining-paint-and-compositing) 문서와 [프로젝트에 대한 기술문서](https://docs.google.com/document/d/114ie7KJY3e850ZmGh4YfNq8Vq10jGrunZJpaG6trWsQ/edit#)에 설명되어 있다.
 
 ### 7. Commit
 
-Layerize단계의 출력인 Composited Layer List는 PrePaint단계에서 생성한 Property Tree와 함께 합성 스레드(Composite Thread)로 복사된다. 이 과정을 ‘Commit’이라 하고, 이는 메인 스레드에서의 마지막 작업이다. 커밋 이후에는 자바스크립트를 실행하거나 렌더링 파이프라인을 다시 실행할 수 있다.
+Layerize단계의 출력인 Composited Layer List는 PrePaint단계에서 생성한 Property Tree와 함께 합성 스레드(Composite Thread)로 복사된다. 이 과정을 ‘Commit’이라 하며, 이는 메인 스레드에서의 마지막 작업이다. 커밋 이후에는 자바스크립트를 실행하거나 렌더링 파이프라인을 다시 실행할 수 있다.
 
 ![commit](./images/browser-rendering-performance/commit.png)
 
@@ -202,7 +204,7 @@ document.body.addEventListener('touchstart', event => {
 
 Raster는 타일에 저장된 draw명령어를 실행하는 과정이다. Blink엔진에서는 [Skia](https://skia.org/)라는 그래픽 라이브러리를 사용하여 비트맵 이미지를 생성하고 이를 GPU메모리에 저장한다.
 
-이전 크로미움 아키텍처에서 래스터 과정은 렌더러 프로세스의 래스터 스레드에서 수행됐지만 최근에는 GPU프로세스에서 수행된다. 이를 **“하드웨어 가속”**이라고 한다.
+이전 크로미움 아키텍처에서 래스터 과정은 렌더러 프로세스의 래스터 스레드에서 수행됐지만 최근에는 GPU프로세스에서 수행된다. 이를 **'하드웨어 가속'**이라고 한다.
 
 ![draw](./images/browser-rendering-performance/draw.png)
 
