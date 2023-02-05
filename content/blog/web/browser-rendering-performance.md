@@ -127,11 +127,11 @@ Paint Layer중 Compositing Trigger를 가지고 있거나 스크롤 가능한 �
 
 [RenderingNG](https://developer.chrome.com/articles/renderingng/)라는 Blink렌더링 개선 프로젝트 이전에는  페인트 단계 이전에 합성 레이어(Composited Layer)를 생성했다. 이 순서는 스타일 업데이트 시 렌더링 파이프라인에서 순환참조를 야기했다.
 
-![composite_after_flow](./images/browser-rendering-performance/composite_after_flow.png)
+![composite_after_flow](./images/browser-rendering-performance/composite_after_flow.jpeg)
 
 예를 들어 Paint단계를 무효화해야 하는 상황을 생각해보자. Paint무효화는 앞선 단계인 DOM, Style, Layout, 그리고 이전 Layerization 결과의 변경으로 발생할 수 있다.
 
-<iframe loading="lazy" width="300" height="280" style="width: 100%;" src="https://sergeche.github.io/gpu-article-assets/examples/example1.html#.a:anim-left" frameborder="no" allowtransparency="true"></iframe>
+<iframe loading="lazy" width="300" height="280" src="https://sergeche.github.io/gpu-article-assets/examples/example1.html#.a:anim-left" frameborder="no" allowtransparency="true"></iframe>
 
 이 때, 요소의 Stacking Context에 의해 [암묵적 컴포지팅](https://www.smashingmagazine.com/2016/12/gpu-animation-doing-it-right/#implicit-compositing)이 필요하다면 브라우저는 컴포짓 레이어를 하나 더 생성하고, 레이어의 변경으로 Paint가 다시한번 발생하게 된다.
 
