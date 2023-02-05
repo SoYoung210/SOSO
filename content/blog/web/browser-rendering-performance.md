@@ -63,7 +63,7 @@ CSS는 px, %, em, rem등 다양한 단위로 작성할 수 있는데, rem등 상
 
 레이아웃 트리는 DOM 트리와 유사하지만, 레이아웃 트리는 페이지에 렌더링 되는 정보만 포함하기 때문에 `display: none` 으로 처리된 요소는 레이아웃 트리에 포함되지 않는다.
 
-![layout_cost](./images/browser-rendering-performance/layout_cost.mp4)
+![layout_cost](./images/browser-rendering-performance/layout_cost.gif)
 
 레이아웃 트리를 구성하는 과정은 결코 간단하지 않다. 영상처럼 간단한 페이지에서도 폰트 크기가 어느정도 되고, 단락의 어느 부분에서 줄바꿈이 되어야 하는지 등을 모두 계산해야 한다.
 
