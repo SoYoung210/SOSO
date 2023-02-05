@@ -2,10 +2,10 @@
 title: '그 많던 import React from ‘react’는 어디로 갔을까'
 date: 2022-02-20 16:00:09
 category: react
-thumbnail: './images/jsx-new-transform/thumbnail.jpg'
+thumbnail: './images/jsx-new-transform/thumbnail.png'
 ---
 
-![image-thumbnail](./images/jsx-new-transform/thumbnail.jpg)
+![image-thumbnail](./images/jsx-new-transform/thumbnail.png)
 
 이 글에서는 [React 17릴리즈](https://reactjs.org/blog/2020/10/20/react-v17.html)에 포함되었던 JSX Transform의 RFC문서를 살펴보며 이 변경사항이 어떤 의미를 가지고 있는지 정리해 보았습니다.
 
