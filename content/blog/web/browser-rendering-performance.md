@@ -7,11 +7,11 @@ thumbnail: './images/browser-rendering-performance/thumbnail.png'
 
 ## 들어가며
 
-최근 사이드 프로젝트에서 [렌더링 성능을 개선](https://twitter.com/th096/status/1613759830703112194)하며 정확히 무엇이 렌더링 성능의 병목이 되었고, 어떻게 개선될 수 있었는지 궁금해졌다.  이 내용을 브라우저 렌더링 과정에 대한 정리와 이를 바탕으로 진행한 개선으로 나누어 정리해보려고 한다.
+최근 개인 프로젝트의 [렌더링 성능을 개선](https://twitter.com/th096/status/1613759830703112194)하며 브라우저 렌더링 과정에 대해 정리하고 정확히 무엇이 성능 저하의 원인인지, 어떻게 개선될 수 있었는지 정리해봤다.
 
 ## 렌더링 파이프라인
 
-렌더링 성능을 개선하려면 먼저 브라우저 렌더링 과정과 이에 관여하는 요소들에 대해 정리해볼 필요가 있다. 이 글에서 다룰 내용은 Blink엔진 기준이며, [RenderingNG](https://developer.chrome.com/articles/renderingng-architecture/) 글과 [2020년 BlinkOn발표 Life of a Pixel](https://www.youtube.com/watch?v=K2QHdgAKP-s)내용을 참고했다. 따라서, Blink엔진을 사용하지 않는 다른 브라우저에서는 내용상 차이가 있을 수 있음을 알려둔다.
+렌더링 성능을 개선하려면 먼저 렌더링 과정과 이에 관여하는 요소들에 대해 알아야 한다. 이 글에서 다룰 내용은 Blink엔진 기준이며, [RenderingNG](https://developer.chrome.com/articles/renderingng-architecture/) 글과 [2020년 BlinkOn발표 Life of a Pixel](https://www.youtube.com/watch?v=K2QHdgAKP-s)내용을 참고했다. 따라서 Blink엔진을 사용하지 않는 다른 브라우저에서는 내용상 차이가 있을 수 있다.
 
 ![렌더링_메인_플로우](./images/browser-rendering-performance/메인플로우.png)
 
@@ -21,9 +21,9 @@ thumbnail: './images/browser-rendering-performance/thumbnail.png'
 
 가장 첫 단계로 메인 스레드에서 HTML을 브라우저가 해석할 수 있는 자료구조인 DOM Tree로 변환하는 작업이 진행된다. 이 과정은 HTML 파서가 `<link>` 또는 `async`, `defer` 가 없는 `<script>` 와 같은 블로킹 리소스를 만나기 전까지 진행된다.
 
-CSS 파일의 경우 **[스타일링이 적용되지 않는 콘텐츠가 잠깐 뜨는 현상(Flash of unstyled content, AKA FOUC)](https://en.wikipedia.org/wiki/Flash_of_unstyled_content)**을 방지하기 위해 파싱과 렌더링이 차단된다.
+CSS 파일의 경우 [스타일링이 적용되지 않는 콘텐츠가 잠깐 뜨는 현상(Flash of unstyled content, AKA FOUC)](https://en.wikipedia.org/wiki/Flash_of_unstyled_content)을 방지하기 위해 파싱과 렌더링이 차단된다.
 
-`<script>` 역시 파싱을 중단 시키는데, 이유는 자바스크립트에 `document.write()` 와 같이 DOM을 변경시킬 수 있는 코드가 포함될 수 있기 때문이다.
+`<script>` 역시 자바스크립트에 `document.write()` 와 같이 DOM을 변경시킬 수 있는 코드가 포함될 수 있기 때문에 파싱을 중단 시킨다.
 
 파싱이 중단됨으로 인해 중요한 리소스 사용이 늦어지는 등 부작용이 생길 수 있는데, 브라우저에서는 이러한 문제를 완하시키기 위해 preload scanner를 사용해서 필요한 요청을 병렬적으로 처리할 수 있다.
 
@@ -37,7 +37,7 @@ DOM Tree파싱 이후 브라우저는 CSS를 파싱해서 세 가지 단계로 �
 
 ![css_to_style_sheet](./images/browser-rendering-performance/css_to_style_sheet.png)
 
-`<link>` 스타일, `<style>` , 그리고 inline style의 정보를 바탕으로 브라우저가 해석할 수 있는 스타일 시트를 생성한다.
+`<link>`태그로 로드하는 CSS, `<style>`, 그리고 inline style의 정보를 바탕으로 브라우저가 해석할 수 있는 스타일 시트를 생성한다.
 
 #### Step 2. 단위 변환
 
