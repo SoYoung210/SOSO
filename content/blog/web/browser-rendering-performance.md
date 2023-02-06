@@ -5,6 +5,8 @@ category: web
 thumbnail: './images/browser-rendering-performance/thumbnail.png'
 ---
 
+![image-thumbnail](./images/browser-rendering-performance/thumbnail.png)
+
 ## 들어가며
 
 최근 개인 프로젝트의 [렌더링 성능을 개선](https://twitter.com/th096/status/1613759830703112194)하며 브라우저 렌더링 과정에 대해 정리하고 정확히 무엇이 성능 저하의 원인인지, 어떻게 개선될 수 있었는지 정리해봤다.
