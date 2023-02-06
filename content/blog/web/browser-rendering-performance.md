@@ -23,7 +23,7 @@ thumbnail: './images/browser-rendering-performance/thumbnail.png'
 
 CSS 파일의 경우 [스타일링이 적용되지 않는 콘텐츠가 잠깐 뜨는 현상(Flash of unstyled content, AKA FOUC)](https://en.wikipedia.org/wiki/Flash_of_unstyled_content)을 방지하기 위해 파싱과 렌더링이 차단된다.
 
-`<script>` 역시 자바스크립트에 `document.write()` 와 같이 DOM을 변경시킬 수 있는 코드가 포함될 수 있기 때문에 파싱을 중단 시킨다.
+`<script>`태그도 DOM을 변경하는 코드(`document.write()`)를 포함할 수 있기 때문에 파싱을 멈춘다.
 
 파싱이 중단됨으로 인해 중요한 리소스 사용이 늦어지는 등 부작용이 생길 수 있는데, 브라우저에서는 이러한 문제를 완하시키기 위해 preload scanner를 사용해서 필요한 요청을 병렬적으로 처리할 수 있다.
 
@@ -75,19 +75,19 @@ PrePaint단계는 레이어를 구성하기 위한 준비 단계로, 크게 두 
 
 ![paint_invalidation](./images/browser-rendering-performance/paint_invalidation.png)
 
-이전 단계인 스타일, 레이아웃 단계 중 변화가 생겨 dirty bit이 생길 경우 이 단계에서 캐싱된 이전 paint기록을 무효화 한다.
+이전 단계(스타일, 레이아웃 단계)에서 변화가 생길 경우(이를 dirty bit이라 한다.), 캐싱해둔 paint 기록을 무효화한다.
 
 #### 2. Property Tree
 
 ![property_tree](./images/browser-rendering-performance/property_tree.png)
 
-Property Tree는 각 레이어에 할당되는 속성이다. 예를 들어 CSS속성 중 `transform`, `opacity`등의 속성을 적용할 경우 property tree에 반영되고 이후 레이어를 합치는 단계에서 필요한  효과를 빠르게 적용할 수 있다.
+Property Tree는 각 레이어에 할당되는 속성이다. 예를 들어 CSS속성 중 `transform`, `opacity`등의 속성을 적용할 경우, property tree에 반영되고 이후 레이어를 합치는 단계에서 필요한 효과를 빠르게 적용할 수 있다.
 
 기존에는 Property Tree에서 다뤄지는 데이터가 레이어에 함께 저장되어 있었기 때문에 특정 노드의 속성이 변경되면 해당 노드의 하위 노드에도 변경된 값을 반영하면서 노드를 순회해야 했다. 최신 Blink엔진에서는 이런 속성을 별도로 관리하고 각 노드에서는 Property Tree의 노드를 참조하는 방식으로 변경되었다.
 
 ### 5. Paint
 
-paint과정은 실제로 화면을 그리는 과정이 아니라 어떻게 그려야하는지에 대한 정보를 담고 있는 `Paint Records`를 생성하는 과정이다. 아래 세 가지 정보가 포함된다.
+paint 과정은 실제로 화면을 그리는 과정이 아니라 **어떻게 그려야하는지**에 대한 정보를 담고 있는 `Paint Records`를 생성하는 과정이다. 이 레코드에는 아래 세 가지 정보가 포함된다.
 
 - Action (e.g. Draw Rect)
 - Position (e.g. 0, 0, 300, 300)
@@ -105,7 +105,7 @@ Layerize과정은 paint과정의 결과물을 사용해서 Composited Layer List
 - `<video>`, `<canvas>` 태그 사용
 - CSS `filter`나 alpha mask 사용
 
-이 조건을 만족하지 않아 별도의 Paint Layer로 생성되지 않은 Layout Object는 가까운 상위 Pain Layer와 대응된다. (두 개 이상의 Layout Object가 하나의 Paint Layer로 다뤄질 수 있다.)
+이 조건을 만족하지 않아 별도의 Paint Layer로 생성되지 않은 Layout Object는 가까운 상위 Paint Layer와 대응된다. (두 개 이상의 Layout Object가 하나의 Paint Layer로 다뤄질 수 있다.)
 
 Paint Layer중 Compositing Trigger를 가지고 있거나 스크롤 가능한 컨텐츠가 있을 경우 별도의 Graphics Layer가 생성된다.
 
