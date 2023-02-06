@@ -121,3 +121,15 @@ const Main = styled('main', {
 예를 들어 화면상의 박스 네개를 전부 개별 레이어로 분리할 경우 78,400바이트의 메모리를 더 필요로 한다.
 
 한정된 메모리를 넘어서는 데이터가 존재한다면 메모리 상에 없는 데이터를 사용하기 전에 이를 다시 적재해야 하는 과정이 발생하며 이는 레이어의 분리를 통한 성능의 이점을 송수신 오버헤드로 인해 잡아먹는 경우가 될 수 있다.
+
+## 맺으며
+
+렌더 성능을 개선하는 과정은 성능상 안좋은 영향을 주는 요소들을 제거하거나 피하면서 브라우저가 제공하는 최대한의 성능 범위에 도달하는 과정이다. 때로는 복잡한 애니메이션을 구현해나가는 과정에서 `reflow`나 `repaint`를 피할 수 없을지도 모른다. 하지만 작은 reflow나 repaint는 성능상의 악영향은 크지 않으면서 원하는 결과물을 쉽게 얻을 수 있는 방법일수도 있다.
+
+**모든 성능 개선은 측정하며 진행되어야 한다.** 렌더링 성능 개선 역시 진행하며 마주하는 트레이드 오프들을 진단하며 진행될 때 최선의 결과를 얻을 수 있을 것이다.
+
+## 참고자료
+
+- [https://web.dev/stick-to-compositor-only-properties-and-manage-layer-count/](https://web.dev/stick-to-compositor-only-properties-and-manage-layer-count/)
+- [https://cabulous.medium.com/how-does-browser-work-in-2019-part-5-optimization-in-the-interaction-stage-66b53b8ec0ad](https://cabulous.medium.com/how-does-browser-work-in-2019-part-5-optimization-in-the-interaction-stage-66b53b8ec0ad)
+- [https://web.dev/simplify-paint-complexity-and-reduce-paint-areas/](https://web.dev/simplify-paint-complexity-and-reduce-paint-areas/)
