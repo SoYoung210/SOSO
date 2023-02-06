@@ -11,9 +11,15 @@ thumbnail: './images/browser-rendering-performance/thumbnail.png'
 
 ## 렌더링 파이프라인
 
-렌더링 성능을 개선하려면 먼저 렌더링 과정과 이에 관여하는 요소들에 대해 알아야 한다. 이 글에서 다룰 내용은 Blink엔진 기준이며, [RenderingNG](https://developer.chrome.com/articles/renderingng-architecture/) 글과 [2020년 BlinkOn발표 Life of a Pixel](https://www.youtube.com/watch?v=K2QHdgAKP-s)내용을 참고했다. 따라서 Blink엔진을 사용하지 않는 다른 브라우저에서는 내용상 차이가 있을 수 있다.
+렌더링 성능을 개선하려면 먼저 렌더링 과정과 이에 관여하는 요소를 대해 알아야 한다. 이 글에서 다룰 내용은 Blink엔진 기준이며, [RenderingNG](https://developer.chrome.com/articles/renderingng-architecture/) 글과 [2020년 BlinkOn발표 Life of a Pixel](https://www.youtube.com/watch?v=K2QHdgAKP-s)내용을 참고했다. 따라서 Blink엔진을 사용하지 않는 다른 브라우저에서는 차이가 있을 수 있다.
+
+### 0. Overview
 
 ![렌더링_메인_플로우](./images/browser-rendering-performance/메인플로우.png)
+
+렌더링은 HTML Parsing에서 시작하여 구성을 분석하는 Style, Layout, Paint과정을 거쳐 Layer로 구성되고 합성 스레드와 GPU가 협력하여 화면에 그리는 과정으로 진행된다.
+
+각 단계에 대해 자세히 살펴보자.
 
 ### 1. Parsing
 
@@ -21,7 +27,7 @@ thumbnail: './images/browser-rendering-performance/thumbnail.png'
 
 가장 첫 단계로 메인 스레드에서 HTML을 브라우저가 해석할 수 있는 자료구조인 DOM Tree로 변환하는 작업이 진행된다. 이 과정은 HTML 파서가 `<link>` 또는 `async`, `defer` 가 없는 `<script>` 와 같은 블로킹 리소스를 만나기 전까지 진행된다.
 
-CSS 파일의 경우 [스타일링이 적용되지 않는 콘텐츠가 잠깐 뜨는 현상(Flash of unstyled content, AKA FOUC)](https://en.wikipedia.org/wiki/Flash_of_unstyled_content)을 방지하기 위해 파싱과 렌더링이 차단된다.
+CSS 파일의 경우 [스타일링이 적용되지 않는 콘텐츠가 잠깐 뜨는 현상(Flash of unstyled content](https://ko.wikipedia.org/wiki/FOUC)을 방지하기 위해 파싱과 렌더링이 차단된다.
 
 `<script>`태그도 DOM을 변경하는 코드(`document.write()`)를 포함할 수 있기 때문에 파싱을 멈춘다.
 
@@ -59,9 +65,7 @@ CSS는 px, %, em, rem등 다양한 단위로 작성할 수 있는데, rem등 상
 
 ![layout](./images/browser-rendering-performance/layout.png)
 
-Layout단계에서는 DOM 트리와 스타일 시트를 기반으로 **어떤 요소를 어디에** 렌더링 해야하는 지에 대한 정보를 담고 있는 레이아웃 트리를 구성한다.
-
-레이아웃 트리는 페이지에 렌더링 되는 정보만 포함하기 때문에 `display: none` 으로 처리된 요소는 포함되지 않는다.
+Layout 단계에서는 레이아웃 트리를 구성한다. DOM 트리와 스타일 시트를 기반으로 어떤 요소를 어디에 렌더링 해야하는 지를 결정한다. 레이아웃 트리엔 페이지에 렌더링 되는 정보만 포함되기 때문에 `display: none` 으로 처리된 요소는 포함되지 않는다.
 
 ![layout_cost](./images/browser-rendering-performance/layout_cost.gif)
 
@@ -151,9 +155,15 @@ Layerize단계의 출력인 Composited Layer List는 PrePaint단계에서 생성
 
 ### **합성 스레드**
 
-합성 스레드에서는 메인 스레드와 별개로 *레이어를 합성*하고 *사용자의 입력*을 처리한다.
+합성 스레드에서는 메인 스레드와 별개로 **레이어를 합성**하고 **사용자의 입력**을 처리한다.
 
 #### 1. 레이어 합성
+
+![non_composition_raster](./images/browser-rendering-performance/non_composition_raster.gif)
+
+브라우저가 화면에 그리는 실제 렌더링을 하기 위해서는 앞선 단계를 통해 알고 있는 HTML 구조와 각 요소의 스타일, 기하학적 속성, 페인트 속성에 대한 정보를 픽셀로 변환해야 하며, 이 작업을 **픽셀화(래스터화, rasterizing)**라고 한다.
+
+가장 단순한 픽셀화는 필요한 부분을 그대로 픽셀화는 것이다. 사용자가 웹 페이지를 스크롤하면 이미 픽셀화한 프레임을 움직이고 나머지 빈 부분을 추가로 픽셀화한다. 이 방식은 크롬이 처음 출시되었을 때의 픽셀화 방식이다. 최신 브라우저에서는 이보다 정교한 **합성(composition)**이라는 과정을 거친다.
 
 ![composition](./images/browser-rendering-performance/composition.gif)
 
@@ -230,7 +240,7 @@ pending tree는 커밋을 받고 렌더링에 필요한 작업이 완료되면 p
 
 ## Next
 
-(다음 편 예고)
+다음 포스팅에서는 렌더링 과정에 대한 이해를 바탕으로 성능 개선의 방법과 이유에 대해 살펴본다.
 
 ## 참고자료
 
