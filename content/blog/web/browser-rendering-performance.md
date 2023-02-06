@@ -19,7 +19,7 @@ thumbnail: './images/browser-rendering-performance/thumbnail.png'
 
 ![렌더링_메인_플로우](./images/browser-rendering-performance/메인플로우.png)
 
-렌더링은 HTML Parsing에서 시작하여 구성을 분석하는 Style, Layout, Paint과정을 거쳐 Layer로 구성되고 합성 스레드와 GPU가 협력하여 화면에 그리는 과정으로 진행된다.
+렌더링은 HTML Parsing에서 시작하여 구성을 분석하는 Style, Layout, Paint과정을 거쳐 Layer를 구성하고 합성 스레드와 GPU가 협력하여 화면에 그리는 과정으로 진행된다.
 
 각 단계에 대해 자세히 살펴보자.
 
@@ -93,7 +93,7 @@ Property Tree는 각 레이어에 할당되는 속성이다. 예를 들어 CSS�
 
 ### 5. Paint
 
-paint 과정은 실제로 화면을 그리는 과정이 아니라 **어떻게 그려야하는지**에 대한 정보를 담고 있는 `Paint Records`를 생성하는 과정이다. 이 레코드에는 아래 세 가지 정보가 포함된다.
+paint 과정은 실제로 화면을 그리는 과정이 아니라 **어떻게 그려야하는지**에 대한 정보를 담고 있는 `페인트 레코드(Paint Records)`를 생성하는 과정이다. 페인트 레코드에는 아래 세 가지 정보가 포함된다.
 
 - Action (e.g. Draw Rect)
 - Position (e.g. 0, 0, 300, 300)
@@ -103,7 +103,7 @@ paint 과정은 실제로 화면을 그리는 과정이 아니라 **어떻게 �
 
 ![composition_forest](./images/browser-rendering-performance/composition_forest.png)
 
-Layerize과정은 paint과정의 결과물을 사용해서 Composited Layer List라는 데이터를 생성하는 단계이다. layout단계에서 Layout Object로 구성된 Layout Tree가 생성되고 Layout Object에서 아래 조건을 만족하면 별도의 Paint Layer가 생성된다.
+Layerize과정은 paint과정의 결과물을 사용해서 `Composited Layer List`라는 데이터를 생성하는 단계이다. layout단계에서 Layout Object로 구성된 Layout Tree가 생성되고 Layout Object에서 아래 조건을 만족하면 별도의 Paint Layer가 생성된다.
 
 - 최상위 요소(root element)
 - `position: relative, absolute` 사용
@@ -139,7 +139,11 @@ Paint Layer중 Compositing Trigger를 가지고 있거나 스크롤 가능한 �
 
 예를 들어 Paint단계를 무효화해야 하는 상황을 생각해보자. Paint무효화는 앞선 단계인 DOM, Style, Layout, 그리고 이전 Layerization 결과의 변경으로 발생할 수 있다.
 
-<iframe loading="lazy" width="300" height="280" src="https://sergeche.github.io/gpu-article-assets/examples/example1.html#.a:anim-left" frameborder="no" allowtransparency="true"></iframe>
+![implicit-compositing](./images/browser-rendering-performance/implicit-compositing.gif)
+
+<div style="opacity: 0.5;padding-right: 15px;text-align: center;margin-top: -0.4rem;font-size: 12px;margin-bottom: 1rem;">
+    <a href="https://sergeche.github.io/gpu-article-assets/examples/example1.html" target='_blank'>https://sergeche.github.io/gpu-article-assets/examples/example1.html</a></sup>
+</div>
 
 요소의 Stacking Context에 의해 [암묵적 컴포지팅](https://www.smashingmagazine.com/2016/12/gpu-animation-doing-it-right/#implicit-compositing)이 필요하다면 브라우저는 컴포짓 레이어를 하나 더 생성하고, 레이어의 변경으로 Paint가 다시한번 발생하게 된다.
 
