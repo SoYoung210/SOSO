@@ -2,10 +2,10 @@
 title: '렌더링 성능 개선(2) — 합성 애니메이션 사용'
 date: 2023-02-06 08:00:09
 category: web
-thumbnail: './images/browser-rendering-performance/thumbnail.png'
+thumbnail: './images/browser-rendering-performance/thumbnail2.png'
 ---
 
-![image-thumbnail](./images/browser-rendering-performance/thumbnail.png)
+![image-thumbnail](./images/browser-rendering-performance/thumbnail2.png)
 
 이번 글에서는 성능 개선의 관점에서 렌더링을 다시 살펴보려 한다. 렌더링 성능 최적화는 어떻게 접근해야할까?
 
@@ -17,9 +17,9 @@ thumbnail: './images/browser-rendering-performance/thumbnail.png'
 
 ![enhance_result](./images/browser-rendering-performance/enhance_result.png)
 
-글을 작성하는 계기가 된 [개인 프로젝트 렌더링 성능개선 PR](https://github.com/SoYoung210/Uing/pull/9) 적용 전(오른쪽) 후(왼쪽)의 모습이다.
+글을 작성하는 계기가 된 [개인 프로젝트 렌더링 성능개선 PR](https://github.com/SoYoung210/Uing/pull/9) 적용 전(오른쪽) 후(왼쪽)의 모습이다. 왼쪽은 렌더링이 계속 다시 일어나며 CPU자원을 심하게 소비하고 있고, 오른쪽은 그렇지 않다.
 
-왼쪽은 렌더링이 계속 다시 일어나며 CPU자원을 심하게 소비하고 있고, 오른쪽은 그렇지 않다. 시각적으로 같은 효과를 적용했지만, 렌더링 과정에서는 차이가 크다. 기본적으로 최적화가 잘 되어있는 Chrome에서는 왼쪽도 사용할 수 있는 수준이긴 했지만 Safari에서는 사용이 불가능한 수준이었다.
+시각적으로 같은 효과를 적용했지만, 렌더링 과정에서는 차이가 크다. 기본적으로 최적화가 잘 되어있는 Chrome에서는 왼쪽도 사용할 수 있는 수준이긴 했지만 Safari에서는 사용이 불가능한 수준이었다.
 
 ![렌더링_메인_플로우](./images/browser-rendering-performance/메인플로우.png)
 
@@ -49,9 +49,7 @@ JavaScript로 요소의 크기를 변화시켰다고 생각해보자, 어떤 일
 
 앞서 살펴본 내용으로 CSS속성변화에 대한 애니메이션 성능을 비교해봤다. (Chrome에서는 차이를 비교하기 쉽지 않아 Webkit기반의 Safari브라우저에서 테스트했다.)
 
-### Repaint → Composition
-
-![repaint_layer_timeline](./images/browser-rendering-performance/repaint_layer_timeline.png)
+### Repaint 발생 속성 사용
 
 ```jsx
 const backgroundAnimation = keyframes({
@@ -69,9 +67,11 @@ const Main = styled('main', {
 })
 ```
 
-앞서 살펴본 바와 같이, `main`요소에 적용된 `background-position` 변경 애니메이션으로 최상위 레이어 `#document`에서 repaint가 지속적으로 발생하고 있다.
+![repaint_layer_timeline](./images/browser-rendering-performance/repaint_layer_timeline.png)
 
-![composite_layer_timeline](./images/browser-rendering-performance/composite_layer_timeline.png)
+앞서 살펴본 바와 같이, `main`요소에 적용된 `background-position` 변경 애니메이션으로 최상위 레이어 `#document`에서 repaint가 지속적으로 발생하고 있고, CPU사용량이 높다.
+
+### Composition만 발생하는 속성 사용
 
 ```jsx
 const backgroundAnimation = keyframes({
@@ -84,6 +84,8 @@ const Main = styled('main', {
   // 이전과 동일
 })
 ```
+
+![composite_layer_timeline](./images/browser-rendering-performance/composite_layer_timeline.png)
 
 애니메이션 효과를 가진 레이어가 분리되었고, repaint없이 합성만 발생한다. 메인 스레드 점유 없이 애니메이션을 렌더링할 수 있기 때문에 이전보다 훨씬 부드럽게 처리할 수 있다.
 
@@ -124,7 +126,7 @@ const Main = styled('main', {
 
 ## 맺으며
 
-렌더 성능을 개선하는 과정은 성능상 안좋은 영향을 주는 요소들을 제거하거나 피하면서 브라우저가 제공하는 최대한의 성능 범위에 도달하는 과정이다. 때로는 복잡한 애니메이션을 구현해나가는 과정에서 `reflow`나 `repaint`를 피할 수 없을지도 모른다. 하지만 작은 reflow나 repaint는 성능상의 악영향은 크지 않으면서 원하는 결과물을 쉽게 얻을 수 있는 방법일수도 있다.
+렌더링 성능을 개선하는 과정은 성능상 안좋은 영향을 주는 요소들을 제거하거나 피하면서, 브라우저가 제공하는 최대한의 성능 범위에 도달하는 과정이다. 때로는 복잡한 애니메이션을 구현해나가는 과정에서 `reflow`나 `repaint`를 피할 수 없을지도 모른다. 하지만 작은 reflow나 repaint는 성능상의 악영향은 크지 않으면서 원하는 결과물을 쉽게 얻을 수 있는 방법일수도 있다.
 
 **모든 성능 개선은 측정하며 진행되어야 한다.** 렌더링 성능 개선 역시 진행하며 마주하는 트레이드 오프들을 진단하며 진행될 때 최선의 결과를 얻을 수 있을 것이다.
 
