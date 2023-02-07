@@ -1,6 +1,6 @@
 ---
 title: '그 많던 import React from ‘react’는 어디로 갔을까'
-date: 2022-02-20 16:00:09
+date: 2022-02-20 17:00:09
 category: react
 thumbnail: './images/jsx-new-transform/thumbnail.png'
 ---
