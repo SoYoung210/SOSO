@@ -39,11 +39,15 @@ JavaScript로 요소의 크기를 변화시켰다고 생각해보자, 어떤 일
 
 ![repaint](./images/browser-rendering-performance/repaint.png)
 
+`background-color` 를 변경한 경우 스타일은 재계산 해야하지만, 이 속성은 요소의 위치에 영향을 주지 않고 레이어를 생성하지 않는 속성이기 때문에 Paint부터 수행된다. 이렇게 Paint 이후 단계부터 재실행 되는 것을 **repaint**라고 부른다.
+
+reflow와 repaint 모두 메인 스레드를 점유하기 때문에 처리 시간이 길어질 경우 유저의 인터랙션 처리에도 영향을 줄 수있다. (repaint는 레이아웃 단계를 건너뛰기 때문에 reflow보다는 비용이 저렴하다.)
+
 ### Composition only
 
 ![composite_only](./images/browser-rendering-performance/composite_only.png)
 
-합성이란, 앞선 글에서 살펴본 것처럼 ‘페이지가 어떻게 보여야 하는 지에 대한 정보를 픽셀로 변환(래스터화)한 다음 Composition Frame을 생성하는 과정’이다. `transform` 이나 `opacity` 속성을 사용하는 애니메이션은 메인 스레드 개입 없이, 복사 된(Commit) 레이어를 사용해서 렌더링 하기 때문에 빠르다.
+합성이란, [앞선 글](https://so-so.dev/web/browser-rendering-process/#%ED%95%A9%EC%84%B1-%EC%8A%A4%EB%A0%88%EB%93%9C)에서 살펴본 것처럼 ‘페이지가 어떻게 보여야 하는 지에 대한 정보를 픽셀로 변환(래스터화)한 다음 Compositor Frame을 생성하는 과정’이다. `transform` 이나 `opacity` 속성을 사용하는 애니메이션은 메인 스레드 개입 없이, 복사 된(Commit) 레이어를 사용해서 렌더링 하기 때문에 빠르다.
 
 ## 성능 개선
 
@@ -112,9 +116,9 @@ const Main = styled('main', {
 })
 ```
 
-애니메이션을 가진 `main` 요소가 별도 레이어로 분리되었다. repaint가 이전과 동일하게 계속 발생하긴 하지만, CPU사용량은 레이어 분리 이전보다 확연히 낮다.
+Graphics Layer생성 조건을 만족시켜 애니메이션을 가진 `main` 요소가 별도 레이어로 분리되어, 독립적인 픽셀화가 가능해졌다. ([참고 글 - 브라우저 렌더링 과정#Layerize](https://so-so.dev/web/browser-rendering-process/#6-layerize))
 
-앞서 설명한 페인트 무효화(paint invalidation)의 영역이 `#document`, 최상위 요소에서 `main::before`요소로 변경되었기 때문이다. background repaint가 다른 레이어와 분리됨으로써 여전히 repaint는 발생하지만, 비용을 낮춘 것이다. (하지만, 합성만 사용하는 애니메이션보다는 오버헤드가 있다.)
+repaint가 이전과 동일하게 계속 발생하긴 하지만, CPU사용량은 레이어 분리 이전보다 확연히 낮다. 앞서 설명한 페인트 무효화(paint invalidation)의 영역이 `#document`, 최상위 요소에서 `main::before`요소로 변경되었기 때문이다. background repaint가 다른 레이어와 분리됨으로써 여전히 repaint는 발생하지만, 비용을 낮춘 것이다. (하지만, 합성만 사용하는 애니메이션보다는 오버헤드가 있다.)
 
 ## 레이어 분리에 대한 비용
 
@@ -135,3 +139,4 @@ const Main = styled('main', {
 - [https://web.dev/stick-to-compositor-only-properties-and-manage-layer-count/](https://web.dev/stick-to-compositor-only-properties-and-manage-layer-count/)
 - [https://cabulous.medium.com/how-does-browser-work-in-2019-part-5-optimization-in-the-interaction-stage-66b53b8ec0ad](https://cabulous.medium.com/how-does-browser-work-in-2019-part-5-optimization-in-the-interaction-stage-66b53b8ec0ad)
 - [https://web.dev/simplify-paint-complexity-and-reduce-paint-areas/](https://web.dev/simplify-paint-complexity-and-reduce-paint-areas/)
+- [https://www.smashingmagazine.com/2016/12/gpu-animation-doing-it-right](https://www.smashingmagazine.com/2016/12/gpu-animation-doing-it-right)
