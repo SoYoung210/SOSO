@@ -1,6 +1,6 @@
 ---
 title: '렌더링 성능 개선(2) — 합성 애니메이션 사용'
-date: 2023-02-06 08:00:09
+date: 2023-02-08 08:00:09
 category: web
 thumbnail: './images/browser-rendering-performance/thumbnail2.png'
 ---
