@@ -24,7 +24,7 @@ lang: 'ko'
 
 <h3 class='no-border' style='margin-top: 1em;'>
   <a target='_blank' href='https://flex.team/'>플렉스</a>
-  <div class='period'>(2021.02 ~ 현재)</div>
+  <div class='period'>(2021.02 ~ 2022.11)</div>
 </h3>
 
 |              |                                                         |
