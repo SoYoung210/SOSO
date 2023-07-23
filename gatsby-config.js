@@ -63,6 +63,10 @@ module.exports = {
       resolve: `gatsby-plugin-gtag`,
       options: {
         trackingId: metaConfig.ga,
+        // Puts tracking script in the head instead of the body
+        head: false,
+        // enable ip anonymization
+        anonymize: true,
       },
     },
     {
