@@ -15,7 +15,7 @@ Provider 하위컴포넌트에서 Context를 사용할 수 있다는 것은, **�
  always looks for the closest provider *above*
  the component that calls it. It searches upwards and **does not**
  consider providers in the component from which you’re calling `useContext()` .  
-[https://beta.reactjs.org/apis/usecontext#passing-data-deeply-into-the-tree](https://beta.reactjs.org/apis/usecontext#passing-data-deeply-into-the-tree)
+[https://react.dev/reference/react/useContext#passing-data-deeply-into-the-tree](https://react.dev/reference/react/useContext#passing-data-deeply-into-the-tree)
 
 ```tsx
 <ThemeContext.Provider value="dark">
