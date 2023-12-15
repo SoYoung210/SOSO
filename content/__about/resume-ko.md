@@ -23,7 +23,7 @@ lang: 'ko'
 </h2>
 
 <h3 class='no-border' style='margin-top: 1em;'>
-  <a target='_blank' href='https://toss.im/'>토스</a>
+  <a target='_blank' href='https://toss.im/'>toss</a>
   <div class='period'>(2023.03 ~ )</div>
 </h3>
 
@@ -48,7 +48,7 @@ lang: 'ko'
 - 더 나은 UX에 대한 제안 및 설계 참여
 
 <h3 class='no-border' style='margin-top: 1em;'>
-  <a target='_blank' href='https://flex.team/'>플렉스</a>
+  <a target='_blank' href='https://flex.team/'>flex</a>
   <div class='period'>(2021.02 ~ 2022.11)</div>
 </h3>
 
@@ -97,7 +97,7 @@ Design System2.0의 Lesson Learn을 바탕으로 새로운 디자인 시스템�
 - 회사별 구성원 온보딩 과정의 커스텀이 불가능한 문제를 해결하기 위해 구성원 초대 템플릿을 관리할 수 있는 형태로 온보딩 기능 개선
 
 <h3 class='no-border'>
-  <a href='https://www.banksalad.com/' target='_blank'>뱅크샐러드</a>
+  <a href='https://www.banksalad.com/' target='_blank'>banksalad</a>
   <div class='period'>(2018.12 ~ 2021.02)</div>
 </h3>
 
