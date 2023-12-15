@@ -23,6 +23,31 @@ lang: 'ko'
 </h2>
 
 <h3 class='no-border' style='margin-top: 1em;'>
+  <a target='_blank' href='https://toss.im/'>토스</a>
+  <div class='period'>(2023.03 ~ )</div>
+</h3>
+
+|              |                                                         |
+| -----------: | ------------------------------------------------------- |
+| **position** | PC Design Platform Team |
+| **projects** | Design System 재개발  |
+
+#### Design System
+
+**tds-pc 2.0, tds-desktop 설계 및 개발**
+
+다양한 토스 계열사에서 사용하는 새로운 PC디자인 시스템을 구축했습니다. 새로운 디자인 시스템의 목표, 방향성을 설정하고 UX 및 DX개선에 기여했습니다.
+
+- 제품 컴포넌트의 추상화 레벨을 정의하고 디자인 시스템의 책임 정의
+  - 제품을 이루는 컴포넌트를 **도메인 컴포넌트의 조합 / 도메인 컴포넌트 / 프로덕트 시스템 / 디자인 시스템** 총 4단계로 분류하고 각 레이어의 책임을 정의
+  - 이를 바탕으로 디자인 시스템의 책임과 책임이 아닌 것을 나누고 의사결정의 토대 구성
+- 설계 방향 수립
+  - 낯섦 예산 내에서의 API설계, 일관성을 보장하는 디자인 시스템 설계 방향 수립 및 팀내 전파
+- 안정성과 신뢰를 위한 테스트 도입
+- 신규 시스템으로의 마이그레이션을 위한 codeshift 및 생태계 구성
+- 더 나은 UX에 대한 제안 및 설계 참여
+
+<h3 class='no-border' style='margin-top: 1em;'>
   <a target='_blank' href='https://flex.team/'>플렉스</a>
   <div class='period'>(2021.02 ~ 2022.11)</div>
 </h3>
