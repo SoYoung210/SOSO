@@ -9,7 +9,7 @@ lang: 'ko'
 </h1>
 
 <div class='personal-links'>
-<a href='https://so-so.dev' target='_blank'>https://so-so.dev</a> / <a href='https://github.com/SoYoung210' target='_blank'>https://github.com/SoYoung210</a> / <a href='mailto:ethdud1@gmail.com' target='_blank'>ethdud1@gmail.com</a>
+<a href='https://craft.so-so.dev' target='_blank'>https://craft.so-so.dev</a> / <a href='https://github.com/SoYoung210' target='_blank'>https://github.com/SoYoung210</a> / <a href='mailto:ethdud1@gmail.com' target='_blank'>ethdud1@gmail.com</a>
 </div>
 
 사람들의 생활을 편리하게 만들어주는 웹 서비스, Design System 그리고 글쓰기를 좋아하는 개발자입니다.
