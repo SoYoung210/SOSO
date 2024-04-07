@@ -301,6 +301,7 @@ thumbnail: './images/design-system-beyond-code/thumbnail.png'
 - (기능 요청) “디자인 handoff가 좀 더 자동화되면 좋겠어요.”
 - (문서) “오픈소스 라이브러리처럼 prop에 대한 자세한 설명과 풍부한 예시가 있었으면 좋겠어요”
 
+<br/>
 
 **1. (기능 요청) Combobox 컴포넌트에서 검색어 하이라이팅이 지원되었으면 좋겠어요**
 
