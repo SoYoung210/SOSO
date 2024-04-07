@@ -1,6 +1,6 @@
 ---
 title: '디자인 시스템, 코드를 넘어서'
-date: 2024-04-08 16:00:09
+date: 2024-04-07 16:00:09
 category: react
 thumbnail: './images/design-system-beyond-code/thumbnail.png'
 ---
@@ -167,7 +167,7 @@ thumbnail: './images/design-system-beyond-code/thumbnail.png'
 디자인 시스템을 포함하여 모든 라이브러리는 결국 생태계가 구축되지 않으면 발전의 한계를 마주하게 된다. 앞서 언급한 것처럼 대부분의 조직에서 라이브러리를 유지보수 하는 팀은 사용자에 비해 절대적 소수이기 때문이다.
 
 ![the orbit model](./images/design-system-beyond-code/orbit_model_color.png)
-<small>https://github.com/orbit-love/orbit-model/blob/main/orbit_model_color.png</small>
+<small style="opacity: 0.5;">https://github.com/orbit-love/orbit-model/blob/main/orbit_model_color.png</small>
 
 라이브러리를 만드는 팀에서 기대하는 이상적인 상황은 **핵심 기능에 대한 개선을 팀에서 주도하면서 사용자로부터 기여 받으며 함께 성장해 나가는 것이다.**
 
@@ -223,13 +223,13 @@ thumbnail: './images/design-system-beyond-code/thumbnail.png'
 
 제품팀에서 새로운 시스템을 적용하는 것은 큰 부담이다. 도입을 꺼려하는 것이 당연한 현상임을 이해하고 공감해야 한다. (‘고생해서 만들었는데…왜 안쓰지’ 속상해 했던 경험이 있는데, 멘탈 관리에 별로 도움이 되지 않았다.)
 
-![rogers-diffusion-of-innovation-curve](./images/rogers-diffusion-of-innovation-curve.png)
-<small>Rogers' Diffusion of Innovation Curve (after Rogers 1995)</small>
+![rogers-diffusion-of-innovation-curve](./images/design-system-beyond-code/rogers-diffusion-of-innovation-curve.png)
+<small style="opacity: 0.5;">Rogers' Diffusion of Innovation Curve (after Rogers 1995)</small>
 
 어떤 제품이던 시장에 전달될 때 고객은 위와 같은 패턴을 가진다. (이 글에서는 편의상 이노베이터와 얼리어답터를 모두 ‘얼리어덥터’라고 칭한다.)
 
-얼리어덥터 고객들은 여러분의 제품을 기꺼이 다른 고객(Majority)에게 전파할 힘이 있다. 뜻이 맞는 얼리어덥터 고객들을 제품 개발에 참여시키고 그들의 의견을 제품에 적극적으로 반영해야 한다. 제품 개선과 세일즈 영역에서 빠르게 앞서나갈 수 있다.
-<small>https://fromundefined.com/posts/2024-02-uxs-working-culture/</small>
+얼리어덥터 고객들은 여러분의 제품을 기꺼이 다른 고객(Majority)에게 전파할 힘이 있다. 뜻이 맞는 얼리어덥터 고객들을 제품 개발에 참여시키고 그들의 의견을 제품에 적극적으로 반영해야 한다. 제품 개선과 세일즈 영역에서 빠르게 앞서나갈 수 있다.<br />
+<small style="opacity: 0.5;"><a href="https://fromundefined.com/posts/2024-02-uxs-working-culture/" target="_blank">참고자료: fromundefined/2024-02-uxs-working-culture/</a></small>
 
 그래서, 새로운 디자인 시스템 전파에서 **얼리어답터를 얼마나 빠르게 많이 확보하는지가 핵심이다.**
 
@@ -278,13 +278,13 @@ thumbnail: './images/design-system-beyond-code/thumbnail.png'
 - (기능요청) “디자인 handoff가 좀 더 자동화 되면 좋겠어요.”
 - (문서) “오픈소스 라이브러리처럼 prop에 대한 자세한 설명과 풍부한 예시가 있었으면 좋겠어요”
 
-1. **Combobox컴포넌트에서 검색어 하이라이팅이 지원되었으면 좋겠어요**
+**1. (기능요청) Combobox컴포넌트에서 검색어 하이라이팅이 지원되었으면 좋겠어요**
 
 하지 않는다. Combobox컴포넌트에서 정의한 기본기능 범위를 넘어서는 기능이다. 기본 기능으로의 제공도 고려해볼 수 있지만, 컴포넌트를 쌓아나가는 단계에서 이미 완료한 컴포넌트의 기본기능 정의를 다시 논의하는 것은 단계에 맞지 않는 일이다.
 
 시스템에서 제공하는 기능은 충분히 일반적이며 ux와 dx 모두를 고려한 의사결정이어야 한다. 팀이 집중하고 있는 작업의 흐름을 깰만큼 중요한 기능이 아니라고 생각된다면 제공하지 않는다. 확장성을 고려한 개발이 중요한 이유다. 모든 기능을 제공할 수 없다. 부가적인 기능이 필요하다면 사용처에서 만들어 쓸 수 있어야 한다.
 
-2. **Dropdown 컨텐츠 내부에 위치한 검색 인풋에서도 아이템 탐색 키보드 액션이 지원되었으면 좋겠어요**
+**2. (기능요청) Dropdown 컨텐츠 내부에 위치한 검색 인풋에서도 아이템 탐색 키보드 액션이 지원되었으면 좋겠어요**
 
 한다. 일반적인 기능 범주이고, 아이템 탐색 키보드 접근성은 Dropdown컴포넌트의 기본기능이기 때문에 지원 해야한다.
 
@@ -292,19 +292,19 @@ thumbnail: './images/design-system-beyond-code/thumbnail.png'
 
 이렇게 중간정도의 우선순위를 가지면서 해결해야 하는 문제를 ‘만드는 중에’ 단락에서 언급한 여유시간을 활용해 해결하는 것을 추천한다.
 
-3. **(기능요청) “디자인 handoff가 좀 더 자동화 되면 좋겠어요.”**
+**3. (기능요청) 디자인 handoff가 좀 더 자동화 되면 좋겠어요.**
 
 하지 않는다. ‘기본’을 다 하지 않은 상태에서 부가기능을 손대는 것은 욕심이다. 제품조직의 생산성에 기여해야 하는 플랫폼 팀 입장에서 무언가 하지 않는다라는 결정이 어렵겠지만, 하지 않을 일을 정의해야 할 일을 제대로 제 시간에 해낼 수 있다.
 
 때로는 훌륭한 엔지니어링과 우아하고 높은 비용의 해결책이 아닌, 투박하고 저렴한 비용의 해결책을 선택한다. 현재 단계에서는 이런 자동화 요청이 투박한 해결책이 필요한 문제였다.
 
-4. (**문서) “오픈소스 라이브러리처럼 prop에 대한 자세한 설명과 풍부한 예시가 있었으면 좋겠어요”**
+**4. (문서) 오픈소스 라이브러리처럼 prop에 대한 자세한 설명과 풍부한 예시가 있었으면 좋겠어요**
 
 하지 않는다. 문서는 생태계를 구성하는 매우 중요한 요소이다. 심미적으로 아름다워야 하고, 원하는 정보를 빠르게 얻을 수 있도록 시간을 투자해야 한다.
 
 하지만 컴포넌트 완성도라는 본질이 먼저다. 팀이 현재 어느 영역까지 집중할 수 있는지를 판단하고 본질을 지켜나가는 일 말고 다른 맥락을 다룰 수 없다면 뭉툭하게 해결해야 한다.
 
-현재는 문서화에 추가적인 투자가 어려워  [control](https://storybook.js.org/docs/api/doc-block-controls) 을 사용하여 [스토리북](https://storybook.js.org/)으로만 제공하고 있다.
+현재는 문서화에 추가적인 투자가 어려워 [control](https://storybook.js.org/docs/api/doc-block-controls) 을 사용하여 [스토리북](https://storybook.js.org/)으로만 제공하고 있다.
 
 ---
 
@@ -318,16 +318,16 @@ thumbnail: './images/design-system-beyond-code/thumbnail.png'
 
 이미 만들어진 디자인 시스템들을 살펴보면서 어떤 기준으로 컴포넌트를 나눴는지, 확장성을 어떻게 가져가는지 등을 살펴보며 의사결정의 토대를 잡는 것이 좋은 출발이 될 수 있다. 아래는 내가 참고하는 라이브러리 목록인데, headless 라이브러리도 있고 스타일을 참고하거나 두어개 컴포넌트를 구현방식을 참고하기 위한 것도 있다.
 
-- radix-ui
-- ark-ui
-- react-spectrum
-- ariakit
-- primer/react
-- mantine
-- chakra-ui
-- next-ui
-- termor
-- https://developer.semrush.com/intergalactic/components/notice-bubble/
+- [radix-ui](https://www.radix-ui.com/)
+- [ark-ui](https://ark-ui.com/)
+- [react-spectrum](https://react-spectrum.adobe.com/)
+- [ariakit](https://ariakit.org/)
+- [primer/react](https://primer.style/react/)
+- [mantine](https://mantine.dev/)
+- [chakra-ui](https://chakra-ui.com/)
+- [next-ui](https://nextui.org/)
+- [shadcn/ui](https://ui.shadcn.com/)
+- [intergalactic](https://developer.semrush.com/intergalactic/)
 
 ### 프로덕트 시스템
 
