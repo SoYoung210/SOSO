@@ -5,7 +5,7 @@ module.exports = {
   introduction: `📝 소소하게 끄적이는 개발로그`,
   siteUrl: `https://so-so.dev`, // Your blog site url
   social: {
-    twitter: `th096`, // Your Twitter account
+    twitter: `soyoung__ee`, // Your Twitter account
     github: `SoYoung210`, // Your GitHub account
     medium: '',
     facebook: '',
