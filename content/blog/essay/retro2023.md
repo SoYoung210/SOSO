@@ -107,12 +107,6 @@ craft를 진행하면서 가장 어려웠던 점은 디자인할 때 뭔가 틀�
 
 ## 스쿠버 다이빙
 
-<iframe width="560" height="315" src="https://www.youtube.com/embed/oHbgjCmFQA4?si=RRIllRDrOumQXfrD" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
-
-<iframe width="560" height="315" src="https://www.youtube.com/embed/UkqCklQbIb4?si=3ol_NtnVz7rSpe6w" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
-
-<iframe width="560" height="315" src="https://www.youtube.com/embed/gL0DU29CCGs?si=LwpBrPKM7pM4oBrU" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
-
 올 해 8월 스쿠버 다이빙에 도전했고 40번정도의 다이빙을 했다. 사실 내년 추석까지의 다이빙 계획도 미리 세웠다.
 
 직업인 프로그래밍이 취미였고, 남는 시간에도 노트북으로 뭔갈 하던 나에게 이렇게 깊이 빠진 취미가 생겼다는 것은 꽤 고무적인 사건이다.

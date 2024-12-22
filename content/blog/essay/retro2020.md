@@ -85,7 +85,3 @@ Banksalad Product Language(이하 BPL)을 운영하고 있다. 올 해 진행했
 > 회고 글에 짧게나마 '이해했다'라고 적기까지 [@JungWinter](https://github.com/JungWinter) 님께 많은 도움을 받았습니다. 감사합니다.
 
 2021년의 회고를 쓸 때 담길 이야기가 궁금하다. 그 이야기를 만들어 가는 것은 나 자신이니 후회 없는 이야기를 쓰고 싶다.
-
-## Thanks To,
-
-끝으로 언제나 옆에서 좋은 동료, 친구가 되어주는 [Jbee](http://github.com/JaeYeopHan) 님께 감사드립니다.
