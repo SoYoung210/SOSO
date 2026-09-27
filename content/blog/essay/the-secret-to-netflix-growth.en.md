@@ -1,5 +1,5 @@
 ---
-title: '[Book Review] Powerful (No Rules Rules) — The Secret to Netflix''s Growth'
+title: '[Book Review] Powerful (No Rules Rules) - What Made Netflix Grow'
 date: 2020-12-25 20:11:22
 category: essay
 thumbnail: './images/the-secret-to-netflix-growth/thumbnail.jpg'
@@ -7,99 +7,99 @@ thumbnail: './images/the-secret-to-netflix-growth/thumbnail.jpg'
 
 ![image-thumbnail](./images/the-secret-to-netflix-growth/thumbnail.jpg)
 
-I never had my own answer to what "freedom and responsibility" actually does to an organization's culture, or what a good culture even is and what effect it has. I was curious about Netflix's story, since these are the two words they seem to value most, so on the first day of the holidays I opened to the first page and read the whole thing in one sitting.
+I never had a real answer for what "freedom and responsibility" actually does to a company's culture, or what makes a culture good in the first place. Netflix treats those two words as sacred, so I was curious enough to crack the book open on the first day of the holidays, and I finished it in one sitting.
 
-The moment I closed the book, my first reaction was "this is impressive." I found myself wanting to know more about Netflix's deeper struggles and trial and error, but even just what was in the book was enough to leave an impression.
+The second I closed it, all I could think was: wow. I wanted to know even more about the trial and error behind the scenes, but what made it into the book was already plenty to sit with.
 
-"Company policies are built on a **mistaken assumption** about people. That to get employees to apply themselves to their work, you need to offer incentives, and you need to tell each person exactly what they should be doing."
+"Company policy is built on a **mistaken assumption** about people: that you have to dangle incentives to get employees to commit to their work, and spell out exactly what each person should be doing."
 
-This book starts by completely rejecting that premise. It introduces what a company needs to think about in order for employees to work as powerfully as possible, and further, what strategy they took on 'hiring,' a challenge every company faces.
+The whole book starts by tearing that assumption apart. It walks through what a company needs to get right for employees to do their most powerful work, and beyond that, what strategy Netflix actually took on hiring, the one problem every company wrestles with.
 
-If you're on the fence about reading this book, I'd strongly recommend it — and beyond that, sharing it with your team and discussing it from various angles. Even if you don't end up adopting the culture the book describes, I think the very act of looking back at your current culture and thinking about where to go from here has value in itself.
+If you're on the fence about reading it, read it. Better yet, bring it to your team and argue about it. Even if you never adopt a single thing the book describes, just taking the time to look at your own culture and think about where it's headed feels worth it.
 
-Let me write this review by pulling out a few passages that stood out to me and adding my own thoughts.
+Here's my review: a handful of passages that stuck with me, plus my own two cents on each.
 
-## Chapter 1. Treat Them Like Adults
+## Chapter 1: Treat People Like Adults
 
-"Contributing to success is the most powerful motivator there is. When a company treats its employees like adults, they behave like adults. **Employees don't abuse their freedom.**"
+"Nothing motivates people more than contributing to something that succeeds. Treat employees like adults and they act like adults. **They don't abuse their freedom.**"
 
-Coming to work and doing amazing work with a team of colleagues you trust and respect, in a state of maniacal focus — that's the culture Netflix aims for.
+Show up, lock in with a team of people you trust and respect, and do work you're proud of. That's the culture Netflix is chasing.
 
-This kind of culture might not be a fit for every company right away. Regardless of an organization's size, control and discipline are a relatively low-risk way to run things. Setting a lot of rules everyone has to follow and working within them can be effective to some degree.
+That won't fit every company right away. No matter the size of an organization, control and rules are the lower-risk way to run things. Stack up enough rules and make everyone follow them, and it can work, to a point.
 
-But if the direction you ultimately want to pursue is 'a team that does amazing work in a state of maniacal focus with colleagues they trust and respect,' it's worth stepping back and asking whether many of the rules we take for granted are actually getting in the way of that focus.
+But if the goal is really a team of people you trust and respect, locked in and doing great work together, it's worth asking whether all those rules we take for granted are actually just getting in the way.
 
-"As policies and procedures are removed one by one, employees will move faster and accomplish more."
+"Strip away policies and procedures one at a time, and employees move faster and get more done."
 
-When a company treats its employees like adults, they act like adults. If there's a chain of distrust, it doesn't really matter where you decide to break it first.
+Treat employees like adults, and they act like adults. If there's a chain of distrust somewhere, arguing over who should break it first doesn't really matter.
 
-"If you're a leader, hire the talent you need, and give them the tools and information they need. Then they'll gladly do 'brilliant work.'"
+"If you're a leader, hire the people you need, hand them the tools and information they need, and they'll happily do 'brilliant work.'"
 
-## Chapter 2. Communicate Constantly About Challenges
+## Chapter 2: Keep the Challenges Out in the Open
 
-"Employees at every level were given permission to demand an explanation about the challenges they faced or the decisions leadership made, and in doing so, employees gained more information and a culture of curiosity spread throughout the whole company."
+"Every employee, at every level, was given permission to demand an explanation, whether it was about their own work or a decision from leadership. That's how employees ended up with more information, and how a culture of curiosity spread through the whole company."
 
-Being constantly challenged and having to think hard about things like revenue or business direction is a great direction in principle, but from the perspective of someone actually running the company, I imagine it isn't easy.
+Being challenged all the time on revenue or business direction sounds great in theory, but I imagine it's a lot to stomach if you're the one actually running the place.
 
-There might be anxiety about decision-making slowing down, and some information might feel like 'something employees don't need to know.' Even if sharing this kind of information is difficult, wouldn't sharing it transparently let you gain insight into blind spots, and give each individual the motivation to work not as an 'employee' but as a 'colleague'?
+There's the fear that decisions will slow down, or that some information just isn't something employees need. But even when sharing it feels risky, doesn't going fully transparent surface blind spots you'd never have caught otherwise, and give people a reason to show up as a 'colleague' instead of just an 'employee'?
 
-## Chapter 3. Be Extremely Candid
+## Chapter 3: Be Radically Honest
 
-The book says you need the courage to give feedback face-to-face, even when it's negative. To deliver that feedback well, you need to reflect a lot on your own verbal and non-verbal expression, and think hard about what 'good feedback' even looks like.
+The book argues you need the nerve to deliver feedback face to face, even the negative kind. Doing that well takes real self-awareness, watching your own tone and body language, and thinking hard about what 'good feedback' even looks like.
 
-"The most important thing when giving feedback is that it has to be about behavior. (...) It has to be actionable, and **the person receiving the feedback needs to be able to understand what behavior change is being asked of them.**"
+"The most important rule of feedback: talk about the behavior. (...) It has to be actionable, and **the person on the receiving end needs to walk away knowing exactly what change is being asked of them.**"
 
-Delivering negative feedback directly isn't easy, but honest feedback between colleagues is definitely fertile ground for growth. I think honestly admitting mistakes and not repeating them can itself count as growth.
+Delivering hard feedback face to face is never easy, but honest feedback between colleagues is fertile ground for growth. I'd argue that owning a mistake and not repeating it is already growth in itself.
 
-> Netflix institutionalized an 'annual feedback' day for this, and I think it's important that this feedback system isn't tied to salary reviews. Wouldn't a feedback system that's tied to evaluation make it hard for the feedback to stay honest?
+> Netflix built this into an official 'annual feedback' day, and the key detail, I think, is that it's kept separate from salary reviews. Tie feedback to evaluation and how honest can it really stay?
 
-## Chapter 5. Create the Future You Want, 'Now'
+## Chapter 5: Build the Future You Want, Starting Now
 
-This chapter is about the need to think about what kind of team we actually 'need.' It's a broader idea than simply asking how many people the team should have. The point is you need to find an answer to what kind of team you want to be six months from now, and 'how' you should be working to get there.
+This chapter is about figuring out what team you actually need, and it's a much bigger question than headcount. You have to work out what kind of team you want to be six months from now, and 'how' you need to work to become it.
 
-"You have to recognize the problems your team doesn't currently know how to solve, or isn't good at (...) Training team members well and discovering their growth potential is an important skill for a team lead. That kind of talent is often not obvious, even to the people themselves."
+"You have to recognize the problems your team doesn't know how to solve, or just isn't good at yet. (...) Training people well and spotting their growth potential is one of the most important skills a team lead can have. That kind of potential often stays hidden, sometimes even from the person who has it."
 
-One more important keyword shows up in this chapter: 'hiring.' Netflix's 'rule of thumb' is as follows.
-> To be precise it's about 'promotion,' but I think it follows the same thread of context.
+One more key idea shows up here: hiring. Netflix's 'rule of thumb' goes like this.
+> Technically this is about promotion, but I'd say it's part of the same thread.
 
-- Work that demands specialized expertise: if better expertise exists outside the company, hire the person who has it.
-- Work where we're at the leading edge of innovation: if we're confident we're already the best in that field, promote from within.
+- Work that demands deep expertise: if better expertise exists outside the company, go hire it.
+- Work where we're already leading the way: if we're confident we're already the best at it, promote from within.
 
-Of the 'questions leaders need to ask' at the end of the chapter, the one that caught my eye the most was this one.
+Of the 'questions every leader should ask' at the end of the chapter, this is the one that stopped me.
 
-"How much time are you spending developing your team's skills? How quickly do your team members reach the speed you're asking of them? How satisfied are you with that?"
+"How much time do you spend developing your team's skills? How fast do they reach the speed you expect of them? And how satisfied are you with that?"
 
-If you're leading a team, I think it would be worthwhile to keep answering this question on a short cycle, diagnosing the current situation and what the team is lacking as you go.
+If you're leading a team, revisiting that question on a regular cadence, and using it to diagnose where things stand and what's missing, seems like a habit worth building.
 
-## Chapter 6. Put the Best-Fit Talent in Every Position
+## Chapter 6: Put the Right Person in Every Seat
 
-This chapter covers the topic of 'salary' in hiring experienced employees, and it connects to [Chapter 1, Treat Them Like Adults](https://so-so.dev/essay/the-secret-to-netflix-growth/#chapter-1-%EC%96%B4%EB%A5%B8%EC%9C%BC%EB%A1%9C-%EB%8C%80%EC%A0%91%ED%95%98%EB%9D%BC).
+This chapter gets into salary for experienced hires, and it circles back to [Chapter 1, Treat People Like Adults](https://so-so.dev/essay/the-secret-to-netflix-growth/#chapter-1-%EC%96%B4%EB%A5%B8%EC%9C%BC%EB%A1%9C-%EB%8C%80%EC%A0%91%ED%95%98%EB%9D%BC).
 
-"If your employees are 'adults' who put the company first and handle their own work, a year-end bonus won't make them work harder or smarter. (omitted...) Since we had no intention of using it as 'golden handcuffs' to keep someone tied to the company for a set period, we didn't impose a stock option exercise period either."
+"If your employees are 'adults' who put the company first and handle their own work, a year-end bonus isn't going to make them work harder or smarter. (...) We never wanted stock options to be 'golden handcuffs' keeping people around for some fixed stretch, so we didn't attach a vesting period to them either."
 
-The book's conclusion is that the biggest driver of doing good work isn't a bonus tied to hitting a target, but **great colleagues and hard challenges.** I've never actually had to choose between a bonus and the best colleagues, but if that moment ever came, my answer would, without a doubt, be 'the best colleagues.'
+Its conclusion: the biggest driver of good work was never a bonus tied to hitting a target. It's **great colleagues and hard problems worth solving.** I've never actually had to pick between a bonus and the best colleagues, but if that day comes, my answer is already decided: the colleagues, every time.
 
-Thinking about it this way, I could get a faint sense of just how effective the culture and values Netflix pursues have been.
+Thinking it through this way, I could finally get a rough sense of why the culture and values Netflix pushes for actually worked.
 
-At the end of this chapter, two sentences made me reflect on myself as an interviewer.
+Two lines at the end of this chapter made me take a hard look at myself as an interviewer.
 
-- When scouting talent, you have to be genuinely creative. Dig deeper than a list of past experience. Focus on that person's fundamental problem-solving ability.
-- By the time the hiring process is over, make sure everyone you interviewed wants to join the company.
+- Scouting talent takes real creativity. Dig past the résumé. Focus on how the person actually solves problems at the root.
+- By the time the process wraps up, make sure every single person you interviewed still wants the job.
 
-## Chapter 7. Pay People What They're Worth
+## Chapter 7: Pay People What They're Worth
 
-The book argues that since performance reviews can't fully represent a person's total worth, evaluation and compensation need to be separated. To eliminate the system where an employee who created scarce value has to leave in order to increase their own worth, Netflix boldly did away with concepts like fixed salary tables and average salaries. They even encourage employees to regularly interview at other companies — to check just how competitive Netflix's compensation really is.
+The book's case: a performance review can never capture someone's full worth, so evaluation and pay need to stay separate. To kill the system where your most valuable people have to leave just to get paid what they're worth, Netflix threw out fixed salary bands and average-salary benchmarks entirely. They even push employees to go interview elsewhere on a regular basis, just to check whether Netflix's pay is actually still competitive.
 
-Netflix pays not just top-of-industry salaries, but 'the very best' salaries. It struck me as a way of saying: we're bringing in the best colleagues, and we'll treat them accordingly.
+Netflix doesn't just pay top-of-market, it pays 'the best there is.' It reads like a promise: bring in the best people, and pay them like it.
 
-Not every organization can choose this strategy, but in a way, I find myself guessing that Netflix's success came from the ambition to 'bring in the best colleagues' and the bold compensation system built to make that ambition real. As I read the book and imagined the atmosphere at Netflix, I could picture the best people gathered together working with intense passion — and isn't that the picture of an organization that a lot of people idealize?
+Not every company can afford this play, but I'd guess Netflix's success really does trace back to that ambition, hiring the best, and a pay structure bold enough to actually back it up. Reading it, I pictured the atmosphere inside Netflix: the best people in the room, working flat out together. Isn't that the picture a lot of us have in mind when we imagine the ideal company?
 
 ## Wrapping Up
 
-An organizational culture where 'extreme candor, complete freedom and responsibility, and open discussion about everything' is simply taken for granted, the way Netflix pursues it, is hard to achieve, but I think it's clearly worth it. In an organization that hasn't had this kind of culture before, there will likely be trial and error in the process of introducing it, and members who struggle to adapt to the change might speak up against it or leave the team.
+A culture where 'radical honesty, full freedom and responsibility, and open debate about everything' is just the norm, the way Netflix runs it, is a real challenge to pull off. But I think it's clearly worth it. Any organization that hasn't had this culture before will hit trial and error trying to introduce it, and people who can't adjust might push back, or just leave.
 
-As for whether this is a culture worth introducing even after weighing all of that, my honest answer is 'I still don't know.' Behind the glamorous-looking upsides in the book, there might be failures and hardships hidden that are hard to bear.
+Is it worth all of that? Honestly, I still don't know. Behind the glossy upsides in the book, there could be failures and hardship too painful to make it onto the page.
 
-But just like leveling up your service, organizational culture is also something you can level up, and Netflix's success story can be a great option to point you in that direction.
+Still, just like a product, culture is something you can keep leveling up, and Netflix's story is a solid reference point for where to take it.
 
-If you find it hard to define what 'an organization built on freedom and responsibility' even looks like, I think it would be worth reading this book and taking some time to think it over.
+If you're struggling to picture what 'an organization built on freedom and responsibility' even looks like, this book is a good excuse to sit with the question for a while.

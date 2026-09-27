@@ -1,5 +1,5 @@
 ---
-title: 'Different Ways to Handle Input'
+title: 'A Few Ways to Handle Input'
 date: 2021-03-21 16:00:09
 category: react
 thumbnail: './images/form-handling/thumbnail.png'
@@ -7,15 +7,15 @@ thumbnail: './images/form-handling/thumbnail.png'
 
 ![image-thumbnail](./images/form-handling/thumbnail.png)
 
-One of the tricky problems in web applications is the Form — receiving and handling user input data. This post introduces several ways to handle forms, along with [react-hook-form](https://react-hook-form.com/), one of the most popular form libraries.
+Forms, taking in what a user types and doing something with it, are one of the trickier problems in web development. Here I'll walk through a few ways to handle them, along with [react-hook-form](https://react-hook-form.com/), one of the most popular form libraries out there.
 
 ## A Simple Form
 
-A simple example that comes to mind for a Form is a Login Form that takes an Email and Password.
+The simplest form anyone pictures is a login form asking for an email and a password.
 
 ![simple-login](./images/form-handling/simple-login.png)
 
-In this case, you can implement it by defining state and a handler for each input's `value` and passing them down.
+You can build this by giving each input its own state and handler for `value`, then passing them down.
 
 ```jsx
 const EasyLoginForm = () => {
@@ -49,24 +49,24 @@ const EasyLoginForm = () => {
 }
 ```
 
-The `input`s used in the example above are **Controlled** **Components**.
+The `input`s in that example are **Controlled** **Components**.
 
 ### Controlled Component
 
-In a Controlled Component, form data is managed as the component's state.
+In a Controlled Component, form data lives in the component's own state.
 
 ![input-state-update](./images/form-handling/input-state-update.png)
 <small>https://goshakkk.name/controlled-vs-uncontrolled-inputs-react/</small>
 
-- The initial state is an empty string, `''`.
-- Type `a`, and `handleNameChange` picks up `a`; the input re-renders with `a` as its value.
-- Type `b`, and `handleNameChange` picks up the value `ab` and stores it as state. The input re-renders with the value `ab`.
+- It starts out as an empty string, `''`.
+- Type `a`, and `handleNameChange` picks it up; the input re-renders with `a` as its value.
+- Type `b` next, and `handleNameChange` grabs `ab` and stores it as state; the input re-renders again, now showing `ab`.
 
-Because input value changes are always **pushed**, the data (state) and the UI (input) stay in sync at all times, which is why you can reference the input's value directly.
+Because every value change gets **pushed** this way, the data (state) and the UI (input) never fall out of sync, so you can read the input's value directly, any time.
 
-## As Forms Get More Complex
+## When Forms Grow
 
-As the number of forms grows and things get more complex, the amount of code you need grows too, and you end up doing more [state lifting](https://reactjs.org/docs/lifting-state-up.html) to share state. In this case, state ends up concentrated in the parent component, and child components inevitably have to receive handlers and state injected into them, which makes it hard to reuse components on their own.
+Add more forms and more complexity, and the code piles up fast, along with all the [state lifting](https://reactjs.org/docs/lifting-state-up.html) needed to share state around. The parent ends up holding all the state, and child components inevitably need handlers and state injected into them, which makes reusing any one of them on its own pretty hard.
 
 ```jsx
 const HardRegisterForm = () => {
@@ -87,7 +87,7 @@ const HardRegisterForm = () => {
 };
 ```
 
-Responsibility has become concentrated in `HardRegisterForm`. If logic like validation gets added on top of handling values, this component will only get more verbose. To solve this, you can use React's [useImperativeHandle](https://reactjs.org/docs/hooks-reference.html#useimperativehandle) hook to split up the form and isolate each part so it manages its own state.
+All the responsibility has piled onto `HardRegisterForm`. Add validation or any other logic on top of just handling values, and this component only gets more bloated. React's [useImperativeHandle](https://reactjs.org/docs/hooks-reference.html#useimperativehandle) hook offers a way out: split the form up and let each piece manage its own state in isolation.
 
 ```jsx
 const BasicInformationFormGroup = (
@@ -120,9 +120,9 @@ const BasicInformationFormGroup = (
 };
 ```
 
-We split up the form and, through `useImperativeHandle`, exposed **only each input's value** to the outside. The parent component can access the values through the `ref` it passed to `BasicInformationFormGroup`. By isolating information this way, we can properly distribute responsibility across each component.
+Splitting the form apart and exposing **only each input's value** through `useImperativeHandle` means the parent can reach those values through the `ref` it hands to `BasicInformationFormGroup`. Isolating the data like this spreads responsibility across components the way it should be.
 
-Beyond that, when you need to handle logic based on a computed value inside a nested component, this also lets you **handle the related logic cohesively.** For example, consider a case where you need a bank's full information based on the selected bank name.
+It also pays off any time a nested component needs to react to a computed value: you can keep **all that related logic in one cohesive place.** Take a case where selecting a bank name needs to pull up that bank's full details.
 
 ```tsx
 const 은행Form = () => {
@@ -151,7 +151,7 @@ const 은행Form = () => {
 };
 ```
 
-`은행Form` (BankForm) is managing two pieces of information: **bank selection** and **account number input.** As the code grows longer, it gets harder to grasp the context around each piece of information.
+`은행Form` (BankForm) is juggling two separate things: **picking a bank** and **entering an account number.** The longer this code gets, the harder it is to keep track of the context behind each piece.
 
 ```tsx
 const 은행Form = () => {
@@ -193,27 +193,27 @@ const 은행_선택 = (_, ref: Ref) => {
 };
 ```
 
-We created a `은행_선택` (BankSelect) component and separated out the logic that looks up bank information based on the selected bank name. It returns the value through a ref so the parent component can know about the 'selected bank.'
+Splitting off a `은행_선택` (BankSelect) component pulls out the logic that looks up a bank by its selected name. It hands the 'selected bank' back to the parent through a ref, so the parent always knows what's picked.
 
-## Rethinking Controlled Components
+## Rethinking the Controlled Component
 
-We improved how we use Controlled Components, but we still have to declare a handler for every input, and as a form grows, we can run into performance issues from re-rendering.
+Even with that improvement, you're still declaring a handler for every single input, and as the form grows, re-renders can start costing you real performance.
 
 ![controlled_uncontrolled_rerender](./images/form-handling/controlled_uncontrolled_rerender.gif)
 
-While managing every input value as state, changing even a single input's value causes the whole thing to re-render. Before reaching for memoization to optimize this, let's ask a more fundamental question.
+Manage every input as state, and changing just one of them re-renders the whole thing. Before reaching for memoization to patch that, let's ask a more basic question.
 
-### Do we need to observe every piece of state?
+### Do We Need to Watch Every Piece of State?
 
-Let's think about the purpose of a Form. **The default behavior of a Form is to submit the information a user entered when the submit button is pressed.** Some inputs might need to run certain logic on every `onChange`, but it's hard to say that falls within the scope of the default behavior.
+Think about what a form is actually for. **By default, all it needs to do is submit what the user typed once they hit the submit button.** Sure, some inputs might need logic on every `onChange`, but that's not really part of the form's core job.
 
-How should we deal with re-renders caused by changes to input values we don't even need to know about? How do we keep each input isolated?
+So how do you stop a re-render from firing over an input value you don't even care about? How do you keep every input isolated from the rest?
 
-The moment you start wondering about this, it's worth considering handling things as an Uncontrolled Component.
+The moment those questions come up, it's worth considering an Uncontrolled Component instead.
 
 ### Uncontrolled Component
 
-With an Uncontrolled Component, each input's value **is stored in the DOM.** Instead of defining state and building handlers, you access the DOM through a `ref` to handle events.
+With an Uncontrolled Component, each input's value **lives in the DOM.** Instead of defining state and writing handlers, you reach the DOM through a `ref` and handle events from there.
 
 ```jsx
 const NameForm = () => {
@@ -235,11 +235,11 @@ const NameForm = () => {
 }
 ```
 
-Rather than subscribing to input value changes, this **pulls** the value through the ref passed to the input, only when you need it.
+Rather than subscribing to every value change, it **pulls** the value through that ref only when you actually need it.
 
-### Switching to an Uncontrolled Component
+### Switching It to an Uncontrolled Component
 
-The `BasicInformationFormGroup` component we made above can be changed into an Uncontrolled Component like this.
+Here's the `BasicInformationFormGroup` from before, rebuilt as an Uncontrolled Component.
 
 ```jsx
 const BasicInformationFormGroup = (
@@ -274,30 +274,30 @@ const BasicInformationFormGroup = (
 };
 ```
 
-Each input no longer needs to receive `value` and `handler` as props.
+None of the inputs need `value` or `handler` passed in as props anymore.
 
-What's different from before is the use of a [getter](https://developer.mozilla.org/ko/docs/Web/JavaScript/Reference/Functions/get). The second argument to `useImperativeHandle` is a function, and this creates a closure that captures values. By returning a function through the `getter`, and having that getter function get called only at the moment `values` is referenced, you can avoid bugs caused by that capturing.
+What's changed is the [getter](https://developer.mozilla.org/ko/docs/Web/JavaScript/Reference/Functions/get). `useImperativeHandle`'s second argument is a function, and calling it creates a closure that captures whatever values existed at that moment. Return a `getter` instead, and the getter only actually runs once `values` gets referenced, which sidesteps that stale-capture bug entirely.
 
-## Situations Where Uncontrolled Components Are Hard to Use
+## Where Uncontrolled Components Get Awkward
 
-Because Uncontrolled Components don't subscribe to every change in an input's value, and instead pull the value only when needed, they can feel hard to work with in situations like these.
+Since an Uncontrolled Component never subscribes to every value change and just pulls what it needs, it can feel clumsy in situations like these.
 
-- When you need to run specific logic based on a validation result at the moment of onChange
-- When many forms depend on each other's values
+- Running specific logic based on a validation result at the moment of onChange
+- A bunch of forms that all depend on each other's values
 
-Because you don't fully control the state value, this part can be difficult, but I didn't want to give up the various advantages Uncontrolled Components offer (performance, concise code, and so on), so I solved the downsides above using react-hook-form's [watch](https://react-hook-form.com/api#watch) and [useFormContext](https://react-hook-form.com/api#useFormContext).
+Not fully controlling the state does make these awkward, but I didn't want to give up what Uncontrolled Components bring to the table (performance, leaner code, and so on), so I worked around those downsides using react-hook-form's [watch](https://react-hook-form.com/api#watch) and [useFormContext](https://react-hook-form.com/api#useFormContext).
 
-> Just as there's no 'perfect answer' for any technology, this is admittedly a hard part of Uncontrolled Components, but even so, I didn't want to give them up. I felt that simply solving the verbosity and wasted performance that bother you when handling forms was already advantage enough.
+> No technology has a 'perfect answer,' and yes, this part of Uncontrolled Components is admittedly hard. But I still didn't want to give them up. Just solving the verbosity and wasted performance that come with handling forms felt like advantage enough on its own.
 
 ## [react-hook-form](https://react-hook-form.com/)
 
-react-hook-form is a library that makes it easy to handle forms the Uncontrolled way. Let's look at react-hook-form along with some usage examples.
+react-hook-form makes handling forms the Uncontrolled way painless. Let's walk through it with a few examples.
 
-### When Inputs Are Added Dynamically
+### When Inputs Get Added Dynamically
 
-Sometimes the number of inputs you can fill in grows dynamically. If you access values by passing a `ref`, you'd need to create a new ref every time the number of fields increases, which is impossible if you don't know ahead of time how many there will be.
+Sometimes the number of inputs isn't fixed, it grows on the fly. Access values through a passed-in `ref`, and you'd need a fresh ref for every new field, which is impossible if you don't know the count ahead of time.
 
-Every time the number of forms increases, you'd need to assign an ID and handle the data as a Map structure.
+Every time a form gets added, you'd have to assign it an ID and manage the whole thing as a Map.
 
 ```jsx
 // https://github.com/fitzmode/use-dynamic-refs/blob/master/src/index.tsx
@@ -324,7 +324,7 @@ const Example = () =>  {
 }
 ```
 
-You could implement this yourself as shown above, but a good wheel has already been invented. You can solve this simply with [useFieldArray](https://react-hook-form.com/api#useFieldArray).
+You could roll your own version of this, but why reinvent a perfectly good wheel? [useFieldArray](https://react-hook-form.com/api#useFieldArray) solves it in a couple lines.
 
 ```jsx
 const FIELD_NAME = 'test';
@@ -352,7 +352,7 @@ const ArrayForm = () => {
 };
 ```
 
-### When You Need Logic Based on the Value at onChange Time
+### Running Logic Off the onChange Value
 
 ```tsx
 const WatchedInput = () =>  {
@@ -372,15 +372,15 @@ const WatchedInput = () =>  {
 }
 ```
 
-Every time the value of `showAge` changes, `WatchedInput` re-renders, and if it's true, it renders the `age input`. `watch` subscribes to changes through an event listener and triggers a re-render based on the field value. I thought this solved one of the hard parts of Uncontrolled Components really well, which made me curious how it works internally, and I wrote up the details separately in [A Closer Look at react-hook-form](https://github.com/SoYoung210/soso-tip/issues/53).
+Every time `showAge` changes, `WatchedInput` re-renders and shows the `age input` when it's true. `watch` subscribes to changes through an event listener and triggers a re-render off the field's value. This struck me as a solid answer to one of the hard parts of Uncontrolled Components, so I got curious about how it actually works, and wrote up the internals separately in [A Closer Look at react-hook-form](https://github.com/SoYoung210/soso-tip/issues/53).
 
-### When Many Forms Depend on Each Other's Values
+### When Forms Depend on Each Other's Values
 
 ![complex-form](./images/form-handling/complex-form.png)
 
-We split 'Basic Info' (`기본정보`) and 'Account Info' (`계좌정보`) into separate components, but let's think about a case where verifying an account (`계좌 실명인증`) requires a bank name, an account number, and a **resident registration number** (Korea's national ID number).
+Say you've split 'Basic Info' (`기본정보`) and 'Account Info' (`계좌정보`) into separate components, but verifying the account (`계좌 실명인증`) needs the bank name, account number, and a **resident registration number** (Korea's national ID number).
 
-When forms depend on each other's values like this, it's hard to split them into separate components, and handling it all in one file concentrates responsibility and makes props drilling worse. Right now it's just a single reference, so it can be solved simply, but the more deeply components need to be nested, the harder it gets to manage. A situation like this can be solved easily using [FormContext](https://react-hook-form.com/api#useFormContext).
+Once forms depend on each other's values like this, splitting them into separate components gets hard, and cramming it all into one file piles up responsibility and makes props drilling worse. It's a single reference right now, so it's manageable, but the deeper components get nested, the harder that becomes. [FormContext](https://react-hook-form.com/api#useFormContext) makes this whole problem go away.
 
 ```tsx
 const ParentForm = () => {
@@ -412,7 +412,7 @@ const 계좌정보 = () => {
 };
 ```
 
-From `계좌정보` (AccountInfo)'s perspective, **since the resident registration number is an external value,** we made a separate component that connects to FormContext so the value can be injected in.
+From `계좌정보` (AccountInfo)'s point of view, **the resident registration number is an outside value,** so I built a separate component wired to FormContext to inject it in.
 
 ```tsx
 export const ConnectRTHValue = ({
@@ -442,11 +442,11 @@ const ParentForm = () => {
 
 ```
 
-Using the [renderProps](https://reactjs.org/docs/render-props.html) pattern this way means the child Form component can be used both together with react-hook-form and without it, and since you can write tests without mocking the Provider, testing becomes easier too.
+The [renderProps](https://reactjs.org/docs/render-props.html) pattern here means the child form component works whether or not it's paired with react-hook-form, and since tests don't need to mock the Provider, testing gets a lot easier too.
 
-## Conclusion
+## Wrapping Up
 
-There's no Best Practice that fits every form well. This post mainly introduced handling forms as Uncontrolled Components using react-hook-form, but when specific logic needs to run on every change event, or when a large-scale form has a wide range of value dependencies, combining Controlled Components with the Context API might be a better choice.
+There's no single best practice that fits every form. I mainly covered handling forms as Uncontrolled Components with react-hook-form here, but when specific logic has to fire on every change event, or a large form has a tangle of value dependencies, pairing Controlled Components with the Context API might serve you better.
 
 ## Reference
 

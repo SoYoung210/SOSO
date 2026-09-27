@@ -7,176 +7,176 @@ thumbnail: './images/googling/00.jpg'
 
 ![image-thumbnail](./images/googling/00.jpg)
 
-In the end, finding information means searching.
-Wouldn't it be great if a single search turned up a silver-bullet article that solved the problem right away...
+Finding information really just comes down to searching.
+Wouldn't it be great if one search turned up a silver-bullet article that fixed everything right away...
 
-**`How do I search well?`**  
-There's something that has to come before answering this question.
+**`So how do you actually get good at searching?`**  
+Before we get to that, there's something more basic to sort out first.
 
 ## What Don't I Know?
 
-Searching happens to resolve **something you don't know.**
-How can you accurately figure out what you know and what you don't?
+You search to resolve **something you don't know.**
+But how do you actually pin down what you know and what you don't?
 
-Let's use the example of redux-observable testing, which I've been digging into hard recently.
+Let me walk through an example: testing redux-observable, something I've been digging into hard lately.
 
-Let's just try searching `redux observable test code`.
+Let's just search `redux observable test code`.
 
 ![image-01](./images/googling/01.png)
 
-First, I figured the official docs were most likely to be the silver bullet.
+My first instinct: the official docs are probably my silver bullet.
 
 ![image-02](./images/googling/02.png)
 
-`RxJS TestScheduler` comes up. Honestly, I didn't know the concept of TestScheduler, but I trusted the official docs and moved past it for the moment.
+Up comes `RxJS TestScheduler`. I had no idea what a TestScheduler even was, but I trusted the docs and pushed on anyway.
 
 ![image-03](./images/googling/03.png)
 
-It was one vague concept after another — `hot`, `cold` — things I'd mistakenly thought I understood.
-Writing test code was supposed to erase the anxiety and gray areas that come with code, but just copy-pasting code creates a whole new gray area.
+Then it was one fuzzy term after another: `hot`, `cold`, concepts I'd assumed I understood but clearly didn't.
+The whole point of writing tests is to get rid of the uncertainty and gray areas in your code. Copy-pasting code you don't understand just creates a brand new gray area.
 
-**And so the first article from my Googling — the official docs — got closed with a Ctrl+W..**
+**And that's how the first article of my search, the official docs, ended up closed with a Ctrl+W..**
 
 ![image-04](./images/googling/04.png)
 
-I read the second result article.
+On to the second result.
 
 ![image-05](./images/googling/05.png)
 
-Tracing through the flow of the code,
+Tracing through what the code actually does:
 
 ```
 1. Create a fake action
-2. Create a fake ajax(?) >> line 18
+2. Create a fake ajax(?) >> 18 line
 3. Define the expected action
 4. Compare equality using assert.deepEqual (?)
 ```
 
-Questions still remained.
+I still had questions.
 
-1. Is this about defining a dependency and injecting it in as a mock?
-2. What exactly does deepEqual.. do?
-3. This is different from what the official docs said..?
+1. Is this just defining a dependency and injecting a mock version of it?
+2. What does deepEqual.. actually do here?
+3. This doesn't match what the official docs said..?
 
-After reading this article, my thought was: **okay, so how am I actually supposed to test an Epic..?**
+After reading this, all I could think was: **okay, but how do I actually test an Epic..?**
 
 ### Why ?
 
-Honestly, both articles contain great information.
-Combine them the right way and you could probably put together a decent test.
-But the reason I still felt lost after reading both is as follows.
+Honestly, both articles have great information in them.
+Mix and match the two and you could probably cobble together a decent test.
+But here's why I still felt lost after reading both.
 
-1. I wanted to get complete information from one single article, but each of them fell a bit short.
-2. The concepts each article conveys (though actually similar) are presented differently.
-3. I was ignorant about testing middleware.
-   > What needs to be mocked when testing a middleware, and how to test the part where the middleware dispatches a new action.
+1. I wanted one article to hand me the whole answer, but each one fell a little short.
+2. The two articles describe similar concepts, but not in the same way.
+3. I simply didn't understand how to test middleware.
+   > What do you even need to mock when testing a middleware? And middleware dispatches new actions on its own, so how do you test that part?
 
-#### You Have to Break an Unfamiliar Concept Apart to Search It, and Learn the Pieces That Make It Up
+#### Break an Unfamiliar Concept Into Pieces, and Learn What Makes It Up
 
-What was it that I didn't know? Thinking back on it, I'd focused purely on **how** to test redux-middleware, not on **what** actually needed to be tested.
+So what didn't I actually know? Thinking back, I'd been fixated on **how** to test redux-middleware without ever asking **what** needed testing in the first place.
 
-Let's go back and research what actually needs to be tested, first.
+Time to back up and figure out what actually needs testing.
 
 ## What?
 
 ![image-06](./images/googling/06.png)
 
-I changed my search query to `redux observable test task`.  
-And this time, after the official docs, the article I picked was on **Medium**.
+I changed my search to `redux observable test task`.  
+This time, the article I picked after the official docs was on **Medium**.
 
-> 🎁: If I had to give a tip based on my personal feel and experience(?), after the official docs I've found the best articles on Medium and other blogs. (Statistically, more so than StackOverflow..?)
+> 🎁: A tip from personal experience(?): after the official docs, I've had the best luck with Medium and other blogs. (Better odds than StackOverflow, statistically..?)
 
 [Creating unit tests for redux-observable with Marble diagrams](https://medium.com/@dmitrymartynov_84736/creating-unit-tests-for-redux-observable-with-marble-diagrams-b1e1b34e5f44)  
- This is the article I ended up referencing.
+ This is the one I ended up using.
 
 ![image-07](./images/googling/07.png)
 
-Since learning about Epics is a prerequisite before you can run a test, a short passage about Epics comes up first.
+Since you need to understand Epics before you can test them, it opens with a short primer on Epics.
 
 And then,
 
 ![image-08](./images/googling/08.png)
 
-It goes into the process of testing.
+it walks through the actual testing process.
 
-1. You need to create your own instance of the `$action`. To do that, you need to create a TestScheduler.
+1. You need your own instance of the `$action` stream, which means creating a TestScheduler.
 
-   > It clearly explains why you need the `TestScheduler` I'd seen earlier in the official docs.
+   > Finally, a clear explanation of why the `TestScheduler` from the official docs even matters.
 
-2. It explains the flow where the Epic dispatches two actions.
+2. It walks through the flow where the Epic dispatches two actions.
 
-What this article makes clear is **what mocking is needed, and what actually needs to be tested along the redux-observable flow.**
+What this article actually gave me was **what to mock, and what needs testing along the redux-observable flow.**
 
-> Data like an inputMarble and a mocked ajax call were needed — the ajax call is created as a mock, and the response is mocked too.
+> You need things like an inputMarble and a mocked ajax call: the ajax call itself is mocked, and so is its response.
 
-From this article I only understood roughly that `inputMarble` is a kind of stream mocking, so to erase that gray area I went and googled that keyword again.
+This article only got me to a rough sense that `inputMarble` is some kind of stream mocking, so to clear up that gray area I searched for that term specifically.
 
 ![image-09](./images/googling/09.png)
 
-I searched with that keyword, and both of the two articles below gave me detailed information about input Marbles.
+That search turned up two articles, and both gave me a detailed picture of input Marbles.
 
-## Using Keywords Well
+## Choosing Good Keywords
 
-Once you've figured out what you don't know, spending time thinking through your `keywords` before searching is essential.  
-I tried searching the example above with a few keywords removed.
+Once you know what you don't know, you still need to spend real time thinking about your `keywords` before you search.  
+Let's try the same example again, but with a few keywords stripped out.
 
 ![image-10](./images/googling/10.png)
 
-Right off the bat, images with nothing to do with development show up.
-**A term may be a development term to me, but it might not be one to someone else — or to Google.**
+Right away, images with nothing to do with development show up.
+**A word might be a dev term to me, but Google (or some random person) might not read it that way at all.**
 
-You have to make it explicitly clear that this is a development-related search, which is why the results you want only surface at the top once you add the keyword `redux-observable`.
+You need to spell out that this is a dev-related search, which is exactly why adding the keyword `redux-observable` back in is what pushes the results you actually want to the top.
 
-### When You're Curious About the Method
+### When You Want to Know How
 
-When you're searching from the angle of `how do I do this?`, try adding the keyword `How to` first.
+When you're searching from a `how do I do this?` angle, start by tacking on `How to`.
 
 #### How to ~~
 
 ![image-11](./images/googling/11.png)
 
-#### If You Search the Title Straight Off the Bat..
+#### Search the Title Word-for-Word, Though..
 
 ![image-12](./images/googling/12.png)
 
-There's a high chance you won't get the result you want.
+..and you'll probably come up empty.
 
-> 🔑 Okay! To remind myself again, what I was actually curious about was the **method (How To)** for testing an epic.
+> 🔑 Right, remember: what I actually wanted to know was the **method (How To)** for testing an epic.
 
-> If you want to know what the thing you're searching for even is, in itself, it's also good to try attaching a keyword like **What is**.
+> If instead you want to know what the thing itself even is, try a keyword like **What is**.
 
 ## Plus
 
-In the situation of Googling to solve a problem, the following resources were helpful.
+When I'm Googling my way through a problem, these are the sources that actually help.
 
-`1. Stackoverflow`
+`1. Stack Overflow`
 ![image-13](./images/googling/13.png)
-It's true that it helps. You might get a plausible-looking answer.
-But, **you should never blindly trust it.** It might be legacy, or a solution built on an anti-pattern.
+It really does help. You'll often find a plausible-looking answer.
+But **don't ever take it at face value.** It might be outdated, or the "fix" might be an anti-pattern in disguise.
 
-> Whatever the method, the key thing is ultimately to understand it before you use it.
+> Whatever the approach, the point is to actually understand it before you use it.
 
-`2. Repo issue ( open, close )`
+`2. Repo issues ( open and closed )`
 
 ![image-14](./images/googling/14.png)
-Someone may have already opened an issue about your exact problem on the library's repository. It's worth checking closed issues too.
+Someone else may have already hit this exact problem and filed an issue on the library's repo. Check closed issues too, not just open ones.
 
 `3. Medium`
 
 ![image-15](./images/googling/15.png)
-Medium has had a high hit rate for me over time. Pretty high 😄
+Medium's hit rate has been consistently high for me. Pretty impressively so 😄
 
-`4. Diving In Yourself`
+`4. Just Ask`
 
 ![image-16](./images/googling/16.png)
-No issue on the repo, no article….
-It's fine to raise the issue yourself. The maintainer will get a notification on their repo, and people from all over the world might help you out.
+No issue on the repo, no article anywhere….
+At that point, just file the issue yourself. The maintainer will get notified, and people from all over the world might chime in and help.
 
-## Summary
+## Bottom Line
 
-I've gone on at some length here, but in the end there are just two keys to searching well.
+That was a long way of saying it, but searching well really comes down to two things.
 
 1. Know what you don't know.
-2. Break that "unknown" down into pieces and search each one specifically (by wrapping it in good keywords).
+2. Break that unknown down into pieces and search each one specifically, wrapped in the right keywords.
 
-If you Google with these two things in mind, I think you can shave off at least some of the time you spend swimming through the sea of information.
+Keep these two things in mind, and I think you'll spend a little less time swimming around in the sea of information.

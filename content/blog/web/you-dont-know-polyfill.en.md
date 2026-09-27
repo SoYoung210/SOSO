@@ -1,5 +1,5 @@
 ---
-title: 'You don''t know polyfill'
+title: "You don't know polyfill"
 date: 2020-11-11 08:00:09
 category: web
 thumbnail: './images/you-dont-know-polyfill/thumbnail.png'
@@ -7,9 +7,9 @@ thumbnail: './images/you-dont-know-polyfill/thumbnail.png'
 
 ![image-thumbnail](./images/you-dont-know-polyfill/thumbnail.png)
 
-Babel is a tool that transforms ES6+ code into ES5. Reading just that sentence might make you think Babel is the same thing as a polyfill, but Babel doesn't mean polyfill. That's because it doesn't support ES6 methods or constructors that don't exist in ES5.
+Babel transforms ES6+ code into ES5. Read that sentence on its own and you might assume Babel and polyfills are the same thing — they're not. Babel has no way to support ES6 methods or constructors that simply don't exist in ES5.
 
-For example, `Promise`, `Object.assign`, `Array.from`, and the like aren't transformed, because there's no ES5 syntax to substitute for them.
+`Promise`, `Object.assign`, `Array.from`, and the like never get touched, because there's no ES5 syntax to swap them for.
 
 ```jsx {2,7,13,18}
 // Yes! I can Do!
@@ -35,19 +35,19 @@ const helloPromise = new Promise(resolve => {
 })
 ```
 
-The `Promise` syntax hasn't changed. This code throws an error in browsers that don't support ES6.
+Notice the `Promise` syntax didn't change at all. Ship that code as-is and it throws in any browser that doesn't support ES6.
 
-Filling in the gaps that Babel can't transform is exactly what a polyfill does. This post introduces [babel](https://github.com/babel/babel) and [polyfill.io](https://polyfill.io/).
+That gap — the part Babel can't transform — is exactly what a polyfill fills in. Below, I'll walk through [babel](https://github.com/babel/babel) and [polyfill.io](https://polyfill.io/).
 
 ## babel
 
-Before babel@7.4.0, `@babel/polyfill` was commonly used, but due to the issues introduced below, it's now consolidated into `@babel/preset-env`.
+Before babel@7.4.0, most people reached for `@babel/polyfill`, but for the reasons below, it's now folded into `@babel/preset-env`.
 
 > ⚠️  @babel/polyfill was deprecated in babel@7.4.0.
 
 ### @babel/polyfill
 
-@babel/polyfill is a package that has the generator polyfill [regenerator runtime](https://www.npmjs.com/package/regenerator-runtime) and the ES5/6/7 polyfill [core-js](https://www.npmjs.com/package/core-js) as dependencies.
+@babel/polyfill is really just a package wrapping two dependencies: the generator polyfill [regenerator runtime](https://www.npmjs.com/package/regenerator-runtime), and [core-js](https://www.npmjs.com/package/core-js), which polyfills ES5/6/7.
 
 ```jsx
 // core-js@2.6.
@@ -65,11 +65,11 @@ import "core-js/web";
 import "regenerator-runtime/runtime";
 ```
 
-[@babel/polyfill's code](https://github.com/babel/babel/blob/master/packages/babel-polyfill/src/noConflict.js) is very simple. It only imports the polyfill modules `core-js` and `regenerator-runtime`.
+[The code behind @babel/polyfill](https://github.com/babel/babel/blob/master/packages/babel-polyfill/src/noConflict.js) is barely anything — all it does is import the `core-js` and `regenerator-runtime` polyfill modules.
 
-Since `core-js` checks whether a feature already exists before adding a polyfill globally, it runs without polyfills on modern browsers, which makes it faster than using `@babel/plugin-transform-runtime(corejs: false)`.
+Before `core-js` patches the global scope, it checks whether a feature already exists, so on modern browsers it just runs without touching anything, which makes it faster than going through `@babel/plugin-transform-runtime(corejs: false)`.
 
-> `@babel/plugin-transform-runtime` can also apply `corejs: 2 | 3 | false`. This is covered in more detail [below](https://so-so.dev/web/you-dont-know-polyfill#babel-plugin-transform-runtime).
+> `@babel/plugin-transform-runtime` also accepts `corejs: 2 | 3 | false` — more on that [further down](https://so-so.dev/web/you-dont-know-polyfill#babel-plugin-transform-runtime).
 
 ```jsx {6,9}
 // https://github.com/zloirock/core-js/blob/v2/modules/_export.js
@@ -90,7 +90,7 @@ var $export = function (type, name, source) {
 }
 ```
 
-Taking a quick look at the core-js@2.6.5 code that `@babel/polyfill` used to use, you can see it directly modifies the global object.
+A quick look at the core-js@2.6.5 code `@babel/polyfill` used to ship shows exactly how it works: it patches the global object directly.
 
 ```jsx
 // https://github.com/zloirock/core-js/blob/v2/modules/es7.array.includes.js
@@ -101,9 +101,9 @@ $export($export.P, 'Array', {
 });
 ```
 
-Because it modifies the global object directly, newly added prototype methods like `Array.prototype.includes` also work without issue, and you don't need to worry about which prototype methods a library uses.
+Because it edits the global object directly, newly added prototype methods like `Array.prototype.includes` just work, and you never have to track which prototype methods any given library happens to call.
 
-However, `@babel/polyfill` has two major problems.
+That said, `@babel/polyfill` has two real problems.
 
 #### Problem 1
 
@@ -113,17 +113,17 @@ import "core-js/es6"
 import "regenerator-runtime/runtime";
 ```
 
-Because @babel/polyfill imports modules like this, unused polyfills also get included in the bundle, increasing its size. The moment you import @babel/polyfill, many modules under [core-js es6/index.js](https://github.com/zloirock/core-js/blob/v2/es6/index.js) all get bundled in.
+Because it imports modules exactly like this, polyfills you'll never touch still end up in your bundle, bloating its size. The moment you import @babel/polyfill, nearly everything under [core-js's es6/index.js](https://github.com/zloirock/core-js/blob/v2/es6/index.js) gets pulled in with it.
 
 #### Problem 2
 
-@babel/polyfill should only be imported once. If two or more @babel/polyfills are imported, the following error occurs.
+@babel/polyfill can only be imported once. Import it twice and you'll hit this error.
 
 ```text
 :rotating_light: Uncaught Error : only one instance of babel-polyfill is allowed
 ```
 
-Internally, it keeps a global variable called `global._babelPolyfill` and throws an error if two or more polyfills are loaded.
+It keeps a global flag, `global._babelPolyfill`, internally, and throws whenever more than one copy gets loaded.
 
 ```js
 if (global._babelPolyfill && typeof console !== "undefined" && console.warn) {
@@ -134,20 +134,20 @@ if (global._babelPolyfill && typeof console !== "undefined" && console.warn) {
 }
 ```
 
-For `core-js`'s ES6/7 polyfills, which are a dependency of @babel/polyfill, calling it twice causes an internal error and the polyfill doesn't get applied correctly.
-So you need to make sure @babel/polyfill isn't called twice.
+`core-js`'s ES6/7 polyfills, which @babel/polyfill depends on, break internally if they're invoked twice, so the polyfill never applies correctly.
+So you have to be careful never to trigger @babel/polyfill more than once.
 
 ### @babel/plugin-transform-runtime
 
-`@babel/plugin-transform-runtime` replaces the behavior of parts that need a polyfill with internal helper functions during the transpile process. ([related code](https://github.com/babel/babel/blob/6.x/packages/babel-plugin-transform-runtime/src/index.js#L4-L16))
+`@babel/plugin-transform-runtime` takes a different approach: during transpiling, it swaps out anything that needs a polyfill for an internal helper function instead. ([related code](https://github.com/babel/babel/blob/6.x/packages/babel-plugin-transform-runtime/src/index.js#L4-L16))
 
-It has `core-js` as a [peerDependency](https://nodejs.org/es/blog/npm/peer-dependencies/), and applies polyfills by replacing them with internal helper functions—without modifying the global object—according to the [alias list](https://github.com/babel/babel/blob/master/packages/babel-plugin-transform-runtime/src/runtime-corejs3-definitions.js).
+It lists `core-js` as a [peerDependency](https://nodejs.org/es/blog/npm/peer-dependencies/), and following an [alias list](https://github.com/babel/babel/blob/master/packages/babel-plugin-transform-runtime/src/runtime-corejs3-definitions.js), it applies polyfills by swapping in helper functions instead of ever touching the global object.
 
 ```jsx
 new Promise(resolve => resolve(1))
 ```
 
-After going through the transpile process, the code above turns into this. It creates an internal object rather than directly modifying the `Promise` global object.
+Run that through the transpiler and it comes out looking like this — instead of patching the `Promise` global directly, it constructs an internal object instead.
 
 ```jsx {3}
 var _promise = require("babel-runtime/core-js/promise");
@@ -161,13 +161,13 @@ new _promise2.default(function (resolve) {
 });
 ```
 
-Babel generates several helper functions to convert ES6+ syntax into ES5, and @babel/plugin-transform-runtime changes these helper functions during transpilation so that they reference another module instead.
+Babel generates a bunch of helper functions to turn ES6+ syntax into ES5, and @babel/plugin-transform-runtime rewrites those helpers during transpiling so they point at another module instead.
 
 ```js
 class Circle {}
 ```
 
-Without `@babel/plugin-transform-runtime`, it gets transformed like this.
+Without `@babel/plugin-transform-runtime`, this is what it compiles to.
 
 ```js {1,6}
 function _classCallCheck(instance, Constructor) {
@@ -179,9 +179,9 @@ var Circle = function Circle() {
 };
 ```
 
-Every piece of code that includes a `class` ends up regenerating the `_classCallCheck` function over and over.
+Every single file with a `class` in it regenerates its own copy of `_classCallCheck`, over and over.
 
-Using `@babel/plugin-transform-runtime` changes this so that, instead of generating a helper function every time, it references `@babel/runtime` or `corejs` instead.
+Turn on `@babel/plugin-transform-runtime` and that stops — instead of regenerating the helper each time, it just references `@babel/runtime` or `corejs`.
 
 ```js {1,9}
 var _classCallCheck2 = require("@babel/runtime/helpers/classCallCheck");
@@ -197,7 +197,7 @@ var Person = function Person() {
 };
 ```
 
-Which module gets referenced depends on the [`corejs` option value](https://babeljs.io/docs/en/babel-plugin-transform-runtime#corejs); with the default value `false`, it references `@babel/runtime`. ([code](https://github.com/babel/babel/blob/main/packages/babel-plugin-transform-runtime/src/index.js#L165-L169))
+Which module it references depends on the [`corejs` option](https://babeljs.io/docs/en/babel-plugin-transform-runtime#corejs); leave it at the default `false` and it points to `@babel/runtime`. ([code](https://github.com/babel/babel/blob/main/packages/babel-plugin-transform-runtime/src/index.js#L165-L169))
 
 ```js
 const moduleName = injectCoreJS3 // corejs === 3 ?
@@ -215,21 +215,21 @@ this.addDefaultImport(
 // @babel/runtime/helpers/esm/${toArray}.js
 ```
 
-There's one thing to watch out for when using this approach.
+There's one gotcha with this approach, though.
 
-For example, in a project that uses `axios` as a dependency, you need to make sure `node_modules/axios` is also included in the transpile scope. axios is a library that uses Promise internally, and since **babel-plugin-transform-runtime doesn't create the Promise global object, an error** occurs.
+Take a project that depends on `axios` — you need to make sure `node_modules/axios` itself is included in the transpile scope. axios uses Promise internally, and since **babel-plugin-transform-runtime never creates the Promise global, you'll get an error**.
 
-Unlike @babel/polyfill, it only applies polyfills where needed, which is an advantage in terms of bundle size, but it requires developers to pay attention to a lot of details.
+Unlike @babel/polyfill, it only polyfills what's actually needed, which is a real win for bundle size, but it puts a lot more of the burden on the developer to get right.
 
-> You can try out the code above at [SoYoung210/test-polyfill-babel-transform-runtime](https://github.com/SoYoung210/test-polyfill/tree/babel-transform-runtime).
+> You can try the code above yourself at [SoYoung210/test-polyfill-babel-transform-runtime](https://github.com/SoYoung210/test-polyfill/tree/babel-transform-runtime).
 
 ### @babel/preset-env
 
-It has [core-js-compat](https://www.npmjs.com/package/core-js-compat) as a dependency, and based on the target value set in `babelrc`, it uses [core-js-compat/data](https://github.com/zloirock/core-js/blob/master/packages/core-js-compat/src/data.js) to load only the polyfills that are needed. It works by checking which JS syntax isn't supported by the specified target and adding the corresponding `@babel/plugin-*`. ([Code](https://github.com/babel/babel/blob/eea156b2cb/packages/babel-preset-env/src/index.js#L303-L326))
+This one depends on [core-js-compat](https://www.npmjs.com/package/core-js-compat), and reads the `target` set in `babelrc` to load only the polyfills it actually needs, via [core-js-compat/data](https://github.com/zloirock/core-js/blob/master/packages/core-js-compat/src/data.js). In practice, it checks which JS syntax your target doesn't support and adds the matching `@babel/plugin-*` for it. ([Code](https://github.com/babel/babel/blob/eea156b2cb/packages/babel-preset-env/src/index.js#L303-L326))
 
 #### useBuiltIns
 
-The `useBuiltIns` option configures how polyfills get added. The default is `false`, so if you don't set this value, no polyfills are added.
+`useBuiltIns` decides how polyfills get injected. It defaults to `false`, so leave it unset and you get no polyfills at all.
 
 #### useBuiltIns: entry
 
@@ -238,7 +238,7 @@ The `useBuiltIns` option configures how polyfills get added. The default is `fal
 import 'core-js';
 ```
 
-It changes the `core-js` and `regenerator-runtime` modules imported at the entry point of the transpile according to the `target` specified in babelrc.
+It rewrites the `core-js` and `regenerator-runtime` modules imported at your transpile entry point, tailored to whatever `target` you set in babelrc.
 
 ```js {1,14}
 // modern browser
@@ -269,7 +269,7 @@ module.exports = {
 
 ```
 
-The `ie >=10` setting adds the `es/object.set-prototype-of` polyfill.
+Add `ie >=10` to the target and it pulls in the `es/object.set-prototype-of` polyfill.
 
 ```diff
 // modern browser
@@ -279,15 +279,15 @@ require("core-js/modules/es.array-buffer.is-view");
 + require("core-js/modules/es.object.set-prototype-of");
 ```
 
-If the target is a very old browser, excessive polyfills get added, which can waste resources by making even modern browsers load a large bundle file.
+Target something really old, and you end up with far more polyfills than you need: wasted weight that even modern browsers have to download.
 
-> At [test-polyfill/babel-preset-env](https://github.com/SoYoung210/test-polyfill/tree/babel-preset-env), you can directly compare the difference between a bundle whose target includes IE ≥ 10 and one that doesn't.
+> [test-polyfill/babel-preset-env](https://github.com/SoYoung210/test-polyfill/tree/babel-preset-env) lets you compare the two bundles side by side — one targeting IE ≥ 10, one without.
 
 #### useBuiltIns: usage
 
-This setting only imports the polyfills actually used in the code.
+This setting imports only the polyfills your code actually calls.
 
-Running `npm run build:modern:usage` in [test-polyfill/babel-preset-env](https://github.com/SoYoung210/test-polyfill/blob/babel-preset-env/index.js) gives the following result.
+Run `npm run build:modern:usage` in [test-polyfill/babel-preset-env](https://github.com/SoYoung210/test-polyfill/blob/babel-preset-env/index.js) and you'll get output like this.
 
 ```jsx
 // Input
@@ -309,9 +309,9 @@ require("core-js/modules/es.string.iterator");
 require("core-js/modules/web.dom-collections.iterator");
 ```
 
-Because the `usage` option only treats the code you actually use as a polyfill target, an error can occur if there's un-polyfilled code somewhere in a `node_modules` dependency you're using.
+Because `usage` only looks at your own code to decide what needs polyfilling, it can blow up if one of your `node_modules` dependencies ships code that itself needed a polyfill.
 
-Also, in code like the following, babel can't determine whether `fooArrayOrObject` is a string or an array, so it imports both polyfills.
+And in code like the following, Babel has no way to tell whether `fooArrayOrObject` is a string or an array, so it just imports both polyfills to be safe.
 
 ```jsx
 // Before
@@ -330,16 +330,16 @@ console.log(_test.fooArrayOrObject.includes());
 
 ## polyfill.io
 
-The [polyfill.io](http://polyfill.io) service checks the requesting browser's [User-Agent](https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/User-Agent) and adds only the polyfills it needs. You can check the supported browsers on the [polyfill.io page](https://polyfill.io/v3/supported-browsers/); IE 10 and below aren't supported.
+[polyfill.io](http://polyfill.io) works differently: it reads the requesting browser's [User-Agent](https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/User-Agent) and only ships the polyfills that browser actually needs. You can check supported browsers on the [polyfill.io page](https://polyfill.io/v3/supported-browsers/); IE 10 and below aren't on the list.
 
-The User-Agent is checked via [polyfill-useragent-normaliser](https://github.com/Financial-Times/polyfill-useragent-normaliser/blob/master/lib/normalise-user-agent.vcl), and all the necessary polyfills are generated through the [getPolyfillString function](https://github.com/Financial-Times/polyfill-library/blob/e9cfb03a55ae343e1d6fb2e4f06176eee691298b/lib/index.js#L235).
+It reads the User-Agent through [polyfill-useragent-normaliser](https://github.com/Financial-Times/polyfill-useragent-normaliser/blob/master/lib/normalise-user-agent.vcl), then generates every polyfill it needs through the [getPolyfillString function](https://github.com/Financial-Times/polyfill-library/blob/e9cfb03a55ae343e1d6fb2e4f06176eee691298b/lib/index.js#L235).
 
-> Running `npm run test-node` in [polyfill-library](https://github.com/Financial-Times/polyfill-library), you can see that the following script is generated.
+> Run `npm run test-node` in [polyfill-library](https://github.com/Financial-Times/polyfill-library) and you can watch it generate a script like this.
 ![test-node-result.png](./images/you-dont-know-polyfill/test-node-result.png)
 
 ### Usage
 
-If you use the default settings, just add the following script tag to your html file.
+For the default setup, just drop this script tag into your html file.
 
 ```html
 <head>
@@ -347,7 +347,7 @@ If you use the default settings, just add the following script tag to your html 
 </head>
 ```
 
-polyfill-library works by modifying the global object.
+polyfill-library, like @babel/polyfill, works by patching the global object.
 
 ```jsx {2,15}
 // https://github.com/Financial-Times/polyfill-library/blob/master/polyfills/Array/isArray/polyfill.js
@@ -374,8 +374,8 @@ Object.defineProperty(O, P, newDesc);
 https://polyfill.io/v3/polyfill.min.js?features=default
 ```
 
-If you use the default value like this, it automatically adds the required list of polyfills by referring to the internally defined [aliases.json](https://github.com/Financial-Times/polyfill-library/blob/e9cfb03a55ae343e1d6fb2e4f06176eee691298b/lib/sources.js#L51).
-> I couldn't find any documentation summarizing which polyfills are defined under the default option, so I referred to the polyfills/_dist/aliases.json file generated by running `npm run test-polyfills` in polyfill-library.
+Use the default value like this and it automatically pulls in whatever polyfills are listed in its internal [aliases.json](https://github.com/Financial-Times/polyfill-library/blob/e9cfb03a55ae343e1d6fb2e4f06176eee691298b/lib/sources.js#L51).
+> I couldn't find any docs spelling out exactly what's in the default set, so I dug through the polyfills/_dist/aliases.json file that `npm run test-polyfills` generates in polyfill-library instead.
 
 ```js
 "default":
@@ -386,7 +386,7 @@ If you use the default value like this, it automatically adds the required list 
 ]
 ```
 
-If you only want to use certain features, specify them with the **feature** parameter; if there are polyfills you want to exclude, specify them with **excludes**.
+Want only specific features? Pass them via the **feature** parameter. Want to exclude something? Use **excludes**.
 
 ```md {2,3}
 https://cdn.polyfill.io/v3/polyfill.min.js
@@ -394,7 +394,7 @@ https://cdn.polyfill.io/v3/polyfill.min.js
 &excludes=Document
 ```
 
-If you want polyfills to always load regardless of the User Agent value, enable the `flags=always` option. When requesting with flags=always, the option that checks whether the polyfill you want is already implemented in the browser is `flags=always, gated`.
+If you want a polyfill to load every time, regardless of User Agent, turn on the `flags=always` option. Pair it with `flags=always, gated` and it'll still check whether the browser actually implements the feature before loading anything.
 
 ```md {3}
 https://cdn.polyfill.io/v2/polyfill.min.js
@@ -402,21 +402,21 @@ https://cdn.polyfill.io/v2/polyfill.min.js
 flags=always,gated
 ```
 
-You can find information about all the options in the [API Reference](https://polyfill.io/v3/api/), and using the [url-builder](https://polyfill.io/v3/url-builder/), which automatically generates query parameters based on the options, makes things more convenient.
+Every option is documented in the [API Reference](https://polyfill.io/v3/api/), and the [url-builder](https://polyfill.io/v3/url-builder/) tool, which generates the query parameters for you, makes all of this a lot less tedious.
 
 ### Security
 
-Since options are specified as query parameters, this raises concerns about vulnerability to [XSS attacks](https://developer.mozilla.org/en-US/docs/Glossary/Cross-site_scripting). polyfill.io prevents such attacks by escaping option values. It escapes the script characters `<` to `&lt` and `>` to `&gt`, so that even if there's something like a script tag in the code, it isn't interpreted as HTML.
+Specifying options through query parameters naturally raises [XSS attack](https://developer.mozilla.org/en-US/docs/Glossary/Cross-site_scripting) concerns. polyfill.io guards against this by escaping option values: the script characters `<` become `&lt` and `>` become `&gt`, so even a script tag slipped into the code never gets interpreted as HTML.
 
-> More details are covered in [this post](https://snyk.io/vuln/npm:polyfill-service:20160126).
+> [This writeup](https://snyk.io/vuln/npm:polyfill-service:20160126) covers it in more detail.
 
-polyfill-service added XSS attack prevention through [this commit](https://github.com/financial-times/polyfill-service/commit/aadd8d08b50f7f9c02b431d06f6ee2158902c53c), and it's been in place since polyfill-service version 3.1.2.
+polyfill-service added this protection in [this commit](https://github.com/financial-times/polyfill-service/commit/aadd8d08b50f7f9c02b431d06f6ee2158902c53c), and it's been in place since version 3.1.2.
 
 ### Setting Up Your Own polyfill.io Server
 
-There's no guarantee that the polyfill.io server is always stable, so using polyfill.io directly in production can be a bit of a risk. You can reduce this risk by running [polyfill-library](https://github.com/Financial-Times/polyfill-library) as a self-hosted server.
+There's no guarantee the polyfill.io server stays up forever, so depending on it directly in production can feel risky. Running [polyfill-library](https://github.com/Financial-Times/polyfill-library) as a self-hosted server takes that worry off the table.
 
-You can easily set up your own [polyfill-service](https://github.com/financial-times/polyfill-service) using Docker.
+Docker makes standing up your own [polyfill-service](https://github.com/financial-times/polyfill-service) pretty painless.
 
 ```docker
 FROM node:12.18.0-alpine
@@ -447,9 +447,9 @@ CMD ["/bin/start_server.sh", "server/index.js"]
 
 ## If You're a Library Author
 
-After summarizing how polyfills are handled, I started wondering what the best way to apply polyfill settings is when developing a library.
+Once I'd worked through all these ways of handling polyfills, I found myself wondering what the right approach even is when you're the one building the library.
 
-In a [GitHub Issue](https://github.com/w3ctag/polyfills/issues/6) discussing whether the responsibility for polyfills lies with the library or at the application level, webpack maintainer sokra said the following.
+In a [GitHub Issue](https://github.com/w3ctag/polyfills/issues/6) debating whether polyfilling is the library's job or the application's, webpack maintainer sokra put it this way.
 
 ![sokra-comment](./images/you-dont-know-polyfill/sokra_comment.png)
 
@@ -462,17 +462,17 @@ https://github.com/w3ctag/polyfills/issues/6#issuecomment-272647475
 </div>
 <br/>
 
-Whether a polyfill is needed can be easily controlled at the application level, but not at the library level.
+Whether you need a polyfill is easy to control at the application level. At the library level, it isn't.
 
-Because of this, many people spoke favorably of shifting the responsibility for polyfills to the application and instead **providing hints about where polyfills are needed**.
+That's why a lot of people came out in favor of pushing polyfill responsibility onto the application, with the library just **providing hints about where polyfills are needed**.
 
 ## Wrap-up
 
-babel is the easiest and most reliable way to add polyfills, but it unnecessarily increases bundle size on modern browsers that don't need them.
+babel is still the easiest, most reliable way to add polyfills, but it inflates your bundle size even on modern browsers that never needed the polyfill in the first place.
 
-If "bundle size"—one of the things you need to worry about in an [SPA](https://developer.mozilla.org/en-US/docs/Glossary/SPA)—is a concern, polyfill.io, which loads only the polyfills you need based on User-Agent, can also be an option.
+If bundle size, one of the eternal headaches of building an [SPA](https://developer.mozilla.org/en-US/docs/Glossary/SPA), is what's keeping you up, polyfill.io's User-Agent-based approach, which loads only what a given browser needs, is worth considering too.
 
-That said, if you choose polyfill.io, you'll need to consider the added cost of server management and do enough testing to make sure you don't run into the [inaccurate polyfill](https://github.com/babel/website/issues/1366#issuecomment-326543755) issue mentioned by core-js maintainer "zloirock."
+Just factor in the extra cost of managing a server, and test thoroughly enough to rule out the [inaccurate polyfill](https://github.com/babel/website/issues/1366#issuecomment-326543755) issue core-js maintainer "zloirock" has flagged before.
 
 ## References
 

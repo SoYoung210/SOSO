@@ -1,5 +1,5 @@
 ---
-title: 'Revisiting index.html - Part 1'
+title: 'A Closer Look at index.html - Part 1'
 date: 2020-02-13 16:00:09
 category: web
 thumbnail: './images/thumbnail.png'
@@ -7,109 +7,109 @@ thumbnail: './images/thumbnail.png'
 
 ![image-thumbnail](./images/thumbnail.png)
 
-When developing with a library or framework like React, Vue, or Angular, the index.html that comes out of the build is generated automatically, so you might never need to look at it directly.
+When you build with a library or framework like React, Vue, or Angular, the index.html in your build output gets generated automatically, so you may never actually open it.
 
-But if you have a solid grasp of what makes up the final html, you can put that knowledge to good use when improving performance or debugging.
+But knowing exactly what goes into that final HTML pays off once you're chasing a performance win or hunting down a bug.
 
 ## Parts
 
-- Part 1: link, script tags
-- Part 2: meta tags (Open Graph), lang, etc.
+- Part 1: link and script tags
+- Part 2: meta tags (Open Graph), lang, and more
 
 ## TL;DR
 
 - link tag
-  - preload: a resource needed for the current screen=
-  - prefetch: not❌ needed for the current screen, a resource needed for a later page
-  - preconnect: for when you're requesting multiple resources from the same domain
+  - preload: a resource the current screen needs
+  - prefetch: not❌ needed right now, a resource a later page will need
+  - preconnect: for when you're pulling multiple resources from the same domain
 - script tag
-  - async: for scripts unrelated to DOM manipulation
-  - defer: for scripts related to DOM manipulation
-  - For an SPA's bundle.js, you may not be able to expect much of a reduction in request time
+  - async: for scripts that don't touch the DOM
+  - defer: for scripts that do touch the DOM
+  - Don't expect much of a speed boost from either one on an SPA's bundle.js
 
 ## link - preload / prefetch / preconnect
 
-The `link` tag expresses the relationship between a web page and an external resource. It's most commonly used to bring in css, but it's also used for site icons, sitemaps, and scripts.
+The `link` tag describes the relationship between a page and an outside resource. You'll see it most with css, but it also loads site icons, sitemaps, and scripts.
 
-Beyond the basic attributes, you can also define a `media` attribute. If you specify a `media` attribute, the css is only loaded when that condition is met.
+Beyond the basics, you can add a `media` attribute — set one, and the css only loads once that condition holds.
 
 ```html
 <link href="print.css" rel="stylesheet" media="print">
 <link href="mobile.css" rel="stylesheet" media="screen and (max-width: 600px)">
 ```
 
-Depending on the option, you can have a resource load before other resources, or have the connection established ahead of time.
+Depending on the option you pick, a resource can jump ahead of others and load early, or the browser can open a connection before it's even needed.
 
 ### preload
 
-`<link rel="preload">` declares that a resource is needed right now, and sets it up to be fetched **as fast as possible.**
+`<link rel="preload">` tells the browser: I need this resource right now, so fetch it **as fast as possible.**
 
 ![rendering](./images/first.png)
 
-A typical use case is fonts.
+Fonts are the classic use case.
 
 ```html
 <link rel="preload" as="font" crossorigin="crossorigin" type="font/woff2" href="myfont.woff2">
 ```
 
-If you request a font without preload, text rendering can be delayed, because the font request doesn't start until after the DOM and CSSOM trees are built.
-The order in which the browser paints the screen is as follows.
+Request a font without preload and text rendering can end up delayed, since the font request doesn't fire until after the DOM and CSSOM trees exist.
+Here's the order a browser paints a page in:
 
 1. The browser requests the HTML file.
-2. The browser starts parsing the HTML response and building the DOM.
-3. The browser discovers CSS, JS, and other resources, and dispatches requests for them.
-4. Once the browser has received all the CSS content, it builds the CSSOM and combines it with the DOM tree to build the render tree.
-    - The render tree figures out which fonts are needed, and the font request begins.
-5. The browser performs layout work and paints the content to the screen.
+2. It starts parsing the HTML response and building the DOM.
+3. It finds CSS, JS, and other resources along the way and fires off requests for them.
+4. Once all the CSS has arrived, it builds the CSSOM and merges it with the DOM tree into a render tree.
+    - Only now does the render tree know which fonts it actually needs, so the font request goes out.
+5. It runs layout and paints the content to the screen.
 
-For content that needs to show up immediately after the render tree is built, this sequence can cause the font to be applied late.
+For content that has to show up the instant the render tree is ready, this sequence can make the font visibly show up late.
 
-> Implementation details differ from browser to browser. For more information, see [Web Font Optimization](https://developers.google.com/web/fundamentals/performance/optimizing-content-efficiency/webfont-optimization#%EB%B8%8C%EB%9D%BC%EC%9A%B0%EC%A0%80_%EB%8F%99%EC%9E%91).
+> Every browser implements this a little differently. See [Web Font Optimization](https://developers.google.com/web/fundamentals/performance/optimizing-content-efficiency/webfont-optimization#%EB%B8%8C%EB%9D%BC%EC%9A%B0%EC%A0%80_%EB%8F%99%EC%9E%91) for the details.
 
-For this reason, you should **raise the priority** of essential resources by requesting them via preload. When you request a font via `preload`, the font request goes out without waiting for CSSOM generation to finish.
+That's exactly why essential resources deserve **a priority boost** via preload. Preload a font and the request goes out without waiting for the CSSOM to finish building.
 
-If a resource fetched via `preload` isn't used within 3 seconds, Chrome Dev Tools shows the following warning.
+Leave a resource you preloaded unused for more than 3 seconds, and Chrome DevTools calls you out with a warning like this.
 
 ![warning](./images/second.png)
 
 ### preconnect
 
-`<link rel="preconnect">` sets things up so the connection is already established before the HTTP request reaches the server.
+`<link rel="preconnect">` opens a connection to the server ahead of time, before any HTTP request actually needs it.
 
-When requesting a resource from a different domain, you can't guarantee that server's response speed. In particular, when a secure connection is required, the work of establishing the connection — DNS lookup, redirection, TCP handshake, and so on — can take longer than actually receiving the data.
+When you're requesting a resource from a different domain, you can't count on that server responding quickly. And when a secure connection is required, just setting up the connection — DNS lookup, redirects, the TCP handshake — can take longer than actually receiving the data.
 
-`preconnect` means **establishing this connection ahead of time.** Here's how you use it.
+`preconnect` is how you tell the browser to **get that connection out of the way early.** Here's how you use it.
 
 ```html
 <link rel="preconnect" href="https://example.com">
 ```
 
-In practice, the following actions are performed.
+Under the hood, here's what actually happens:
 
-1. Resolve the URL from the href attribute, determine whether the URL is valid, handle it as an error if it's invalid, and determine whether it's HTTP/HTTPS
+1. Parse the URL from the href attribute, check whether it's valid (erroring out if not), and figure out whether it's HTTP or HTTPS
 
-2. If it's valid, treat this URL as the origin
+2. If it's valid, treat that URL as the origin
 
-3. Assign the cors status to the target element's crossOrigin attribute
+3. Assign the cors state to the target element's crossOrigin attribute
 
-4. If the value of the cors attribute is anonymous, or credential is not false, attempt the connection
+4. Attempt the connection if crossOrigin is anonymous, or if credentials aren't set to false
 
-5. Perform (DNS+TCP) for http, or (DNS+TCP+TLS) for https, then leave the connection open; the user agent decides how many connections to open
+5. Run DNS+TCP for http (or DNS+TCP+TLS for https), then leave the connection open — the user agent itself decides how many connections to keep around
 
 ![preconnect](./images/third.png)
 
-Using preconnect lets you eliminate a round trip, and as a result you can cut down a lot of time.
+Using preconnect cuts out a round trip entirely, and that alone saves a meaningful chunk of time.
 
 ![preconnect-vs](./images/fourth.png)
 
-You can request Google's CSS and font from the same domain at the same time, which ultimately eliminates 3 round trips.
+You can request Google's CSS and font from the same domain at once, which ends up eliminating 3 round trips.
 
 ### prefetch
 
-`<link rel="prefetch">` requests all the high-priority resources first, then fetches the remaining resources during idle time and stores them in the browser cache.
-> So it isn't suitable for resources that are needed right away on the first page.
+`<link rel="prefetch">` waits until every high-priority resource has been requested, then fetches whatever's left over during idle time and drops it into the browser cache.
+> Which makes it a poor fit for anything the first page needs right away.
 
-There are 3 kinds of `prefetch`.
+`prefetch` comes in three flavors.
 
 - Link Prefetching
 - DNS Prefetching
@@ -119,21 +119,21 @@ There are 3 kinds of `prefetch`.
 
 ![prefetch](./images/fifth.png)
 
-As explained above, `prefetching` fetches a resource and stores the result in the browser cache.
+As just described, `prefetching` fetches a resource and stashes the result in the browser cache.
 
 > "This technique has the potential to speed up many interactive sites, but won't work everywhere. For some sites, it's just too difficult to guess what the user might do next. For others, the data might get stale if it's fetched too soon. It's also important to be careful not to prefetch files too soon, or you can slow down the page the user is already looking at. - Google Developers"
 
-This is saying that you need to judge which resources are worth requesting via `prefetch` before using it. Using it carelessly can slow down the page the user is currently looking at.
+In other words: think carefully about which resources are actually worth prefetching. Use it carelessly and you'll slow down the very page the user is looking at.
 
-You should also make sure to check [browser support coverage](https://caniuse.com/#search=prefetch) before using it.
+Worth checking [browser support](https://caniuse.com/#search=prefetch) before you reach for it, too.
 
 **2. DNS Prefetching**
 
-This performs a [DNS Lookup]([https://developer.mozilla.org/en-US/docs/Glossary/DNS](https://developer.mozilla.org/en-US/docs/Glossary/DNS)) in the background.
+This just runs a [DNS lookup]([https://developer.mozilla.org/en-US/docs/Glossary/DNS](https://developer.mozilla.org/en-US/docs/Glossary/DNS)) in the background.
 
-By eliminating the time a DNS Lookup would take when the resource is actually needed, you can fetch the resource faster.
+By the time you actually need the resource, the DNS lookup is already done, so it loads faster.
 
-Here's how to use it.
+Here's how you use it.
 
 ```html
 <!-- Prefetch DNS for external assets -->
@@ -144,61 +144,61 @@ Here's how to use it.
 
 **3. Prerendering**
 
-`prerendering` is similar to prefetch in that it requests a resource that might be needed ahead of time.
+`prerendering` shares prefetch's basic idea: fetch something ahead of time in case it turns out to be needed.
 
 The difference is that `prerendering` **actually renders the entire page in the background.**
 
 ![font](./images/sixth.png)
 
-Requesting prerendering for a resource that ends up not being needed wastes bandwidth.
+Prerender a resource nobody ends up needing, and you've just wasted bandwidth.
 
-**Note: crossorigin**
+**Note. crossorigin**
 
-When requesting an external resource, if there's no `crossorigin` attribute, the loaded resource is discarded and a newly fetched copy with different attributes is applied instead. This is required information when requesting from an external domain, and the possible values are as follows.
+Request an external resource without a `crossorigin` attribute, and the browser discards what it already loaded and applies a freshly fetched copy with different attributes instead. This is required for cross-domain requests, and it takes one of these values.
 
-- anonymous: means no extra credentials are required for the cors request.
-- user-credentials: the cross-origin request is performed once credentials like cookies or auth tokens succeed.
+- anonymous: no credentials get sent along with the cors request.
+- user-credentials: the cross-origin request goes through once credentials like cookies or an auth token check out.
 
 ## script - async / defer
 
-While parsing HTML, when the parser encounters a script tag, that work gets blocked. css is likely to be an essential piece for rendering the screen, so it's placed in the `head`, but delaying rendering to load JavaScript related to 'behavior' isn't a great user experience.
+When the parser hits a script tag while parsing HTML, everything stops. css is placed in the `head` since it's usually essential to rendering, but stalling the render just to load JavaScript that handles 'behavior' isn't a great experience for users.
 
-For this reason, most script tags are declared right before `</body>`. But besides that approach, there are also ways to use [async](https://www.w3schools.com/tags/att_script_async.asp) or [defer](https://www.w3schools.com/tags/att_script_defer.asp).
+That's why most script tags end up declared right before `</body>`. But there's more than one way to handle this — you can also reach for [async](https://www.w3schools.com/tags/att_script_async.asp) or [defer](https://www.w3schools.com/tags/att_script_defer.asp).
 
-### Typical usage
+### The usual approach
 
 ![without-defer-async-head](./images/without-defer-async-head.png)
 ![without-defer-async-body](./images/without-defer-async-body.png)
 
-As you can see in the images above, a script tag blocks HTML parsing.
+As the images above show, a script tag blocks HTML parsing.
 
-So if you place a script tag in the head, the amount of time users spend looking at a blank screen increases. To avoid this, it's placed at the very bottom of the body tag.
+So put a script tag in the head, and users end up staring at a blank screen longer. Moving it to the very bottom of the body avoids that.
 
-> This approach is a fallback for browsers that don't support async and defer.
+> This is the fallback for browsers that don't support async or defer.
 
 ### async
 
 ![with-async](./images/with-async.png)
 
-The async attribute means nothing unless it's placed in the `head`.
-> It behaves exactly as if it weren't used at all.
+The async attribute does nothing unless the script actually sits in the `head`.
+> Behaves exactly as if you hadn't added it at all.
 
-The script is requested asynchronously, and once the fetch completes, HTML parsing stops and the script runs. Once execution finishes, parsing resumes.
+The script is requested asynchronously, and the moment the fetch completes, HTML parsing pauses while the script runs. Parsing resumes once it's done.
 
 ### defer
 
 ![with-defer](./images/with-defer.png)
 
-Like async, the script is fetched asynchronously, but it runs after HTML parsing finishes. Since it doesn't block HTML parsing, the screen can render quickly.
+Like async, the script downloads asynchronously, but it only runs after HTML parsing finishes. Since it never blocks parsing, the screen can render sooner.
 
-So how do these two attributes we just looked at apply to a Single Page Application (hereafter SPA)?
+So how do these two attributes play out in a Single Page Application (SPA)?
 
 ### SPA
 
-An SPA doing Client Side Rendering renders the screen by parsing JS. Let's assume there are two JS files.
+An SPA doing client-side rendering draws its screen by parsing JS. Say we have two JS files:
 
 - external.js: an external module
-- app.js: a JS file under the `src` folder (used to draw the screen)
+- app.js: a file under `src` that actually draws the screen
 
 ```html
 <!DOCTYPE html>
@@ -216,21 +216,21 @@ An SPA doing Client Side Rendering renders the screen by parsing JS. Let's assum
 
 #### async
 
-`external.js` is requested, and `app.js` is requested right after. Once loading `external.js` finishes, it executes immediately and HTML Parsing is paused. If `app.js` also finishes loading while HTML Parsing hasn't finished, parsing is paused and the script runs.
+`external.js` gets requested, then `app.js` right behind it. The instant `external.js` finishes loading, it runs immediately and pauses HTML parsing. If `app.js` also finishes loading while parsing is still underway, the same thing happens: parsing pauses and the script runs.
 
-Since async doesn't guarantee order when requesting two or more scripts like this, it's best used only for scripts unrelated to DOM manipulation.
+With two or more scripts in flight like this, async gives you no guarantee about order, so it's best kept for scripts that have nothing to do with the DOM.
 
 #### defer
 
-defer also requests both scripts asynchronously. However, while `defer` requests `vendor.js` and `app.js` asynchronously, it guarantees their execution order.
+defer fetches both scripts asynchronously too. The difference is that while `defer` requests `vendor.js` and `app.js` asynchronously, it still guarantees the order they run in.
 
-#### When should you use it
+#### When should you actually use them
 
-Using `defer` or `async` can reduce script request time. However, in an SPA, HTML Parsing itself doesn't take much time to begin with. So using the two above might not give you a dramatic performance improvement.
+Both `defer` and `async` cut down script request time. But an SPA's HTML parsing was never taking long to begin with, so don't expect either one to deliver a dramatic performance win.
 
-> This is because, in the example above, the point at which the screen is displayed comes after app.js runs, and an SPA's HTML has a very simple structure.
+> That's because, in the example above, the screen only appears once app.js has run, and an SPA's HTML is a barebones structure to begin with.
 
-In fact, if you request a script that manipulates the DOM via `async`, whose execution order isn't guaranteed, errors can occur. It's better suited for scripts with no dependencies, like analytics scripts such as GA.
+If anything, requesting a DOM-manipulating script through `async` — where execution order isn't guaranteed — is a good way to introduce bugs. Save `async` for scripts with no dependencies, like an analytics script such as GA.
 
 ## Reference
 

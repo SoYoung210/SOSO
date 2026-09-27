@@ -7,67 +7,67 @@ thumbnail: './images/whats-diff-in-webpack5/thumbnail.png'
 
 ![image-thumbnail](./images/whats-diff-in-webpack5/thumbnail.png)
 
-This post is a summary of the [webpack5 release post](https://webpack.js.org/blog/2020-10-10-webpack-5-release/), and some content from the original isn't included. If you want to know every change, please refer to the original post. The migration guide from v4 to v5 is summarized in [this post](https://webpack.js.org/migrate/5/).
+I put this together from the [webpack5 release post](https://webpack.js.org/blog/2020-10-10-webpack-5-release/), skipping a few things from the original. Want the complete list of changes? Go read the source. The v4-to-v5 migration guide lives in [this post](https://webpack.js.org/migrate/5/).
 
-## What Breaking Changes Means
+## What Breaking Changes Actually Means
 
-This is a refactor to update webpack's internal architecture and lay the groundwork for features to be added down the road. There are Breaking Changes on the feature side too, but it felt more like an update to prepare internally.
+This release is mostly a refactor: updating webpack's internal architecture and laying groundwork for features still to come. There are user-facing Breaking Changes too, but overall it reads more like internal prep work.
 
 ## General Direction
 
-- Improved build performance through persistent caching
-- Improved long-term caching with better algorithms and default settings
-- Improved bundle size through better tree shaking and improvements to the default code generated during webpack builds
-- Improved compatibility with the web platform
-- Cleaned-up internal structure
+- Faster builds through persistent caching
+- Better long-term caching, thanks to smarter algorithms and defaults
+- Smaller bundles, from improved tree shaking and leaner default output
+- Closer alignment with the web platform
+- A cleaner internal structure
 
-## ⚠️ Removal of Automatic Node.js Polyfills
+## ⚠️ No More Automatic Node.js Polyfills
 
-In webpack4 and earlier, polyfills for Node.js modules were provided automatically for browser compatibility, but since most of those polyfills were applied unnecessarily and increased bundle size, they've been removed.
+webpack4 and earlier auto-polyfilled Node.js modules for browser compatibility, but most of those polyfills were dead weight nobody needed, inflating bundle size for nothing, so they've been removed.
 
-Package maintainers are being asked to add a browser field to package.json to specify browser compatibility.
+Package maintainers are now expected to declare browser compatibility explicitly, via a browser field in package.json.
 
-> Real-world case: if you use crypto (or have a dependency that uses it) and don't address this change, your project build won't complete successfully.
+> True story: if your project (or one of its dependencies) uses crypto and you don't account for this change, your build will fail outright.
 
-You can check the list of excluded packages in the [webpack5 - Do not polyfill node bindings by default PR](https://github.com/webpack/webpack/pull/8460/commits/a68426e9255edcce7822480b78416837617ab065).
+You can find the full list of excluded packages in the [webpack5 - Do not polyfill node bindings by default PR](https://github.com/webpack/webpack/pull/8460/commits/a68426e9255edcce7822480b78416837617ab065).
 
 Ref: [https://medium.com/@sanchit3b/how-to-polyfill-node-core-modules-in-webpack-5-905c1f5504a0](https://medium.com/@sanchit3b/how-to-polyfill-node-core-modules-in-webpack-5-905c1f5504a0)
 
 ## 🚀 Long Term Caching
 
-This is one of the features automatically enabled in webpack production mode. The following settings improve build speed.
+This kicks in automatically in webpack's production mode. The settings below are what make the build faster.
 
 ### Chunk and module IDs
 
-A new algorithm was added for **long term** caching.
+A new algorithm, built for **long term** caching.
 
 `chunkIds: "deterministic", moduleIds: "deterministic"`
 
-Assigns IDs of about 3-4 characters to modules and chunks — a trade-off between bundle size and long term caching.
+It assigns modules and chunks short, 3-4 character IDs — a deliberate trade-off between bundle size and how well caching holds up long term.
 
-moduleIds/chunkIds/mangleExports: false disables the default behavior and lets you specify a custom algorithm via a plugin.
+Setting moduleIds/chunkIds/mangleExports to false turns off this default behavior, letting you plug in your own algorithm through a plugin instead.
 
-In webpack4, setting the `modulesIds / chunkIds: false` option didn't cause a build error even without a custom plugin, but in webpack5 it's required.
+In webpack4, setting `modulesIds / chunkIds: false` worked fine even without a custom plugin. In webpack5, that plugin is now required.
 
-In webpack5, it's recommended to stick with the defaults. Applying `chunkIds: "size"` produces smaller bundles, but it can be less efficient for caching.
+webpack5 recommends just sticking with the defaults. `chunkIds: "size"` does produce a smaller bundle, but it can hurt caching efficiency.
 
 ### Real Content Hash
 
-Unlike before, when a hash was generated on its own regardless of file content, webpack5 uses the actual hash of the file content when you use `[contenthash]`. This content hash approach can have a positive effect when only comments or variable names have changed.
+Before, the hash was generated independently of what was actually in the file. In webpack5, `[contenthash]` is a real hash of the file's content, which pays off specifically when the only thing that changed was a comment or a variable name.
 
 ## ✨ Development Support
 
 ### Named Chunk IDs
 
-Depending on the webpack mode, it automatically decides whether to name bundled JS files with a hash value or keep them readable, and the id is determined by the file path.
+Depending on the webpack mode, it automatically decides whether bundled JS files get hashed names or readable ones, deriving the id from the file path.
 
-**You no longer need to use the `import(/* webpackChunkName: "name" */ "module")` syntax for debugging.**
+**You no longer need the `import(/* webpackChunkName: "name" */ "module")` syntax just for debugging.**
 
-> This is still an option you need to use if you want meaningful names in production too. You can use `chunkIds: named` in production, but it's recommended not to expose sensitive information.
+> That said, you'll still want it if you need readable names in production too. `chunkIds: named` works there, but be careful not to leak anything sensitive through it.
 
 ### Module Federation
 
-This is a feature that lets multiple webpack builds share with one another, letting you use the output of another webpack build like a component or a library.
+This lets separate webpack builds share code with each other, so you can consume another build's output the same way you'd use a component or a library.
 
 ```js {14,15,18,20}
 // App1's webpack.config.js, which shares the Header component
@@ -95,13 +95,13 @@ module.exports = {
 }
 ```
 
-Module Federation's options are as follows.
+Here's what each Module Federation option does.
 
-- `name`: If filename isn't set, the file name uses this configured value.
-- `library`: Assigns the build output to an 'app variable.'
-- `filename`: The entry file's name
-- `exposes`: The name and target file used when consumed from another app
-- `shared`: The names of modules to share (in the example above, react and react-dom aren't called redundantly)
+- `name`: Falls back to this value as the filename if none is set.
+- `library`: Assigns the build output to an "app" variable.
+- `filename`: The entry file's name.
+- `exposes`: The name and target file exposed to other apps.
+- `shared`: Modules to share (in the example above, react and react-dom never get loaded twice).
 
 ```jsx {16}
 // App2's webpack.config.js, which uses the Header component
@@ -130,9 +130,9 @@ module.exports = {
 }
 ```
 
-You can access `App1` through the `remotes` setting.
+The `remotes` setting is what gives you access to `App1`.
 
-Add a script to App2's HTML file that fetches the `remoteEntry.js` file exposed from `App1`.
+Add a script tag to App2's HTML that pulls in the `remoteEntry.js` file `App1` exposes.
 
 ```html {4}
 // App2 index.html
@@ -146,7 +146,7 @@ Add a script to App2's HTML file that fetches the `remoteEntry.js` file exposed 
 </html>
 ```
 
-Now App2 can use app1's Header component.
+From here, App2 can use app1's Header component directly.
 
 ```jsx {3}
 import React from 'react';
@@ -162,9 +162,9 @@ export default () => (
 );
 ```
 
-Until now, if you wanted to share components across applications, you'd package them as a separate npm package and then install that package in each service. Whereas each service has to keep the package updated to the latest version to apply a common UI, with the Module Federation approach, **you can stay up to date without any separate install.**
+Up to now, sharing components across applications meant packaging them up as a separate npm package and installing it in every service that needed it, and each service had to keep bumping that package just to stay in sync on a shared UI. With Module Federation, **you get that same up-to-date UI without installing anything at all.**
 
-For more details and examples about the code above, please refer to the Reference section below.
+See the Reference links below for more detail and examples on the code above.
 
 - [https://github.com/nsebhastian/module-federation-react/tree/starter](https://github.com/nsebhastian/module-federation-react/tree/starter)
 - [https://blog.bitsrc.io/revolutionizing-micro-frontends-with-webpack-5-module-federation-and-bit-99ff81ceb0](https://blog.bitsrc.io/revolutionizing-micro-frontends-with-webpack-5-module-federation-and-bit-99ff81ceb0)
@@ -173,26 +173,26 @@ For more details and examples about the code above, please refer to the Referenc
 
 ### Asset modules
 
-It natively supports syntax for image or icon asset modules. After the build, they're either generated as separate files or converted to a DataURI, and you can use several formats for this.
+Image and icon asset modules are now supported out of the box. After the build they either become their own file or get inlined as a DataURI, and you can express this a couple of ways.
 
-- [Old way] Use `import url from "./image.png"` and set `type: "asset"` in `module.rules`.
+- [Old way] `import url from "./image.png"`, with `type: "asset"` set in `module.rules`.
 - [New way] `new URL("./image.png", import.meta.url)`
 
 ### Native Worker support
 
-If you use `new URL` together with `new Worker / new SharedWorker / navigator.serviceWorker.register`, webpack automatically creates a new entry point for the web worker.
+Pair `new URL` with `new Worker`, `new SharedWorker`, or `navigator.serviceWorker.register`, and webpack automatically creates a new entry point for the web worker.
 
 ## ✨ New Node.js Ecosystem Features
 
 ### Resolving
 
-You can use the `exports` and `imports` fields in package.json, and [Yarn PnP](https://classic.yarnpkg.com/en/docs/pnp/) is also supported.
+webpack now understands the `exports` and `imports` fields in package.json, and [Yarn PnP](https://classic.yarnpkg.com/en/docs/pnp/) is supported too.
 
 ## 🚀 Optimization
 
 ### Nested tree-shaking
 
-Supports tree-shaking by tracking information down into nested properties.
+Tree-shaking now digs into nested properties too, not just top-level exports.
 
 ```jsx {2,3,11}
 // inner.js
@@ -208,7 +208,7 @@ import * as module from './module';
 console.log(module.inner.a);
 ```
 
-In code like the above, `b` ends up being an unused variable, so it's removed during bundling.
+In code like this, `b` never actually gets used, so it's stripped out during bundling.
 
 ### Inner-module tree-shaking
 
@@ -224,21 +224,21 @@ export function test() {
 }
 ```
 
-You could say the `something` module is only used once the `test` function is called. webpack5 determines whether the exported `test` function is used, and if it isn't, it removes the `something` module as well.
+You could say the `something` module only matters once `test` actually gets called. webpack5 checks whether the exported `test` function is used at all, and if it isn't, it drops the `something` module along with it.
 
-It supports the following symbols.
+It recognizes the following symbols.
 
 - Functions, classes
-- Variables used with export default or the expressions below
+- Variables used with export default, or with the expressions below
   - Functions, classes
   - [Sequence expressions](https://krasimirtsonev.com/blog/article/meet-sequence-expression)
   - /*#**PURE***/ expressions
   - Local variables
-  - import binding
+  - import bindings
 
 ### CommonJs Tree Shaking
 
-It supports Tree Shaking for a few CommonJS patterns.
+It also handles Tree Shaking for a handful of CommonJS patterns.
 
 - exports|this|module.exports.xxx = ...
 - exports|this|module.exports = require("...") (reexport)
@@ -247,50 +247,50 @@ It supports Tree Shaking for a few CommonJS patterns.
 - require("abc").xxx
 - require("abc").xxx()
 - ESM import
-- Importing ESM in the form of `require()`
+- Importing ESM via `require()`
 - Object.defineProperty(exports|this|module.exports, "__esModule", { value: true|!0 })
 - exports|this|module.exports.__esModule = true|!0
 
 ### Side-Effect analysis
 
-The `sideEffects` field in package.json is a flag indicating that a module has no side effects. webpack5 can automatically determine, based on static analysis of the source code, that a module has no side effects.
+The `sideEffects` field in package.json flags a module as having no side effects. webpack5 can now figure that out on its own too, through static analysis of the source.
 
 ### General Tree Shaking improvements
 
-It's been improved to provide more information about `export *`. When webpack resolves `export *` and is confident there's a conflicting export (export default), it emits a warning.
+webpack now surfaces a lot more detail around `export *`. If it's confident there's a conflicting export (say, an export default) while resolving one, it emits a warning.
 
-`import()` can be tree-shaken manually via a comment like `/* webpackExports: ["abc", "default"] */`.
+You can also tree-shake `import()` manually, with a comment like `/* webpackExports: ["abc", "default"] */`.
 
 ### Development Production Similarity
 
-In webpack5, sideEffects optimization runs in both development and production mode. In webpack4, an incorrect `sideEffects` flag in package.json could sometimes cause errors only in production mode.
+webpack5 runs sideEffects optimization in both development and production mode. In webpack4, a wrong `sideEffects` flag in package.json could quietly break only your production build.
 
-If you can catch this problem in development mode, it'll be faster and easier to fix.
+Catching that kind of bug in development, instead of production, makes it much faster and easier to fix.
 
 ### Improved target option
 
-In webpack4, `target` could only be set to `web` and `node` (plus a few others). webpack5 offers more options.
+In webpack4, `target` gave you a choice between `web`, `node`, and a few others. webpack5 opens that up considerably.
 
-The target option affects the bundled code in the following ways.
+The target option shapes the bundled code in several ways.
 
-- How chunks are loaded
+- How chunks load
 - Chunk format
-- How WebAssembly (wasm) is loaded
-- How chunks and wasm are loaded in a worker
+- How WebAssembly (wasm) loads
+- How chunks and wasm load inside a worker
 - Use of the global object
-- Cases where publicPath needs to be determined automatically
-- ECMAScript features / syntax used in the generated code
-- Some Node.js behaviors (global, __filename, __dirname)
+- When publicPath needs to be inferred automatically
+- Which ECMAScript features and syntax show up in the generated code
+- Certain Node.js behaviors (global, __filename, __dirname)
 
-The two options `web` and `node` weren't enough to determine all of the above, so in webpack5 you can specify a minimum version, like `node10.13`.
+`web` and `node` alone couldn't pin down all of that, so webpack5 lets you specify a minimum version instead, like `node10.13`.
 
-You can also use `"browserlist"` as the target. Even if a project already has a `broswerlist` property set elsewhere, the value applied in webpack.config.js is what's used.
+You can also set target to `"browserlist"`. Even if your project already has its own `broswerlist` property set elsewhere, whatever's in webpack.config.js wins.
 
 ## ✨ Performance
 
 ### persistent caching
 
-You can enable it with a configuration like the following.
+Turn it on with a config like this.
 
 ```js
 module.exports = {
@@ -309,32 +309,32 @@ module.exports = {
 };
 ```
 
-If you use npm, the cache is stored at `node_modules/.cache/webpack`; if you use yarn, it's stored at `.yarn/.cache/webpack`. As long as every plugin handles caching correctly, you shouldn't need to delete it manually.
+The cache lands in `node_modules/.cache/webpack` under npm, or `.yarn/.cache/webpack` under yarn. As long as every plugin handles caching correctly, you shouldn't ever need to clear it by hand.
 
-By default, timestamps are used for snapshots in development mode and file hashes in production mode. Using file hashes lets you use persistent caching in CI as well.
+By default, timestamps drive snapshots in development, and file hashes drive production. File hashes are also what makes persistent caching possible in CI.
 
 ## 🧪 experiments
 
-webpack5 separates out experimental features and provides options you can enable via configuration.
+webpack5 keeps experimental features walled off, behind config flags you opt into.
 
-Additions to features offered as experiments ship in webpack minor releases.
+New additions to the experimental set ship in webpack minor releases.
 
-- Support for the old version of WebAssembly (`experiments.syncWebAssembly`)
-- The new WebAssembly [updated spec](https://github.com/WebAssembly/esm-integration) (`experiments.asyncWebAssembly`)
-- [Top Level Await](https://github.com/tc39/proposal-top-level-await) Stage 3 proposal (`experiments.topLevelAwait`)
-- Ships the bundle as a module (`experiments.outputModule`)
+- Support for the legacy WebAssembly format (`experiments.syncWebAssembly`)
+- The updated WebAssembly [spec](https://github.com/WebAssembly/esm-integration) (`experiments.asyncWebAssembly`)
+- The [Top Level Await](https://github.com/tc39/proposal-top-level-await) Stage 3 proposal (`experiments.topLevelAwait`)
+- Shipping the bundle as a module (`experiments.outputModule`)
 
 ## ⚠️ Node.js
 
-The minimum Node.js version supported by webpack has changed from 6 to 10.3.0.
+The minimum supported Node.js version jumps from 6 to 10.3.0.
 
 ## Config Change
 
-Here are a few Configuration Changes worth knowing about.
+A few config changes worth flagging.
 
 ### resolve.fallback
 
-Since the default Node.js polyfills have been removed, you may need to add a polyfill option like the following.
+Since the default Node.js polyfills are gone, you may need to add one back manually, like this.
 
 ```js
 module.exports = () => {
@@ -350,15 +350,15 @@ module.exports = () => {
 
 ### output.filename
 
-`output.filename`, the option that sets the file name of the bundled output, can now be set as a string or a **function**.
+`output.filename`, which names your bundled output, now accepts a **function** as well as a plain string.
 
 ```js
 module.exports = () => {
   //...
   output: {
-    // the way of using name and contenthash
+    // using name + contenthash
     filename: '[name].[contenthash].bundle.js',
-    // the way of using a function
+    // using a function instead
     filename: (pathData, assetInfo) => {
       return pathData.chunk.name === 'main' ? '[name].js': '[name]/[name].js';
     }
@@ -368,7 +368,7 @@ module.exports = () => {
 
 ### optimization
 
-As configuration options for chunks were added, a few settings have been deprecated.
+New chunk-related config options came in, and a few older ones got deprecated as a result.
 
 ```js
 module.exports = () => {
@@ -380,7 +380,7 @@ module.exports = () => {
 }
 ```
 
-In splitChunk, `vendors` has been renamed to `defaultVendors`.
+In splitChunks, `vendors` was renamed to `defaultVendors`.
 
 ```js
 module.exports = () => {
@@ -397,13 +397,13 @@ module.exports = () => {
 
 ## Afterthoughts
 
-When I upgraded a project in production to webpack5, several warnings showed up in the build console.
+Upgrading a live project to webpack5, I immediately got a wall of warnings in the build console.
 
-There seem to be [warnings webpack-cli is already working on](https://github.com/webpack/webpack-cli/issues/1918), and it looks like various plugins haven't fully caught up with webpack5 support yet.
+Some of it looks like [warnings webpack-cli is already tracking](https://github.com/webpack/webpack-cli/issues/1918), and plenty of plugins clearly haven't fully caught up to webpack5 yet.
 
-If you're not using CRA, it might be worth waiting a bit before fully bringing this Major Update into your project.
+If you're not on CRA, it's probably fine to hold off before pulling this major update fully into your project.
 
-2020.11.07 Update: The warning webpack-cli was working on has been fixed in the [4.2.0 Release](https://github.com/webpack/webpack-cli/releases/tag/webpack-cli%404.2.0).
+2020.11.07 Update: The warning webpack-cli was tracking has been fixed in the [4.2.0 Release](https://github.com/webpack/webpack-cli/releases/tag/webpack-cli%404.2.0).
 
 ## Reference
 

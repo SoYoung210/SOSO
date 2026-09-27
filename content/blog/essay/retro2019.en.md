@@ -7,122 +7,122 @@ thumbnail: './images/carbon.png'
 
 ![image-0](./images/carbon.png)
 
-It's really the end of the year. And once again, a lot of people's retrospective posts are going up.
-When I mentioned I was about to write mine, someone said this to me:
-**"Looking back just makes me feel like I'm scolding myself, and planning for next year feels like a burden, so I've stopped writing them."**
+It's really the end of the year, and like every year, everyone's retrospective posts are starting to show up.
+Right around when I mentioned I was about to write mine, someone said this to me:
+**"Whenever I write one, I just end up picking myself apart, and next year's plan feels like such a burden that I've basically stopped bothering."**
 
-I get that. My retrospectives aren't about "reflecting on my faults" — they're about "looking back" and "keeping a record."
-So how was my 2019?
+I get it. But that's not really why I write mine. Mine are about looking back and keeping a record, not about self-criticism.
+So how was 2019 for me?
 
-- A good outcome from an internship that was both an adventure and a challenge.
+- A good outcome from an internship that felt like both an adventure and a gamble.
 - 1.5 main projects.
 - Infrastructure and documentation.
-- 5 talks, 1 article, and a blog.
+- 5 talks, 1 article, and some blogging.
 - Running the For.D community.
-- You don't have to try so hard. No — you shouldn't try so hard.
+- You don't have to push yourself this hard. Actually, you shouldn't.
 
-For the first time in my life, I chose my profession, and I spent my first year on that path.
+For the first time in my life, I picked a profession, and I just spent my first year walking that path.
 
-During the internship, "survival" was unavoidably the most important factor, and once that faded into the background, the things that actually mattered started coming into view.
+Through the internship, "survival" was inevitably the only thing that mattered. Once that pressure eased off, the things that actually mattered started coming into focus.
 
 ## What I planned last year
 
 ![image-2018](./images/2019_retro_2.png)
 
-Of the modest wishes I laid out in [last year's retrospective](https://so-so.dev/essay/retro2018/), I achieved most of them, save for a couple.
+Of the modest wishes I laid out in [last year's retrospective](https://so-so.dev/essay/retro2018/), I got to almost all of them, minus a couple.
 
-> I never got around to Python or GraphQL, but I plan to study them whenever I feel I need to.
+> I never touched Python or GraphQL, but I'll pick them up whenever I actually need them.
 
-I stood on a speaker's stage, something that had once felt so far away, and I got to contribute to production through code reviews and development.
+I stood on a stage as a speaker, something that used to feel completely out of reach, and I got to contribute to production through code reviews and real development work.
 It was my first full year as a developer.
 
-A year passed with things I regret, things that made me feel for myself, and things I'm proud of.
+A year went by with plenty to regret, plenty of moments I felt sorry for myself over, and plenty I'm proud of too.
 
-## A good outcome from an internship that was both an adventure and a challenge
+## A good outcome from an internship that felt like both an adventure and a gamble
 
 ### 2018.12.26 ~ 2019.03.26
 
 ![image-1](./images/slide_0.jpg)
 
-I spent three months on an internship that felt like three years. Since I'd burned my bridges (school) to choose this path, I desperately wanted a good outcome. Even if the result wasn't good, I wanted to be able to say to myself, "I couldn't have tried any harder than this" — so, with a bit of exaggeration, I planned and studied around the clock, without weekends.
+Three months of internship that felt like three years. I'd burned the bridge back to school to take this path, so I wanted a good outcome badly. Even if it didn't work out, I wanted to be able to tell myself "there's no way I could have tried any harder than this" — so, exaggerating only slightly, I planned and studied around the clock, weekends included.
 
-Looking back now, honestly, that overexertion feels a little (a lot) sad.
+Looking back now, that kind of overdrive is honestly a little (okay, a lot) sad to think about.
 
-I worked on two projects total during that time, and the second one was really hard.
+I worked on two projects during that stretch, and the second one was rough.
 
-There were plenty of things I should have discussed with my project teammates from different angles, and I stayed silent about them instead.
+There were plenty of things worth raising with my teammates from a few different angles, and I just stayed quiet about them instead.
 
-Even now, thinking it over again, I don't think I could have made a different decision back then. Rather than wanting to undo the past, looking back on it now, this is how I'd sum it up:
+Even now, replaying it in my head, I don't think that version of me could have chosen any differently. It's not that I want to undo any of it. Looking back with some distance, though, here's how I'd put it:
 
 <div align="center" style="padding: 15px 0 15px 0; font-weight: bold; font-size: 19px;
     word-break: keep-all;">
 "There can be a better way to do anything. And I need to find that way."
 </div>
 
-For me, in the middle of my first project, the result of staying silent weighed pretty heavily.
+Back then, in the middle of my very first project, staying silent cost me more than I expected.
 
-> This line is from [Simple Software](https://so-so.dev/essay/simple-software/), and it's my favorite line of all.
+> This line is from [Simple Software](https://so-so.dev/essay/simple-software/), and it's still my favorite line out of anything I've read.
 
-I gained two big things.
+Two things came out of it.
 
-- Feedback on my code: my code was rushed.
-  - I had a compulsion that I had to "write it fast."
-- I started wondering how I could do good work.
-  - I still haven't landed on a clear answer.
+- Feedback on my code: it read rushed.
+  - I was stuck on this idea that I had to "write it fast."
+- I started asking myself what it actually means to do good work.
+  - I still don't have a clean answer.
 
-I want to thank the teammates who have been with me from the internship until now.
+Thanks to the teammates who've stuck with me from that internship all the way to now.
 
 ## 1.5 main projects
 
 ### 2019.03 ~ 2019.09
 
-Including the internship, I worked on 1.5 projects (one is pending).
+Counting the internship, I worked on 1.5 projects this year (one of them is still pending).
 
-The project I started after the internship was the first time I got to work through a [structural improvement](https://speakerdeck.com/soyoung210/heonjibjulge-saejibdao-riaegteu-peurojegteu-gujojojeong), and it was **a project where I collaborated a lot with designers and planners.**
+The project right after the internship was the first time I got to work through a real [structural overhaul](https://speakerdeck.com/soyoung210/heonjibjulge-saejibdao-riaegteu-peurojegteu-gujojojeong), and it was also **the project where I collaborated the most with designers and PMs.**
 
-The product's complexity was, as always, high, and to deal with it, some of the code I wrote got rationalized away with "there's no other way." Of course, looking back now, there's plenty of room for improvement.
+The product itself was, once again, pretty complex, and some of the code I threw at that complexity got waved through with a "well, there's no other way." Looking back, obviously, there's plenty I'd do differently now.
 
-> There's no such thing as "no other way." 😅
+> There's always another way. 😅
 
-Working on a highly complex service alongside people in other roles made me realize that communicating through documentation, for the sake of archiving, was essential. I recalibrated how important documentation work was, from "if I have time left over" to "make time for it" (?), and now that the project has wrapped up, I'm honestly relieved that I did.
+Working through a complex service alongside people in other roles made it obvious that documentation, if only for the sake of having a record, wasn't optional. I bumped documentation up from "if I have spare time" to "make the time" (?), and now that the project's been shelved, I'm honestly relieved I did.
 
-> My past self is a stranger to me (...)
+> Past me is basically a stranger to me at this point (...)
 
-I wanted to bring every dream and ideal our designer envisioned to life, but I felt pretty bad about my own lack of ability. In particular, I still regret that "I wish I'd been a little better with SVG…" Both the designer and I talked about things from the angle of how we could make the UX even better, but in the middle of that, having to bring up "technical limitations" stung a bit.
+I wanted to bring every idea our designer dreamed up to life exactly as imagined, and it stung when my own skills fell short. I still wish, in particular, that I'd been a bit better at SVG. Both of us kept the conversation focused on how to make the UX better, but having to bring up "technical limitations" in the middle of that never felt great.
 
-We set up our own design QA process and worked through this together, trying to find answers to how we could pull it off — it was genuinely enjoyable time. Design QA really is the more the merrier. Sitting down with the designer to look at screens with animation layered on and adjusting things along the way let us respond flexibly whenever we needed to, and it felt like a beacon that kept the project from losing its overall direction.
+We ran our own design QA and worked through the tricky spots together, hunting for answers, and that was honestly some of the most enjoyable time all year. Design QA really is the more the merrier: sitting down with the designer, watching screens with animation already layered in, and adjusting things on the spot let us stay flexible in the moment, and it kept the whole project pointed in the right direction, almost like a lighthouse.
 
-## 5 talks, 1 article, and a blog
+## 5 talks, 1 article, and some blogging
 
 ### 2019.02 ~ 2019.12
 
 ![image](./images/2019_presentation.png)
 
-This year I gave 5 talks in total, contributed one article to Microsoftware, and did a very small amount of blogging (...).
+Five talks, one magazine article, and a tiny bit of blogging (...) this year.
 
-I wrote a separate retrospective on my talks [in this post](https://so-so.dev/essay/2019%EC%9D%98-%EB%B0%9C%ED%91%9C%EB%93%A4-%ED%9A%8C%EA%B3%A0/). This year I gave a lot of talks under the keyword "growth," but next year I'd like to give talks centered a bit more on technical content.
+I already wrote up a separate retrospective on the talks themselves [in this post](https://so-so.dev/essay/2019%EC%9D%98-%EB%B0%9C%ED%91%9C%EB%93%A4-%ED%9A%8C%EA%B3%A0/). This year's talks mostly circled the word "growth"; next year I want to lean harder into technical content instead.
 
-Thinking about why my blog went quiet, I think the compulsion that "it has to be perfect" weighed on me. I'm not a graceful writer, and the process of "write it once, then keep polishing... keep fixing..." scared me enough that I avoided it.
+As for why the blog went quiet, I think it came down to this idea that a post "has to be perfect." I'm not a smooth writer, and the thought of "write a draft, then keep tweaking it... and tweaking it..." was enough to make me avoid the whole thing.
 
-Next year, I want to let go of that mindset a bit and fill the blog with posts on all kinds of topics, without feeling so burdened.
+Next year I want to drop that mindset and just fill the blog with whatever topics come up, without the pressure.
 
-Right now I'm planning to write about several translated posts on k8s along with the trial and error that came with it, and about the web project structure and various useful tools needed for production development.
+Right now I'm thinking about writing up some k8s translations along with the trial-and-error that came with them, plus notes on web project structure and useful tools for production work.
 
-I contributed to 'Microsoftware Issue 387: Learning Curve.' I'd known about Microsoftware magazine for a long time, but I never had the courage to apply to contribute — and while I was hesitating, an email came from the editor-in-chief.
+I also contributed to "Microsoftware Issue 387: Learning Curve." I'd known about the magazine for ages but never had the nerve to pitch them anything, and while I was still hesitating, the editor-in-chief emailed me first.
 
 <div align="center" style="padding: 15px 0 15px 0; font-weight: bold; font-size: 19px;
     word-break: keep-all;">
-Editor-in-chief: "Hey, would you be interested in contributing an article?"
+Editor-in-chief: "Hey, any interest in writing something for us?"
 </div>
 
-> A lot of dramatization went into that line. 😅 (In reality, he asked very gently.)
+> Heavily dramatized. 😅 (In reality, he asked very gently.)
 
-I put together, across about 10 pages, the story from the moment I first decided to become a developer up through my internship.
+I wrote up about 10 pages covering everything from the moment I decided to become a developer through the end of my internship.
 
 ![image-2](./images/2019_retro_3.png)
 
-I want to once again thank Editor-in-chief Byungseung Cho, who must have had a rough time dealing with my clumsy writing.
-It was a meaningful opportunity to get to complete my own story alongside a professional editor, and to anyone who, like me, hesitates to contribute out of unfounded fear, I'd really recommend working up the courage to give it a try.
+Thank you again to editor-in-chief Byungseung Cho, who had to deal with my rough writing more than once.
+Getting to polish my own story together with a professional editor was a meaningful opportunity in its own right, and if you're hesitating to pitch something the way I once was, out of that same unfounded fear, I really do recommend just going for it.
 
 ## Infrastructure and documentation
 
@@ -130,13 +130,13 @@ It was a meaningful opportunity to get to complete my own story alongside a prof
 
 ![image-2](./images/2019_retro_1.png)
 
-I was a total blank slate on the environment where web services get deployed and on CI/CD, so I studied this area for the first time and wrote it up as documentation to share.
+I went in knowing absolutely nothing about how web services get deployed or how CI/CD works, so I studied the topic from scratch for the first time and wrote up what I learned to share.
 
-Honestly, up until now I thought of this as "outside my territory," but now I think that the initial deploy setup for a web service I've developed, and even direct monitoring of the operating environment, ultimately falls on the web developer too. Or, without putting it so grandly, what I really needed was "the minimum understanding required to collaborate."
+Until now, honestly, I'd filed this under "not my job." But I think the initial deploy setup for a web service I've built, and even directly keeping an eye on the production environment, ends up on the web developer's plate too, one way or another. Or, without dressing it up: what I really wanted was just enough understanding to collaborate.
 
-> I didn't have the faintest idea how things were being operated, or what I needed to ask the DevOps team for when it came to deploy setup.
+> I had zero idea how any of it actually ran, or what I was even supposed to ask the DevOps team for when it came to deploy setup.
 
-For the first time, I started studying a field outside of Front, and my goal is "being able to talk with the DevOps team without friction." 😁
+This was the first time I studied something outside frontend, and my goal now is "being able to talk with the DevOps team without friction." 😁
 
 ## Running the For.D community
 
@@ -144,58 +144,57 @@ For the first time, I started studying a field outside of Front, and my goal is 
 
 ![image-4](./images/2019_retro_4.png)
 
-I served on the organizing team of [For.D](https://www.facebook.com/ForDeveloperKorea/), a community for junior developers.
-I started this community work because I'd received so much and wanted to give back, but **it was genuinely hard.**
+I've been part of the organizing team for [For.D](https://www.facebook.com/ForDeveloperKorea/), a community for junior developers.
+I got into it because I'd received so much from this field and wanted to give some back, and it turned out to be **really hard.**
 
-Making sure attendees benefit from an event and putting together an event with nothing missing takes a lot of time from the organizers.
-There's no compensation for that time. That was the hard part for me, and it's the part that gave me a lot to think about.
+Putting on an event that actually helps the people who show up, with nothing missing, eats a huge amount of the organizers' time, and none of that time comes with any kind of compensation. That was the hard part for me, and the part that gave me the most to think about.
 
-After running three events, doing For.D work on top of my actual job started to feel like a burden, and since everyone else has their own work too, I currently think of this as being in an indefinite hiatus, rather than anything more.
+After three events, doing For.D work on top of my day job started to weigh on me, and since everyone else on the team has their own job too, I've been treating this as an open-ended break rather than anything more definite.
 
-> I still haven't landed on any conclusion.
+> I still haven't landed on any real conclusion about it.
 
-Still, my biggest regret from this year is that I don't think I wisely shared this burden with the other organizers — I feel like I mostly just left them carrying the weight.
+My biggest regret from this year, though, is that I don't think I shared that weight wisely with the rest of the organizing team. Mostly, I think I just left them carrying it.
 
-## You don't have to try so hard. <br/> No — you shouldn't try so hard
+## You don't have to try so hard. <br/> No, you shouldn't try so hard
 
 ![image-5](./images/2019_retro_5.png)
 
-I'm not saying you should coast and collect a paycheck for nothing.
+To be clear, I'm not saying you should coast and collect a paycheck for nothing.
 
-Starting from the internship, working late out of anxiety became a habit. Even after leaving the office, all I did was company work(!), and when estimating schedules, I naturally factored in and shared an `over run` estimate as well.
+Ever since the internship, anxiety had turned working late into a habit. Even after I left the office, all I did was company work(!), and whenever I estimated a schedule, I'd quietly pad in an `over run` estimate and hand that over as the plan.
 
-A runaway train with no brakes is bound to derail. My stamina was visibly dropping, and because all I did was run without ever stopping to organize my thoughts, I never had time to think about the direction of my career.
+A runaway train with no brakes eventually derails. My stamina was visibly draining, and because I never stopped to take stock, I never had time to actually think about where my career was headed.
 
-**It was a genuinely dangerous state to be in.**
+**That was a seriously dangerous place to be in.**
 
-I couldn't gauge "how much work I could do in how much time." And I realized I hadn't been looking at this as a career over the long term.
-I stopped working late without exception. I started thinking about how to get the various experiences I need to grow as a developer, and while I still do work-related development after hours sometimes, I also started carving out time for myself — my blog, personal projects, and so on.
+I couldn't even estimate how much work I could realistically do in how much time. And it hit me that I hadn't been thinking about this as a career for the long haul.
+So I stopped working late, no exceptions. I started thinking hard about what kinds of experience I actually needed to grow as a developer, and while I still sometimes code for work after hours, I started carving out time that's just mine too: my blog, side projects, and so on.
 
-I'm working on taking the long view as a developer. I want to keep walking this path, and I think of it not as a sprint but as a marathon. 🏃‍♀️
+I'm trying to take the long view as a developer now. I want to keep walking this path, and I've come to think of it as a marathon, not a sprint. 🏃‍♀️
 
 ## What about 2020?
 
-Just like last year's retrospective, I'll close this one out with a modest set of plans.
+Just like last year, I'll wrap this up with a modest list of plans.
 
 ### Finish the side project
 
-I've set a goal of finishing, by April, the side project I just started at the end of this year.
-I've made all kinds of excuses and haven't even merged the first PR yet, but for the first half of the year, I've decided to focus every bit of time outside work and exercise on this project.
+I'm aiming to finish, by April, the side project I just started at the tail end of this year.
+I've made every excuse in the book and haven't even merged a first PR yet, but for the first half of next year, any time outside work and exercise is going toward this project and nothing else.
 
 ### Back to exercise, again
 
-Before I joined the company, I exercised consistently for over 10 months, and then took a full year off. My stamina has really dropped a lot.
-This time, I'm going to learn tennis or squash and try to keep at it.
+Before I started working, I kept up a workout routine for over 10 months straight, then took a full year off once I joined the company, and my stamina has taken a real hit.
+This time I want to pick up tennis or squash and actually stick with it.
 
 ## Wrapping Up
 
 <div align="center" style="padding: 15px 0 15px 0; font-weight: bold; font-size: 19px;
     word-break: keep-all;">
-I met so many things, worked hard, and next year let's grow past who I was this year.
+I ran into so much this year, did my best through all of it, and next year, let's grow past who I was this year.
 </div>
 
-This line also appeared in last year's retrospective, and it's the same this year. Except last year, that sentence was full of impatience, whereas this year I want to set aside the urge to "hurry up" and move forward thinking hard about `direction` instead.
+I wrote basically this same line in last year's retrospective, and it still holds this year. The difference is that last year it was loaded with impatience; this year I want to set aside the need to "hurry up" and think hard about `direction` instead as I move forward.
 
-Finally, everything written in this retrospective was only possible because of everyone I've met — I learned and grew because of them.
+Finally, everything in this retrospective was only possible because of every single person I got to meet this year. They're the reason I learned and grew at all.
 
-Thank you. And I look forward to 2020 as well.
+Thank you, and I'm looking forward to 2020 with all of you.

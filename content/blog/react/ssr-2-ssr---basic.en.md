@@ -7,36 +7,36 @@ thumbnail: './images/thumbnail.png'
 
 ![image-thumbnail](./images/thumbnail.png)
 
-The full code for this tutorial is available [here](https://github.com/SoYoung210/react-ssr-code-splitting/pull/12).
+Grab the full code for this tutorial [here](https://github.com/SoYoung210/react-ssr-code-splitting/pull/12).
 
-Bugs I ran into while building this project are tracked [here](https://github.com/soYoung210/react-ssr-code-splitting/issues). Check the issues labeled `✈️ SSR`.
+Bugs I ran into while building this are logged [here](https://github.com/soYoung210/react-ssr-code-splitting/issues). Look for issues tagged `✈️ SSR`.
 
-This post doesn't go into detail about the differences between CSR and SSR or their underlying fundamentals.
+I'm not going to get into the difference between CSR and SSR, or how either one works under the hood.
 
-> If you'd like to learn more about that, check out the [references](https://so-so.dev/react/ssr-2-ssr---basic/#참고글) below.
+> If you want more on that, check the [references](https://so-so.dev/react/ssr-2-ssr---basic/#참고글) below.
 
-## Before we start
+## Before We Start
 
-We're going to render the red-boxed area below, the `header area of the /org page`, on the server side.
+We're going to render the `header on the /org page`, the area boxed in red below, on the server.
 
 ![ssr-area](./images/ssr-area.png)
 
-The basic idea is that `express`, which we're already using, interprets our React code and draws the content, then delivers it to the client.
+The basic idea: `express`, which we're already running, interprets our React code, draws the content, and hands it off to the client.
 
-So what do we need in order for the server to be able to interpret React code?
+So what does the server actually need to interpret React code?
 
 - library: react, react-router-dom, etc.
 - webpack loader(html, css, etc.)
 
-There's more machinery involved, but conceptually these two things are the most important.
+There's more plumbing involved than that, but conceptually these two matter most.
 
-## Organizing the structure
+## Organizing the Structure
 
-First, since both the server and the client need common libraries, let's consolidate what used to be managed as two separate modules into one.
+Since server and client both need the same libraries, let's merge what used to be two separate modules into one.
 
-Move the contents of both the client's and server's package.json into the root package.json.
+Move both client's and server's package.json contents into the root package.json.
 
-Then update the `scripts` section of this package.json.
+Then update that package.json's `scripts` section.
 
 ```json
 "scripts": {
@@ -46,13 +46,13 @@ Then update the `scripts` section of this package.json.
   },
 ```
 
-The `start` command builds the server and client with their respective webpack configs, and then starts the node server.
+`start` builds server and client with their own webpack configs, then boots the node server.
 
-Let's create a webpack file for each of the server and client.
+Let's give server and client each their own webpack file.
 
 ### webpack.server.js
 
-Let's build `/webpack.server.js` based on the contents of the `server/webpack.config.js` we created in the [first tutorial](https://so-so.dev/react/ssr-1-codesplitting/).
+Let's build `/webpack.server.js` off the `server/webpack.config.js` we made in [the first tutorial](https://so-so.dev/react/ssr-1-codesplitting/).
 
 ```js {2,9,22,35}
 const pathResolve = require('path').resolve
@@ -93,11 +93,11 @@ module.exports = {
 }
 ```
 
-The highlighted parts are what changed compared to before. Since the location changed, the contents of entry changed, and we also split `babelrc` out so it can be used separately from the client.
+What's new is highlighted. The entry changed to match the new file location, and I split `babelrc` out so client and server can each use their own.
 
 ### babelrc.server.js
 
-Let's create `/babelrc.server.js`, which holds the settings needed for SSR.
+Let's create `/babelrc.server.js` to hold the settings SSR needs.
 
 ```js {3}
 module.exports = {
@@ -106,12 +106,12 @@ module.exports = {
 }
 ```
 
-Since the server also needs to read React code, we need to add `@babel/react` to the presets.
-We also need to read code-split content, so we add `@loadable/babel-plugin` as well.
+The server needs to read React code too, so `@babel/react` goes into the presets.
+It also needs to read code-split output, so `@loadable/babel-plugin` gets added as well.
 
 ### webpack.client.js
 
-This is the part that changes the most compared to before.
+This is where the biggest changes happen.
 
 ```js {28,29,59}
 const webpack = require('webpack')
@@ -191,27 +191,27 @@ const nodeRenderConfig = {
 module.exports = [clientRenderConfig, nodeRenderConfig]
 ```
 
-We could remove more duplication, but for now I've written it out explicitly like this.
-The most notable change is that the webpack config has switched to a multi-compiler approach.
+I could trim some duplication here, but for now I've spelled it out explicitly.
+The most obvious shift: the webpack config now runs as a multi-compiler setup.
 
-A multi-compiler approach means providing a way to use different kinds of compilers depending on the situation.
+A multi-compiler setup just means you can run different kinds of compilers depending on the situation.
 
-We changed things so that a single task, rendering, now happens on both the client (browser) and the server.
-Let's briefly go over each setting.
+Now a single task, rendering, happens on both the client (browser) and the server.
+Let's run through each setting briefly.
 
-**target**: We're using 'web' and 'node'. As you can see in the [webpack official docs - target](https://webpack.js.org/configuration/target/), the default option is web, meaning it's mainly meant for use in the browser.
-But since we need an option for rendering in a node environment, we've also specified this value as 'node'.
+**target**: we're using both 'web' and 'node'. Per the [webpack docs on target](https://webpack.js.org/configuration/target/), the default is web, meaning it's built for the browser.
+But since we also need to render in a node environment, we've set this value to 'node' as well.
 
-**name**: This option gives a name to the compiled file. It lets `@loadable` and the webpack-hot-middleware (WHM) we'll set up soon distinguish which format a given file is in, by separating web and node.
+**name**: names the compiled output. Splitting it into web and node lets `@loadable`, and the webpack-hot-middleware (WHM) we'll set up soon, tell which format a given file is in.
 
-**getEntryPoint**: In SSR, the entry file also changes. As will be introduced shortly, the role of `client/src/index.tsx` gets taken over by `server/app.tsx`.
+**getEntryPoint**: SSR changes the entry file too. As we'll see shortly, `server/app.tsx` takes over the job `client/src/index.tsx` used to do.
 
-**output**: To separate the files needed for SSR from the files needed for CSR, we split the folder based on the injected `target`.
-libraryTarget is set to `commonjs2` when `target: node`, because Node.js adopted the commonjs approach for its module system. For web, we set the default option, `var`.
+**output**: sorts files into folders based on the injected `target`, so SSR output stays separate from CSR output.
+libraryTarget is set to `commonjs2` when `target: node`, since Node.js's module system is commonjs. web just keeps the default, `var`.
 
-**plugins**: Since SSR runs in a node environment, we add `webpack-node-externals`, but since we still need to read the code-split files, we also add `@loadable-component`.
+**plugins**: since SSR runs in node, we add `webpack-node-externals` — but we still need to read the code-split files, so `@loadable-component` goes in too.
 
-## Updating server/app.ts to server/app.tsx
+## Turning server/app.ts into server/app.tsx
 
 ```tsx {8,10,13,17,20}
 import React from 'react'
@@ -237,16 +237,16 @@ app.get('*', (req, res) => {
 })
 ```
 
-**ChunkExtractor**: This is an SSR-oriented API provided by [@loadable/server](https://www.smooth-code.com/open-source/loadable-components/docs/api-loadable-server/). It collects information about split components via `collectChunk`, and passes along information about the files to load via getLinkTag, getStyleTag, and getScriptTag.
+**ChunkExtractor**: the SSR-focused API from [@loadable/server](https://www.smooth-code.com/open-source/loadable-components/docs/api-loadable-server/). `collectChunk` gathers info on the split components, and getLinkTag, getStyleTag, and getScriptTag hand back which files need to load.
 
-**StaticRouter**: This is the router used on the server in place of BrowserRouter. It's responsible for passing the route information for the URL the user requested to the client-side files.
+**StaticRouter**: the router the server uses in place of BrowserRouter. It hands the route info for the requested URL over to the client-side files.
 
-**renderToString**: This is the SSR-oriented library provided by [react-dom](https://reactjs.org/docs/react-dom-server.html#rendertostring). This method is very closely tied to `hydrate`, which we'll use on the client soon. We'll go into more detail on that below.
+**renderToString**: the SSR method [react-dom](https://reactjs.org/docs/react-dom-server.html#rendertostring) ships with. It's tightly linked to `hydrate`, which we'll use on the client soon — more on that below.
 
-> 🍿 (spoiler): once the markup rendered on the server via renderToString is delivered to the client, the client doesn't re-render it — it just wires up event handlers.
-> `hydrate`: to fill in. You can think of it as the work of filling in the server's output.
+> 🍿 (spoiler): once markup rendered on the server via renderToString reaches the client, the client doesn't re-render it — it just wires up event handlers.
+> `hydrate`: think of it as filling in, the work of filling the server's output back in on the client.
 
-**renderFullPage**: This is a function we wrote ourselves to split the code. It defines what template the server should use to deliver the content.
+**renderFullPage**: a function I wrote myself to help split up the code. It defines the template the server sends content down in.
 
 ```tsx
 export const renderFullPage = (webExtractor, html) => `
@@ -267,11 +267,11 @@ export const renderFullPage = (webExtractor, html) => `
 `
 ```
 
-The hardest part is done. There's a lot of code I skipped over along the way. I'd recommend following along with the code in the [link](https://github.com/SoYoung210/react-ssr-code-splitting/pull/12) above.
+The hardest part is behind us now. I skipped over plenty of code along the way, so I'd recommend following along with the code at the [link](https://github.com/SoYoung210/react-ssr-code-splitting/pull/12) above.
 
 ## Updating client/src/index.tsx
 
-Unlike before, the HTML that comes down now already has its content rendered on the server. Let's look at the As-is and To-be to see what that looks like.
+Unlike before, the HTML coming down now already has its content rendered on the server. Let's compare the As-is and To-be to see what that looks like.
 
 ### As-is (CSR)
 
@@ -290,7 +290,7 @@ Unlike before, the HTML that comes down now already has its content rendered on 
 <script type="text/javascript" src="/main.bundle.js"></script>
 ```
 
-An empty div comes down, and rendering happens by parsing `bundle.js` and adding content underneath that div.
+An empty div comes down, and rendering happens by parsing `bundle.js` and stuffing content underneath it.
 
 ### To-be (SSR)
 
@@ -322,11 +322,10 @@ An empty div comes down, and rendering happens by parsing `bundle.js` and adding
 </html>
 ```
 
-The div area that used to be empty is now **filled in.**
-Part of the content comes down already filled in from the server.
+The div that used to sit empty is now **already filled in** — part of the content arrives pre-rendered straight from the server.
 
-But an area that's already been rendered doesn't need to be redrawn on the client, right?
-**That's why we need hydrate.** Let's change the contents of `client/src/index.tsx`.
+But an area that's already been drawn doesn't need redrawing on the client, right?
+**That's exactly what hydrate is for.** Let's update `client/src/index.tsx`.
 
 ```tsx
 import { loadableReady } from '@loadable/component'
@@ -344,18 +343,18 @@ loadableReady(() => {
 })
 ```
 
-The old `ReactDOM.rendering` is gone, and `hydrate` has taken its place.
+`ReactDOM.render` is gone, and `hydrate` has taken its place.
 
-As mentioned earlier, **it plays the role of filling in an area that's already been rendered.** It inserts only the string needed for the first render into the html, and once the bundle js needed on the client arrives, it wires up events on the html tags.
+As mentioned, **its job is filling in what's already been drawn.** It inserts just the string the first render needs into the HTML, and once the bundle js the client needs arrives, it wires up events on those HTML tags.
 
-### Check the result
+### Checking the Result
 
-The first application of SSR + Code Splitting is now complete.
-Run `npm start` and visit the `/org` page, and you should see a result like this.
+That's SSR plus code splitting, up and running for the first time.
+Run `npm start` and hit the `/org` page, and here's what you should see.
 ![image](./images/ssr-first.png)
-This post doesn't include the full code needed for it to actually work, so follow along by checking the [PR](https://github.com/SoYoung210/react-ssr-code-splitting/pull/12) linked above!
+This post doesn't include every line of code needed to actually run it, so follow along with the [PR](https://github.com/SoYoung210/react-ssr-code-splitting/pull/12)!
 
-In the next chapter, we'll go beyond rendering on the server and add data fetching to deliver the full content.
+Next up, we'll go beyond server rendering and fetch data so we can deliver the full content.
 
 ## References
 
@@ -363,4 +362,4 @@ In the next chapter, we'll go beyond rendering on the server and add data fetchi
 
 #### [Rendering on the Web](https://shlrur.github.io/develog/2019/02/14/rendering-on-the-web/)
 
-#### [Setting up a React + Typescript + SSR + Code-splitting environment](https://medium.com/@minoo/react-typescript-ssr-code-splitting-%ED%99%98%EA%B2%BD%EC%84%A4%EC%A0%95%ED%95%98%EA%B8%B0-d8cec9567871)
+#### [Setting Up a React + TypeScript + SSR + Code-Splitting Environment](https://medium.com/@minoo/react-typescript-ssr-code-splitting-%ED%99%98%EA%B2%BD%EC%84%A4%EC%A0%95%ED%95%98%EA%B8%B0-d8cec9567871)

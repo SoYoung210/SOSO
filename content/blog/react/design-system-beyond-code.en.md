@@ -7,144 +7,144 @@ thumbnail: './images/design-system-beyond-code/thumbnail.png'
 
 ![image-thumbnail](./images/design-system-beyond-code/thumbnail.png)
 
-I'm building my third design system in my career. One of them I built from scratch, and the other two I redeveloped on top of existing systems. Through these three experiences I learned what matters and what doesn't, and I've written up the various difficulties I ran into along the way.
+I'm on my third design system now. I built one entirely from scratch, and rebuilt the other two on top of systems that already existed. Across all three, I learned what actually matters and what doesn't, and this post is my attempt to write down the difficulties I ran into along the way.
 
-- [Before you build](#만들기-전에)
+- [Before You Build](#만들기-전에)
   - [Goals](#목표)
-  - [Quality is what matters](#중요한-것은-퀄리티)
-  - [Establishing core principles](#대원칙-만들기)
-- [While building](#만드는-중에)
-  - [Guarding the core principles](#대원칙-수호하기)
-  - [Code is the baseline](#코드는-기본이다)
-  - [Definition is everything](#정의가-전부다)
-  - [If I had to pick just one thing, it's test code](#하나만-선택해야-한다면-테스트-코드)
-  - [Securing slack time](#여유시간-확보하기)
-- [After building](#만들고-나서)
-  - [Getting feedback fast](#피드백-빨리-받기)
-  - [Distinguishing what to do from what not to do](#해야-할-것과-하지-않을-것-구분하기)
+  - [Quality Comes First](#중요한-것은-퀄리티)
+  - [Setting Core Principles](#대원칙-만들기)
+- [While You Build](#만드는-중에)
+  - [Protecting the Core Principles](#대원칙-수호하기)
+  - [Code Is the Baseline](#코드는-기본이다)
+  - [Definitions Are Everything](#정의가-전부다)
+  - [If You Can Only Pick One Thing, Pick Test Code](#하나만-선택해야-한다면-테스트-코드)
+  - [Carving Out Slack Time](#여유시간-확보하기)
+- [After You've Built It](#만들고-나서)
+  - [Get Feedback Fast](#피드백-빨리-받기)
+  - [Know What to Do and What Not To](#해야-할-것과-하지-않을-것-구분하기)
 - [Appendix](#부록)
-  - [So how should you get started?](#그래서-어떻게-시작해야-할까)
-  - [Product systems](#프로덕트-시스템)
-- [In closing](#끝으로)
+  - [So Where Do You Even Start?](#그래서-어떻게-시작해야-할까)
+  - [Product Systems](#프로덕트-시스템)
+- [Closing Thoughts](#끝으로)
 
 ## Before You Build
 
-The very first stage — "before you build" — is the most important stage in the whole process. It's where you lay the groundwork for the decisions you'll face during development and later operation, and set the overall direction.
+The very first stage, before you build anything, matters more than any other. Every decision you'll face while building and later running the system rests on the groundwork and direction you set right here.
 
-If someone asked me what to do first when building a design system, I'd say: "Set your goals, and make clear what you will and won't achieve."
+If someone asked me what to do first when starting a design system, my answer would be: set a goal, and be clear about what you're aiming for and what you're not.
 
 ### Goals
 
-A design system exists to deliver two values for a product: consistency and efficiency.
+A design system exists to deliver two things: consistency and efficiency.
 
-But the specific goals should differ depending on the product that needs the system. You might raise how strictly the system is enforced, pursuing unbreakable consistency and high productivity — or you might treat the system as raw material and pursue high extensibility and freedom instead.
+But the specifics should shift depending on the product the system serves. You could tighten the system's enforcement and chase unbreakable consistency and high output, or you could treat the system as raw material and chase extensibility and freedom instead.
 
-The philosophy and goals of the system you want to build become the foundation for every **decision** you'll stack on top of it going forward. Even if you're adopting an external design system, you still need to define what a design system fit for your team actually looks like.
+Whatever philosophy and goals you pick become the foundation every future **decision** gets built on. Even if you adopt someone else's design system, you still have to figure out what a design system fit for your own team actually means.
 
-#### If You're Pursuing Extensibility
+#### If You're Chasing Extensibility
 
-A design system that pursues high extensibility and freedom delegates part of the responsibility for consistency to the consuming side, so you need to set your target beyond just the design system layer itself.
+A design system built around extensibility and freedom is, by nature, handing part of the responsibility for consistency over to whoever consumes it. That means your target has to reach past the design system layer alone.
 
-- Design system layer
-- Product system layer
+- The design system layer
+- The product system layer
 
-You should view the product's component layers as at least these two, and also consider how you'll support the consuming teams in building their own product systems.
+Think of a product's components as living in at least these two layers, and plan for how you'll help the teams consuming your system build their own product-system layer on top of it.
 
-Organizations that build a design system team are usually smaller than the product organizations they serve, so it's hard for the design system team alone to drive every layer — trying to do so can actually slow product development down. That's why the design system layer should treat supporting and guiding the community toward building their own product-system layer as one of its key missions.
+A design-system team is almost always smaller than the product organization it serves, so trying to drive every layer yourself just isn't realistic, and it can end up slowing product teams down instead. That's exactly why supporting and guiding the community toward building their own product-system layer needs to be one of the design system team's core missions.
 
-### Quality Is What Matters
+### Quality Comes First
 
-Why should designers and developers building products outside the system team actually use the design system?
+Why would a designer or developer outside the system team ever choose to use it?
 
-Users don't use just any product. They don't use something simply because it was "well made." They need to feel value in the product, so that they come looking for it themselves.
+Users don't just use whatever's put in front of them. Being "well made" isn't enough on its own. A product has to make people feel its value, so they come looking for it themselves.
 
-A design system is a product too. What sets it apart from a typical product is that it has two groups of users: the end users of the product, and the team members who build that product.
+A design system is a product too. What sets it apart is that it has two kinds of users at once: the people using the product it powers, and the teammates building that product.
 
-For a design system to be one that team members seek out on their own, **the design system itself has to deliver overwhelming satisfaction**. It needs to offer a high enough level of UI/UX that people want to apply it to their product, and it must not get in the way when they extend it.
+For teammates to come looking for the system on their own, **the system itself has to be overwhelmingly satisfying to use.** It has to offer UI and UX good enough that people want it in their product, and it can't get in the way the moment they need to extend it.
 
-When team members actively use the design system, both the system and the product can mature quickly. This process of turning users into fans also pays off later, in the "winning over early adopters" section.
+Once teammates start reaching for the system on their own, both the system and the product mature faster. And turning users into fans this way pays off again later, when it's time to win over early adopters (more on that below).
 
-### Establishing Core Principles
+### Setting Core Principles
 
-Once the goals and philosophy are set, you need to build the core principles for system decision-making on top of them.
+Once your goals and philosophy are set, build your core decision-making principles on top of them.
 
-You should think through and document, as concretely as possible, what the design system will and won't do, and how the code interface will reflect the design constraints.
+Spell out, as concretely as you can, what the system will and won't do, and exactly how its code interface should reflect its design constraints, then write it down.
 
-Philosophy, as an abstract construct, isn't enough on its own to solve the wide range of problems you'll face. You need to build principles on top of your goals and philosophy, refining them further as you solve real problems.
+Philosophy on its own is too abstract to solve real problems as they come up. Build your principles on top of your goals and philosophy, then keep sharpening them as you actually solve problems.
 
-## While Building
+## While You Build
 
-### Guarding the Core Principles
+### Protecting the Core Principles
 
-When you focus on the trees, it's easy to lose sight of the forest. You'll make countless decisions while building the system, and none of them should contradict the direction the team has agreed on.
+Focus too hard on individual trees and it's easy to lose the forest. You'll make a long string of decisions while building a system, and none of them should drift from the direction the team already agreed on.
 
-You need to consider things like whether you're aiming for a consistent level of abstraction — from interface naming all the way up to the component level — and whether you're sufficiently fulfilling basic responsibilities like accessibility.
+That means constantly checking things like whether you're keeping a consistent level of abstraction, from how you name interfaces up to how you shape whole components, and whether you're actually covering baseline responsibilities like accessibility.
 
-Making decisions grounded in core principles takes practice. At first it requires conscious effort, and you may end up reversing some decisions. But once the team has practiced this kind of decision-making enough, you'll naturally reach decisions that don't break the principles without much effort. Sometimes breaking a principle is necessary too — that's fine, as long as the cost is worth the value.
+Deciding this way takes practice. At first it takes real conscious effort, and you'll probably reverse a decision or two along the way. But once the team has practiced this enough, staying inside the principles starts happening almost automatically, without much effort at all. And sometimes breaking a principle is the right call. That's fine, as long as what you get back is worth what it costs.
 
 ### Code Is the Baseline
 
-You shouldn't let good code or good design eat up too much of your time. A design system is a continuous stream of decisions. As with any product, stacking beautiful code on top of the wrong decisions is meaningless.
+Don't let good code or elegant design eat up too much of your time. A design system is really just one decision after another, and like any product, beautiful code built on top of the wrong decision is worth nothing.
 
-#### What You Should Already Know
+#### Things You Should Already Know
 
-You should deliberately use a variety of services and study the decisions behind various open-source design systems. Different services can give you hints for new component decisions, and looking through open-source design systems can teach you about component taxonomy, interface design, and writing good code.
+Make a habit of actually using a wide range of services, and study the decisions behind other open-source design systems. Different services will hand you hints for your own component decisions, and digging through open-source systems teaches you a lot about how to classify components, design interfaces, and write good code.
 
-#### Don't Get Held Back by Feasibility
+#### Don't Let Feasibility Hold You Back
 
-Another reason code is the baseline is that you'll constantly face decision points about the value of an implementation, not just whether it's feasible. To make good decisions, you can't let judgments about feasibility tie your hands.
+There's another reason code has to be your baseline: you're constantly deciding whether something is worth building, not just whether it's possible. Good decisions require not letting "can we build this" tie your hands.
 
-Decisions for a good system can't rest on any one person. Regardless of role, every team member needs a strong design sensibility and needs to relentlessly pursue UX quality.
+A good system can't rest on any one person's judgment. Everyone on the team, regardless of role, needs a sharp design instinct and a stubborn commitment to UX quality.
 
-#### Pursue Sustainability
+#### Aim for Sustainability
 
-The moment a system gets adopted, its lifespan outlasts that of the product. That's exactly why you have to think about sustainability.
+The moment a system gets adopted, it's going to outlive the product it's built into. That alone means sustainability has to be part of the plan.
 
-If you're building a system, you need to hold both perspectives covered in [“The Rise of Worse is Better”](https://www.dreamsongs.com/RiseOfWorseIsBetter.html): *the right thing* and *worse is better*.
+If you're building a system, hold both perspectives from [“The Rise of Worse is Better”](https://www.dreamsongs.com/RiseOfWorseIsBetter.html) at once: *the right thing*, and *worse is better*.
 
-Implement things simply, within a consistent interface. A consistent interface makes behavior predictable, and a simple implementation lets other developers easily grasp the system's code. That builds the foundation for contribution. A system has to be maintainable, extensible, and open for anyone to contribute to.
+Build simple implementations behind a consistent interface. Consistency makes behavior predictable, and a simple implementation means other developers can actually make sense of the system's code, which is what makes contribution possible in the first place. A system has to stay maintainable, stay extensible, and stay open to anyone who wants to contribute.
 
-Pursue simplicity, but judge the value of any complexity added for usability's sake and choose deliberately. As a rough rule of thumb, if code complexity increases by 100, the resulting usability improvement should be at least 80. To give examples from the perspective of a component's interface and UI/UX completeness:
+Aim for simplicity, but weigh every bit of complexity you add for the sake of usability. As a rough gut check: if code complexity goes up by 100, the usability gain needs to be at least 80. Here's what that looks like from the angle of a component's interface and its UI/UX completeness.
 
-- **Interface:** Simplicity of the interface matters more than simplicity of the implementation. Pursue interface consistency, except in cases where doing so would make it behave incorrectly.
-- **Completeness:** If the value of completeness isn't large relative to the internal implementation complexity it costs, you should compromise. Treat simplicity as an important value in itself.
+- **Interface:** A simple interface matters more than a simple implementation. Chase interface consistency, except in the rare case where doing so would actually make the component behave incorrectly.
+- **Completeness:** If a feature's completeness isn't worth the internal complexity it costs, compromise. Treat simplicity itself as a value worth protecting.
 
-Code Complexity Debt and Usability Debt are in a trade-off relationship. You have to make the right value judgment for every problem that keeps coming up. In a design system, decision-making is everything. Implementation skill is more like the underlying fitness that supports what really matters.
+Complexity debt and usability debt trade off against each other, constantly, and every new problem forces you to weigh them correctly again. A design system really is just decisions, all the way down. Implementation skill is more like the fitness underneath: the thing that lets you carry whatever actually matters.
 
-### Definition Is Everything
+### Definitions Are Everything
 
-Just as you set the design system's overall goals before you started building, while you're building it you need to define the goal of each component. The same process you used to separate what the design system is and isn't for needs to happen at the component level too.
+Just as you set a goal for the whole design system before you started, while you're building you need a goal for each individual component too. The same exercise, drawing a line between what's in scope and what isn't, has to happen at the component level as well.
 
 ![modal_popover_guide](./images/design-system-beyond-code/modal_popover_guide.png)
 
-What happens when a component's definition is lacking? I put together an example of the kind of situation you might run into while developing Modal and Popover components.
+What actually happens when a component's definition is fuzzy? Here's a situation you might run into while building Modal and Popover, as an example.
 
-#### If the Definition Is Lacking
+#### When the Definition Is Missing
 
-It's easy to mistake a component's design guide for an agreed-upon definition.
+It's easy to mistake a component's design guide for an agreed-upon definition of what it does.
 
-**What the developer thinks the component is:**
-
-- Modal
-  - An overlay shown at the center of the screen, covering other elements
-- Popover
-  - An overlay containing a button and text
-  - Allows elements other than a button to be placed inside
-  - The content area is defined as `children`.
-
-**What the designer thinks the component is:**
+**What the developer has in mind:**
 
 - Modal
-  - An overlay shown at the center of the screen, covering other elements
+  - An overlay that shows up dead center, covering everything else
 - Popover
-  - An overlay containing a brief description and a cancel button
-  - Too much varied content looks cluttered. Since the design mockup only has text and a cancel button in it, they assume it can only be used that way.
+  - An overlay holding a button and some text
+  - Lets you put in elements other than a button too
+  - The content area is just defined as `children`
 
-Now imagine a request like the one below comes in under these circumstances.
+**What the designer has in mind:**
 
-> Please add an option so that when a button is clicked, the Modal can be positioned relative to that button. Right now it always opens dead center on the screen, so customizing its position takes a lot of work.
+- Modal
+  - An overlay that shows up dead center, covering everything else
+- Popover
+  - An overlay with a short description and a cancel button
+  - Too much varied content looks messy. Since the mockup only shows text and a cancel button, that's assumed to be all it's for.
 
-Because the designer thought `Popover` could only handle text, they asked the developer to add an option to `Modal` instead. Since Modal has no information for judging "relative to the button that was clicked," supporting this spec requires adding a prop like the one below.
+Now imagine a request comes in, on top of that mismatch.
+
+> Can we add an option so the Modal opens positioned relative to whatever button triggered it? Right now it's locked to dead-center, and customizing that position takes way too much work.
+
+Since the designer assumed `Popover` could only hold text, they routed this request to the developer as a `Modal` change instead. But Modal has no concept of "relative to the button that triggered it," so supporting the request means bolting on a prop like this.
 
 ```jsx
 <Modal
@@ -152,7 +152,7 @@ Because the designer thought `Popover` could only handle text, they asked the de
 />
 ```
 
-If only `trigger` is added, the intent behind the modal's position stays ambiguous, so a `mode` prop is added to make explicit whether it should be centered or positioned relative to the trigger.
+Adding just `trigger` still leaves the modal's positioning ambiguous, so a `mode` prop gets tacked on too, to spell out whether it should sit dead-center or anchor to the trigger.
 
 ```jsx
 <Modal
@@ -161,191 +161,191 @@ If only `trigger` is added, the intent behind the modal's position stays ambiguo
 />
 ```
 
-Looking at the result, it's identical to `Popover`'s default behavior. Worse, since the feature was bolted onto the `Modal` component, the implementation ends up more complex. Implementing the same functionality in two different components wastes resources and confuses users at the same time.
+Step back and look at the result: it's just `Popover`'s default behavior, rebuilt inside `Modal`. Worse, bolting it on made the implementation more complicated than it needed to be. Building the same feature twice, in two different components, wastes effort and confuses whoever has to use them.
 
-If a user's first mental model of the feature is "it covers the screen when it opens, and I can control its position," they'll think of Modal. If it's "the content should be shown relative to a trigger," they'll think of Popover.
+If someone's first thought is "it covers the screen, and I need to control where it sits," they'll reach for Modal. If it's "the content needs to appear relative to a trigger," they'll reach for Popover.
 
-The reason the request came in at all, and the reason solving it got complicated, both come down to the same thing: **the component's responsibility wasn't clearly defined.**
+Both why this request landed in the first place, and why solving it got so tangled, trace back to the same root cause: **the components' responsibilities were never clearly defined.**
 
-#### If the Definition Is Sufficient
+#### When the Definition Holds Up
 
-Beyond design guides for things like spacing and color, think first about the responsibilities and use cases of components that look similar.
+Beyond a design guide covering spacing and color, think through the responsibilities and use cases of similar-looking components first.
 
 - `Modal`
-  - Deliberately breaks context to present something
-  - The page can't be interacted with until the modal is closed
+  - Deliberately breaks the user's context
+  - Blocks all interaction with the page until it closes
 - `Popover & Tooltip`
-  - For cases where you need to keep the context connected to the entry trigger
-  - Provides supplementary information for the trigger, with actions related to that content allowed
-  - Tooltip: for delivering short, concise information (text recommended) / Popover: used when additional information or an action is needed (no page navigation inside the component)
+  - For when you need to stay connected to the trigger's context
+  - Supplements the trigger with extra information, and can hold actions related to it
+  - Tooltip: short, plain information (text only) / Popover: for extra information or actions (no page navigation inside it)
 
-> Please add an option so that when a button is clicked, the Modal can be positioned relative to that button. Right now it always opens dead center on the screen, so customizing its position takes a lot of work.
+> Can we add an option so the Modal opens positioned relative to whatever button triggered it? Right now it's locked to dead-center, and customizing that position takes way too much work.
 
-With a sufficient definition, when a request like the one above comes in, you can point straight to the `Popover` component and head off any decision that would saddle a component with unnecessary implementation complexity.
+With a solid definition in place, the same request gets routed straight to `Popover`, and the decision that would've saddled a component with pointless complexity never happens.
 
-### If I Had to Pick Just One Thing, It's Test Code
+### If You Can Only Pick One Thing, Pick Test Code
 
-A design system has to correctly provide its core functionality and remain sustainable. Both of those need to be guaranteed by the minimal safety net that is test code.
+A design system has two jobs: get its core functionality right, and stay that way over time. Test code is the bare-minimum safety net that guarantees both.
 
-The biggest value of test code is that it mechanically guarantees, into the future, what's obviously true right now. A test that breaks when it should break protects a product beautifully. It's obviously necessary from the perspective of the developer who keeps maintaining the design system, and it's also an essential piece of the direction the design system ultimately needs to grow in. In this piece I want to talk about that direction — the direction a design system should grow in.
+The real value of a test isn't catching today's bugs, it's mechanically guaranteeing that what's true today stays true later. A test that breaks exactly when it should is what actually protects a product. Anyone maintaining a design system needs this, obviously, but it's also essential to the direction a design system has to grow in, and that direction is what I actually want to talk about here.
 
-Despite its importance, test code often gets deprioritized. While you're developing, checking things visually in the UI feels faster than writing a test. When you can verify something with your own eyes right away, writing test code can feel unproductive. But I want to say: even if it means giving up something that feels more important — like the beauty of an implementation, as opposed to its interface — hold on to your test code.
+Despite all that, test code often gets pushed down the priority list. In the moment, eyeballing the UI just feels faster than writing a test. And once you can verify something visually in seconds, a test can feel like a waste of time. But I'd argue the opposite: give up something you think matters more, like a beautiful implementation as opposed to a clean interface, before you give up your tests.
 
 ![the orbit model](./images/design-system-beyond-code/orbit_model_color.png)
 <small style="opacity: 0.5;">https://github.com/orbit-love/orbit-model/blob/main/orbit_model_color.png</small>
 
-Users keep growing, while the people maintaining the library stay few relative to that user count. A library that fails to build an ecosystem has a ceiling on how far it can grow, so the team building the library needs to build an ecosystem where users contribute and grow together with it. Take the lead on improving core functionality, but also draw users into participating.
+Your user base keeps growing, while the people maintaining the library stay a tiny fraction of that. A library that never builds an ecosystem hits a ceiling on how far it can grow, so the team behind it has to build an ecosystem where users contribute and grow alongside it. Keep driving the core functionality forward yourself, but pull users into the process too.
 
-That was a long preamble, but the core point I wanted to make is this: without test code, you can't expect direct code contributions.
+That was a long way of getting to the point: without test code, you can forget about getting direct code contributions.
 
-In the short term, test code might look like just one more task added to the pile, but it's a cost-effective device that raises the system's stability and lowers the barrier to entry for contributions. This piece isn't going to dig into code in detail, so I won't spell out exactly how to write test code — but I'll introduce a few things that helped me.
+Test code might look like just one more chore in the short run, but it's a cheap way to buy both stability and a lower barrier for anyone who wants to contribute. This post isn't about code specifics, so I won't walk through exactly how to write tests, but here are a few things that helped me.
 
-#### Approach Behavior and Style Separately
+#### Treat Behavior and Style as Separate Problems
 
-The core of a design system is behavior and style. For behavior I use [react-testing-library](https://testing-library.com/) (hereafter rtl), and for style I use [playwright's image testing](https://playwright.dev/docs/test-snapshots). ([chromatic](https://www.chromatic.com/) is also a good style-testing tool, but I didn't use it due to environment-setup issues.)
+A design system really boils down to behavior and style. I test behavior with [react-testing-library](https://testing-library.com/) (rtl from here on), and style with [playwright's image testing](https://playwright.dev/docs/test-snapshots). ([chromatic](https://www.chromatic.com/) is a good style-testing option too, but environment-setup issues kept me from adopting it.)
 
-Styling is a visual element. Approaching it with rtl makes the outcome hard to predict and the test code verbose. I split them apart on the idea that a visual element needs a visual approach, and I still think that approach holds up. That said, I'm still not sure whether playwright's image testing is the best method for it.
+Styling is inherently visual. Testing it through rtl makes results hard to predict and bloats the test code. So I split the two apart, on the idea that a visual thing needs a visual check, and I still think that split holds up. Whether playwright's image testing is the best tool for the job, though, I'm still not fully sure.
 
-#### References
+#### Where to Look
 
-Testing a design system is easier than testing a typical product. There's less to consider in terms of user state or external dependencies (APIs) compared to a service. If you follow web accessibility well, you can generalize situations with rtl and test them.
+Testing a design system is actually easier than testing a typical product. There's less to account for around user state or outside dependencies like APIs than in a real service. Follow web accessibility properly, and rtl lets you generalize most situations into a test.
 
-Whenever I was unsure what to test and how, I picked up insight from various open-source projects like [primer](https://primer.style/), [ark ui](https://ark-ui.com/), [mui](https://mui.com/), and [react-spectrum](https://react-spectrum.adobe.com/react-spectrum/index.html).
+Whenever I wasn't sure what or how to test, I found real insight by looking at open-source projects like [primer](https://primer.style/), [ark ui](https://ark-ui.com/), [mui](https://mui.com/), and [react-spectrum](https://react-spectrum.adobe.com/react-spectrum/index.html).
 
-#### Keeping Sight of What Test Code Is For
+#### Don't Lose Sight of What Tests Are For
 
-Test code is, at the end of the day, a means of helping the product. Just as you weigh code complexity against UX quality, test code is only meaningful when its value is appropriate relative to the cost of writing it.
+Test code is only ever a means to help the product, nothing more. Just like weighing code complexity against UX quality, tests only earn their keep when their value matches what they cost to write.
 
-Test code also has multiple levels — unit, integration, E2E, and so on — and you need to judge how far up that ladder is worth the time cost, and apply it accordingly.
+Tests come in layers too: unit, integration, E2E, and you have to judge how far up that ladder is actually worth the time it costs, then apply it accordingly.
 
-Tests don't protect you from every bug. On that topic, I'd recommend reading Jbee's post [Misconceptions and Facts About Testing](https://www.jbee.io/articles/developments/%ED%85%8C%EC%8A%A4%ED%8A%B8%EC%97%90%20%EB%8C%80%ED%95%9C%20%EC%98%A4%ED%95%B4%EC%99%80%20%EC%82%AC%EC%8B%A4).
+Tests won't save you from every bug. On that note, I'd recommend reading Jbee's post [Misconceptions and Facts About Testing](https://www.jbee.io/articles/developments/%ED%85%8C%EC%8A%A4%ED%8A%B8%EC%97%90%20%EB%8C%80%ED%95%9C%20%EC%98%A4%ED%95%B4%EC%99%80%20%EC%82%AC%EC%8B%A4).
 
-### Securing Slack Time
+### Carving Out Slack Time
 
-Slack time means stepping outside the team's normal cycle for about a day, to implement high-priority backlog items or reinforce automated tests — time spent paying down technical debt.
+Slack time means stepping off the team's normal cycle for roughly a day to knock out high-priority backlog items, shore up automated tests, and generally pay down technical debt.
 
-Paradoxically, the busier the team is, the more you need to protect this time. When you're under pressure to move fast, spending a whole day can feel like a burden, but technical debt and backlog pile up just as fast as you're running, and eventually become unmanageable. As the number of components and problems the team manages grows, using slack time lets you solve more problems, faster, in the long run.
+Paradoxically, the busier a team gets, the more it needs to protect this time. Giving up a whole day feels expensive when you're already sprinting, but technical debt and backlog pile up exactly as fast as you're moving, and eventually they become unmanageable. The more components and problems a team owns, the more slack time pays off, letting you solve more problems, faster, over the long run.
 
-## After Building
+## After You've Built It
 
-Just as every product goes through a continuous process of improvement, a design system keeps being improved endlessly too. I titled this section "After Building," but what I really mean is "after building it **to some extent**."
+Every product keeps getting improved, and a design system is no different. I called this section "After You've Built It," but what I really mean is "after you've built it **to some degree.**"
 
-I've written about what that "to some extent" level looks like, and what problems I ran into — and am still working through — once I reached this stage.
+Here's what that "some degree" actually looks like, and the problems I ran into (and am still working through) once I reached this stage.
 
-### Getting Feedback Fast
+### Get Feedback Fast
 
-If you're building a design system from scratch or redeveloping one, you need to set a bar for when you can tell other teams it's ready.
+Whether you're building a design system from scratch or rebuilding one, you need a bar for when you can actually tell other teams it's ready.
 
-That bar will differ by team, but **it shouldn't come too late.** No matter how much test code you write and how carefully you test within the team, you're bound to run into problems big and small once it's actually applied. The later the feedback comes, the later you discover important problems, and the more expensive they get to fix.
+That bar will differ team to team, but it has to be **early.** No matter how much you test and how carefully your team scrutinizes it internally, real-world use is going to surface problems, big and small. The later feedback arrives, the later you catch the problems that actually matter, and the more expensive they get to fix.
 
-It's fine to apply it directly to a simple page or service. Nothing verifies a system as reliably as dog fooding. If contributing directly to a service is hard, prepare the system's core components — Button, Checkbox, Dropdown — and from the moment you've built other components on top of those core pieces, start encouraging real-service adoption and collecting feedback.
+It's worth applying the system directly to a simple page or service. Nothing validates a system as well as dogfooding it yourself. If you can't contribute to a service directly, get the system's foundational pieces ready (Button, Checkbox, Dropdown), and the moment you've built other components on top of those, start pushing for real adoption and collecting feedback.
 
-#### 1. Recruiting Volunteers
+#### 1. Recruit Volunteers
 
-A system you've just built is weak. Even armed with good UI/UX and a good interface, it's hard to beat the presence of legacy that's been used for a long time.
+A brand-new system starts out weak. Even armed with great UI/UX and a clean interface, it's an uphill fight against legacy that's already been in use for years.
 
-From a product team's perspective, a new system is a burden. It's only natural that they'd be reluctant to adopt it, and you need to be able to empathize with that.
+From a product team's point of view, adopting something new is just a burden. Of course they'll hesitate, and you need to actually understand why, not just push past it.
 
 ![rogers-diffusion-of-innovation-curve](./images/design-system-beyond-code/rogers-diffusion-of-innovation-curve.png)
 <small style="opacity: 0.5;">Rogers' Diffusion of Innovation Curve (after Rogers 1995)</small>
 
-Whatever the product, when it reaches the market, customers fall into a distribution like the one above. (For convenience, in this piece I'll refer to both innovators and early adopters collectively as "early adopters.")
+Whatever the product, customers hitting the market fall into roughly this distribution. (For simplicity, I'll lump innovators and early adopters together under "early adopters" for the rest of this post.)
 
-Early-adopter customers have the power to willingly spread the product to other customers (the majority). You should bring like-minded early adopters into the product development process and actively reflect their opinions in the product. That lets you get ahead quickly, both in product improvement and in sales.<br />
+Early adopters have real power to spread a product to everyone else on their own. Bring the ones who share your vision into the development process, take their feedback seriously, and you can pull ahead fast, on both product quality and adoption.<br />
 <small style="opacity: 0.5;"><a href="https://fromundefined.com/posts/2024-02-uxs-working-culture/" target="_blank">Reference: fromundefined/2024-02-uxs-working-culture/</a></small>
 
-**The key to spreading a new design system is how quickly and how many early adopters you can win over.**
+**Spreading a new design system really comes down to one thing: how fast, and how many, early adopters you can win over.**
 
-Don't stop at a message-board announcement or a general call to action — go recommend it and recruit people directly.
+Don't stop at a Slack announcement or a general nudge. Go pitch people directly and recruit them yourself.
 
-To give an example from my own experience: whenever a question came in about a legacy system component, I'd also explain the improvements in the new system's version and encourage them to use it. A couple of people, thankfully, showed interest, and I set up an in-person meeting to pitch the new system's strengths, which got adoption started in a small corner.
+In my own case, whenever someone asked about a legacy component, I'd walk them through what the new system's version improved and suggest switching. A couple of people showed real interest, thankfully, and I set up in-person meetings to sell them on the new system, which is how adoption got its first foothold.
 
-#### 2. Turning Early Adopters Into Fans
+#### 2. Turn Early Adopters Into Fans
 
-The point of recruiting early adopters isn't just fast feedback for the system — it's turning them into fans devoted enough to spread the word themselves and bring in more customers.
+Recruiting early adopters isn't just about fast feedback, it's about turning them into fans devoted enough to spread the word themselves and pull in new users.
 
-**A new system is weak and unfamiliar.** You'll get a lot of questions early on, and you need to genuinely help solve problems from the user's own perspective, in a way that moves them. Both response speed and quality have to be overwhelming.
+**A new system is weak, and unfamiliar.** You'll get a flood of questions early on, and this is your chance to help solve problems the way the user actually experiences them, well enough to leave a real impression. Both speed and quality of response need to be overwhelming.
 
-In practice, I treated the first users' questions as unconditional interrupts to whatever else I was doing, and if the issue was in the service environment, I'd run it myself, analyze it, and pass along a detailed account of exactly what was wrong. (One bug turned out to be related to the emotion library, and I wrote up the entire surrounding context before sending it over.)
+In practice, I treated every question from an early user as an unconditional interrupt, dropping whatever else I was doing. If the issue lived in their service environment, I'd run it myself, dig into it, and hand back a full, detailed picture of what was wrong. (One bug turned out to trace back to the emotion library, and I wrote up the entire surrounding context before sending it over.)
 
-Once the first user applied the new system to their product and shared it as a success story with the team, I started hearing positive comments — "this looks worth trying" — even from developers who had been wary of the new system.
+Once that first user shipped the new system in their product and shared it as a win with the team, I started hearing "yeah, this might actually be worth trying" from developers who'd been skeptical of it until then.
 
-#### 3. The Beginning Is the Most Important, and the Hardest
+#### 3. The Start Is the Hardest, and the Most Important, Part
 
-Once you have your first user and the user count starts to climb one by one, at some point you run into an "operational-support rush."
+Once you have your first user, and a few more start trickling in, you hit an "operational support rush" at some point.
 
-You now have to handle new component development, operational support, and bug fixes all at once. The team hasn't grown, but the workload has, so you have to cut back on something. Thinking you can just spend more time and do everything at the same intensity is greedy.
+Now you're juggling new component work, support requests, and bug fixes, all at once, with the same headcount you had before. Something has to give. Thinking you can just work more hours and keep every plate spinning at full intensity is wishful thinking.
 
-What should get cut back here? Obviously, new component development. **The early rush of inquiries is an opportunity.** It's the period where an immature system can grow at a steep slope, and the window during which you absolutely must earn the trust of the developers who became your early adopters.
+The obvious thing to dial back is new component work. **That early rush of questions is actually an opportunity.** It's the window where a still-young system can grow the fastest, and the stretch where you have to earn the trust of the developers who signed on as your early adopters.
 
-This period isn't long. If you focus and get a system in place, the rush can be wrapped up in around one to two weeks. Don't lose your composure under the flood of questions — keep making decisions under the principles you set at the start, and where possible, leave records so that problem-solving doesn't become the personal skill of one particular team member.
+This window doesn't last long. Stay focused and get organized, and the rush usually wraps up inside a week or two. Don't let the flood of questions rattle you, keep deciding under the principles you set at the start, and write things down wherever you can, so solving these problems doesn't end up depending on one person's tribal knowledge.
 
-You usually start with the button. Probably because it's used the most and becomes the raw material for many other components. Button is a fine place to start, but that doesn't mean it's an easy component. Maybe because it looks simple relative to its difficulty, its complexity tends to get underestimated.
+Most teams start with the Button, probably because it's used everywhere and becomes the raw material for so many other components. It's a reasonable place to start, but that doesn't make it easy. If anything, its plain appearance makes people underestimate how tricky it actually is.
 
-If you're building a brand-new design system, you can complete the component set, apply it to a service, and approach it from a "continuous improvement" standpoint. But if you're migrating to a new system, the button is quite literally a "component with a dense tangle of sweet-potato vines" — used in a huge number of other components.
+If you're building a system from a blank slate, you can finish out a component set, ship it, and iterate from there. But if you're migrating an existing product onto a new system, the button is exactly the kind of component where pulling one thread drags a whole tangle of others up with it.
 
-A component that serves as raw material for others is hard. It looks easy, but it never is. That's why the beginning is the most important part, and the hardest.
+A component that everything else is built from is hard, full stop. It looks easy. It never is. That's exactly why the start matters most, and hurts most.
 
-### Distinguishing What to Do From What Not to Do
+### Know What to Do and What Not To
 
-As the new system spreads and the user count starts to grow, requests naturally increase. Beyond bugs that absolutely must be fixed, demand also grows for convenience improvements and richer documentation. This is the stage where the system moves past being used only by early adopters and starts settling in.
+As the new system spreads and more people adopt it, requests naturally pile up. Beyond the bugs you obviously have to fix, you'll also see growing demand for convenience features and richer documentation. This is the stage where the system moves past its early adopters and starts becoming the default.
 
-In the "Turning Early Adopters Into Fans" section, I said both the speed and quality of responding to inquiries had to be overwhelming — but once you reach this stage, you need to change strategy. Not only can you not respond to every incoming request, but responding to each small-looking request one by one can push back the work that actually matters. Judging priority matters in every situation, but it matters even more at the stage where a design system is just starting to settle in.
+Earlier, in "Turn Early Adopters Into Fans," I said both speed and quality of response had to be overwhelming. At this stage, that strategy needs to change. You simply can't respond to every request that comes in, and knocking out even small-looking ones one by one can quietly push back the work that actually matters. Judging priority matters in any situation, but it matters even more right as a design system is starting to take hold.
 
-One approach is to boldly pass on nice-to-have work, and to settle for a blunt but low-cost solution wherever one is available.
+One approach: pass boldly on anything that's merely nice-to-have, and where a blunt, cheap fix will do, just take it.
 
-I brought a few real examples. I want to talk about priority and criteria through the story of how I handled each request.
+Here are a few real requests, and how I handled each one, to walk through what priority and criteria actually looked like in practice.
 
-- (Feature request) "It'd be great if the Combobox component supported highlighting the search term."
-- (Feature request) "It'd be great if keyboard item-navigation also worked from the search input inside the Dropdown content."
-- (Feature request) "It'd be great if the design handoff were more automated."
-- (Documentation) "It'd be great to have detailed prop descriptions and rich examples, like an open-source library."
+- (Feature request) "Could the Combobox support highlighting the search term?"
+- (Feature request) "Could keyboard item navigation also work inside the search input in Dropdown content?"
+- (Feature request) "Could the design handoff be more automated?"
+- (Documentation) "Could we get detailed prop descriptions and rich examples, like an open-source library?"
 
 <br/>
 
-**1. (Feature request) "It'd be great if the Combobox component supported highlighting the search term"**
+**1. (Feature request) "Could the Combobox support highlighting the search term?"**
 
-<span style="border-color: rgb(55, 53, 47);border-bottom: 0.05em solid;">Won't do it.</span>
+<span style="border-color: rgb(55, 53, 47);border-bottom: 0.05em solid;">Not doing it.</span>
 
-This falls outside the basic functionality already defined for the Combobox component. We could consider offering it as core functionality, but at this stage of building out components, reopening the discussion on the core-functionality definition of a component we've already finished doesn't fit where we are.
+This goes beyond the core functionality already defined for Combobox. We could consider folding it into the core feature set, but reopening the definition of a component we've already finished, this deep into building out the set, doesn't fit where we are right now.
 
-The functionality a system provides has to be sufficiently general, and the decision needs to account for both UX and DX. If a feature isn't important enough to justify breaking the flow of work the team is currently focused on, we don't provide it. This is exactly why building with extensibility in mind matters. You can't provide every feature. If an add-on feature is needed, the consuming side should be able to build it themselves.
+Anything the system offers has to be broadly useful, and the decision has to weigh both UX and DX. If a feature isn't important enough to justify interrupting whatever the team's currently focused on, we skip it. That's exactly why building with extensibility in mind matters: you can't provide every feature, so whoever needs the extra one should be able to build it themselves on top of what you give them.
 
-**2. (Feature request) "It'd be great if keyboard item-navigation also worked from the search input inside the Dropdown content"**
+**2. (Feature request) "Could keyboard item navigation also work inside the search input in Dropdown content?"**
 
-<span style="border-color: rgb(55, 53, 47);border-bottom: 0.05em solid;">Will do it.</span>
+<span style="border-color: rgb(55, 53, 47);border-bottom: 0.05em solid;">Doing it.</span>
 
-This falls within general functionality, and keyboard accessibility for item navigation is core functionality for the Dropdown component, so we should support it.
+This falls squarely within general functionality, and keyboard accessibility for item navigation is already core to what Dropdown does, so it needs support.
 
-Next we need to decide **when** to do the work. Since we've decided to do it, it could be handled whenever a developer has some slack, but the more people involved, the more inefficiency creeps in. (Context switching is a cost too.)
+Next question: **when** to actually do it. Since it's already decided, a developer could pick it up whenever they have some slack, but the more people involved, the more inefficiency creeps in. (Context-switching has a cost too.)
 
-For a problem like this — medium priority, but still needing to be solved — I'd recommend handling it using the slack time mentioned back in the "While Building" section.
+For a mid-priority problem like this, one that still needs solving, I'd recommend using the slack time mentioned back in "While You Build."
 
-**3. (Feature request) "It'd be great if the design handoff were more automated"**
+**3. (Feature request) "Could the design handoff be more automated?"**
 
-<span style="border-color: rgb(55, 53, 47);border-bottom: 0.05em solid;">Won't do it.</span>
+<span style="border-color: rgb(55, 53, 47);border-bottom: 0.05em solid;">Not doing it.</span>
 
-Touching an add-on feature before you've finished the "basics" is greedy. For a platform team that's supposed to be contributing to the product organization's productivity, deciding not to do something is hard. But you have to define what you won't do, in order to properly finish what you actually need to do, on time.
+Touching an extra feature before the basics are covered is just greed. For a platform team that's supposed to be lifting the product org's productivity, deciding not to do something is a hard call to make. But defining what you won't do is exactly what lets you actually finish what matters, on time.
 
-Sometimes you have to choose a crude, low-cost solution instead of great engineering and an elegant, expensive one. At this stage, a request like this automation ask was exactly the kind of problem that needed a crude solution.
+Sometimes the right call is a blunt, cheap fix instead of a polished, expensive piece of engineering. At this stage, this automation request was exactly that kind of problem, one that needed the blunt fix.
 
-**4. (Documentation) "It'd be great to have detailed prop descriptions and rich examples, like an open-source library"**
+**4. (Documentation) "Could we get detailed prop descriptions and rich examples, like an open-source library?"**
 
-<span style="border-color: rgb(55, 53, 47);border-bottom: 0.05em solid;">Won't do it.</span>
+<span style="border-color: rgb(55, 53, 47);border-bottom: 0.05em solid;">Not doing it.</span>
 
-Documentation is an important element that forms an ecosystem. It should be aesthetically pleasing, and worth investing in so people can find the information they want quickly.
+Documentation is a real building block of an ecosystem. It should look good, and it's worth investing in so people can find what they need fast.
 
-But the essence — the system's completeness — comes first. You need to judge how much the team can currently focus on, and if you can't take on another context beyond protecting that essence, solve it bluntly. Right now, additional investment in documentation is hard, so we're only providing it through [Storybook](https://storybook.js.org/) using [control](https://storybook.js.org/docs/api/doc-block-controls).
+But the system's own completeness has to come first. Judge how much the team can actually focus on right now, and if there's no room left for anything beyond protecting that core, solve it bluntly. Right now, we can't invest further in documentation, so we're only shipping it through [Storybook](https://storybook.js.org/) using [control](https://storybook.js.org/docs/api/doc-block-controls).
 
-The decision not to do something is harder than the decision to do it. Most problems are solvable if you throw enough time at them, and as an engineer that can be tempting. But you need to clearly recognize the difference between "we can do it" and "we can do it at low cost." At the team level too, the judgment needs to come from the angle of "can our team actually take on more context than we're handling right now."
+Deciding not to do something is harder than deciding to do it. Most problems can be solved if you just throw enough time at them, and as an engineer, that temptation is real. But you have to draw a hard line between "we can do it" and "we can do it cheaply." At the team level, the question has to be whether the team can actually take on more scope than it's already carrying.
 
 ## Appendix
 
-### So How Should You Get Started?
+### So Where Do You Even Start?
 
-I've talked about how setting goals and defining components matter. So what input do you need in order to produce that kind of output?
+I've talked about why setting a goal and defining components matter. So what input actually produces that kind of output?
 
-A good place to start is looking at existing design systems — what criteria they used to split up components, how they handle extensibility — and using that to build the groundwork for your own decisions. Below is a list of libraries I reference; some are headless libraries, some I reference for styling, and some just for how a couple of specific components are implemented.
+A solid place to start: study existing design systems, how they split up components, how they handle extensibility, and use that to build the foundation for your own decisions. Here's the list of libraries I reference. Some are headless, some I look at purely for styling, and some just for how a couple of specific components are built.
 
 - [radix-ui](https://www.radix-ui.com/)
 - [ark-ui](https://ark-ui.com/)
@@ -360,40 +360,40 @@ A good place to start is looking at existing design systems — what criteria th
 
 ### Product Systems
 
-Even if you set your design system's goals toward lowering extensibility and raising uniformity, if the product spans multiple domains, the design system alone can't cover everything.
+Even if you set your design system's goal toward more uniformity and less extensibility, a product spanning multiple domains just can't be fully served by the design system alone.
 
-Specific domains will have their own recurring patterns. Opinions will differ on how to systematize those recurring domain-context patterns. Some will argue that, since a domain is also part of the product, it should be folded into the design system. Others will argue that a design system needs to stay unbound from any domain, in order to remain common-level raw material.
+Any given domain is going to have its own repeating patterns, and people will disagree on how to turn those into a system. Some will argue that since a domain is still part of the product, it belongs inside the design system. Others will argue the opposite, that a design system has to stay unbound from any single domain to work as common-level raw material.
 
-There's probably no single right answer, but my answer is **"the product system."**
+There's probably no single right answer, but mine is **"the product system."**
 
 #### Product Systems and the Component Hierarchy
 
-The components that make up a product can be broadly split into four kinds.
+The components that make up a product break down into roughly four kinds.
 
-- Components composed of combinations of domain components: **Usability** >>> Extensibility
-  - The layer that provides value by combining domain components
+- Components assembled from domain components: **Usability** >>> Extensibility
+  - The layer that combines domain components into something ready to use
 - Domain components: **Usability** > Extensibility
-  - The layer that carries domain context. Even while carrying domain context, it can still be used across multiple services.
+  - Carries domain context. Can still be reused across multiple services, even while staying aware of that domain.
 - Product system components: Usability < **Extensibility**
-  - Provides the design system with its abstraction lowered by one step, to fit the product
+  - Takes the design system and lowers its abstraction by one notch, to fit the product
 - Design system components: Usability <<< **Extensibility**
-  - The layer with high extensibility, built to be easy to customize
+  - The layer built for maximum extensibility and easy customization
 
-The further you move toward the domain-component-combination layer, the lower the extensibility gets, and usability goes up as a simple API delivers consistent UI/UX. If you look at a commerce-context component like the one used as an example earlier at the design-system level, a single system ends up carrying more than one message.
+Move toward the domain-composition layer and extensibility drops, while a simpler API delivering consistent UI/UX makes things easier to use. Now imagine treating a commerce-context component, the kind used as an example earlier, as if it belonged at the design-system level: suddenly one system is sending out more than one message at once.
 
-Team members, as the system's users, won't try to untangle a complicated message. They may perceive both the highly abstract components meant for handling common elements and the ones that aren't as belonging to a single system, and come away thinking the design system can handle everything.
+The teammates using that system won't try to untangle a mixed message. They'll just perceive both the highly abstract, common-purpose components and the more specific ones as one and the same system, and walk away assuming the design system can handle absolutely anything.
 
-That kind of understanding can create two major problems.
+That assumption creates two big problems.
 
-1. The design system always has to subscribe to domain changes
-2. As the number of domains it handles grows, it becomes a blocker for product teams
+1. The design system ends up permanently subscribed to every domain change
+2. As it takes on more domains, it becomes a bottleneck for product teams
 
-If the team handling the design system (hereafter the "design platform" team) is large enough to keep up with every change needed at the product-system and domain-system levels, this isn't a problem. But if it's only sized to handle the common-level design system, it can't keep pace with the product teams' fast rhythm. In the early stage, while there's still not enough shared learning about the system, the design platform team might lay out the product system's design — but ultimately this is territory where the product organization needs to take the lead in building. The farther apart a product and the components that reflect it grow, the lower the cohesion and the higher the coupling.
+If the team that owns the design system (the "design platform" team, from here on) is big enough to keep up with every change the product and domain systems need, none of this is a problem. But if it's only sized to handle the common-level design system, it can't keep pace with how fast product teams move. Early on, while the org's collective understanding of the system is still thin, the design platform team might end up shaping the product system's design, but that ownership eventually has to move to the product organization itself. The further a component drifts from the product it's meant to reflect, the lower its cohesion gets, and the higher its coupling.
 
-## In Closing
+## Closing Thoughts
 
-Across three design systems, I've made some decisions I'm proud of and some I'm not. Every time I look back, I come away thinking that what matters most in a design system is the accumulation of decisions.
+Across three design systems, I've made some decisions I'm proud of, and plenty I'm not. Every time I look back, I keep landing on the same conclusion: what actually matters in a design system is the decisions you stack up along the way.
 
-This piece has focused on the process of building a design system, but I also think choosing an open-source design system that's already been through countless rounds of trial and error is a perfectly good answer. I'll also add [Inflearn's case study](https://tech.inflab.com/20240224-design-system/) of building their system on top of an open-source design system.
+This post has been about the process of building your own, but choosing an open-source design system that's already survived countless rounds of trial and error is a perfectly good answer too. I'll leave [Inflearn's write-up](https://tech.inflab.com/20240224-design-system/) here as an example of a team that built on top of one.
 
-I hope this piece helps anyone out there building a design system.
+I hope this helps anyone out there building a design system of their own.

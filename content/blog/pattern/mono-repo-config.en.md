@@ -7,32 +7,32 @@ thumbnail: './images/monorepo/thumbnail.png'
 
 ![image-thumbnail](./images/monorepo/thumbnail.png)
 
-## Before We Begin
+## Before we start
 
-This post introduces how to set up a package environment in a Monorepo using Lerna. Before diving in, here's a quick word on the benefits of a Monorepo: you can share configuration that would otherwise be repeated per project, and modularized packages can reference each other.
+Here's how to set up a package environment in a Monorepo using Lerna. Quick pitch for Monorepos first: you get to share configuration that would otherwise be duplicated across projects, and your modularized packages can reference each other directly.
 
-If you look at [babel-external-helpers](https://github.com/babel/babel/blob/main/packages/babel-cli/src/babel-external-helpers.js), one of the packages in [babel](https://github.com/babel/babel) — a well-known project built as a Monorepo — you can see that it references and uses the `@babel/core` package as shown below.
+Take [babel-external-helpers](https://github.com/babel/babel/blob/main/packages/babel-cli/src/babel-external-helpers.js), one of the packages inside [babel](https://github.com/babel/babel) — probably the best-known project built as a Monorepo. It references and uses the `@babel/core` package directly, as shown below.
 
 ![babel-example](./images/monorepo/babel-example.png)
 
-You can easily set up a Monorepo repository with [Lerna](https://lerna.js.org/). It's a library that helps you manage multiple packages in a Monorepo, letting you build the whole project, run tests, and otherwise manage every package in the repo at once.
+[Lerna](https://lerna.js.org/) makes setting up a Monorepo repository easy. It's a library built for managing multiple packages in a Monorepo: building the whole project, running tests, and handling every package the repo manages, all at once.
 
-Rather than setting up config per package, I'll walk through, step by step, an approach where the config files live at the root and each package shares them.
+Instead of configuring each package on its own, here's a step-by-step approach where config files live at the root and every package shares them.
 
-You can find the full code used in this post [here](https://github.com/SoYoung210/lerna-rollup-github-package-example).
+You can find the full code for this post [here](https://github.com/SoYoung210/lerna-rollup-github-package-example).
 
-## What configuration do we want to share
+## What we want to share
 
-The project covered in this post uses Rollup as its bundler and TypeScript, and supports both CJS and ESM output. So every package commonly needs the following config files.
+The project in this post uses Rollup as its bundler and TypeScript, and it outputs both CJS and ESM. So every package needs these config files in common:
 
 - rollup.config.js
 - tsconfig.json
 
-Rather than creating these in every package, I'll write them so they live at the root and get shared from there.
+Rather than creating them in every package, we'll keep them at the root and share them from there.
 
-## Step 0. Add config files at the root
+## Step 0. Add the config files at the root
 
-First, add `rollup.config.js` and `tsconfig.json` at the project root, respectively.
+Start by adding `rollup.config.js` and `tsconfig.json` at the project root.
 
 ```jsx
 // rollup.config.js
@@ -93,9 +93,9 @@ function buildJS(input, output, format) {
 }
 ```
 
-## Step 1. Add a lerna build
+## Step 1. Add a lerna build script
 
-Add the following script to `package.json`.
+Add this script to `package.json`.
 
 ```json
 // root's package.json
@@ -108,7 +108,7 @@ Add the following script to `package.json`.
 },
 ```
 
-Running `npm run build` at the project root runs the `build` script declared in each package's package.json.
+Running `npm run build` at the project root runs the `build` script defined in each package's own package.json.
 
 Add a `build` script to `packages/sample-one`.
 
@@ -119,7 +119,7 @@ Add a `build` script to `packages/sample-one`.
 }
 ```
 
-We set it up to use the `rollup.config.js` at the root. To support both ESModule and CommonJS, also add `main` and `module` fields, along with something for `types`.
+This points the package at the root's `rollup.config.js`. To support both ESModule and CommonJS, also add `main` and `module` fields, plus one for `types`.
 
 ```json
 // packages/sample-one/package.json
@@ -128,17 +128,17 @@ We set it up to use the `rollup.config.js` at the root. To support both ESModule
 "types": "dist/index.d.ts",
 ```
 
-## Step 2. Reading each package's custom configuration
+## Step 2. Reading each package's own config
 
-Config files are shared, but there are also parts each package wants to customize. For example, you might need different peerDependency settings, or need to separate out a different input file for rollup.
+The config files are shared, but each package still needs some room to customize things. Maybe it needs different peerDependencies, or a different input file for rollup.
 
-To connect the root config files with each package, we use an environment variable and [read-pkg-up](https://www.npmjs.com/package/read-pkg-up).
+To bridge the root config files with each package, we'll use an environment variable and [read-pkg-up](https://www.npmjs.com/package/read-pkg-up).
 
-### Environment variable
+### Environment variables
 
-Since the path to `rollup.config.js` differs from each package's own path, we pass the input file's path from each package's `package.json` as an environment variable.
+Since `rollup.config.js`'s path and each package's path don't match, we pass the input file's path as an environment variable from the package's own `package.json`.
 
-> 👩🏻‍💻: You could also set the path directly in rollup.config.js itself, or use something like process.cwd, but I applied it this way to keep it simple. Feel free to use a better approach.
+> 👩🏻‍💻: You could hardcode the path in rollup.config.js itself, or use something like process.cwd — I just went with this for simplicity. Feel free to do it better.
 
 ```diff
 // packages/sample-one/package.json
@@ -148,7 +148,7 @@ Since the path to `rollup.config.js` differs from each package's own path, we pa
 }
 ```
 
-Update rollup.config.js to use this environment variable for the input path.
+Update rollup.config.js to read the input path from that environment variable.
 
 ```jsx {1,18}
 const input = process.env.INPUT_FILE;
@@ -176,11 +176,11 @@ function buildJS(input, output, format) {
 
 ### read-pkg-up
 
-read-pkg-up is a library that reads the nearest `package.json`.
+read-pkg-up reads the nearest `package.json` up the directory tree.
 
-When you run `lerna ${command}` from the Monorepo root, it walks the paths listed in `lerna.json`'s `packages` and runs the script for each — this library made it easy to read each package's `package.json` along the way.
+Running `lerna ${command}` from the Monorepo root walks every path listed under `packages` in `lerna.json` and runs the script there — this library is what makes it easy to read each package's own `package.json` along the way.
 
-Below is example code that reads each package's `package.json` and customizes the `external` setting accordingly.
+Here's an example that reads each package's `package.json` and customizes its `external` setting accordingly.
 
 ```js
 // rollup.config.js
@@ -206,11 +206,11 @@ const config = {
 }
 ```
 
-## Step 3. Generating type declaration files
+## Step 3. Generating type declarations
 
-Looking back at the rollup.config.js we added in [Step 0](https://so-so.dev/pattern/mono-repo-config/#step-0-root%EC%97%90-config%ED%8C%8C%EC%9D%BC%EB%93%A4-%EC%B6%94%EA%B0%80), you can see it supports both the CommonJS and ES Module formats.
+The rollup.config.js from [Step 0](https://so-so.dev/pattern/mono-repo-config/#step-0-root%EC%97%90-config%ED%8C%8C%EC%9D%BC%EB%93%A4-%EC%B6%94%EA%B0%80) already supports both the CommonJS and ES Module formats.
 
-Running `lerna build` to build the project gives you a result like this:
+Build the project with `lerna build`, and you'll get something like this:
 
 ```markdown {3,7}
 packages/sample-one
@@ -224,15 +224,15 @@ packages/sample-one
 +--    +-- index.js.map
 ```
 
-esm and cjs folders are created and kept separate. A type definition file supporting ES Modules needs to be added under the `dist/` path.
+esm and cjs each get their own folder. A type definition file supporting ES Modules still needs to land under `dist/`.
 
-If an `index.d.ts` file isn't located under `dist/`, importing the module throws an error saying it can't be found, as shown below.
+Without `index.d.ts` under `dist/`, importing the module throws a can't-find-it error, like this:
 
 ![./images/monorepo/import-error.png](./images/monorepo/import-error.png)
 
-You could use [rollup-plugin-typescript2](https://www.npmjs.com/package/rollup-plugin-typescript2), but it has an issue where the d.ts doesn't get generated at the `dist/` location and instead ends up under the esm folder, so I had the type build run separately rather than through rollup.
+You could reach for [rollup-plugin-typescript2](https://www.npmjs.com/package/rollup-plugin-typescript2), but it has a bug where the d.ts ends up under the esm folder instead of `dist/`. So instead of building types through rollup, we run that step separately.
 
-`tsconfig.json` also has the problem that not every package can share the same type-definition settings.
+There's a catch with `tsconfig.json`, though: not every package can share the same type-definition settings.
 
 ```json {4}
 // packages/sample-one/package.json
@@ -242,7 +242,7 @@ You could use [rollup-plugin-typescript2](https://www.npmjs.com/package/rollup-p
 }
 ```
 
-If you use the root's tsconfig.json this way, a type build gets run for every package under `packages`, as shown below.
+Point every package at the root's tsconfig.json like this, and the type build runs across every package under `packages`, not just the one you're building:
 
 ```markdown {10,13}
 packages/sample-one
@@ -262,7 +262,7 @@ packages/sample-one
 +--    +-- main.d.ts
 ```
 
-We need to put a `tsconfig.json` in each package so it includes information about that package's current path.
+Give each package its own `tsconfig.json` so it carries information about its own path.
 
 ```json
 // packages/sample-one/tsconfig.json
@@ -276,7 +276,7 @@ We need to put a `tsconfig.json` in each package so it includes information abou
 }
 ```
 
-Update the tsconfig.json path used in `build:typings`.
+Update the tsconfig.json path used in `build:typings` to match.
 
 ```diff
 // packages/sample-one/package.json
@@ -287,9 +287,9 @@ Update the tsconfig.json path used in `build:typings`.
 }
 ```
 
-### Setting up absolute paths within a package
+### Setting up absolute paths inside a package
 
-To reference things by absolute path inside a package — like `import { main } from '@sample-one/main'` — you need to add path-related settings to `tsconfig.json`. ([reference](https://medium.com/@joshuaavalon/webpack-alias-in-typescript-declarations-81d2b6c0dcd6))
+To reference things by absolute path inside a package, like `import { main } from '@sample-one/main'`, add path settings to `tsconfig.json`. ([reference](https://medium.com/@joshuaavalon/webpack-alias-in-typescript-declarations-81d2b6c0dcd6))
 
 ```json
 // tsconfig.json
@@ -308,18 +308,18 @@ To reference things by absolute path inside a package — like `import { main } 
 }
 ```
 
-> 🚨: If you don't add every package under `packages` to `paths`, you'll get an error during the type build.
+> 🚨: Skip adding even one package under `packages` to `paths`, and the type build throws.
 
-### Fixing up package build:typings
+### Fixing package build:typings
 
-There's an issue where d.ts files aren't generated correctly for modules referenced via absolute path, so we configure it to use [ttypescript](https://github.com/cevek/ttypescript/) and [typescript-transform-paths](https://github.com/LeDDGroup/typescript-transform-paths).
+Modules referenced by absolute path don't get their d.ts generated correctly out of the box, so we bring in [ttypescript](https://github.com/cevek/ttypescript/) and [typescript-transform-paths](https://github.com/LeDDGroup/typescript-transform-paths) to fix that.
 
 ```bash
 npm i -D ttypescript typescript-transform-paths
 ```
 
-Update the `build:typings` we wrote earlier.
-> If your project doesn't use absolute paths, plain tsc is enough.
+Update the `build:typings` script we wrote earlier.
+> If your project doesn't use absolute paths, plain tsc is all you need.
 
 ```diff
 // packages/sample-one/package.json
@@ -331,13 +331,13 @@ Update the `build:typings` we wrote earlier.
 
 ## Step 4. Setting up GitHub Package deployment
 
-Let's set this project up to deploy using the GitHub Package Registry.
+Now let's wire this project up to deploy through the GitHub Package Registry.
 
-Before applying the GitHub-related settings, we need to check the most important part of a Monorepo: the `name` field in `package.json`.
+Before touching any GitHub settings, check the single most important field in a Monorepo's `package.json`: `name`.
 
 ![package-name](./images/monorepo/package-name.png)
 
-If it isn't written in the `@${userName}/${packageName}` format shown in the screenshot, you'll get an error like this:
+Skip the `@${userName}/${packageName}` format shown above, and you'll hit an error like this:
 
 ```
 lerna ERR! E400 scope 'test' in package name '@test/sample-two' does not match repo owner 'SoYoung210' in repository element in package.json
@@ -345,25 +345,25 @@ lerna ERR! E400 scope 'test' in package name '@test/sample-two' does not match r
 
 ### Creating .npmrc
 
-Create an `.npmrc` file at the project root and enter the following.
+Create an `.npmrc` file at the project root with the following.
 
 ```powershell
 @userName:registry=https://npm.pkg.github.com/userName
 ```
 
-This setting means that for packages prefixed with @userName, like `@userName/sample-one`, in `package.json`, downloads come from the GitHub Package Registry (<https://npm.pkg.github.com/userName>) instead of the official npm registry (<https://registry/npmjs.org/>).
+This tells npm that any package prefixed with `@userName` in `package.json`, like `@userName/sample-one`, gets downloaded from the GitHub Package Registry (<https://npm.pkg.github.com/userName>) instead of the official npm registry (<https://registry/npmjs.org/>).
 
 ### Issuing a token
 
-To deploy to the GitHub Package Registry from GitHub Actions, you need to issue a token with package permissions. Follow the [guide](https://help.github.com/en/github/authenticating-to-github/creating-a-personal-access-token-for-the-command-line) to issue a token with `write:packages` and `read:packages` permissions.
+To deploy to the GitHub Package Registry from a GitHub Action, you need a token with package permissions. Follow the [guide](https://help.github.com/en/github/authenticating-to-github/creating-a-personal-access-token-for-the-command-line) and issue one with `write:packages` and `read:packages` permissions.
 
-> Once you leave the token creation page, you can no longer see the token value, so make sure to note it down.
+> Once you leave the token-creation page, you can't see the value again, so save it somewhere safe.
 
 ### Action
 
-You can use GitHub Actions to deploy to the GitHub Package Registry whenever something is merged into master.
+GitHub Actions can deploy to the GitHub Package Registry automatically on every merge to master.
 
-First, add the token you issued above as a Secret on the repo.
+First, add the token from earlier as a Secret on the repo.
 
 ![github-secret](./images/monorepo/github-secret.png)
 
@@ -403,17 +403,17 @@ jobs:
         NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 ```
 
-When something merges into the master branch, the Release Action runs, and the `PACKAGE_TOKEN` we added earlier gets written into `.npmrc`. This token lets the Action deploy a new GitHub Package.
+Every merge into master triggers the Release Action, which writes the `PACKAGE_TOKEN` you added earlier into `.npmrc`. That token is what lets the Action publish a new GitHub Package.
 
-Running `npm run publish` runs `lerna publish`, and only the packages whose version has changed get newly deployed.
+`npm run publish` runs `lerna publish` under the hood, which only deploys the packages whose version actually changed.
 
 ## Wrapping Up
 
-We took a quick look at how to set up a Monorepo environment. This was the first time I'd managed multiple packages in a Monorepo on a recent project, and I got to really feel a number of benefits — being able to consolidate config shared across packages, managing dependency modules more easily, and more.
+That's the gist of setting up a Monorepo environment. This was the first time I'd managed multiple packages in a Monorepo on a real project, and I felt the benefits firsthand: shared config consolidated in one place, dependency modules that are actually easy to manage, and more.
 
 ## Ref
 
-[Trying Out a Monorepo with Lerna (Korean)](https://medium.com/jung-han/lerna-%EB%A1%9C-%EB%AA%A8%EB%85%B8%EB%A0%88%ED%8F%AC-%ED%95%B4%EB%B3%B4%EB%9F%AC%EB%82%98-34c8e008106a)
+[Giving Lerna Monorepos a Try (Korean)](https://medium.com/jung-han/lerna-%EB%A1%9C-%EB%AA%A8%EB%85%B8%EB%A0%88%ED%8F%AC-%ED%95%B4%EB%B3%B4%EB%9F%AC%EB%82%98-34c8e008106a)
 
 [https://github.com/tdeekens/flopflip](https://github.com/tdeekens/flopflip/blob/master/rollup.config.js)
 

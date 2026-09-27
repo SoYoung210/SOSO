@@ -7,9 +7,9 @@ thumbnail: './images/scoped-context/thumbnail.jpg'
 
 ![image-thumbnail](./images/scoped-context/thumbnail.jpg)
 
-The [React Context API](https://reactjs.org/docs/context.html) is a way to share global data across a React component tree. Based on the component where a Provider is declared, its descendant components can use that Context's value.
+The [React Context API](https://reactjs.org/docs/context.html) lets you share global data across a React component tree. Any component below a Provider can read that Context's value.
 
-The fact that a Context can be used in a Provider's descendant components is the same as saying, **"a Consumer works based on its nearest Provider."**
+Another way to say "components below a Provider can use its Context" is: **"a Consumer always reads from its nearest Provider."**
 
 > `useContext()`
  always looks for the closest provider *above*
@@ -27,13 +27,13 @@ The fact that a Context can be used in a Provider's descendant components is the
 </ThemeContext.Provider>
 ```
 
-In `<Body />`, the value of ThemeContext is dark, and in `<Footer />` it's light. In this case, you could say the value of ThemeContext has been reassigned depending on scope.
+Inside `<Body />`, ThemeContext is dark. Inside `<Footer />`, it's light. You could say the ThemeContext value gets reassigned depending on scope.
 
-This behavior of React Context can feel obvious, but there are use cases it doesn't satisfy.
+This probably feels obvious, but there are use cases this behavior can't handle.
 
-## Case: A Composition Component that extends a Context
+## Case: A compound component that extends another's Context
 
-> The content below is organized based on **[RFC: Context scoping for compound components](https://github.com/facebook/react/issues/23287)**.
+> This section is based on **[RFC: Context scoping for compound components](https://github.com/facebook/react/issues/23287)**.
 
 ![dialog-alertdialog relationship](./images/scoped-context/dialog-alertdialog.jpg)
 
@@ -59,11 +59,11 @@ This behavior of React Context can feel obvious, but there are use cases it does
 </AlertDialog.Root>
 ```
 
-`AlertDialog` is a component built by extending `Dialog`, and `AlertDialog.Root` is structured so that it holds `Dialog.Root` inside it.
+`AlertDialog` is built on top of `Dialog`, so `AlertDialog.Root` renders a `Dialog.Root` inside it.
 
-When you click `AlertDialog.Trigger`, the expected behavior is that `AlertDialog`'s Context value changes, but by the rule that **"a Consumer works based on its nearest Provider,"** it ends up changing Dialog's Context value instead.
+When you click `AlertDialog.Trigger`, you'd expect it to update `AlertDialog`'s Context. But because **"a Consumer always reads from its nearest Provider,"** it updates Dialog's Context instead.
 
-It might look like the problem is solved if Dialog and AlertDialog sever their relationship and each create their own Context, but if you think about using this component to build yet another Dialog, you'll find the problem still isn't solved.
+You might think the fix is to decouple Dialog and AlertDialog and give each its own Context. But as soon as you build yet another dialog out of the same component, the problem comes right back.
 
 ```tsx
 // Create a Dialog Context
@@ -84,14 +84,14 @@ const AnotherDialog = Dialog;
 ```
 
 <div style="opacity: 0.5; position: relative; top: -0.8em; left: -1em;" align="left">
-  <sup>Creating a separate Context for each one isn't really solving the problem — it's just relocating it.</sup>
+  <sup>Giving each one its own Context doesn't solve the problem. It just moves it somewhere else.</sup>
 </div>
 
-Here are two libraries that solved the problem of needing scope between Contexts, along with each one's solution. (There's still no official definition of whether this is actually a problem, or how to solve it if it is.)
+Below are two libraries that tackle this need for scoped Contexts, and how each one solves it. (Officially, it still isn't settled whether this is a problem at all, or how it should be solved if it is.)
 
 ## Solution 1: [@radix-ui/context](https://github.com/radix-ui/primitives/tree/main/packages/react/context)
 
-The core idea of this implementation is to directly pass, as a prop on the component that creates the Context, which Context should be referenced. It can be implemented as simply as this:
+The idea is simple: the component that creates a Context takes a prop telling it which Context to use. A minimal version looks like this:
 
 ```tsx {6,11,22}
 /* -------------------------------------------------------------------------- */
@@ -150,15 +150,15 @@ function App() {
   <sup><a href="https://codesandbox.io/s/stupefied-zhukovsky-etk9m" target="_blank">https://codesandbox.io/s/stupefied-zhukovsky-etk9m</a></sup>
 </div>
 
-`Dialog`'s `Root` doesn't always create a brand-new Context — it can receive a different Context injected as a prop, and when referencing a Context it also refers to the one passed in as a prop.
+`Dialog`'s `Root` doesn't always create its own Context. It can accept a different one through a prop, and its parts read from that injected Context too.
 
-In `AlertDialog`, we create `AlertDialogContext` and pass it to DialogRoot, which lets it reference a different Context than the Dialog components do.
+`AlertDialog` creates `AlertDialogContext` and passes it to DialogRoot, so it ends up reading a different Context from the plain Dialog components.
 
-A more formalized version of this implementation is radix-ui's [createContextScope](https://github.com/radix-ui/primitives/blob/285aa0837f2405a05e983fc8fffd55f4cc368b5e/packages/react/context/src/createContext.tsx#L30).
+radix-ui's [createContextScope](https://github.com/radix-ui/primitives/blob/285aa0837f2405a05e983fc8fffd55f4cc368b5e/packages/react/context/src/createContext.tsx#L30) is a more polished version of the same idea.
 
 ### createContextScope
 
-Let's look through radix-ui's [AlertDialog](https://github.com/radix-ui/primitives/blob/285aa0837f2405a05e983fc8fffd55f4cc368b5e/packages/react/alert-dialog/src/AlertDialog.tsx#L19) and [Dialog implementation](https://github.com/radix-ui/primitives/blob/285aa0837f2405a05e983fc8fffd55f4cc368b5e/packages/react/dialog/src/Dialog.tsx#L27) and work out how it operates.
+Let's walk through radix-ui's [AlertDialog](https://github.com/radix-ui/primitives/blob/285aa0837f2405a05e983fc8fffd55f4cc368b5e/packages/react/alert-dialog/src/AlertDialog.tsx#L19) and [Dialog implementation](https://github.com/radix-ui/primitives/blob/285aa0837f2405a05e983fc8fffd55f4cc368b5e/packages/react/dialog/src/Dialog.tsx#L27) to see how it works.
 
 ```tsx {10,24,27}
 // Dialog
@@ -192,11 +192,11 @@ const AlertDialogRoot = (props) => {
 }
 ```
 
-- 1️⃣ DialogProvider is set up so that if a `scope` prop is present, it references that scope's Context, and if it's undefined, it references a newly created Context.
-- 2️⃣ AlertDialog uses the `useDialogScope` hook to **create a new Dialog Context and pass it down to Dialog under the name `__scopeDialog`.**
-- Regardless of the component hierarchy, the descendant components of AlertDialog and Dialog can each reference the correct context.
+- 1️⃣ If DialogProvider gets a `scope` prop, it uses that scope's Context. If `scope` is undefined, it falls back to its own newly created Context.
+- 2️⃣ AlertDialog calls the `useDialogScope` hook to **create a fresh Dialog Context and pass it to Dialog as `__scopeDialog`.**
+- However the components are nested, AlertDialog's and Dialog's children each read the right context.
 
-The function that composes a Context capable of receiving a scope (_createContext_) and the function that creates a new Context and injects it (_createScope_) are both functions returned from **createContextScope**.
+Both functions come from **createContextScope**: one builds a Context that can accept a scope (_createContext_), and the other creates a new Context to inject (_createScope_).
 
 ```tsx
 function createContextScope(scopeName: string, createContextScopeDeps: CreateScope[] = []) {
@@ -221,7 +221,7 @@ function createContextScope(scopeName: string, createContextScopeDeps: CreateSco
 }
 ```
 
-The internal implementation can be split into a `createContext` part, which returns Provider and useContext, and a `createScope / composeContextScopes` part, which merges the scope dependencies with the newly created scope.
+Internally it has two parts: `createContext`, which returns a Provider and a useContext hook, and `createScope / composeContextScopes`, which merges the scope dependencies with the newly created scope.
 
 #### 1. createContext
 
@@ -252,7 +252,7 @@ function createContext<ContextValueType extends object | null>(
 }
 ```
 
-In Provider and useContext, whenever the value of `scope?.[scopeName]` is valid, that value is used as the Context.
+Both Provider and useContext use `scope?.[scopeName]` as the Context whenever it's set.
 
 ```tsx
 const [createDialogContext, createDialogScope] = createContextScope('Dialog');
@@ -279,7 +279,7 @@ const AlertDialogRoot = (props) => {
 }
 ```
 
-If we summarize the `scope` and scopeName passed into the Dialog Context in the code we just looked at:
+Here's what the Dialog Context receives as `scope` and scopeName in the code above:
 
 **Dialog**
   - scope: `__scopeDialog`, received as a prop
@@ -289,7 +289,7 @@ If we summarize the `scope` and scopeName passed into the Dialog Context in the 
   - scope: `dialogScope.__scopeDialog`, the return value of `useDialogScope`
   - scopeName: Dialog
 
-When you use `Dialog`, the `scope` value is undefined, and when you use `AlertDialog`, it isn't.
+With plain `Dialog`, `scope` is undefined. With `AlertDialog`, it isn't.
 
 #### 2. createScope / composeContextScopes
 
@@ -336,9 +336,9 @@ function composeContextScopes(...scopes: CreateScope[]) {
 }
 ```
 
-The `createScope` function contains the series of steps that build the `__scope${scopeName}` variable we just looked at.
+`createScope` is what builds the `__scope${scopeName}` value we just saw.
 
-`composeContextScopes(createScope, ...createContextScopeDeps)` builds a Context, based on the current scope, from the values of the other scopes that scope depends on, and returns it.
+`composeContextScopes(createScope, ...createContextScopeDeps)` takes the scopes this scope depends on, creates their contexts relative to the current scope, and returns them.
 
 ```tsx
 // AlertDialog.tsx
@@ -348,15 +348,15 @@ const [
 ] = createContextScope('AlertDialog', [createDialogScope]);
 ```
 
-Here, the value passed in as `createContextScopeDeps` is `createDialogScope` — because the components created and used via `createAlertDialogContext` use the Dialog Context internally, the dialog scope is declared as a scope dependency.
+`createDialogScope` is passed in as `createContextScopeDeps` because the components built with `createAlertDialogContext` use the Dialog Context internally. So the dialog scope is declared as a dependency.
 
-Without this handling, code that uses `createAlertDialogScope` would throw an error saying it can't correctly reference the Dialog Context.
+Without it, anything using `createAlertDialogScope` would throw an error because it can't find the right Dialog Context.
 
-Dialog and AlertDialog are a simple enough example that ScopedContext might not feel necessary, but the more broadly a single component gets reused across places, the harder the Context-scope problem caused by composition becomes to manage.
+With a simple pair like Dialog and AlertDialog, ScopedContext might feel like overkill. But the more places a single component gets reused in, the harder these composition-driven Context scope problems become to manage.
 
 ## Solution 2: [Jotai](https://jotai.org/docs/api/core#provider)
 
-Jotai, a state management library, lets you pass a `scope` prop as an optional argument when creating a Provider.
+The state management library Jotai lets you pass an optional `scope` prop when you create a Provider.
 
 > A Provider accepts an optional prop `scope`
  that you can use for a scoped Provider. When using atoms with a scope, the provider with the same scope is used. The recommendation for the scope value is a unique symbol. The primary use case of scope is for library usage.  
@@ -377,7 +377,7 @@ const LibraryRoot = ({ children }) => (
 )
 ```
 
-The mechanism is similar to the first example.
+It works much like the first example.
 
 ```tsx {4,18}
 // https://github.com/pmndrs/jotai/blob/main/src/core/Provider.ts
@@ -412,15 +412,15 @@ export function useAtomValue<Value>(
 }
 ```
 
-It creates a new Context based on the scope value, and when `useAtomValue` accesses the context, if the scope value is valid it references the Context matching that scope.
+It creates a new Context per scope value, and when `useAtomValue` reads the context, it picks the one that matches the given scope.
 
 ## Wrapping Up
 
-When I first encountered the concept of Scoped Context in radix-ui, I thought it simply didn't fit React Context's basic design and was being used against its intent.
+When I first came across Scoped Context in radix-ui, I thought it went against how React Context was designed, and was using Context in a way it wasn't meant for.
 
-But I've come to think the concept of scope is necessary once every component is offered in composable form. For example, if a Dropdown Item is used as the Trigger for a Popover or a ContextMenu, and you have no way to set the Context Scope of the commonly shared [react-popover](https://github.com/radix-ui/primitives/tree/main/packages/react/popover) or [react-menu](https://github.com/radix-ui/primitives/tree/main/packages/react/menu), you'd need some hierarchy concept at the library level — like z-index — to decide which component gets declared as the top-level Provider.
+But once every component is offered as a composable piece, I think you do need scopes. Say a Dropdown Item is used as the Trigger for a Popover or a ContextMenu. If you can't set the Context scope of the shared [react-popover](https://github.com/radix-ui/primitives/tree/main/packages/react/popover) or [react-menu](https://github.com/radix-ui/primitives/tree/main/packages/react/menu) packages, the library would need some kind of hierarchy, like z-index, to decide which component becomes the top-level Provider.
 
-It doesn't seem like many places have implemented this concept yet, and even the implementations that exist only really agree on the broad direction, so I hope React offers something more formalized for this in the near future.
+Not many libraries seem to implement this yet, and the ones that do only agree on the general approach. I hope React offers something more standard for it soon.
 
 ## Reference
 

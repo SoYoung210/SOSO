@@ -5,17 +5,17 @@ category: essay
 thumbnail: './images/what-i-learn-150/first_title.png'
 ---
 
-Starting with a React online course on July 17, 2018, I took my first step into frontend, and after joining as an intern on December 26, 2018, I put together a record of the 150 days since.
+I took my first step into frontend on July 17, 2018, starting with an online React course, and started as an intern on December 26, 2018. This is a record of the 150 days since.
 
-I'm now working as a member of the Web team at the company, and I want to look back on that journey and take one more step forward as a frontend developer.
+These days I'm working as part of the Web team, and I want to look back on that stretch and push one step further as a frontend developer.
 
 ## Part 1 - Communication & Thinking
 
-1. Collaboration requires skill.
-2. A developer is someone who builds the product.
+1. Collaboration takes skill.
+2. A developer builds the product.
 3. Documentation isn't optional.
 4. My code is the team's code.
-5. You always need another perspective. (feat. talking perspective vs. perspective.)
+5. You always need a different angle. (feat. arguing perspective vs. perspective.)
 
 ## Part 2 - Tech
 
@@ -23,187 +23,187 @@ I'm now working as a member of the Web team at the company, and I want to look b
 2. TypeScript
 3. RxJS
 
-This post is split into Part 1 and Part 2. Part 1 covers the `Communication & Thinking` half. 😀
+This is split across two parts, and Part 1 here covers `Communication & Thinking`. 😀
 
 ## Communication & Thinking
 
 ![image-first-title](./images/what-i-learn-150/first_title.png)
 
-Working at a company for the first time, absolutely everything was new.
-Meeting a tech org of more than 30 people and a 5-person Web team gave me a lot to think about when it came to **collaboration** — something I'd only abstractly thought of as important before.
+Working at a company for the first time, literally everything felt new.  
+Landing in a tech org of 30-plus people and a 5-person Web team gave me a lot to chew on around **collaboration**, something I'd only ever thought was important in the abstract.
 
 <div>
 <img src="/media/essay/images/what-i-learn-150/my-github.png" />
 </div>
 
-### 🍌 Collaboration requires skill.
+### 🍌 Collaboration takes skill.
 
-Building a single product takes effort across a lot of different areas.  
-From actual development — view, API, infra — all the way through deployment, it takes a lot of people's hands.
+Building a single product takes effort from a lot of directions.  
+From the actual coding — view, API, infra — all the way to deployment, plenty of hands touch it along the way.
 
-The point I thought mattered most in this process is that **"my colleagues' time and my own time are both precious."**  
+The single most important thing I took from all this: **"my colleagues' time and my own time are both valuable."**  
 ![image-time](./images/what-i-learn-150/05.jpg)
 
-Assuming we work five days a week, eight hours a day, there's genuinely a lot to get done.
+Working five days a week, eight hours a day, there's no shortage of things competing for that time:
 
-1. Planning meetings with the other people on the same project
-2. Development
+1. Planning meetings with everyone on the same project
+2. Actually building things
 3. Code review
-4. Team meetings (per discipline)
+4. Team meetings, one per discipline
 
-To do the work well, I felt you need skill.
+Doing all of that well, I decided, takes actual skill.
 
-#### `Skill 1. Prepared questions`
+#### `Skill 1. Come with a prepared question`
 
-In the course of developing something, you may need to ask a lot of questions.
+Building things means asking a lot of questions along the way.
 
-> 🍌 : Oh, so-and-so worked on this part before! I should go ask them.  
-> 🍌 : This time I need to deploy it this way, and there's an issue with that…  
-> 🍌 : This API response… I don't quite get it!
+> 🍌 : Oh, so-and-so touched this part before. I should just ask them.  
+> 🍌 : This deploy needs to go out a certain way, and something's not lining up…  
+> 🍌 : This API response… I'm not following it.
 
-I know what I tried and why it failed, but my colleague doesn't.  
-A question that just blurts out, with no context about what problem I ran into or what I'm actually trying to solve, can't really be understood.  
-**Vague questions only get vague answers.**
+I know what I already tried and why it didn't work, but my colleague has none of that context.  
+Blurting out a question with no explanation of the problem, or what I'm actually trying to solve, leaves them with nothing to work from.  
+**Vague questions get vague answers, every time.**
 
-When asking a question, I try to set and follow guidelines like these:
+So before asking anything, I try to hold myself to a few rules:
 
 <div style="background-color: #f6ffed; padding-top: 10px; padding-bottom: 10px">
 
-1. Lead with the conclusion.  
-   👉 What I'm implementing right now, and the end picture I'm aiming for.
+1. Lead with the point.  
+   👉 What I'm building right now, and the end result I'm aiming for.
 
-2. Things to consider while implementing it.  
-   👉 External libraries, dependencies, etc.
+2. What has to be factored in along the way.  
+   👉 External libraries, dependencies, and the like.
 
-3. Tried approach A to solve the problem, and ran into error A-1.
+3. I tried approach A to fix it, and ran into error A-1.
 
-4. Based on #3, I'm guessing approach B might work, and the reasoning is B-1.
+4. Based on that, I'm guessing approach B might be the fix, and here's why: B-1.
 
-5. Is it okay to go in this direction? Or should I consider a different approach?
+5. Does this direction make sense, or should I be looking at something else entirely?
 
 </div>
 
-Asking a question this way makes the situation clear.
+Ask it this way, and suddenly the whole situation is legible.
 
-😎 **My colleague says**
+😎 **What my colleague says back**
 
-1. Oh, nice! I've run into a similar situation before, and took the same approach.  
-   Along the way there might be an XYZ issue, so let me send you a link or repo worth referencing!
+1. Oh nice, I've hit something similar and went the same route.  
+   Watch out for issue XYZ along the way though — let me send you a link or repo worth checking.
 
-2. Hmm, the reasoning behind `B-1` seems a bit off. I think you should try a new approach, C.
+2. Hmm, `B-1` doesn't quite hold up as reasoning. I think approach C is the better call here.
 
-Only once I've clearly separated what I know from what I don't do I actually get to learn the "don't know" part quickly.
+Only after drawing a clean line between what I know and what I don't does the "don't know" part actually become fast to learn.
 
-#### `Skill 2. Efficient meetings`
+#### `Skill 2. Meetings that don't waste time`
 
-In the same vein as the `limited time` I mentioned in Skill 1, meetings need skill too.
-I can break this down into two situations: hosting a meeting, and attending one.
+Same logic as the `limited time` from Skill 1: meetings need skill too.
+I've split this into two cases — running a meeting, and sitting in on one.
 
-#### When hosting a meeting
+#### When you're running the meeting.
 
-The most important thing is knowing what you want to nail down through this particular meeting.  
-You need an agenda ready that lays out what you'll discuss and what you want to walk away having decided.
+What matters most is knowing exactly what you want nailed down by the end of it.  
+Come in with an agenda: what's up for discussion, and what decisions you're actually hoping to walk out with.
 
-For a new piece of work, I asked a colleague with relevant experience for a meeting, and prepared the question list below.
+For a new piece of work, I asked a colleague with relevant experience for time, and showed up with the question list below.
 
 ![image-question](./images/what-i-learn-150/question.png)
 
-The meeting ran with that colleague answering my questions, and it accomplished exactly what I needed: clearing up the gray areas that were slowing down development.
+The meeting ran as them answering my list one by one, and by the end it had done exactly what I needed: cleared out the gray areas that were slowing my work down.
 
-> Without a prepared question list, there would have been an extra round of "hmm... what else might they not know?" just to dig up the questions.
+> Without that list, we'd have burned time just fishing for questions: "hmm... what else might you not know?"
 
-#### When attending a meeting
+#### When you're just attending.
 
-Every meeting has a reason it was called. **Because a colleague's time is precious,** as a participant I try to organize my own thoughts on the agenda ahead of time.
+A meeting exists for a reason. **Because my colleague's time is worth something,** I try, as an attendee, to work out my own thoughts on the agenda before I ever sit down.
 
-Waiting until the meeting itself to start thinking makes it much less likely you'll think it through deeply, and can lead to the bad situation of having to walk back your own opinion.
+Start thinking only once the meeting's already underway, and you're unlikely to think it through properly — which is a good way to end up walking back your own opinion mid-conversation.
 
-#### `Skill 3. Gentle language.`
+#### `Skill 3. Soft language.`
 
-I thought this mattered even before joining, but it's felt even more important since. At work we mostly talk over Slack and do code review through GitHub. People's backgrounds vary widely, and during a conversation — especially over text — my intent can easily get distorted. No conversation should needlessly slide into the emotional realm.
+I already thought this mattered before joining, but it's mattered even more since. Most of our conversation happens over Slack, and code review over GitHub. People come from wildly different backgrounds, and in any conversation, over text especially, what I mean can land completely differently from what I intended. None of that should ever be allowed to slide into something personal.
 
-1. When proposing an opinion, start from the premise that "everything here is just my own thinking, and my thinking could be wrong."  
-   In code review, or whenever I share an opinion, my opinion could obviously be wrong, and there could be a better one out there. It should also be a basic premise that a colleague probably has a good reason for thinking the way they do.
+1. Whenever I put an opinion out there, I start from: "this is just what I think, and I could be wrong."  
+   In code review, or anywhere else I'm voicing an opinion, of course I could be wrong, and a better idea might already exist. It should also just be assumed that a colleague has a perfectly good reason for seeing it differently.
 
-> 🍌: I think it might be ~~ like this — what do you think, 😎?  
-> 🍌: Oh! I understood it as ~~, so I'm curious why you wrote it this way, 😎! If I've got it wrong, I'd really appreciate you letting me know.
+> 🍌: I'd guess it works like ~~, but what do you think, 😎?  
+> 🍌: Oh wait, I thought it worked like ~~. Curious why you wrote it this way, 😎! If I've got it backwards, I'd appreciate you setting me straight.
 
 2. That said, still be clear.  
-   Whether it's text or a spoken explanation, a rambling flow is hard to follow. It can wear out whoever's reading or listening. I emphasize whatever I want to emphasize, and I always try to make the TOC (Table of Contents) of what I'm saying clear.
+   Rambling is hard to follow whether it's written or spoken, and it wears out whoever's on the other end. I make a point of emphasizing what actually deserves emphasis, and always keeping a clear TOC (Table of Contents) for whatever I'm explaining.
 
-> `Example) Communicating in writing`  
-> **Point 1 I want to convey**  
-> An explanation of that point, written so it reads well  
-> **Point 2 I want to convey**  
-> An explanation of that point, written so it reads well
+> `Example) Writing something out`  
+> **Point 1**  
+> An explanation of that point, phrased so it actually reads well  
+> **Point 2**  
+> An explanation of that point, phrased so it actually reads well
 
-> `Example) Having a conversation`  
-> Well first, I'd like to talk about **part 1, part 2, and part 3.** ~
+> `Example) Talking it through`  
+> So first, I want to walk through **part 1, part 2, and part 3.** ~
 
-I think the single most important part of collaboration is mutual respect.
+If I had to name the single most important part of collaboration, it's mutual respect.
 
-### 🍌 A developer is someone who builds the product.
+### 🍌 A developer builds the product.
 
-I came to believe that a developer isn't just someone who writes code — they're someone who helps build the product.
+A developer isn't just someone who writes code. That's a small part of a bigger job: helping build the product.
 
-Whether it's something I built in code myself, or something my team built without my direct hand in it, I need to voice opinions about the product and think about it from the user's perspective.  
-Customers use this product, and the product is how I meet them.
+Whether I'm the one writing the code or not, if it's something our team ships, I need an opinion on it and I need to think about it from the user's side.  
+Customers use this thing. The product is how I actually meet them.
 
-Before actually writing any code, this is the question worth spending a lot of time on:
+Before a single line of code gets written, this is the question worth sitting with:
 
-**What impact can this product have on our customers?**
+**What impact will this product actually have on the people using it?**
 
-I need to actively offer opinions and build understanding around whether something's inconvenient, and what direction the product I'm building should head in.  
-How contradictory would it be if there were parts of what I'm building that I myself didn't understand?
+I need to actively speak up about what might be inconvenient, and actually understand where the thing I'm building is headed.  
+Because how strange would it be to build something and not understand parts of it myself?
 
 ### Documentation isn't optional.
 
-This is something I pay a lot of attention to at work.
+This is something I pay close attention to on the job.
 
 ![image-0](./images/what-i-learn-150/00.png)
 
-I believe I have a responsibility to keep the problems I've run into from repeating themselves for my colleagues.  
-The code I write at work is code our team will maintain, and my colleagues shouldn't have to face the same problem I already did.
+I feel responsible for making sure a problem I ran into doesn't just repeat itself for someone else.  
+The code I write at work belongs to the team now, and a colleague shouldn't have to hit the same wall I already did.
 
-> 🍌 : (For any given problem, shouldn't flailing around once be enough?)
+> 🍌 : (Shouldn't flailing around on any given problem only have to happen once?)
 
-Since we're not all working on the same project, I think sharing each person's situation and troubleshooting notes solves a lot of this problem.
+We're not all on the same project, so sharing what happened and how it got fixed goes a long way toward solving this.
 
-Recording what's needed to understand a project, what problems came up in it, and where its dependencies live is, I think, essential from a **team's code** perspective.
+What it takes to understand this project, what problems came up in it, where its dependencies sit: writing all of that down is, I think, non-negotiable once code belongs to **the team** and not just to me.
 
 ### 🍌 My code is the team's code.
 
-I'm the one who writes my code, but zoom out even a little and it's ultimately code the Web team manages.  
-Since we're developers, collaboration through code itself is an important point too.
+I'm the one typing it, sure, but zoom out even slightly and it's code the Web team owns.  
+We're developers, which makes collaborating through the code itself just as important as collaborating in conversation.
 
 #### Consistency
 
-Everything — variable names, structure, how components are written — needs to be consistent.  
-Within a single project, all of this should be written consistently enough that you can look at just a small part and immediately grasp the project's rules.
+Variable names, structure, how components are written — all of it needs to stay consistent.  
+The goal is that anyone can glance at a small slice of the project and immediately know its rules, which only works if the whole project actually follows them.
 
 1. redux naming  
-   Using a PREFIX, the requestAAABBB naming convention, where error handling lives
+   Using a PREFIX, the requestAAABBB convention, where error handling lives
 2. view structure  
-   Separating container and presentation.
+   Splitting container from presentation.
 3. Folder tree  
-   api, entity, …
+   api, entity…
 4. lint
-5. style sheet sort
+5. sorted stylesheets
 
 #### Readability
 
-For my code to actually become the team's code, it ultimately has to be written **consistently and with high readability.**
+For my code to actually earn its place as the team's code, it has to be **consistent and easy to read**, full stop.
 
-This came up a lot during code review.
+This came up constantly during code review.
 ![image-1](./images/what-i-learn-150/01.png)
 
 ![image-2](./images/what-i-learn-150/02.png)
 
-Beyond that,
+On top of that:
 
 1. Declare `const`s at the top of the function.
-2. Cut down how much there is to read using the `condition && <div />` pattern.
-3. Lean on functions for condition checks (a long condition makes the flow hard to follow).
+2. Use the `condition && <div />` pattern to cut down on what a reader has to parse.
+3. Push condition checks into their own functions (a long condition is hard to follow inline).
 
 ```js
 if(conditionCheckFn) {
@@ -215,39 +215,39 @@ const conditionCheckFn => (
 )
 ```
 
-4. Meaningful naming
+4. Names that actually mean something
 
 ![image-3](./images/what-i-learn-150/03.png)
 
 ![image-4](./images/what-i-learn-150/04.png)
 
-> Actually this wasn't a self-review — two teammates and I did an in-person review together, and I was just the one leaving all the comments. haha
+> This wasn't actually a self-review — two teammates and I reviewed it together in person, and I was just the one typing the comments. haha
 
-### You always need another perspective.
+### You always need a different angle.
 
-Various perspectives I've picked up at work — things like architecture or coding style — aren't actually the correct answer.  
-No, to put it more precisely, I think **there's never a single correct answer.**
+The various perspectives I've picked up at work — architecture choices, coding style — aren't actually correct answers.  
+Or, to put it more precisely, I think **there's never a single correct answer.**
 
 #### Perspective vs. perspective
 
-Questions like how to structure folders, or what code style to use, matter a lot more than you'd think.
+How you structure folders, or which code style you pick, matters a lot more than it seems like it should.
 
-These are mostly things we end up talking through a lot, either during setup before a project starts or during code review.
-What matters in that conversation is **talking perspective versus perspective.**
+These are the things you end up hashing out most, either during setup before a project starts or in code review.
+And the thing that actually makes that conversation work is **arguing perspective versus perspective.**
 
-I think this is different from just being stubborn — here's an example of what I mean.
+That's not the same as being stubborn. Here's what I mean:
 
-> 🍌 : I think this button should probably be split out into a util? It seems like something we could reuse everywhere.  
-> 😎 : Hmm… looking at every single component through the complicated lens of "is this a shared element or not" every time is … (rest omitted)
+> 🍌 : I think this button should probably move into a util? Feels reusable.  
+> 😎 : Hmm… treating every single component through this "is it shared or not" lens every time gets complicated… (rest omitted)
 
-Talking it through as perspective versus perspective lets you see what was missing from your own thinking, and gain a fresh view on how the same problem can be looked at differently.
+Talk it through this way, and you find the holes in your own thinking, plus an entirely different way to look at the same problem.
 
-Having a lot of these conversations means my perspective sometimes becomes the team's, and the team's perspective sometimes becomes mine.  
-**I ended up forming my own view on every single problem — and I think that, right there, might be what growth actually looks like.**
+Enough of these conversations, and my perspective sometimes becomes the team's, and the team's sometimes becomes mine.  
+**I walked away from every single problem with an opinion I could actually call my own, and maybe that's just what growth looks like.**
 
 ### 🍌 Wrapping up
 
-Over these 150 days I thought about a lot, and learned a lot. I want to keep growing through the ongoing process of asking myself questions and working out my own answers.
+150 days, and I thought about a lot, learned a lot. I want to keep growing by never letting up on asking myself questions and working out my own answers.
 
 ![image-6](./images/what-i-learn-150/06.jpeg)
 
@@ -255,9 +255,9 @@ Over these 150 days I thought about a lot, and learned a lot. I want to keep gro
 
 ## Reference
 
-[On the growth of junior developers](https://speakerdeck.com/jaeyeophan/junieo-gaebaljayi-seongjange-daehaeseo)
+[On how junior developers grow](https://speakerdeck.com/jaeyeophan/junieo-gaebaljayi-seongjange-daehaeseo)
 
-[The developer people want to work with](https://speakerdeck.com/jaeyeophan/gdg-campus-2018-meetup-balpyojaryo-hamgge-ilhago-sipeun-gaebalja)
+[The kind of developer people want to work with](https://speakerdeck.com/jaeyeophan/gdg-campus-2018-meetup-balpyojaryo-hamgge-ilhago-sipeun-gaebalja)
 
 ## See also
 

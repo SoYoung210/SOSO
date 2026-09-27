@@ -1,5 +1,5 @@
 ---
-title: '[SSR] 0. Introduction'
+title: '[SSR] 0. Getting Started'
 date: 2019-11-17 16:00:09
 category: react
 thumbnail: './images/thumbnail.png'
@@ -7,13 +7,13 @@ thumbnail: './images/thumbnail.png'
 
 ![image-thumbnail](./images/thumbnail.png)
 
-This tutorial introduces the process of applying Server Side Rendering, and Code Splitting, to React.
+In this series, I'll walk through adding server-side rendering and code splitting to a React app.
 
-> All the code is up on [GitHub](https://github.com/soYoung210/react-ssr-code-splitting) — **check out the branch for each step to see the code!**
+> You'll find all the code on [GitHub](https://github.com/soYoung210/react-ssr-code-splitting) — **each step has its own branch, so go dig in!**
 
-If you're introducing SSR to React, [Next.js](https://nextjs.org/) can also be a good choice. But this post covers the process of adding Code Splitting and SSR to plain React, without a framework.
+If you're adding SSR to React, [Next.js](https://nextjs.org/) is a solid option too. But here I'm skipping the framework and building code splitting and SSR into plain React from scratch.
 
-This series was written based on the following versions.
+Here are the versions I used for this series:
 
 ```json
 {
@@ -32,15 +32,15 @@ This series was written based on the following versions.
 
 ### [1. Code Splitting](https://so-so.dev/react/ssr-1-codesplitting/)
 
-- Choosing a library
+- Picking a library
 - Setting up the template HTML
-- Config setup
+- Configuring things
 - Writing the view code
-- A few thoughts
+- A few closing thoughts
 
 ### [2. SSR - Basic](https://so-so.dev/react/ssr-2-ssr---basic/)
 
-- Organizing the structure
+- Cleaning up the structure
 - Rendering on the server
 - Checking the result
 
@@ -48,11 +48,11 @@ This series was written based on the following versions.
 
 - Switching to react-router-config
 - Updating server/app.tsx
-- Passing the initial store value to the client
-- Initializing the store using data received from the server
+- Passing the initial store state to the client
+- Using the server's data to initialize the store
 
-### [4. SSR from a UX Perspective](https://so-so.dev/react/ssr-4-ux-ssr/)
+### [4. SSR, from the User's Perspective](https://so-so.dev/react/ssr-4-ux-ssr/)
 
-- The user's perspective
+- The user's side of things
 - It's not all downsides
-- Wrapping up this tutorial
+- Wrapping up this series

@@ -11,98 +11,98 @@ thumbnail: './images/growth/thumbnail.png'
     <sup>Image by: <a href="https://dribbble.com/shots/7093773-Landing-page-exploration">https://dribble.com</a></sup>
 </div>
 
-Even before joining my first company, I wanted to find "a company where I could grow together with the people around me," and my goal, as a developer, is to "grow without stopping." Last year I thought a lot about this topic and shared it in a [talk](https://speakerdeck.com/soyoung210/jeolmang-deuribeun-seongjang-hamgge-ilhago-sipeun-gaebaljaga-doegiggaji). Thinking it over again now, I believe there's no ['silver bullet'](https://en.wikipedia.org/wiki/Silver_bullet) for growth — it comes about, every time, through a lot of deliberation. I want to summarize that briefly here.
+Even before I joined my first company, I wanted to find a place where I could grow alongside the people around me. As a developer, my goal has always been to keep growing without stopping. I thought about this a lot last year and even shared it in a [talk](https://speakerdeck.com/soyoung210/jeolmang-deuribeun-seongjang-hamgge-ilhago-sipeun-gaebaljaga-doegiggaji). Looking back on it now, I don't think growth has a ['silver bullet'](https://en.wikipedia.org/wiki/Silver_bullet) at all. It comes, every single time, from a lot of deliberate thought. Here's the short version.
 
 ## Definition
 
-The word "growth," by dictionary definition, means scale gradually getting bigger. So what is growth for a developer? Being able to build a new feature in one pass, without ever getting stuck? Having CS fundamentals solid enough to answer any question without hesitation? Everyone's definition differs a bit. What matters, I think, is having your own perspective on **what "stage of growth I think I'm at"** even means.
+By dictionary definition, "growth" just means getting bigger over time. So what does that mean for a developer? Building a new feature start to finish without ever getting stuck? Knowing your CS fundamentals well enough to answer any question on the spot? Everyone's definition is a little different. What matters, I think, is having your own take on what **"my stage of growth"** even looks like.
 
-I've defined this standard for myself like this.
+Here's how I've defined it for myself.
 
 <div style="padding: 10px 0; font-weight: bold; font-size: 18px;
     word-break: keep-all;">
 "Having more perspectives of my own"
 </div>
 
-It's fine if I can't build a new feature well. Knowledge and technique can come from a Google search, or a question to the coworker sitting next to me can produce an answer in ten minutes. That's exactly why I don't think "do I know it or not" is a sufficient measuring stick for growth.
+It's fine if I can't pull off a new feature well right away. You can Google the knowledge and the technique, or just ask the coworker next to you and have an answer in ten minutes. That's exactly why I don't think "do I know this or not" is a good enough yardstick for growth.
 
-> Of course, knowledge and know-how accumulated through experience can also be called growth. But from a junior developer's perspective, I'm saying that "not knowing something" doesn't make that person a junior who isn't growing.
+> To be fair, knowledge and know-how that build up through experience are absolutely a form of growth. What I mean is that, from a junior developer's perspective, not knowing something doesn't make you a junior who isn't growing.
 
 ### My Perspective
 
-What does "my perspective" mean for a developer? I think it means being able to confidently state "what I think is good" about the various situations you run into while working on a project.
+What does "my perspective" even mean for a developer? I'd say it's being able to confidently say what you personally think is right, for whatever situation a project throws at you.
 
-It's about thinking through things like what good folder structuring looks like, what elements a project needs to be easy to maintain, and in what situations elements defined under names like `common` or `util` should actually be used — and forming your own perspective on them.
+It's thinking hard about things like what good folder structure looks like, what a project needs to stay maintainable, or when something actually deserves to be called `common` or `util`, and coming out the other side with an opinion of your own.
 
-## Just Doing Projects Doesn't Make You Grow
+## Just Doing Projects Won't Make You Grow
 
-One of the situations where you can build up a lot of "your own perspective" is when starting a new project. But doing a lot of projects doesn't necessarily mean you'll grow.
+One of the best chances to build up "your own perspective" is starting a new project. But racking up a lot of projects doesn't guarantee you'll grow from them.
 
-What matters is how much you deliberated while working on that project. On a recent new project, I wrestled with the following questions.
+What matters is how much you actually wrestled with while doing it. Here's what I wrestled with on a recent project.
 
-### What Does It Take for Someone Else to Easily Understand a Project?
+### What Does It Take for Someone Else to Understand a Project Easily?
 
-I worked on a project with a fairly difficult domain. There were a lot of terms I was hearing for the first time, and a lot of conditional logic that had to be handled in complicated ways. I decided the most important thing in this project was "making it easy for someone else to understand." Even if it meant a bit of duplication, I tried to go with whatever was easier to read.
+This project had a fairly tricky domain. Half the terms were new to me, and there was a lot of conditional logic that had to be handled carefully. I decided the most important thing was making it easy for someone else to pick up, so I leaned toward whatever read more clearly, even if it meant a bit of duplication.
 
-Below are a few of the things I wrestled with.
+Here are a few things I wrestled with.
 
 #### What the Top-Level Directory Means
 
-The very first depth of folders is the starting point for understanding a project, so I avoided any folder structuring that felt even slightly meaningless. Just as important as splitting folders meaningfully is not overdoing it.
+The top-level folders are the first thing anyone sees when they open a project, so I avoided any folder that felt even slightly meaningless. Splitting folders up in a meaningful way matters, but not overdoing it matters just as much.
 
-#### Rules That Run Through the Whole Project
+#### Rules That Hold the Whole Project Together
 
-For a new person to grasp a project easily, the project as a whole needs "rules that are easy and won't break." Even for a single component, I thought a lot about where it should live, and whether to implement it through composition or through props.
-Beyond that, I also wrestled with how to define consistent rules for folder and file names, and how to separate the areas that know about the domain from the ones that don't, in a way that stays maintainable and easy for someone else to read.
+For a new person to grasp things quickly, the whole project needs rules that are simple and won't break. Even for a single component, I spent a lot of time deciding where it should live, and whether to build it through composition or through props.
+Beyond that, I thought hard about keeping folder and file naming consistent, and about how to separate domain-aware code from domain-agnostic code in a way that stays maintainable and reads easily for someone else.
 
-#### What Does "Common" Even Mean
+#### What Actually Counts as "Common"?
 
-I spent a lot of time wrestling with this exact question. This project only managed a single service, and with the domain already separated out, I thought a lot about what would actually count as a shared, common element.
+I spent a lot of time stuck on exactly this question. The project only covered a single service, and with the domain already carved up, figuring out what should even count as a shared element took real thought.
 
-Caught up in the idea that "component reusability matters," I kept asking myself every time, "what would it take to make this component reusable?" — but in the end, the conclusion I reached was that "there really aren't that many cases where components get reused in this project." Rather than chasing good code for its own sake, I aimed for a structure and code that were easy to read, even at the cost of a little duplication.
+I kept getting caught up in the idea that "component reusability matters" and asking myself, every time, "how do I make this reusable?" But the answer I eventually landed on was: there just aren't that many cases in this project where components actually get reused. So instead of chasing good code for its own sake, I aimed for a structure that was easy to read, even at the cost of some duplication.
 
-As a result, I only treated things like the Alert and Dimmed wrappers, and elements that decide Text Style, as common components.
+In the end, I only treated things like the Alert and Dimmed wrappers, plus whatever decides Text Style, as common components.
 
-#### How to Respond Flexibly to Change
+#### How to Stay Flexible When Things Change
 
-In the previous section I said readable code matters more than avoiding duplication, but duplicated elements can also hurt a project's understandability. For example, if you can't reuse an existing component when handling a new spec with a slightly changed design from the existing List, I don't think of that as a good component.
+I just said readable code matters more than avoiding duplication, but duplication can hurt a project's clarity too. For instance, if you can't reuse an existing List component when a slightly redesigned spec comes in, I don't consider that a well-built component.
 
-So I reduced the number of props and handled most things through composition with children instead. Taking a large object or passing along a lot of props can make the code in the parent component shorter and easier to read, but that component can end up hard to reuse.
+So I cut down the number of props and handled most of it through composition with children instead. Taking one big object or a pile of props can make the parent component shorter and easier to read, but it can also make that component hard to reuse.
 
-I didn't apply this thinking to every single element. As in the example above, I paid especially close attention to this for components like List and Card, since I felt those were areas where the design could get revised frequently.
+I didn't apply this thinking everywhere. I paid especially close attention to components like List and Card, the ones from the example above, since I expected their design to change often.
 
-I'd like to cover the specifics of the project structure in a separate post if I get the chance. It was fun to get to wrestle with these questions on a new project. Early on, I think I spent more than twice as much time writing things down on my iPad as I did actually coding. What matters, I think, is **not so much what you do, but how you go about doing it.**
+I'd like to write up the specifics of this project structure as its own post someday. It was fun getting to wrestle with these questions on a new project. Early on, I think I spent more than twice as much time scribbling on my iPad as I did actually writing code. What matters, I think, isn't so much **what you do as how you go about doing it.**
 
-## Not Letting It Slide
+## Not Letting Things Slide
 
-There's really a huge amount to study in development. You need to study all sorts of CS knowledge, and if you say "I'm going to study JavaScript!" it might take more than six months just to understand this one language. But I don't think whether you know this kind of knowledge is what matters. (Same goes for algorithms, of course.)
+There's an enormous amount to study in development. You need CS fundamentals across the board, and if you decide "I'm going to learn JavaScript," just getting a real handle on that one language could take six months or more on its own. But I don't think whether you know all of it is really what matters. (Same goes for algorithms.)
 
-What I think matters is **knowing why, when, and how a piece of knowledge is used.** Not "because it seems like I'll need it," but studying to fill in the knowledge I was missing to solve the situation in front of me — that's what became my motivation to study.
+What I think actually matters is **knowing why, when, and how a piece of knowledge gets used.** My motivation to study was never "I might need this someday" but filling in exactly the gap that was stopping me from solving the problem in front of me.
 
-For example, if an outage happens and the cause turns out to be in an area I didn't know, that knowledge instantly becomes "knowledge I absolutely need." It would be better if I already knew it beforehand and could respond quickly, but reading a book or a blog post once doesn't automatically make it my own knowledge, so it might not come to mind easily.
+Say an outage happens, and the cause turns out to be something I didn't understand. From that moment on, that knowledge becomes something I absolutely need. It'd be nice to already know it and respond fast, but reading a book or a blog post once doesn't actually make the knowledge stick, so it might slip away anyway.
 
-Not just outages — if you run into a bug during development that was hard to solve, it's worth looking back at least once and asking whether the long hours you spent flailing came down to some gap in your knowledge.
+It doesn't have to be an outage, either. Whenever you hit a bug during development that's brutal to fix, it's worth asking afterward whether all those wasted hours came down to some gap in your knowledge.
 
-I think just refusing to let it slide at moments like this can, by itself, teach you a lot.
+I think just refusing to let that slide, in moments like these, can teach you a lot on its own.
 
-## Big Goals, Humble Attitude
+## Aim Big, Stay Humble
 
-There's something my current company's CTO once told me.
+Something our CTO once told me stuck with me.
 
 **"That's exactly why you have to do it all."**
 
-Ultimately, I want to become "a developer who does it all." More precisely, I want to study every part related to a web service, for a start.
+What I ultimately want to be is a developer who "does it all." More specifically, I want to study every part of what it takes to build a web service, for starters.
 
-Until recently, I tried to draw a clear line between what a web front-end developer should handle and what should be requested from another team. But now, with the goal of becoming a "web service developer," I want to directly control as many of the elements a service needs as I can. I want to be a developer who can control the whole picture — how the screens I build, the user experience, and the interactions ultimately reach the user.
+Until recently, I tried to draw a clean line between what a web front-end developer should own and what belongs to some other team. But now my goal is to become a "web service developer," someone who controls as many of the pieces a service needs, directly, as possible. I want to be the kind of developer who owns the whole path: the screens I build, the user experience, the interactions, and how all of it actually reaches the user.
 
-This is one of the things I'm most grateful for at the company I work at now. I get to manage things related to web service deployment directly through [IaC](https://en.wikipedia.org/wiki/Infrastructure_as_code), and if there's anything I'm curious or unsure about, I can ask anyone in that field for a code review. The experience of being able, as a front-end developer, to take direct responsibility for so much beyond just the screen, has been a huge source of learning and motivation. If you ever get the chance, I'd recommend looking into how the service you built actually gets deployed and operated, even if it isn't through IaC.
+This is one of the things I'm most grateful for at my current company. I manage web service deployment directly through [IaC](https://en.wikipedia.org/wiki/Infrastructure_as_code), and if anything makes me curious or uneasy, I can ask anyone in that area for a code review. Getting to take direct responsibility for so much beyond just the screen, as a front-end developer, has taught me a lot and kept me motivated. If you ever get the chance, even outside an IaC setup, I'd strongly recommend digging into how the service you built actually gets deployed and run.
 
-And, always stay humble. As the saying goes, "the world is wide and there are many monsters" — there are still plenty of fields I haven't studied yet. I said I want to pursue "all-around growth," but even within the front-end field, there's far more I don't know than I do. That's why I don't think you should ever take a coworker's or fellow developer's question lightly.
+And through all of that, stay humble. As the saying goes, "the world is wide and full of monsters." There's still a huge amount I haven't studied. I talked about wanting "all-around growth," but even inside front-end alone, what I don't know outweighs what I do. That's exactly why I don't think you should ever brush off a coworker's question, or anyone else's, as beneath you.
 
-Even a field I know (or think I know) may have been something I didn't know until very recently, and I might even have it wrong. There's no such thing as a stupid question — if anything, the time you spend answering one gives you another chance to organize your own understanding. I try not to ignore that opportunity or brush it off lightly.
+Even something I know, or think I know, might have been a total blank to me not long ago, and I could easily have it wrong. There's no such thing as a dumb question. If anything, answering one gives you a chance to sort your own understanding out again. I try not to wave that chance away or take it lightly.
 
-## Summary
+## Wrapping Up
 
-I feel like I've rambled on about a lot of different things, but that's because the word "growth" has always felt heavy and difficult to me. Just as not everything has a right answer, this post is only a conclusion drawn from what I've been thinking about at this particular point in time.
+I know I've rambled through a lot here, but that's because "growth" has always felt like a heavy, difficult word to me. Not everything has a right answer, and this post is just where my thinking landed for now.
 
-If I once wanted to become "a developer who writes good code," I now have a new goal too: becoming "the good coworker sitting next to you." I imagine I'll write a new post once I've wrestled hard with a new keyword and reached some kind of conclusion.
+I used to want to be "a developer who writes good code." Now I have a new goal too: being the good teammate sitting next to you. I'll probably write again once I've wrestled hard enough with a new idea to reach some kind of conclusion.

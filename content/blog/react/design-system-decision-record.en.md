@@ -7,61 +7,61 @@ thumbnail: './images/design-system-decision-record/thumbnail.png'
 
 ![image-thumbnail](./images/design-system-decision-record/thumbnail.png)
 
-This post covers the thinking and decisions behind a design system called linear that I didn't get to cover in my [FEConf2022 talk, "Design Systems, Beyond Form"](https://speakerdeck.com/soyoung210/dijain-siseutem-hyeongtaereul-neomeoseo).
+My [FEConf2022 talk, "Design Systems, Beyond Form"](https://speakerdeck.com/soyoung210/dijain-siseutem-hyeongtaereul-neomeoseo), left out a bunch of the thinking behind linear, the design system I built. This post picks up where that talk left off.
 
 ## Table of Contents
 
 - [Principle](#principle)
-  - [Problem from Principle](#problem-from-principle)
+  - [The problem with this principle](#problem-from-principle)
 - [Interface](#interface)
   - [Compound Component](#compound-component)
 - [Headless](#headless)
   - [Example 1. Trigger](#예시-1-trigger)
-  - [Example 2. Various functional components](#예시-2-다양한-기능-컴포넌트)
+  - [Example 2. Other functional components](#예시-2-다양한-기능-컴포넌트)
 - [The design system's strangeness budget](#디자인-시스템의-낯섦-예산)
   - [Example 1. Slot](#예시-1-slot)
-  - [Example 2. state](#예시-2-state)
+  - [Example 2. State](#예시-2-state)
   - [Example 3. PortalContainer](#예시-3-portalcontainer)
-- [Supporting "not using" a feature](#사용하지-않음에-대한-지원)
+- [Supporting "don't use this"](#사용하지-않음에-대한-지원)
 - [Abstraction](#추상화)
   - [Example: TimePicker](#예시-timepicker)
-- [Preventing wrong choices](#틀린-선택-막아주기)
+- [Guarding against the wrong choice](#틀린-선택-막아주기)
 - [Accessibility](#접근성)
-  - [Example. TextField](#예시-textfield)
-- [Closing](#맺으며)
+  - [Example: TextField](#예시-textfield)
+- [Closing thoughts](#맺으며)
 - [References](#참고자료)
 
 ## Principle
 
-***"Do only what's necessary." / "Flexibility is a duty."***
+***"Do only what's necessary." / "Flexibility isn't optional."***
 
-Flexibility, extensibility, and constraint are words commonly mentioned alongside design systems.
+Flexibility, extensibility, and constraint are the words that tend to come up whenever people talk about design systems.
 
-In a design system built on the assumption that it will be used by a single product, constraint is treated as being just as important as flexibility and extensibility, tied to the word "consistency."
+When a design system is built assuming it'll only ever serve one product, constraint usually gets treated as just as important as flexibility and extensibility — bundled together with the word "consistency."
 
-In linear, however, we prevent user mistakes, but we didn't impose many strong constraints purely for the sake of consistency.
+linear takes a different approach: it guards against mistakes, but it doesn't lean on heavy constraints just to keep things uniform.
 
-That decision wasn't without downsides. It led to fragmentation in places, and it sometimes confused users about how much they were allowed to customize.
+That choice wasn't free. It led to some fragmentation, and it left users unsure how far they were allowed to customize things.
 
-Even so, the main reason we weight flexibility over constraint is that we believe a design system is itself a product that needs to stay flexible to change.
+Even so, we weight flexibility over constraint for one big reason: a design system is itself a product, and like any product, it has to stay flexible to change.
 
-A changing product goes through iterations, incorporating customer requirements or reversing earlier decisions in favor of new ones. A design system, as the material a changing product is built from, may change on a relatively smaller scale, but it obviously still needs to respond flexibly to change.
+A product in motion iterates: it absorbs new requirements, reverses old decisions, and lands on different ones instead. A design system is the material that product is built from. It might move on a smaller scale, but of course it still needs to bend when things change.
 
-Consistency achieved through constraint produces a system that struggles to respond to change, and in many cases that response comes at a high cost. Just as users don't fall in love with a product that only keeps changing, if the only way a design system can respond to change is a breaking change, the developers who use that system won't love it either.
+Consistency bought through constraint tends to produce a system that resists change, and in most cases, that resistance is expensive. Users don't love a product that's constantly changing under them; by the same logic, developers won't love a design system if every change to it is a breaking one.
 
-That's why we need to treat the current decision as something that can change, and separate what the system must guarantee from what it doesn't need to.
+So we treat every current decision as provisional, and separate what the system absolutely has to guarantee from what it doesn't.
 
-### Problem from Principle
+### The problem with this principle
 
-Because we pursue flexibility even while having a defined form, there aren't many constraints in place for the sake of consistency. Since some of the responsibility for consistency is delegated to the call site, things can easily slip through the cracks.
+The system has a real shape, but because we chase flexibility, we don't put many constraints in place purely for consistency's sake. Some of that consistency burden shifts onto whoever's using the component, which means it's easy for things to slip through the cracks.
 
-The ideal way to achieve both of these conflicting goals — flexibility and constraint — would be to predict every way the system will be used, i.e. every design case, and fully define which parts need to change and which need to be controlled.
+The ideal fix for satisfying flexibility and constraint at once would be predicting every way the system could ever be used — every design case — and defining, up front, exactly what needs room to change and what needs to stay locked down.
 
-But given that a product keeps changing and evolving, this approach is highly unrealistic. It could also turn the team that manages the design system into a blocker for every product improvement.
+But given that products never stop changing and evolving, that's basically unrealistic. And chasing it could turn the team that manages the design system into a blocker for every product improvement.
 
 ## Interface
 
-In linear, we chose a Compound Component interface so that responsibility is divided and a component's behavior stays predictable.
+linear settled on a Compound Component interface so responsibility gets split up and a component's behavior stays predictable.
 
 ![Example of a styled select component](./images/design-system-decision-record/select_example.png)
 
@@ -86,7 +86,7 @@ In linear, we chose a Compound Component interface so that responsibility is div
 />
 ```
 
-For example, suppose the Select component used the interface above. Every prop sits at the same hierarchical level on a single component, but where each one is actually applied ranges from the very top of Select down to Option, and even the icon. The component's user can't easily predict where or how a given prop will end up being used.
+Say a Select component used the interface above. Every prop sits at the same flat level, but where each one actually lands ranges anywhere from the top of Select down to an Option, or even an icon. Whoever's using the component has no easy way to predict where a given prop will end up doing its work.
 
 ```jsx
 <Select value={value} onChange={...}>
@@ -104,15 +104,15 @@ For example, suppose the Select component used the interface above. Every prop s
 </Select>
 ```
 
-We changed it so that a prop is passed where it's actually used. Because the place a value is passed and the place it's used now match, it's easy for the call site to predict how a value it sets will be used.
+So instead, we pass each prop where it's actually used. Because the place you set a value and the place it's consumed are now the same, it's easy to predict what a given value does.
 
-Passing every prop from one place is somewhat provider-centric. Because every value the component's logic needs is delivered explicitly, the desired functionality was easy to implement. But the fact that props aren't all passed from one place doesn't mean the values that are needed become unknowable.
+Passing every prop from a single spot is a fairly provider-centric approach. Every value the component's logic needs arrives explicitly, so implementing the behavior you want is straightforward. But not passing everything from one spot doesn't mean the values you need become invisible.
 
 ### [Compound Component](https://kentcdodds.com/blog/compound-components-with-react-hooks)
 
-A "Compound Component" refers to a form in which two or more components cooperate to carry out the required functionality. It's composed of parent-child components, with state shared between them that isn't exposed externally.
+A "Compound Component" is a pattern where two or more components work together to pull off the functionality you actually need. It's built from parent-child components that share state between themselves without exposing that state outside.
 
-State that several components need can be shared through a Context at a higher layer.
+State that multiple components need can be shared through a Context sitting one layer up.
 
 ```jsx
 // linear
@@ -150,27 +150,27 @@ function SelectOption(props) {
 }
 ```
 
-The top-level `onChange` prop passed at the call site is shared through Context and delivered to the Option component, where the actual selection event happens. In this way, even when the place a prop is passed from doesn't match the place it's needed, the necessary value can still be used through a Context above it, while keeping the interface intuitive.
+The top-level `onChange` prop the caller passes in gets shared through Context and reaches the Option component, where the actual selection event fires. So even when where a prop is passed and where it's needed don't line up, a Context above them both can still carry the value across, and the interface stays intuitive.
 
 ## Headless
 
-A design system defines both functionality and style. But if using a piece of functionality always forces a fixed style on you, that amounts to a lot of constraint baked in at the system level.
+A design system defines both behavior and style. But if using a piece of behavior forces you into one fixed style every time, that's a lot of constraint baked in at the system level.
 
-Having many constraints means less room for fragmentation, so the consistency you're after is easier to achieve, but freedom and flexibility suffer. When putting together a design system, which of these two opposing values — constraint or flexibility — to weight more heavily is a matter of choice.
+More constraint means less room to fragment, so consistency comes easy, but freedom and flexibility take the hit. When you're building a design system, deciding which of these two competing values, constraint or flexibility, matters more is just a call you have to make.
 
-Because linear weighted flexibility more heavily, we separated form and function in a lot of places.
+linear leaned toward flexibility, so in a lot of places we split form apart from function.
 
 ### Example 1. **Trigger**
 
-The most representative example in the headless space is the Trigger component.
+The clearest example of headless design here is the Trigger component.
 
 ![Screenshot showing where the trigger component that toggles the select content sits](./images/design-system-decision-record/select_trigger.png)
 
-A Trigger component is a component that can turn on/off an element — like a Dropdown or Select — that appears by covering part of the screen.
+A Trigger is whatever toggles something like a Dropdown or a Select on and off: an element that shows up by covering part of the screen.
 
 ![Example screenshot showing that a select trigger can be many different components](./images/design-system-decision-record/select_trigger.jpg)
 
-The role of opening and closing a Select's option list should work with anything that plays the role of a button — a Ghost Button with a ChevronIcon, a Tag-shaped Button, and so on.
+Whatever opens and closes a Select's option list should work as long as it acts like a button: a Ghost Button with a ChevronIcon, a Tag styled as a button, whatever.
 
 ```jsx
 <Select>
@@ -184,19 +184,19 @@ The role of opening and closing a Select's option list should work with anything
 </Select>
 ```
 
-This concept also relies on the Compound Component pattern mentioned earlier. I covered it in detail in the [talk slides](https://speakerdeck.com/soyoung210/dijain-siseutem-hyeongtaereul-neomeoseo?slide=81), and it's easy to implement using a library like [radix-ui](https://www.radix-ui.com/) or [ariakit](https://ariakit.org/).
+This relies on the same Compound Component idea from earlier. I went into more detail in the [talk slides](https://speakerdeck.com/soyoung210/dijain-siseutem-hyeongtaereul-neomeoseo?slide=81), and libraries like [radix-ui](https://www.radix-ui.com/) or [ariakit](https://ariakit.org/) make it easy to build.
 
-### Example 2. Various functional components
+### Example 2. Other functional components
 
-There are several other places where we made a similar choice to separate function from form, as we did with the Trigger component.
+We made the same call to split function from form in several other places too, not just Trigger.
 
 ![Screenshot of the selected-count and clear areas in a multi select](./images/design-system-decision-record/mulit_select_search.png)
 
-The first example is at the top of MultiSelect: the "0 selected" (Count) area and the "Reset" (Clear) area.
+First example: the top of MultiSelect, where you'll find a Count area ("0 selected") and a Clear area ("Reset").
 
-In the `Count` area, everything besides the `0` — which represents the number of selected items — belongs to Count's presentation. The count data itself doesn't change, but how it's presented can. For example, it's currently rendered as "0 selected," but when the count is zero it could just as easily read "No selection" or "-".
+Inside `Count`, everything except the `0` — the actual count of selected items — belongs to presentation, not data. The number itself doesn't change, but how you word it can. Right now it reads "0 selected," but at zero it could just as easily say "Nothing selected" or just "-".
 
-If we consider that the wording of `Clear`'s "Reset" label could also change, this is another area where presentation needs to be separated from functionality.
+The same logic applies to `Clear`: if the wording of "Reset" might ever change, presentation and behavior need to be kept apart here too.
 
 ```jsx
 <MultiSelect>
@@ -211,9 +211,9 @@ If we consider that the wording of `Clear`'s "Reset" label could also change, th
 </MultiSelect>
 ```
 
-The Count component only supplies the selected-count data via [render props](https://reactjs.org/docs/render-props.html), and the Clear component, like Trigger, only supplies functionality.
+Count only hands over the selected-count data through [render props](https://reactjs.org/docs/render-props.html); Clear, like Trigger, only supplies behavior.
 
-This is a device for flexibility, but it can be tiring for frequently used cases, so it's worth also providing a ready-made preset like the one below.
+That flexibility is nice, but typing it out for every common case gets old fast, so it's worth also shipping a ready-made preset like this:
 
 ```jsx
 <MultiSelect>
@@ -228,25 +228,25 @@ This is a device for flexibility, but it can be tiring for frequently used cases
 
 ## The design system's strangeness budget
 
-The term "strangeness budget" comes from the post [The language strangeness budget](https://steveklabnik.com/writing/the-language-strangeness-budget). It describes how, if a new programming language ships too few new features, people won't bother taking an interest in it, while if it introduces too much that's new, the barrier to entry gets too high and few people end up using it — meaning every new choice has a cost. (Quoted from the talk [FEConf2021 "Why I Love React"](https://www.youtube.com/watch?v=dJAEWhR83Ug).)
+The term "strangeness budget" comes from [The language strangeness budget](https://steveklabnik.com/writing/the-language-strangeness-budget): if a new programming language ships too few new ideas, nobody bothers getting curious about it, and if it ships too many, the barrier to entry gets so high that almost nobody sticks around. Either way, every new choice costs something. (Borrowed from the talk ["Why I Love React," FEConf2021](https://www.youtube.com/watch?v=dJAEWhR83Ug).)
 
-A design system is no different, in that it bundles many features under one name and has to help users use them easily and often. Whenever a component or feature is added, every decision has to avoid contradicting the system's underlying stance while keeping what the user needs to learn to a minimum.
+A design system runs the same risk: it bundles a pile of features under one name and still has to stay easy and inviting to use often. Every time we add a component or a feature, the decision has to stay consistent with the system's underlying stance while keeping what users need to learn to a minimum.
 
-In linear, we defined abstract interfaces, and for functionality that felt similar, we pursued a consistent interface rather than one tailored to each individual component.
+In linear, we defined abstract interfaces, and whenever functionality felt similar across components, we reached for a consistent shared interface over one tailor-made for each component.
 
 ### Example 1. Slot
 
 ![Screenshot explaining the position of leftSlot](./images/design-system-decision-record/leftSlot.png)
 
-A Slot refers to a prop that can be rendered in a fixed area. Depending on its position, it's named `leftSlot` or `rightSlot`.
+A Slot is a prop that renders into a fixed spot. Depending on where it sits, it's named `leftSlot` or `rightSlot`.
 
-In some components, that slot position might end up being specific to icons only, but for the sake of keeping the interface consistent across positions and reducing constraints, we treat it as a `slot` that can hold anything.
+Some components might only ever put an icon there, but to keep the interface consistent across positions and keep constraints low, we treat it as a `slot` that can hold anything.
 
 ### Example 2. How to express state (error, success, warning)
 
 ![Example of Alert and toast components with error and success states](./images/design-system-decision-record/state.png)
 
-Many components need a predefined form for states such as error and success. This requirement is no different: it still has to be delivered through an interface that's comfortable for the user while keeping constraints to a minimum.
+Plenty of components need a settled shape for states like error or success. That requirement is no different: it still has to reach the user through a comfortable interface, with as little constraint as possible.
 
 ```jsx
 // Alert
@@ -266,13 +266,13 @@ toast.error(<div>This part is the content.</div>);
 toast.success(<div>This part is the content.</div>);
 ```
 
-The `Alert` and `toast` interfaces are structured similarly. There's a base type — `<Alert />` and `toast.show` — capable of expressing various forms, and the predefined form for each state can be used by referencing a property.
+`Alert` and `toast` end up structured the same way. There's a base type for each, `<Alert />` and `toast.show`, that can express any shape you want, and the settled form for a given state is just a property away.
 
 ### Example 3. PortalContainer
 
 ![Example of Dialog and Popover used while covering the entire screen](./images/design-system-decision-record/portalContainer.png)
 
-For floating components like Dialog and Popover that render at a separate hierarchy, we provide `PortalContainer` as a way to change the reference element from `document.body` to something else.
+Floating components like Dialog and Popover render at a separate point in the hierarchy, and `PortalContainer` is how we let you swap their anchor element away from `document.body`.
 
 ```jsx
 <Dialog>
@@ -283,13 +283,13 @@ For floating components like Dialog and Popover that render at a separate hierar
 </Dialog>
 ```
 
-There were interfaces that fit an individual component a little better than plain JSX, but to lower the learning fatigue around this functionality, we currently only offer this one approach.
+A few individual components had interfaces that fit them a bit better than plain JSX, but to keep the learning curve down, we only expose this one pattern for now.
 
-## Supporting "not using" a feature
+## Supporting "don't use this"
 
 ![Screenshot highlighting the close button on a Notion side page](./images/design-system-decision-record/notion_page.png)
 
-Suppose some component defines a `>>` button (CloseIconButton) that performs a close action as a default feature.
+Say some component ships a `>>` close button (CloseIconButton) as a default feature.
 
 ```jsx
 // Let's call this example component 'SidePeek'.
@@ -306,11 +306,11 @@ Suppose some component defines a `>>` button (CloseIconButton) that performs a c
 </SidePeek>
 ```
 
-Wherever the button is needed, it can be used without any extra typing.
+Anywhere you actually want that button, it just works with zero extra typing.
 
 ![Screenshot of a Notion side page not using the close button](./images/design-system-decision-record/notion_page_not_use.png)
 
-But what if a requirement comes up that says the `>>` button shouldn't be used? How would we express that? Since SidePeek defines it as a default feature, we need to provide an additional way to exclude it.
+But say a requirement shows up that says the `>>` button shouldn't be there. How would you express that? Since SidePeek made it a default, we now have to build a separate way to opt out.
 
 ```jsx
 // Let's call this example component 'SidePeek'.
@@ -328,9 +328,9 @@ But what if a requirement comes up that says the `>>` button shouldn't be used? 
 </SidePeek>
 ```
 
-We added "not using it" as a `notUseCloseButton` prop. But looking only at the interface, there's no way to predict which button this prop is declaring as unused. It forces the user to learn every possible outcome tied to the `notUseCloseButton` value.
+So we bolt on a `notUseCloseButton` prop. But look at the interface alone, and there's no way to guess which button it's turning off. Now users have to learn every possible outcome of `notUseCloseButton` just to use it.
 
-The most natural way to declare that a component isn't being used isn't a boolean prop — it's to actually not use it. In other words, don't define CloseIconButton as a default feature in the first place.
+The most natural way to say you're not using a component isn't a boolean prop. It's to just not use it, meaning CloseIconButton shouldn't have been a default in the first place.
 
 ```jsx {7,24}
 // When using CloseIconButton
@@ -369,29 +369,29 @@ function MySidePeekWithoutCloseIconButton() {
 
 ```
 
-Declaring this for every repeated use case can feel somewhat tedious, but since the cost of dealing with a default feature you can't remove is high, and it tends to show up in ways that are hard to predict, always-included functionality needs to be judged conservatively.
+Yes, spelling this out every time it repeats can feel tedious. But a default you can't remove is expensive to deal with later, and it tends to surface in ways nobody predicted, so treat anything you make always-on with real caution.
 
 ## Abstraction
 
-Staying flexible to change requires a component's spec to support general-purpose use cases, which calls for a high level of abstraction.
+Staying flexible to change means a component's spec has to cover general-purpose use cases, which calls for a fairly high level of abstraction.
 
 ### Example: TimePicker
 
 ![Example showing TimePicker used for both single-time selection and range selection](./images/design-system-decision-record/timepicker.png)
 
-This is a TimePicker that can be used to select a single time, or as a start/end time range.
+Here's a TimePicker that works both as a single-time picker and as a start/end range picker.
 
-There are various ways to structure the interface for this spec.
+There's more than one way to shape an interface around that spec.
 
-- Implement SingleTimePicker and RangeTimePicker as separate components.
-- Create FromTimePicker and ToTimePicker, and use only FromTimePicker when selecting a single time.
-- Create only TimePicker, and let the call site handle start/end time selection in controlled mode.
+- Build SingleTimePicker and RangeTimePicker as two separate components.
+- Build FromTimePicker and ToTimePicker, and use only FromTimePicker for a single time.
+- Build just TimePicker, and let the call site handle start/end selection itself in controlled mode.
 
-All three approaches left a lot to be desired. Choosing the first and building a `RangeTimePicker` made it hard to arrive at the compositional interface linear aims for, and the other two didn't seem to offer good DX.
+All three left a lot to be desired. Going with the first option and building a `RangeTimePicker` made it hard to land on the compositional interface linear aims for, and neither of the other two felt like good DX.
 
-So we extended the Single/Range concept and decided to build `TimePicker` and `DependentTimePicker`.
+So we extended the Single/Range idea instead, and built `TimePicker` and `DependentTimePicker`.
 
-DependentTimePicker took its idea from how [ant.design's Form.Item](https://ant.design/components/form/#components-form-demo-control-ref) accesses form values through the `getFieldValue` render prop.
+DependentTimePicker borrows its idea from [ant.design's Form.Item](https://ant.design/components/form/#components-form-demo-control-ref), which reaches into form values through a `getFieldValue` render prop.
 
 ```jsx
 // antd Form
@@ -407,7 +407,7 @@ DependentTimePicker took its idea from how [ant.design's Form.Item](https://ant.
 </Form>
 ```
 
-Values can be shared between Form.Item instances under a Form component. Likewise, if TimePicker had a means of sharing values between Select components, it could support not just single selection and start–end time selection, but N different time selections.
+Form.Item instances under a Form can share values with each other. Give TimePicker the same kind of channel between its Select components, and you get single selection, start-end range selection, and really any number of time selections, all for free.
 
 ```jsx
 function MyRangeTimePicker() {
@@ -440,21 +440,21 @@ function MyRangeTimePicker() {
 
 ```
 
-In DependentSelect's `getValue`, the `id` passed to a Select lets you reach that other Select's value.
+Inside DependentSelect's `getValue`, the `id` you gave a Select is what lets you reach into another Select's value.
 
-## Preventing wrong choices
+## Guarding against the wrong choice
 
-Pursuing flexibility over constraint doesn't mean we're off the hook for the user's (the developer's) mistakes. We can reduce the constraints on expression, but we're still responsible for preventing the wrong expression.
+Choosing flexibility over constraint doesn't let us off the hook for the developer's mistakes. We can loosen the constraints on how something's expressed, but we still owe it to them to block the wrong expression.
 
-### Example. Creating a new option in TimePicker
+### Example: Creating a new option in TimePicker
 
 ![Screenshot showing that creating a new option in TimePicker's range selection has to account for the min and max time](./images/design-system-decision-record/timepicker_new_option.png)
 
-TimePicker has a feature that generates and shows a new option for a time not already in the list, as long as it's a valid input.
+TimePicker can generate and show a brand-new option for a time that isn't already in the list, as long as it's a valid input.
 
-When a user types "547," which option should be shown can differ depending on the min and max time. If the start time is "5:45 PM," then "5:47 AM" is a wrong choice.
+Type "547," and which option should actually appear depends on the min and max time. If the range starts at "5:45 PM," then "5:47 AM" is simply the wrong answer.
 
-Handling time input and generating new options are basic responsibilities of TimePicker, so we need a mechanism that ensures this feature is used correctly.
+Handling time input and generating new options is core TimePicker behavior, so it needs a mechanism that keeps this from going wrong.
 
 ```jsx
 // The call site generates and uses the options it wants
@@ -479,11 +479,11 @@ function MyTimePicker() {
 }
 ```
 
-Just like Select, TimePicker leaves the decision of which Option to render to the call site, so it's hard to directly determine the min and max time from inside the component.
+Like Select, TimePicker leaves the decision of which Option to render up to the call site, so it can't directly tell what the min and max time are.
 
-But accepting min/max time props isn't a good option. From the user's perspective, they've already decided which options to render, and in the code above, the first value of `timeInterval` is already the minimum time value. If min/max time props also had to be passed, the same information would be expressed twice, and the minimum time value would lose a guaranteed single source of truth.
+Accepting min/max as props isn't a great answer, though. The user already decided which options to render — in the code above, the first value in `timeInterval` already is the minimum. Passing min/max again would just say the same thing twice, and the minimum time would lose any real single source of truth.
 
-Even without the user passing it directly, that information is already being expressed somewhere, so TimePicker can just figure it out internally.
+That information already exists somewhere, even without the user passing it explicitly, so TimePicker can just work it out internally.
 
 ```jsx
 // linear
@@ -501,7 +501,7 @@ function TimePickerNewOptionContent(props) {
 }
 ```
 
-By using the [Collection Context I mentioned in my FEConf2022 talk](https://speakerdeck.com/soyoung210/dijain-siseutem-hyeongtaereul-neomeoseo?slide=93), TimePicker can know its own list of options internally.
+Using the [Collection Context from my FEConf2022 talk](https://speakerdeck.com/soyoung210/dijain-siseutem-hyeongtaereul-neomeoseo?slide=93), TimePicker can find out its own list of options from the inside.
 
 ```jsx
 // linear
@@ -549,7 +549,7 @@ function TimePickerNewOptionContent(props) {
 }
 ```
 
-Through the collection, we can know the full list of times TimePicker has rendered, and when showing a new option, we can make sure only times within the min/max range are rendered.
+Through the collection, TimePicker knows every time it's already rendered, and it can make sure any new option only shows up if it falls inside that min/max range.
 
 ```jsx {9,10,11,12}
 function MyTimePickerWithNewOption() {
@@ -573,13 +573,13 @@ function MyTimePickerWithNewOption() {
 }
 ```
 
-Because the options that should be rendered for a given input are computed inside `NewOptionsContent` and handed over as render props, the call site can just use the component — without worrying about internal implementation details — and still end up with a TimePicker that offers the correct set of options.
+`NewOptionsContent` computes which options should render for a given input and hands them over as render props, so the call site never has to think about the internals. Just using the component is enough to get a TimePicker with the correct options.
 
 ## Accessibility
 
-Since a design system has to guarantee consistent usability, supporting accessibility should be the design system's responsibility rather than something left up to the call site wherever possible.
+Since a design system has to guarantee consistent usability, accessibility should be the system's job wherever possible, not something pushed onto every call site.
 
-### Example. TextField
+### Example: TextField
 
 ```tsx
 // ❌ Avoid defining these attributes directly wherever possible
@@ -592,7 +592,7 @@ Since a design system has to guarantee consistent usability, supporting accessib
 <TextField helperText={<TextField.HelperText />} />
 ```
 
-To convey TextField's role to a screen reader, the description and label ids need to be supplied to the input component's `aria-describedby` and `aria-labelledby`.
+To get TextField's role across to a screen reader, the description and label ids need to reach the input as `aria-describedby` and `aria-labelledby`.
 
 ```jsx
 // linear
@@ -632,19 +632,19 @@ function Input() {
 }
 ```
 
-So the call site doesn't have to generate and pass an id every time, we generate the id internally and pass it down through context so the input still gets the right id.
+So the call site doesn't have to generate and pass an id every single time, TextField generates it internally and threads it down through context, and the input still ends up with the right id.
 
-Beyond TextField, we applied the same approach to other components that need to pass extra information to screen readers, such as Dialog, Dropdown, and Select.
+We applied the same approach beyond TextField too, wherever a component needs to hand a screen reader extra information: Dialog, Dropdown, Select, and more.
 
-## Closing
+## Closing thoughts
 
-There were far more big and small decisions behind this design system than this post covers. We discussed at length with the team what needed thinking through and what trade-offs each decision carried, and we looked through the implementations, PRs, and issues of a number of open-source projects.
+This post doesn't cover everything. There were a huge number of decisions behind this design system, big and small. We argued through what needed thinking about and what trade-offs each decision carried, as a team, and we spent a lot of time reading through other open-source implementations, PRs, and issues.
 
 ![Open-source projects we referenced](./images/design-system-decision-record/references.png)
 
-Looking through many libraries for their interfaces and implementation details let us think through the direction and composition our design system needed.
+Digging through so many libraries for their interfaces and implementation details is what helped us actually figure out the direction and shape our own system needed.
 
-I can't yet say for certain that today's decisions are the best ones, but I hope this design system — built on a great deal of thought and deliberation — stays free of rust for a long time and keeps growing into good material for the product.
+I can't promise today's decisions are the best ones. But I hope a design system built on this much thought and deliberation stays rust-free for a long time, and keeps growing into good material for the product.
 
 ## References
 

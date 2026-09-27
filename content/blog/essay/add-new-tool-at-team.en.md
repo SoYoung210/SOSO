@@ -7,66 +7,65 @@ thumbnail: './images/add-new-tool-at-team/thumbnail.png'
 
 ![image](./images/add-new-tool-at-team/thumbnail.png)
 
-The development ecosystem changes fast, and tools and approaches that had been the "trend" for over ten years can become legacy in an instant. Developers are always drawn to new things, and everyone has probably thought at least once about running a new project at work in a different way than before. Adopting something new requires agreement among teammates, and this process can go smoothly, or it can require a long discussion.
+The dev world moves fast. A tool or approach that's been the "trend" for a decade can turn into legacy overnight. Developers are drawn to new things almost by instinct, and everyone's probably wanted to run a project differently from how the team usually does it at least once. But bringing something new in means getting your teammates on board, and that can go smoothly or turn into a long argument.
 
-This post isn't meant to take either side, nor is it arguing that you should adopt the latest trending tools. It's a piece written while thinking about the small conflicts a developer building a team's project might run into when introducing something new, and what those conflicts mean.
+None of this is meant to take sides, and it's not an argument for chasing the latest trend either. It's just some thoughts on the friction a developer runs into when trying to bring something new onto a team project, and what that friction actually means.
 
-## First, Let's Look Back at My Own Argument
+## First, Examine Your Own Argument
 
-Before arguing for adopting a new tool on your team, you need to look back and check whether your argument is really about solving your team's pain, or not. If you're simply curious about a new tool, it's fine for the conversation about it to stay at the level of "sharing," rather than becoming a "discussion about adoption." If what's really driving you is curiosity rather than a means to solve a problem, isn't it risky to already be arguing for its adoption on the team?
+Before you push for a new tool on your team, ask yourself honestly: is this really about solving your team's pain, or are you just curious about the tool? If it's curiosity, that's fine — just keep it at "hey, check this out" instead of turning it into a full adoption pitch. Pushing for adoption before you've separated curiosity from an actual need feels risky.
 
 ## We're a Team Because We Think Differently
 
-Once you're confident your argument is about solving a problem and not satisfying curiosity, you present it like: "Adopting A can solve the problems 1, 2, and 3 we're currently facing, makes it easier to write tests, and has various other advantages."
+Say you're confident it's a real problem and not idle curiosity, so you pitch it: "Adopting A solves problems 1, 2, and 3 we're dealing with right now, makes writing tests easier, and brings a bunch of other benefits."
 
-**The bigger the team, the more likely it is that not everyone will immediately relate to that sentence.**
+**The bigger the team, the less likely everyone is to nod along right away.**
 
-This goes without saying, but it's because everyone thinks differently. Someone might focus on "the advantages you get from A," like I do, but someone else might think "the advantages gained relative to A's learning cost aren't that big," or raise the question, "A does bring advantages, but it also introduces problems 1 and 2."
+Obviously, because people think differently. Some will focus on the upside of A, same as you did. Others will think the payoff isn't worth the learning cost, or push back with "sure, A helps, but it also creates problems 1 and 2."
 
-For me, it's a structure or library I've been keeping an eye on, and I've thought for a long time about bringing it into the product — but that deliberation was mine alone. Of course, you have to weigh the advantages against the learning curve, and think carefully and sensitively about the downsides of introducing something new.
+You might have had your eye on this structure or library for a long time, weighing whether to bring it into the product — but that's a conversation you had alone, with yourself. You still have to weigh the payoff against the learning curve, and take the downsides just as seriously.
 
-> This is a completely natural process, and I think a good team is one that discusses things well and works its way toward a compromise.
+> All of this is completely normal, and a good team is one that talks it through and finds common ground.
 
-There's no such thing as a 100% perfect tool. For the tool I'm arguing for, I need to be confident that, weighed against its downsides and learning curve, it can solve our team's problems and will help us out from a long-term perspective.
+No tool is 100% perfect. Before you argue for one, you need to be sure that, downsides and learning curve included, it can actually solve your team's problems and pay off down the road.
 
-## What Approach Do We Need
+## What Approach Do We Need?
 
-Anything new needs time. You might need pair coding, or well-written documentation or presentation materials. If you want to make your opinion more persuasive, you also need to spend time thinking about what the most effective strategy would be.
+Anything new takes time to land. That might mean pair programming, or a well-written doc, or a presentation. If you want people to actually buy into your opinion, you also need to spend time figuring out the most effective way to make your case.
 
-**No one opposes something blindly.** They might not be familiar with the tool, or might not agree that it's worth becoming familiar with it, or it might simply be too hard. If someone already believes they're solving problems well with the existing approach, then the tool I'm proposing might just look like "new, but a learning curve." Whatever the reason, I need to "empathize" with that reason and "persuade" them by understanding the other person as a colleague.
+**Nobody opposes something for no reason.** They might just not know the tool, or not be convinced it's worth the effort to learn, or it might simply be hard. If someone already believes the current approach solves things well, then whatever you're proposing just reads as "new, and a hassle to learn." Whatever the reason is, you need to understand it, and persuade them while treating them as a colleague.
 
-> Through this process of "persuasion," I can also check whether there were gaps in the knowledge and thinking I assumed I "knew pretty well already."
+> Going through that process of persuasion is also a good way to test whether the knowledge you assumed was solid actually has gaps.
 
-What do you do if you've empathized and tried to persuade, but it's still not landing? Look back once to check whether your opinion was actually reasonable, and if it still doesn't change, that's when you need an **ally**.
+So what do you do if you've empathized, made your case, and it still isn't landing? Take another look at whether your argument actually holds up, and if nothing changes even then, that's the point where you need an **ally**.
 
 ```
-If you try to change everything all at once, you'll spark a revolt.
-Once a revolt breaks out, the trust you worked hard to earn is lost, and all your effort goes to waste.
-How much change a team can handle differs from team to team.
-Don't force 'perfect change' onto everyone. What matters is recruiting 'allies' who can help get your argument recognized as valid."
+모든 걸 한 번에 바꾸려 했다가는 반란이 일어날 것이다.
+반란이 일어나면 어렵게 얻은 신뢰를 잃고 모든 노력이 수포가 된다.
+감당할 수 있는 변화의 속도는 팀에 따라 다르다.
+모두에게 '완벽한 변화'를 강요하지 마라. '아군'을 모집해서 주장의 타당성을 인정받는 게 중요하다."
 
-- From Simple Software, Chapters 18-19 -
+- 심플 소프트웨어 Chapter 18~19 내용 中-
 ```
 
-Agreeing with my opinion doesn't make someone an "ally," and disagreeing doesn't make them an "enemy." If you stick rigidly to trying to get everyone's agreement, the core focus on the "improvement" you were originally after can easily get blurred. The ideal situation is one where you gain allies, those allies support your argument, and through that process, allies help cover the parts you can't cover yourself. Of course, this process might also conclude that your opinion actually wasn't valid.
+Agreeing with you doesn't make someone an "ally," and disagreeing doesn't make them an "enemy." If you insist on getting everyone's buy-in, you can easily lose sight of the actual point — the improvement you were after in the first place. Ideally, you win allies who back your argument, and through that, they help cover the ground you can't cover alone. And sure, sometimes that whole process ends with you realizing your opinion wasn't actually right.
 
-> The most important thing is to let go of the insistence that your opinion must be accepted, and focus on the "essence" of the matter.
+> What matters most is letting go of the need to be right, and staying focused on the "essence" of the matter.
 
 ## Reflecting on the Outcome
 
-Once the process of arguing for and adopting something new on the team is over, you need a retrospective on both the technology and the process.
+Once you've actually gone through the process of pitching and adopting something new on the team, it's worth reviewing both the technology and the process.
 
 ### Technical Retrospective
 
-Looking back, every decision can end up with something you regret. In the moment, the decision might have been the best one, but looking back later it might not have been. For example, I used to think managing state separately meant "separating View and Data and designing business logic safely," but looking back, it might turn out not to fit the "single source of truth" concept.
+Every decision looks a little regrettable in hindsight. It might have been the right call at the time, but that doesn't mean it still looks right later. For example, I used to think managing state separately just meant "keeping View and Data apart and designing business logic safely," but looking back, that doesn't really line up with the "single source of truth" idea.
 
-As you encounter new experiences and environments, your thinking expands and your perspective changes. I think the experience of occasionally looking back at how your future self views your past decisions can itself be another form of growth.
-If a tool or approach that was adopted through intense discussion turns out, in hindsight, not to have been the right call, wouldn't sharing that with the team be a way to "grow together"?
+New experiences and environments widen your thinking and shift your perspective. Watching how your future self judges your past decisions is its own kind of growth. And if a tool or approach you fought hard to introduce turns out, in hindsight, to have been the wrong call, sharing that with the team is how you grow together.
 
 ### Process Retrospective
 
-Let's look back on whether the strategy I chose while listening to and coordinating with a dissenting teammate's opinion was really the best one, and whether it was actually "stubbornness" rather than a pursuit of "something better." It's important for the team to grow and solve problems in better ways, but I think something even more important than that is not losing trust between teammates.
+Look back at how you handled the negotiation with a teammate who disagreed. Was that strategy really the best one, or was it just stubbornness dressed up as a pursuit of "something better"? The team growing and solving problems in better ways matters, sure. But something matters even more: not losing trust between teammates.
 
 ## Wrap-up
 
-Introducing something new at the team level isn't easy. Everyone values different things, and this **"difference" isn't "wrongness."** I believe that through the process of discussing the team's direction and reaching agreement on something new, we can "grow together."
+Bringing something new onto a team is never easy. Everyone values different things, and that **"difference" isn't "wrongness."** I think it's through discussing the team's direction and reaching agreement on something new that everyone gets to "grow together."

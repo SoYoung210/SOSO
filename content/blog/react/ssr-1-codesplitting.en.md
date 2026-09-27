@@ -6,42 +6,42 @@ thumbnail: './images/thumbnail.png'
 ---
 
 ![image-thumbnail](./images/thumbnail.png)
-> ⚠️ This post continues from the [master branch](https://github.com/soYoung210/react-ssr-code-splitting). I won't be explaining what's in the master branch separately. If you have any questions, feel free to leave a comment!
+> ⚠️ This picks up right where the [master branch](https://github.com/soYoung210/react-ssr-code-splitting) leaves off, so I won't re-explain anything already covered there. Got questions? Drop them in the comments!
 
-React [supports](https://reactjs.org/docs/code-splitting.html) code splitting out of the box.
+React [supports](https://reactjs.org/docs/code-splitting.html) code splitting right out of the box.
 
 ![image](./images/react-lazy.png)
- **But** since the built-in lazy apparently doesn't support SSR, let's boldly give up on it and look for another tool.
+ **But** the built-in `lazy` reportedly doesn't play well with SSR, so let's drop it without much ceremony and go find something else.
 
 ## 📝 Choosing a library
 
-There are a few libraries out there for SSR that we could choose from.
+A handful of libraries handle this for SSR.
 
 ### 1. [react-loadable](https://github.com/jamiebuilds/react-loadable)
 
-This used to be a widely used library. If you search for SSR-related articles, you'll find more of them built around react-loadable than around the library I'll introduce as #2.  
-But, maybe because of [this issue](https://velog.io/@velopert/nomore-react-loadable), it has since disappeared from React's official docs, and the repo isn't accepting issues and isn't being actively maintained either.
+This one used to be everywhere. Search for SSR articles and you'll still find more built around react-loadable than around the library I'll cover next.
+But, apparently over [an issue like this](https://velog.io/@velopert/nomore-react-loadable), it's since dropped out of React's official docs, and the repo has its issues closed and isn't seeing much active maintenance.
 ![issue](./images/react-loadable-issue.png)
 
 ### 2. [@loadable/components](https://github.com/smooth-code/loadable-components)
 
-This is the library that ended up taking react-loadable's place once it dropped out of React's official docs.
-Its [official documentation](https://www.smooth-code.com/open-source/loadable-components/docs/getting-started/) is really well put together.
-> This is the library used in this tutorial.
+This is what stepped in once react-loadable dropped off React's official docs.
+Its [documentation](https://www.smooth-code.com/open-source/loadable-components/docs/getting-started/) does a really good job.
+> This is the library this tutorial actually uses.
 
 ### 3. [react-universal component](https://github.com/faceyspacey/react-universal-component)
 
-This is another library that's widely used for React SSR. It supports a wide range of features, but I didn't choose it for this tutorial.
+Another library that shows up a lot in React SSR setups. It covers a lot of ground feature-wise, but I didn't go with it here.
 
-## 🕸 Setting up the template html
+## 🕸 Setting up a template html
 
-In a real project, you might use a template html engine like pug or ejs instead of plain html. In that case, how should you apply Code Splitting?
+A real project might use a templating engine like pug or ejs instead of plain html. So how does Code Splitting fit into that picture?
 
-Doing Code Splitting means the bundle gets split up — so how do you actually write down which bundle.js a given page needs?  
+Splitting code means the bundle itself gets split, so how do you actually tell each page which bundle.js it needs?  
 
 ### HtmlWebpackPlugin
-[HtmlWebpackPlugin](https://webpack.js.org/plugins/html-webpack-plugin/) is a plugin that automatically generates an html file containing your bundled js files. Depending on the configuration, it can generate a brand-new html file, or use an existing html file as a template and generate a new one with content added on top of it.
-This project uses `server/views/index.pug` as the base template.
+[HtmlWebpackPlugin](https://webpack.js.org/plugins/html-webpack-plugin/) auto-generates an html file wired up with your bundled js. Depending on how it's configured, it can spit out a brand-new html file, or take an existing one as a template and layer new content on top.
+Here, `server/views/index.pug` is the base template.
 ```js {3,6}
 // 🌏 webpack.config.js
 new HtmlWebpackPlugin({
@@ -50,19 +50,19 @@ new HtmlWebpackPlugin({
 }),
 new HtmlWebpackPugPlugin()
 ```
-There are lots of options, but for now I've only specified which template to use and what name the output file should get.
+There's a lot more it can do, but for now I've only set which template to use and what the output file gets named.
 
-I also added [html-webpack-pug-plugin](https://www.npmjs.com/package/html-webpack-pug-plugin), which automatically converts things into `pug` syntax.
+I also threw in [html-webpack-pug-plugin](https://www.npmjs.com/package/html-webpack-pug-plugin), which handles the conversion into `pug` syntax automatically.
 
 ![bundle](./images/bundle-result.png)
-As part of the client build output, `index.pug` gets generated inside the static folder. When a request comes in for a split route, the matching bundle gets added into the pug file as a script tag.
+The client build now drops `index.pug` into the static folder. Whenever a split route gets requested, its bundle gets injected into that pug file as a script tag.
 
-### ♻️ Config setup
+### ♻️ Setting up the config
 
 
-First, let's install the dependencies the project needs, and set up the webpack and babel configuration first.
+First up: install what the project needs, and get webpack and babel configured.
 
-#### 1. Let's install `@loadable/component`. 
+#### 1. Install `@loadable/component`.
 ```bash
 npm i @loadable/component
 
@@ -70,8 +70,8 @@ npm i @loadable/component
 npm i -D @types/loadable__component
 ```
 
-#### 2. Setting up the dynamic import loader
-To use dynamic import syntax, which isn't standard yet, let's install [@babel/plugin-syntax-dynamic-import](https://www.npmjs.com/package/@babel/plugin-syntax-dynamic-import) and update `.babelrc` as well.
+#### 2. Set up the dynamic import loader
+Dynamic import syntax isn't standardized yet, so we need [@babel/plugin-syntax-dynamic-import](https://www.npmjs.com/package/@babel/plugin-syntax-dynamic-import) installed, plus a small edit to `.babelrc`.
 ```bash
 npm install --save-dev @babel/plugin-syntax-dynamic-import
 ```
@@ -87,8 +87,8 @@ npm install --save-dev @babel/plugin-syntax-dynamic-import
 }
 ```
 
-#### 3. Setting up chunk names
-It'd be nice if the bundle JS chunks produced by Code Splitting had names that are easy for us to recognize, so let's add a bit more to the webpack config.
+#### 3. Set up chunk names
+It helps to give the chunks Code Splitting produces names we can actually recognize, so let's tweak the webpack config a bit.
 ```js {7}
 // 🌏 webpack.config.js
 module.exports = (env, options) => {
@@ -104,9 +104,9 @@ module.exports = (env, options) => {
 ```
 
 ### View 
-Now that the basic setup is done, let's actually go through Code Splitting.
+Config's done. Time to actually split some code.
 
-#### 1. Change the component that will be split by CodeSplitting to `export default`. 
+#### 1. Switch the component being split over to `export default`. 
 ```tsx
 // As-is
 export const OrgComponent = () => {
@@ -119,7 +119,7 @@ export default () => {
 }
 ```
 
-#### 2. Change how the component is imported to `loadable`. 
+#### 2. Switch how it's imported over to `loadable`. 
 ```tsx
 // As-is
 import { OrgComponent } from './Org';
@@ -128,48 +128,48 @@ import { OrgComponent } from './Org';
 const OrgComponent = loadable(() => import(/* webpackChunkName: "org"*/ './Org'))
 ```
 
-The code splitting work is done. You can check the result through `bundle Analyzer` and the chrome inspector.
+That's the split done. You can confirm it with `bundle Analyzer` or the chrome inspector.
 ![analyze](./images/analyze.png)
 
-Looking at the bundle Analyzer, you can see that `org.bundle.js` has been generated on the right side.
+Pop open the bundle Analyzer, and there's `org.bundle.js` sitting on the right, freshly generated.
 
  
 ![bundle-web](./images/org-network.png)
-If you visit the `/org` page that has code splitting applied, you can see that it's set up to request `org.bundle.js`.
+Hit the `/org` page with splitting applied, and sure enough, it's requesting `org.bundle.js`.
 
-### 🤔 A few thoughts
-Is Code Splitting always a good thing? Actually, it might not be.
-What does the client's total bundle size look like in this project?
+### 🤔 A few thoughts 
+Is Code Splitting always a win? Honestly, not necessarily.
+So what does this project's total client bundle size even look like?
 ![bundle-terminal](./images/bundle-result.png)
-Given that this is a localhost environment, it doesn't look all that big.
+For a localhost setup, it's not bad at all.
 
-I went with the approach above to do Route Based Code Splitting. Here's what happens in the browser when each page is requested:
+The approach above gives us Route Based Code Splitting. Here's what actually happens in the browser as each page gets requested:
 ![org_to_user_split](./images/org_to_user_split.gif)
-You can see that moving from route `/org` to `/user` triggers an additional request for `user.bundle.js`. Naturally, that's because the code has been split, and as a result, visiting the user page requests exactly the bundle js it needs.
+Navigate from `/org` to `/user`, and there's an extra request for `user.bundle.js`. Makes sense: the code is split, so visiting the user page pulls in exactly the bundle it needs.
 ![org_to_user_no_split](./images/org_to_user_no_split.gif)
-On the other hand, without splitting applied, you can see that changing routes doesn't load any additional js.
-> The flicker is caused by JS parsing. 
+Without splitting, on the other hand, changing routes doesn't trigger any extra js load at all.
+> That flicker you see is just JS parsing. 
 
 
-If you overlook this and just split everything with Code Splitting for its own sake, it can actually make the UX worse. The initial page load might get faster, but every subsequent route change now has to load additional js. 
+Ignore this trade-off and split everything just because you can, and you can actually end up hurting UX. The first page load gets faster, sure, but now every route change afterward has to fetch more js. 
 
-If you split an extremely small component, the cost of the network request (DNS resolve, SSL handshake, download time, etc.) can outweigh whatever benefit Code Splitting was supposed to bring. 
+Split something small enough, and the cost of the network request itself (DNS resolution, the SSL handshake, download time, and so on) can outweigh whatever Code Splitting was supposed to buy you. 
 
-As an extreme case, let's compare loading a page that contains nothing but the text `Hello I'm TEST`, with and without Code Splitting applied.
+As a worst-case test, here's a page containing nothing but the text `Hello I'm TEST`, loaded with Code Splitting on, then off.
 
 #### With Code Splitting applied
 ![test1](./images/test1.gif)
-Measured under Slow 3G. Since the bundle needed to render `/Test` wasn't fetched on the first page load, it had to additionally request `test.bundle.js`, and you can see that this takes a very long time.
+Measured on Slow 3G. The bundle needed to render `/Test` wasn't there on first load, so it had to go fetch `test.bundle.js` separately, and that takes a noticeably long time.
 
-#### Without Code Splitting applied
+#### Without Code Splitting
 ![test2](./images/test2.gif)
-Even with Slow 3G applied, you can see the `/Test` page render quickly. Since the bundle needed to render the Test page was already fetched during the first page load, the page can be shown without any additional network request. 
+Even on Slow 3G, `/Test` renders almost instantly here. The bundle it needs already came down with the first page load, so there's no extra network request standing in the way. 
 
-#### Wrap-up
-There's no silver bullet. Deciding what to split requires looking at a bundle analyzer like WebpackBundleAnalyzer and splitting things "appropriately."
+#### Takeaways
+There's no silver bullet here. Figuring out what to split means actually looking at a bundle analyzer like WebpackBundleAnalyzer and splitting things where it makes sense, not everywhere.
 
-You can check out the full code for this tutorial [here](https://github.com/SoYoung210/react-ssr-code-splitting/pull/1).
+The full code for this tutorial is up [here](https://github.com/SoYoung210/react-ssr-code-splitting/pull/1).
 
 ## References 
-[The story of react-loadable — which I found pretty interesting(?) — disappearing from the React manual](https://velog.io/@velopert/nomore-react-loadable)
+[The oddly (?) entertaining story of react-loadable disappearing from the React manual](https://velog.io/@velopert/nomore-react-loadable)
 https://itnext.io/tips-tricks-for-smaller-bundles-in-react-apps-58d1b20c9c0

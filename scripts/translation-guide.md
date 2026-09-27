@@ -38,3 +38,33 @@ Run `pnpm check:translations` after translating. It enforces the structural rule
 ## Output
 
 - Write only the `.en.md` file next to the source. UTF-8, LF line endings, trailing newline.
+
+## Writing like a person (rewrite pass)
+
+The goal is English that reads as if the author had written the post in English in the first place.
+
+- Work paragraph by paragraph from the **Korean meaning**, not sentence by sentence from Korean grammar.
+  Restructure, merge, split or reorder sentences within a paragraph whenever it reads better.
+- Never add or drop a fact, opinion, example, joke or personal detail. Freer wording, same content.
+- Essays and retrospectives: warm, casual, first person, contractions welcome. Technical posts: direct and
+  plain; short sentences; say what the code does, then why.
+- Cut Korean-style padding: "~하는 것이다" endings, "~라고 생각한다" repeated every sentence, restating the
+  previous sentence, "the fact that…", "in order to" where "to" works.
+- Use the idiom an English writer would use instead of a literal rendering (e.g. not "pulled things out of their
+  bag of gifts" but "happily shared whatever they knew").
+- Keep the author's asides exactly as written: `(?)`, `(...)`, `(…)`, `(웃음)`-style jokes rendered as they were.
+- Em dashes: at most about one per paragraph. Prefer a comma, a period, a colon or parentheses.
+- Avoid these AI-writing tells: genuinely, truly, wholeheartedly, delve, journey, steeped in, tapestry,
+  crucial, pivotal, seamless, landscape, "it's not X — it's Y", "In today's …", "all sorts of",
+  "a testament to", "navigate the complexities", stacked adverbs.
+
+### Glossary
+
+| Korean | English |
+| --- | --- |
+| 비전공자 | non-CS-major developer (or "someone without a CS degree") |
+| 디자인 시스템 | design system |
+| 회고 | retrospective |
+| 개발자 경험 (DX) | developer experience (DX) |
+| 동료 | teammate / colleague |
+| 사내 / 팀 이름, 회사 이름 | keep as written (Toss, flex, Banksalad, Design Platform team, ...) |

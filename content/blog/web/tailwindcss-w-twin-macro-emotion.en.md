@@ -9,13 +9,13 @@ thumbnail: './images/tailwind/thumbnail.png'
 
 TailwindCSS is a utility-first CSS framework.
 
-This post introduces the concept of utility-first CSS and how you can use TailwindCSS. If you've been curious about TailwindCSS, or are considering adopting it, I think it's worth a read.
+Here's a rundown of what utility-first CSS actually means, and how to put TailwindCSS to use. Worth a read if you've been curious about it, or you're weighing whether to adopt it.
 
 ## utility-first CSS
 
-The name "utility-first CSS" might sound unfamiliar, but among widely used libraries, Bootstrap was actually built on this concept.
+The name might sound unfamiliar, but Bootstrap, a library nearly everyone's already used, is actually built on this same idea.
 
-The way you use it is very similar to [Bootstrap](https://getbootstrap.com/). In Bootstrap, you apply styles by assigning classes like this:
+The mechanics look a lot like [Bootstrap](https://getbootstrap.com/): you apply styles by handing an element a class, like this:
 
 ```html
 <div class="alert alert-primary" role="alert">
@@ -40,9 +40,9 @@ The way you use it is very similar to [Bootstrap](https://getbootstrap.com/). In
 </details>
 <br/>
 
-Utility-first CSS works by pre-defining the style each class is responsible for, and then applying whichever classes you need in combination.
+With utility-first CSS, every class is pre-defined for one specific style, and you combine whichever ones you need.
 
-Class names are formed like this:
+Class names follow a pattern like this:
 
 ```css
 .{property}{side}-{size}
@@ -50,17 +50,17 @@ Class names are formed like this:
 
 ### Example
 
-Here's a simple example using **margin** and **padding**:
+A quick example with **margin** and **padding**:
 
-- `mt-5`: applies the margin-top value according to a defined property, such as 5px
-- `pb-3`: applies the padding-bottom value according to a defined property, such as 3px
-- `px-2`: applies the x-axis padding values (padding-left, padding-right) according to a defined property, such as 2px
+- `mt-5`: sets margin-top to whatever's defined for that scale, say 5px
+- `pb-3`: sets padding-bottom the same way, say 3px
+- `px-2`: sets padding on the x-axis (padding-left and padding-right together), say 2px
 
 ![card_example.png](./images/tailwind/card_example.png)
 
-In the traditional approach, if the box wrapping a card title needed 20px of padding on all four sides, you'd probably use a class named something like `my-card-inner`. That class might also hold a bunch of other styles besides padding, and every time the design changes, you'd need to track down every element using it and update them all at once.
+The old way: if the box around a card title needs 20px of padding on every side, you'd reach for a class named something like `my-card-inner`. That class probably bundles in a bunch of other styles too, and every time the design shifts, you're stuck hunting down every place it's used and updating them all together.
 
-With utility-first CSS, however, you can express this like so:
+Utility-first CSS writes the same thing like this instead:
 
 ```html {2}
 <div class="card">
@@ -70,25 +70,25 @@ With utility-first CSS, however, you can express this like so:
 </div>
 ```
 
-In this case, even if the base value behind `p-20` changes from 20px to 5rem, you only need to update the config value — it's easy to change, and it's immediately clear what style each class is responsible for.
+Now if `p-20`'s base value ever moves from 20px to 5rem, you change one config value and you're done. What each class actually does stays obvious just from reading it.
 
-This is what utility-first CSS means: using classes from a purely styling perspective, rather than from the element's functional role.
+That's the core of utility-first CSS: classes built around pure styling, not around what an element functionally is.
 
 ## TailwindCSS
 
-TailwindCSS, the subject of this post, has the advantage of being **easier to customize and extend** compared to other utility-first CSS options. You can add all sorts of plugins, or build your own, and it's well documented.
+TailwindCSS's edge over other utility-first frameworks is that it's **easy to customize and easy to extend**. You can drop in existing plugins or write your own, and the docs actually hold up.
 
 ### Example
 
-Let's use the `padding` property as an example.
+Take `padding` as an example.
 
 ![search_example.png](./images/tailwind/search_example.png)
 
-Searching for the keyword **padding** on the [Tailwind site](https://tailwindcss.com/) brings up the properties below.
+Search **padding** on the [Tailwind site](https://tailwindcss.com/), and here's what comes back:
 
 ![search_result.png](./images/tailwind/search_result.png)
 
-You can use the properties that are set up by default, or customize them in `tailwind.config.js`.
+You can just use what ships by default, or customize it in `tailwind.config.js`.
 
 ### Using theme.padding
 
@@ -109,7 +109,7 @@ module.exports = {
 
 ### Using theme.spacing
 
-This approach doesn't apply the padding option directly — instead, it applies through the spacing property.
+Rather than setting padding directly, you route it through the spacing property instead.
 
 ```jsx {17,19}
 // tailwind.config.js
@@ -135,11 +135,11 @@ module.exports = {
 
 ```
 
-By using `spacing`, you can apply it to any property that needs a **numeric value**, like margin.
+Once `spacing` is set up, anything needing a **numeric value**, margin included, can pull from it.
 
 ### variants
 
-The `variants` field in tailwind.config.js lets you control responsive behavior and pseudo-classes.
+The `variants` field in `tailwind.config.js` is your control for responsive behavior and pseudo-classes.
 
 ```jsx
 // tailwind.config.js
@@ -156,7 +156,7 @@ module.exports = {
 }
 ```
 
-The keys under variants are the same properties used in tailwind.config.js's `theme`, and the variants listed below are supported by default.
+Each key under `variants` matches a property from `tailwind.config.js`'s `theme`, and the variants below are supported out of the box.
 
 - `'responsive'`
 - `'group-hover'`
@@ -171,9 +171,9 @@ The keys under variants are the same properties used in tailwind.config.js's `th
 - `'visited'`
 - `'disabled'`
 
-If you customize variants yourself, they won't automatically migrate along with the defaults, so you need to list both the default values and whatever additional ones you're defining.
+Customize variants yourself, and the defaults don't carry over automatically, so you have to list both the defaults and whatever you're adding.
 
-**❌ If you only define the additional properties, you lose access to the default ones.**
+**❌ Define only the new ones, and you lose the defaults entirely.**
 
 ```jsx {4}
 // tailwind.config.js
@@ -184,7 +184,7 @@ module.exports = {
 }
 ```
 
-✅ **You need to list every property you want enabled.**
+✅ **List out every property you actually want turned on.**
 
 ```jsx {4}
 // tailwind.config.js
@@ -197,18 +197,18 @@ module.exports = {
 
 ### Applying responsive styles
 
-TailwindCSS ships with four breakpoints applied by default based on screen size, and you can easily apply them just by adding a utility class.
+TailwindCSS ships with four breakpoints baked in by default, and turning them on is as easy as adding a utility class.
 
 ```html
 <!-- base 16, medium: 32, large: 48 -->
 <img class="w-16 md:w-32 lg:w-48" src="...">
 ```
 
-As shown below, you can make virtually anything — background color and more — responsive based on screen size.
+Pretty much anything, background color included, can go fully responsive this way:
 
 ![responsive_tailwind.gif](./images/tailwind/responsive_tailwind.gif)
 
-You can define additional breakpoints by changing the `screens` property in tailwind.config.js.
+Change the `screens` property in `tailwind.config.js` to define your own breakpoints.
 
 ```jsx {5,8,11}
 // tailwind.config.js
@@ -230,7 +230,7 @@ module.exports = {
 
 ### plugins
 
-TailwindCSS lets you create additional plugins as needed.
+TailwindCSS also lets you write your own plugins whenever you need one.
 
 ```jsx {16}
 // tailwind.config.js
@@ -254,7 +254,7 @@ module.exports = {
 }
 ```
 
-As shown above, you can add whatever utility class you want, and you can also add variants for classes you've newly added.
+That's how you add whatever utility class you want, and you can attach variants to a newly added class the same way.
 
 ```jsx
 // tailwind.config.js
@@ -275,7 +275,7 @@ module.exports = {
 }
 ```
 
-If you want to apply base styles to an HTML tag, you can do that in plugins via `addBase`.
+Want a default style on an HTML tag itself? `addBase` inside plugins handles that.
 
 ```jsx
 // tailwind.config.js
@@ -294,11 +294,11 @@ module.exports = {
 }
 ```
 
-Base styles only support [Element Selectors](https://www.w3schools.com/cssref/sel_element.asp).
+Base styles only accept [Element Selectors](https://www.w3schools.com/cssref/sel_element.asp).
 
 ## With CSS-in-JS
 
-TailwindCSS can be used together with CSS-in-JS libraries like [👩‍🎤 emotion](https://emotion.sh/docs/introduction) or [💅 styled-components](https://styled-components.com/). In that case, pairing it with **[twin.macro](https://www.npmjs.com/package/twin.macro)** lets you write noticeably cleaner code.
+TailwindCSS plays fine with CSS-in-JS libraries like [👩‍🎤 emotion](https://emotion.sh/docs/introduction) or [💅 styled-components](https://styled-components.com/). Pair it with **[twin.macro](https://www.npmjs.com/package/twin.macro)** and the resulting code gets noticeably cleaner.
 
 ```jsx {2,7}
 import React from 'react'
@@ -320,9 +320,9 @@ const Input = styled.input([
 export default () => <Input hasDarkHover />
 ```
 
-> As of May 2020, TailwindCSS has released up through version 1.4.4, while twin.macro currently uses version 1.3.4. twin.macro is currently [working on support](https://github.com/ben-rogerson/twin.macro/issues/45) for TailwindCSS 1.4.0.
+> As of May 2020, TailwindCSS is up to version 1.4.4, while twin.macro still runs on 1.3.4. It's currently [working toward support](https://github.com/ben-rogerson/twin.macro/issues/45) for TailwindCSS 1.4.0.
 
-With just a few simple settings, you can get it up and running easily.
+A handful of small config changes and you're up and running.
 
 ```jsx {4}
 // .babelrc
@@ -337,23 +337,23 @@ With just a few simple settings, you can get it up and running easily.
 }
 ```
 
-### ⚠️ Things to watch out for
+### ⚠️ Things to watch for
 
-One thing to watch out for: since twin.macro only references properties defined in `tailwind.config.js`, any className you additionally define in `tailwind.config.css` can't be used together with twin.macro.
+One catch: twin.macro only ever looks at what's defined in `tailwind.config.js`, so a className you added separately in `tailwind.config.css` won't work with it.
 
-Also, you still can't use template literals inside a styled-component; apparently this feature is [in the works](https://github.com/ben-rogerson/twin.macro/issues/17).
+Template literals inside a styled-component also don't work yet, though that's reportedly [in progress](https://github.com/ben-rogerson/twin.macro/issues/17).
 
 ![tw_macro_issue.png](./images/tailwind/tw_macro_issue.png)
 
 ## Wrapping up
 
-After using TailwindCSS on a new project for about two months, I've been mostly satisfied with it so far.
+Two months into using TailwindCSS on a new project, and I'm mostly happy with it so far.
 
-> One thing I found a bit disappointing is that the translate property doesn't support 3D, so I ended up handling that separately with inline styles.
+> One gap: the translate property doesn't support 3D, so I ended up handling that piece with an inline style instead.
 
-There's definitely a hurdle early on — you end up referring to the official docs a lot to figure out which rules govern which className — but once you get somewhat used to it, I think it's a tool worth pushing through that hurdle for. In particular, when the design guide is consistent, development just means attaching pre-defined classes, and I could clearly feel the speed advantage in that.
+Early on, there's a real learning curve: you're constantly flipping back to the docs to figure out which className does what. But once it clicks, the curve is worth it. When the design system is already consistent, development basically becomes attaching pre-defined classes, and the speed difference is obvious.
 
-Using TailwindCSS also gave me a new perspective: the idea that style can be viewed as something entirely separate from a component's purpose or function.
+Using it also handed me a new way of thinking: that style can live completely apart from a component's purpose or function.
 
 ## Ref
 

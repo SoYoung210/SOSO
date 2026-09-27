@@ -7,27 +7,27 @@ thumbnail: './images/navigator/thumbnail.png'
 
 ![image-thumbnail](./images/navigator/thumbnail.png)
 
-In frontend development, using the `navigator` object is unavoidable. This post looks at various properties of the navigator object.
+There's no avoiding the `navigator` object in frontend work, so here's a rundown of what its properties actually do.
 
-The `navigator` object holds not only the well-known User Agent but also various pieces of information about the user's state. Navigator's properties can only be accessed as read-only.
+It holds more than just the well-known User Agent string — plenty of other information about the user's state lives on it too, and every one of its properties is read-only.
 
 ## [react-adaptive-hooks](https://github.com/GoogleChromeLabs/react-adaptive-hooks)
 
-These are hooks built by ChromeLabs that hold information about the user's device and network environment. This hooks code was built using several properties of the navigator object.
+ChromeLabs built this set of hooks to surface information about the user's device and network conditions, and under the hood, it's built entirely on properties from the navigator object.
 
-In this post, we'll look at which navigator properties are "worth knowing," including the ones react-adaptive-hooks uses.
+That includes the properties react-adaptive-hooks itself relies on, so between those and a few more, here's what actually counts as a "navigator property worth knowing."
 
-## Before We Begin
+## Before We Start
 
-Some properties have very limited browser support. I've split them into three tiers based on their support range.
+Some of these properties have pretty spotty browser support, so I've marked each one with a tier based on how widely it's supported.
 
 - 🚨: Deprecated
-- ⚠️: Not supported in a few browsers
-- ✅: Supported in most browsers, or 100% support
+- ⚠️: Missing support in a handful of browsers
+- ✅: Supported almost everywhere, or 100%
 
 ## [⚠️ connection](https://developer.mozilla.org/en-US/docs/Web/API/Navigator/connection)
 
-Provides information about the network environment the user is currently on, and lets you check the following information.
+This tells you about the network the user is currently on, and gives you access to the following.
 
 ```ts
 navigator.connection
@@ -42,7 +42,7 @@ NetworkInformation: {
 }
 ```
 
-- **onchange:** The change event handler for the connection object. It can be used as follows.
+- **onchange:** The change event handler on the connection object. Here's how you'd use it.
 
 ```js
 // Browser Support
@@ -60,18 +60,18 @@ updateConnectionStatus();
 
 !['./images/navigator/navigator1.gif'](./images/navigator/navigator1.gif)
 
-- **effectiveType:** Returns one of slow-2g, 2g, 3g, or 4g depending on the current network conditions. It's determined by combining the round-trip value and downlink value from the most recent network communication.
-- **rtt:** The estimated round-trip time, rounded to the nearest multiple of 25ms.
-- **downlink:** The estimated bandwidth, rounded to the nearest multiple of 25KB per second and then converted to MB (Megabytes).
-- **saveData:** Whether the user has "battery saving mode" enabled.
+- **effectiveType:** Returns slow-2g, 2g, 3g, or 4g depending on the current connection, based on combining the round-trip time and downlink value from the most recent network activity.
+- **rtt:** An estimated round-trip time, rounded to the nearest 25ms.
+- **downlink:** An estimated bandwidth, rounded to the nearest 25KB/s and converted into MB.
+- **saveData:** Whether the user has data-saving mode turned on.
 
-The photo below was taken after switching from a 4g network connection to Fast 3G in the Chrome Network tab. You can actually see the effectiveType and downlink values change.
+Here's a before-and-after: starting on a 4g connection, then switching to Fast 3G in Chrome's Network tab. You can watch the effectiveType and downlink values actually change.
 
 !['./images/navigator/navigator9.png'](./images/navigator/navigator9.png)
 
 ### Browser Support
 
-This feature is currently experimental, so browser support is limited.
+This one is still experimental, so support is limited.
 
 !['./images/navigator/navigator2.png'](./images/navigator/navigator2.png)
 
@@ -79,9 +79,9 @@ This feature is currently experimental, so browser support is limited.
 
 ## ✅ [geolocation](https://developer.mozilla.org/en-US/docs/Web/API/Geolocation)
 
-A property for the user's location information. It's only available if the user has granted location access permission in their device settings.
+Gives you the user's location, but only once they've granted location access in their device settings.
 
-- [getCurrentPosition](https://developer.mozilla.org/ko/docs/Web/API/Geolocation/getCurrentPosition): Retrieves the current location.
+- [getCurrentPosition](https://developer.mozilla.org/ko/docs/Web/API/Geolocation/getCurrentPosition): Grabs the current location.
 
 ```js
 navigator.geolocation.getCurrentPosition(function(position) {
@@ -103,7 +103,7 @@ coords: {
 timestamp: 1500000000
 ```
 
-- [watchPosition](https://developer.mozilla.org/ko/docs/Web/API/Geolocation/watchPosition): The callback function runs every time the device's location changes. It can be used as follows.
+- [watchPosition](https://developer.mozilla.org/ko/docs/Web/API/Geolocation/watchPosition): Fires a callback every time the device's location changes. Used like this.
 
 ```js
 function success(pos) {
@@ -121,7 +121,7 @@ navigator.geolocation.watchPosition(success, error);
 
 ## 🚨 [getBattery()](https://developer.mozilla.org/en-US/docs/Web/API/Navigator/getBattery)
 
-Information about the device's battery. This function returns a Promise and can be used as follows.
+Info about the device's battery. It returns a Promise, used like this.
 
 ```js
 navigator.getBattery().then(res => console.log(res))
@@ -138,11 +138,11 @@ ondischargingtimechange: null
 onlevelchange: null
 ```
 
-- **charging:** Indicates whether the device is currently charging.
-- **chargingTime:** The time remaining until the battery is fully charged, in seconds. If it's 0, charging is complete.
-- **dischargingTime:** The time remaining, in seconds, until the battery is fully discharged and the system shuts down.
-- **level:** The charge level, expressed as a value between 0.0 and 1.0.
-- **onchargingchange:** The event handler for the [chargingchange](https://developer.mozilla.org/ko/docs/Web/Events/chargingchange) event. This event fires when the battery's charging state changes. It can be used as follows.
+- **charging:** Whether the device is currently plugged in and charging.
+- **chargingTime:** Seconds left until the battery is fully charged. 0 means it's already full.
+- **dischargingTime:** Seconds left until the battery fully drains and the system shuts down.
+- **level:** Charge level, as a number between 0.0 and 1.0.
+- **onchargingchange:** The handler for the [chargingchange](https://developer.mozilla.org/ko/docs/Web/Events/chargingchange) event, which fires whenever the charging state flips. Used like this.
 
 ```js
 navigator.getBattery().then(battery => {
@@ -152,39 +152,39 @@ navigator.getBattery().then(battery => {
 })
 ```
 
-The callback function runs every time the battery's charging state changes.
+The callback fires every time the charging state changes.
 
-- **ondischargingtimechange, ondischargingtimechange, onlevelchange:** These are, respectively, the event handlers for [chargingtimechange](https://developer.mozilla.org/en-US/docs/Web/API/BatteryManager/onchargingtimechange), [dischargingtimechange](https://developer.mozilla.org/en-US/docs/Archive/Events/dischargingtimechange), and [levelchange](https://developer.mozilla.org/en-US/docs/Archive/Events/levelchange).
+- **ondischargingtimechange, ondischargingtimechange, onlevelchange:** Handlers for the [chargingtimechange](https://developer.mozilla.org/en-US/docs/Web/API/BatteryManager/onchargingtimechange), [dischargingtimechange](https://developer.mozilla.org/en-US/docs/Archive/Events/dischargingtimechange), and [levelchange](https://developer.mozilla.org/en-US/docs/Archive/Events/levelchange) events, respectively.
 
 ### DEPRECATED
 
-The `getBattery` API has been DEPRECATED and may not work in the latest browser versions. It was phased out due to privacy policy concerns.
+The `getBattery` API is DEPRECATED and may not work on the latest browsers at all — it got phased out over privacy concerns.
 
 !['./images/navigator/navigator3.png'](./images/navigator/navigator3.png)
 
 ## ✅ [cookieEnabled](https://developer.mozilla.org/en-US/docs/Web/API/Navigator/cookieEnabled)
 
-Indicates whether cookies are enabled. If the user has set "block cookies" in their browser settings, this value is false.
+Tells you whether cookies are enabled. If the user has blocked cookies in their browser settings, this comes back false.
 
 > [Can I use](cookieEnabled)
 
 ## ✅ [language](https://developer.mozilla.org/en-US/docs/Web/API/NavigatorLanguage/language)
 
-Returns the language configured on the device.
+Returns whatever language is set on the device.
 
 !['./images/navigator/navigator4.png'](./images/navigator/navigator4.png)
 
-In Chrome, this is based on whichever language is listed at the top under "Settings > Languages." If it's set to "Korean," `navigator.language` is `ko`, and if it's set to "English (United States)," it's `en-US`.
+In Chrome, that's whatever sits at the top of "Settings > Languages." Set it to "Korean" and `navigator.language` comes back `ko`; set it to "English (United States)" and you get `en-US`.
 
 > [Can I use](https://caniuse.com/#search=geolocation)
 
 ## [⚠️ mediaCapabilities](https://developer.mozilla.org/en-US/docs/Web/API/Navigator/mediaCapabilities)
 
-Returns information about whether the device can encode or decode a given format.
+Tells you whether the device can encode or decode a given media format.
 
 ### **encodingInfo**
 
-This can only be used if the user has enabled the feature; in Chrome, it can be toggled in [settings](chrome://flags/#enable-experimental-web-platform-features).
+Only works if the user has turned the feature on. In Chrome, that's a toggle in [settings](chrome://flags/#enable-experimental-web-platform-features).
 
 ```js
 //Create media configuration to be tested
@@ -208,9 +208,9 @@ navigator.mediaCapabilities.encodingInfo(mediaConfig).then(result => {
 });
 ```
 
-If you enable the feature and run the code above, you'll see the result **"This configuration is supported, not smooth, and not power efficient."**
+With the feature enabled, running the code above logs **"This configuration is supported, not smooth, and not power efficient."**
 
-> If it's not enabled, an `Uncaught TypeError` occurs.
+> Without it enabled, you get an `Uncaught TypeError` instead.
 
 ### **decodingInfo**
 
@@ -231,11 +231,11 @@ navigator.mediaCapabilities.decodingInfo({
 });
 ```
 
-decodingInfo doesn't require enabling any separate feature. As of Chrome 80, running the code above results in **"This configuration is supported, smooth, and power efficient."**
+decodingInfo doesn't need any flag turned on. On Chrome 80, running the code above gives **"This configuration is supported, smooth, and power efficient."**
 
 ### Browser Support
 
-This feature is still experimental, so it's only supported in some browsers.
+Still experimental, so only a handful of browsers support it.
 
 !['./images/navigator/navigator5.png'](./images/navigator/navigator5.png)
 
@@ -243,9 +243,9 @@ This feature is still experimental, so it's only supported in some browsers.
 
 ## [⚠️ maxTouchPoints](https://developer.mozilla.org/en-US/docs/Web/API/Navigator/maxTouchPoints)
 
-Returns how many points the device can register touches at simultaneously. It's based on [TouchEvent](https://developer.mozilla.org/en-US/docs/Web/API/TouchEvent), so on a PC, Chrome returns 0 in desktop mode and 1 in mobile mode.
+Returns how many points the device can register as simultaneous touches. It goes by [TouchEvent](https://developer.mozilla.org/en-US/docs/Web/API/TouchEvent), so on a PC, Chrome returns 0 in desktop mode and 1 in mobile mode.
 
-You can try this out on [CodePen](https://codepen.io/soyoung210/pen/GRJPoaV).
+You can try this yourself on [CodePen](https://codepen.io/soyoung210/pen/GRJPoaV).
 
 ```js
 // PC - Desktop mode
@@ -260,14 +260,14 @@ navigator.maxTouchPoints // result: 5
 
 ### Browser Support
 
-[Can I use](https://caniuse.com/#feat=mdn-api_navigator_maxtouchpoints) says there are limitations in Safari, but in practice it works fine.
+[Can I use](https://caniuse.com/#feat=mdn-api_navigator_maxtouchpoints) lists some limitations on Safari, but in my testing it works just fine there.
 
 !['./images/navigator/navigator6-1.png'](./images/navigator/navigator6-1.png)
 !['./images/navigator/navigator6.png'](./images/navigator/navigator6.png)
 
 ## [✅ onLine](https://developer.mozilla.org/en-US/docs/Web/API/NavigatorOnLine/onLine)
 
-Returns whether the device is currently connected to the internet.
+Returns whether the device is currently online.
 
 ```js
 // Internet connected
@@ -279,7 +279,7 @@ navigator.onLine // false
 
 ### Browser Support
 
-Available in most browsers, but there are limitations in IE8.
+Works in most browsers, with some limitations on IE8.
 
 !['./images/navigator/navigator7.png'](./images/navigator/navigator7.png)
 
@@ -287,7 +287,7 @@ Available in most browsers, but there are limitations in IE8.
 
 ## [⚠️ permissions](https://developer.mozilla.org/en-US/docs/Web/API/Navigator/permissions)
 
-Lets you query the permission status for features that require the user's permission (push notifications, location, etc.).
+Lets you check the permission status for anything that needs the user's OK — push notifications, location, and the like.
 
 ```js
 navigator.permissions.query({name: 'geolocation'})
@@ -300,15 +300,15 @@ navigator.permissions.query({name: 'geolocation'})
   })
 ```
 
-There are three permission states. ([docs](https://developer.mozilla.org/en-US/docs/Web/API/PermissionStatus))
+There are three possible states. ([docs](https://developer.mozilla.org/en-US/docs/Web/API/PermissionStatus))
 
-- **granted:** Permission has been granted
-- **prompt:** Permission has never been requested from the user
-- **denied:** Permission has been explicitly denied
+- **granted:** Permission's been given
+- **prompt:** Never been asked yet
+- **denied:** Explicitly blocked
 
-`query` takes a PermissionDescriptor as its argument, and this consists of three properties.
+`query` takes a PermissionDescriptor argument, made up of three fields.
 
-- **name:** The agreed-upon name of the permission. You can find the list of permission names [here](https://w3c.github.io/permissions/#enumdef-permissionname).
+- **name:** The permission's official name. You can find the full list [here](https://w3c.github.io/permissions/#enumdef-permissionname).
 - **userVisibleOnly:** (push notifications only)
 - **sysex**
 
@@ -320,7 +320,7 @@ There are three permission states. ([docs](https://developer.mozilla.org/en-US/d
 
 ## [✅ platform](https://developer.mozilla.org/en-US/docs/Web/API/NavigatorID/platform)
 
-Returns information about the platform it's running on. On a MacBook Pro it's `MacIntel`; representative values are as follows.
+Returns what platform it's running on. On a MacBook Pro that's `MacIntel`; here are the common values.
 
 - HP-UX
 - Linux i686
@@ -337,7 +337,7 @@ Returns information about the platform it's running on. On a MacBook Pro it's `M
 
 ## [✅ plugins](https://developer.mozilla.org/en-US/docs/Web/API/NavigatorPlugins/plugins)
 
-A list of the various plugins the browser supports. Querying it in Chrome gives the following result.
+A list of whatever plugins the browser supports. Here's what it looks like in Chrome.
 
 ```js
 navigator.mimeTypes
@@ -366,7 +366,7 @@ navigator.mimeTypes
  ...
 ```
 
-You can use the `namedItem` method to check whether a specific plugin is installed.
+You can check whether a specific plugin is installed with the `namedItem` method.
 
 ```js
 function getFlashVersion() {
@@ -388,9 +388,9 @@ function getFlashVersion() {
 
 ## [✅ storage](https://developer.mozilla.org/en-US/docs/Web/API/StorageManager)
 
-Returns a [StorageManager](https://developer.mozilla.org/en-US/docs/Web/API/StorageManager) object. Storage Manager supports three methods.
+Returns a [StorageManager](https://developer.mozilla.org/en-US/docs/Web/API/StorageManager) object, which supports three methods.
 
-- **[estimate](https://developer.mozilla.org/en-US/docs/Web/API/StorageManager/estimate):** Lets you find out the current page's available storage space and usage. This method is asynchronous. Here's an example of how to use it.
+- **[estimate](https://developer.mozilla.org/en-US/docs/Web/API/StorageManager/estimate):** Tells you the current page's available storage and how much of it is used. It's async — here's an example.
 
 ```js
 // https://twitter.com
@@ -409,25 +409,25 @@ usageDetails: {
 }
 ```
 
-- **[persist](https://developer.mozilla.org/en-US/docs/Web/API/StorageManager/persist):** Lets you persist storage for pages that satisfy the following conditions.
+- **[persist](https://developer.mozilla.org/en-US/docs/Web/API/StorageManager/persist):** Lets storage persist for pages that meet all of the following.
   - Bookmarked
-  - Has a high score on [chrome://site-engagement/](//site-engagement/)
+  - Scores high on [chrome://site-engagement/](//site-engagement/)
   - Added to the home screen
-  - Push notifications are enabled
+  - Has push notifications enabled
 
 > [Can I use](https://caniuse.com/#feat=mdn-api_storage)
 
 ## [✅ userAgent](https://developer.mozilla.org/en-US/docs/Web/API/NavigatorID/userAgent)
 
-Holds the browser's name, version, and platform information. Every request sent to the server includes an HTTP header called `User-Agent` (hereafter UA), also known as the userAgent string. This string contains information such as the browser type, version number, and host operating system.
+Holds the browser's name, version, and platform. Every request sent to a server carries a `User-Agent` (UA from here on) HTTP header — the so-called userAgent string — packed with details like browser type, version number, and host OS.
 
-Here's what `navigator.userAgent` looks like across various environments.
+Here's what `navigator.userAgent` actually looks like across a few environments.
 <details>
 <summary><b>Mac, Chrome</b></summary>
 <ul>
 <li><b>Result:</b> Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/80.0.3987.87 Safari/537.36
 </li>
-<li>👉 This means it's Chrome version 80.0.3987.87, running a Gecko-like KHTML on Mac OS X version 10.14.6, and compatible with AppleWebKit and Safari version 537.36.
+<li>👉 In other words: Chrome 80.0.3987.87, running Gecko-flavored KHTML on Mac OS X 10.14.6, compatible with AppleWebKit and Safari 537.36.
 </li>
 </ul>
 </details>
@@ -462,31 +462,31 @@ Here's what `navigator.userAgent` looks like across various environments.
 <li><b>Result:</b> Mozilla/5.0 (iPhone; CPU iPhone OS 13_2_3 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/13.0.3 Mobile/15E148 Safari/604.
 </li>
 <li>
-👉 Mobile devices include strings like `iphone`, `ipod`, `android`, etc.
+👉 Mobile devices carry strings like `iphone`, `ipod`, or `android` somewhere in there.
 </li>
 </ul>
 </details>
 <br/>
 
 <details>
-<summary style="color: gray; font-weight:bold">Why does every UA start with 'Mozilla/version'?</summary>
-<p style="color: gray;">Back when only Netscape Navigator and IE existed, the Netscape browser expressed its version as <b>'Mozilla/version'</b>. Later on, other browsers added Mozilla/version to their userAgent string to signal that they were compatible with a specific version of the Netscape browser (in practice, they weren't actually based on that version). That's why the userAgent of many browsers today starts with <b>'Mozilla/version'</b>.</p>
+<summary style="color: gray; font-weight:bold">So why does every UA start with 'Mozilla/version'?</summary>
+<p style="color: gray;">Back when Netscape Navigator and IE were the only browsers around, Netscape expressed its version as <b>'Mozilla/version'</b>. Other browsers later tacked Mozilla/version onto their own userAgent strings just to signal compatibility with a given Netscape version (even though they weren't actually built on it). That's the whole reason so many browsers still start their userAgent with <b>'Mozilla/version'</b> today.</p>
 </details>
 <br/>
 
-`UA` is planned to be phased out gradually starting with Chrome 81, because advertisers tracking site visitors and browser support based on string parsing have caused a number of problems.
+Starting with Chrome 81, `UA` is being phased out step by step — advertisers using it to track site visitors, and browser support built on parsing this string, both turned out to cause plenty of problems.
 
-Going forward, the plan is to stop exposing information about whether a Chrome user is on Windows 7 or using a particular device. The phase-out plan for UA is as follows.
+Going forward, Chrome won't reveal things like whether a user is on Windows 7 or on a specific device. Here's the rollout plan for phasing UA out.
 
 > "On top of those privacy issues, User-Agent sniffing is an abundant source of compatibility issues, in particular for minority browsers, resulting in browsers lying about themselves (generally or to specific sites), and sites (including Google properties) being broken in some browsers for no good reason," - Yoav Weiss, Google Engineer-
 
-- **Chrome 81** (mid-March 2020) - Displays a console warning to let developers know they need to change code that relies on UA.
-- **Chrome 83** (early June 2020) - Stops updating the Chrome browser version included in the UA and consolidates the OS version.
-- **Chrome 85** (mid-September 2020) - Unifies desktop OS information into a common value, and unifies OS/device information into a common value.
+- **Chrome 81** (mid-March 2020) - Logs a console warning telling developers to update any code that relies on UA.
+- **Chrome 83** (early June 2020) - Stops updating the Chrome version baked into UA and folds the OS version into a shared value.
+- **Chrome 85** (mid-September 2020) - Unifies desktop OS info, and OS/device info generally, into shared values.
 
 ### Client Hints
 
-UA is being replaced by a new spec called [Client Hints](https://wicg.github.io/ua-client-hints/). You need to specify a request header called `Accept-CH`, or use a `meta tag`.
+UA is being replaced by a new spec called [Client Hints](https://wicg.github.io/ua-client-hints/). You opt in either with an `Accept-CH` request header, or a `meta tag`.
 
 - **request header:** Accept-CH: UA-Full-Version, UA-Platform, UA-Arch
 - **meta tag:**
@@ -495,21 +495,21 @@ UA is being replaced by a new spec called [Client Hints](https://wicg.github.io/
 <meta http-equiv="Accept-CH" content="DPR, Width, Viewport-Width, Downlink">
 ```
 
-- There's also an Accept-CH-Lifetime option that sets how long Accept-CH stays valid.
+- There's also an Accept-CH-Lifetime option that controls how long Accept-CH stays valid.
 
-The way you request information is expressed via a request header or meta tag, separated by commas. Here's the list of information the browser can provide.
+You request information through either the header or the meta tag, comma-separated. Here's everything the browser can hand back.
 
 - **Browser brand** (for example: "Chrome", "Edge", "The World's Best Web Browser")
-- **Browser major versioning** (for example: "72", "3", or "28")
-- **Browser minor versioning** (for example: "72.0.3245.12", "3.14159", or "297.70E04154A")
-- **OS brand and versioning** (for example: "Windows NT 6.0", "iOS 15", or "AmazingOS 17G")
+- **Browser major version** (for example: "72", "3", or "28")
+- **Browser minor version** (for example: "72.0.3245.12", "3.14159", or "297.70E04154A")
+- **OS brand and version** (for example: "Windows NT 6.0", "iOS 15", or "AmazingOS 17G")
 - **CPU architecture** (for example: "ARM64", or "ia32")
 - **Mobile device model name** (for example: "", or "Pixel 2 XL")
 - **Whether it's a mobile browser** (for example: ?0 or ?1)
 
 **Example**
 
-By default, the browser returns the following information.
+By default, the browser sends back this much.
 
 ```js
 User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko)
@@ -518,13 +518,13 @@ Sec-CH-UA: "Chrome"; v="74"
 Sec-CH-Mobile: ?0
 ```
 
-Additional information can be requested like this
+You can ask for more, like this
 
 ```js
     Accept-CH: UA-Full-Version, UA-Platform, UA-Arch
 ```
 
-and the values returned based on the header above look like this.
+and get back values like these.
 
 ```js
 Sec-CH-UA: "Chrome"; v="74"
@@ -537,7 +537,7 @@ Sec-CH-UA-Arch: "ARM64"
 
 ## Wrap-up
 
-Going through navigator's various properties, I realized there's more you can do on the web than I expected. Having even a rough idea of these built-in browser features seems like it'll come in handy in a variety of situations.
+Going through all of navigator's properties, I realized the web can do a lot more than I gave it credit for. Even a rough sense of what's built into the browser like this seems like it'll come in handy more often than you'd expect.
 
 ## Ref
 

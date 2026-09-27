@@ -7,124 +7,124 @@ thumbnail: './images/2023_retro/thumbnail.png'
 
 ![thumbnail](./images/2023_retro/thumbnail.png)
 
-It's December, retrospective season. This was a year that broadened my horizons, both personally and professionally.
+It's December, retrospective season again. This year stretched me wider, both personally and at work.
 
-I wrote this retrospective around the experiences that stuck with me most.
+Here's a look back built around the experiences that stuck with me most.
 
 ## A New Team, A New Design System
 
-This March, I joined Toss's PC Design Platform Team. You might think, "Does Toss even have PC products?" but across the Toss community (affiliates), there are actually quite a few PC products, from customer-facing products to internal admin tools.
+This March I joined Toss's PC Design Platform Team. You might be thinking, "Wait, does Toss even have PC products?" But across the Toss community (our affiliates), there are actually quite a few — everything from customer-facing products to internal admin tools.
 
-When I joined, the PC design system (tds-pc) had been built quickly out of necessity and hadn't been developed further since. There was a wide gap between the system and product needs, and a system built quickly like that seemed to struggle with continued expansion. After going back and forth between incremental improvement and a full rebuild, I concluded that unless we rebuilt from the most foundational layer up, we couldn't solve the problem at its root, so I proposed a rebuild.
+When I joined, the PC design system (tds-pc) had been thrown together quickly to meet an urgent need, and hadn't really moved forward since. There was a real gap between what the system offered and what products needed, and something built that fast wasn't going to hold up under continued growth. I went back and forth between patching it up gradually and rebuilding it, and eventually concluded that without rebuilding from the ground up, we'd never fix the actual problem. So I proposed a rebuild.
 
-A rebuild isn't a cure-all. It's actually easier to reach for than incremental improvement, and it's an expensive undertaking. I was scared to make this proposal without having built up any trust capital yet, but I figured that raising the discussion would lead us to a better answer, so I proposed the rebuild anyway.
+A rebuild isn't a magic fix. If anything, it's the easier road to reach for compared to gradual improvement, and it's expensive. I hadn't built up any credibility on the team yet, so pitching this scared me, but I figured putting it on the table would get us to a better answer eventually, so I proposed it anyway.
 
 ![tds-desktop document](./images/2023_retro/tds-desktop-doc.png)
 
-I gathered up the pain points I found while understanding the existing system, along with things I believed—from experience—were better decisions, and organized them into the principles and technical decisions the system would need. No code lasts forever, but given how much we were paying for this rebuild, I wanted it to be a system that would last, one with a clear purpose. I wanted the reasoning behind our decisions and our goals to remain even after the people involved changed.
+I collected everything that had been hard about understanding the existing system, plus the calls I'd learned to trust from experience, and turned them into a set of principles and technical decisions for the new one. No code lives forever, but given how much we were paying for this rebuild, I wanted it to last, and to have a clear sense of purpose. Even after the people involved moved on, I wanted the reasoning behind our decisions and our goals to stick around.
 
-> A design system is the raw material for many services
+> A design system is the raw material behind many services
 
-That's something from last year's retrospective, but this time it expanded from "service" to "company." And there was already an existing system that had supported the products for quite a long time.
+That's a line from last year's retrospective. This time, it scaled up from "services" to the whole "company." And there was already a system in place that had carried the products for a long while.
 
-Even though we called it a rebuild, I thought a complete overhaul would cost more than it was worth, so I limited Breaking Changes to mainly the core parts of the design system. My thinking was that if the total cost of adopting the new system was too high, no one would be willing to take on the change.
+Even calling it a rebuild, I didn't think a full teardown was worth its cost, so I limited Breaking Changes to mostly the design system's core. My thinking was simple: if the total cost of switching to the new system got too high, nobody would be willing to make the jump.
 
-One of the key elements of a rebuild is time. The strong power of legacy code is "behavior that's guaranteed by having been used for a long time already." No matter how carefully you study the spec, implement it identically, and write tests, it can never be as stable as legacy code that's been battle-tested across a variety of environments. So you need to quickly find early adopters and prepare and support them so they can try out the new system quickly.
+One of the biggest factors in a rebuild is time. Legacy code's real strength is behavior that's proven reliable simply by having survived this long. No matter how carefully you study the spec, replicate it, and write tests, you can't match the stability of something that's already been battle-tested across countless environments. That's why you need to find early adopters fast, and have everything ready so they can try the new system out right away.
 
-I eliminated as much inefficiency as I could ahead of time. I set up rules like criteria for ambiguity in the spec and standards for Breaking Changes, and I always wrote things down in documents so that anything requiring discussion wouldn't have to be dug up from memory.
+I tried to strip out every inefficiency I could in advance. I set clear rules — what counts as spec ambiguity, what qualifies as a Breaking Change — and wrote everything down, so nobody would have to dig through memory later to find something we'd already discussed.
 
-Rebuilt code is inevitably unstable. Unless you paste in the exact same code, there's always a risk of latent bugs. The goal of "improving UX and DX, and rebuilding in an extensible form" can only be achieved with at least a safety net of test code. There were plenty of choices I deferred in order to use time efficiently, but writing tests was never one of them.
+Rebuilt code is bound to be shaky. Unless you paste in the exact same lines, there's always some risk of a hidden bug. Hitting the goal — better UX and DX, rebuilt to actually scale — needs at least one safety net: test code. I put off plenty of decisions to save time, but tests were never one of them.
 
-The rebuild is still ongoing, and there have been difficult moments along the way, but it hasn't felt hard. I think that's thanks to the team, who bought into the direction and have been running alongside me. (Honestly, maybe the most important thing in a design system isn't the code or the design, but team building.) We're still in the process of producing results, but this is a project I'm even more excited to see next year.
+The rebuild is still going, and there have been rough patches, but none of it has felt like a grind. I credit the team for that — they bought into the direction and have been running alongside me the whole way. (Honestly, maybe the most important part of a design system isn't the code or the design at all, but building the team.) We're still shaping the results, but this is a project I'm more excited to see next year than almost anything else.
 
 ### Not Deciding
 
-Running this project required a lot of deliberation and decisions, and whenever the cost of deliberating was high but delaying the decision didn't raise the cost, I delayed it.
+This project called for a lot of deliberation and a lot of decisions. Whenever a decision was expensive to agonize over but cheap to put off, I put it off.
 
-A high cost of deliberation means I was confused — if I kept deliberating I could eventually reach an answer, but there was no guarantee it would be the right one, and given the nature of a library, rolling back is hard, so I felt a wrong decision would only end up increasing costs.
+A decision being expensive to think through usually just means I'm actually torn — keep at it long enough and I'll land on an answer, but there's no guarantee it's the right one, and since rolling back a library decision is hard, getting it wrong would only cost more.
 
-Investing deliberation costs only in important problems, and not in less important ones, saved a lot of time.
+Spending that deliberation budget only on the problems that mattered, and skipping it on the ones that didn't, saved me a huge amount of time.
 
 ### Expanding My Role
 
-Whereas before I focused on "code" within the scope of development, this year I spent a lot of time thinking about the areas below, beyond just code.
+Where I used to focus on the "code" side of development, this year I spent a lot of time thinking about everything around it instead.
 
-- Whether what's currently happening is actually a "problem," and if it is, whether it needs to be solved now or can be deferred
+- Whether what's happening right now is actually a "problem," and if so, whether it needs fixing now or can wait
 - Goals and philosophy
 - Root causes
-- UI/UX for components and their use cases
-- Cultivating the library ecosystem
+- UI/UX for components and how they get used
+- Tending to the library's ecosystem
 - Giving good feedback, working as a team
 
-I felt a vague anxiety about spending less time thinking about code, but I came to believe that code is just a small means to an end, and that defining problems and voicing opinions matter more.
+Spending less time thinking about code left me with a nagging, hard-to-place anxiety, but I came around to believing that code is just one small means to an end, and that defining the problem and speaking up matters more.
 
-I sometimes wondered, "Is it okay for me to spend time on this instead of development," but since I didn't think what the team expected of me was "just a developer who codes well," I spent the time and invested the deliberation cost anyway.
+"Is it really okay for me to spend time on this instead of development?" crossed my mind more than once. But I didn't think what the team expected of me was "just a developer who codes well," so I kept spending the time and the mental energy anyway.
 
-Since I can't decide alone what role I'm expected to play, I honestly shared my thoughts and asked for feedback. (I heard back that people appreciated me thinking so broadly.) Next year too, I expect I'll keep thinking about how the team can do well and take whatever action is needed.
+I can't decide alone what role the team expects of me, so I said what I honestly thought and asked for feedback. (I heard back that people appreciated me thinking this broadly.) Next year, I'll probably keep thinking about how the team can do well, and act on whatever that calls for.
 
 ## [craft](https://craft.so-so.dev/)
 
 ![craft.so-so.dev thumbnail](./images/2023_retro/craft-thumbnail.jpg)
 
-> I build the things I want to try, and post them here.
+> I build the things I feel like trying, and post them here.
 
-That's the description of this project I wrote in last year's retrospective. It's a kind of playground for finding slick UI/UX and building it out. Working under the title UX Engineer, when I think about what matters most in this job, it comes down to two big things.
+That's how I described this project in last year's retrospective. It's basically a sandbox for hunting down slick UI/UX and building it myself. Working under the title UX Engineer, when I ask myself what actually matters in this job, it comes down to two things.
 
-1. The ability to design modules that deliver the same user experience at low cost
+1. Being able to design modules that deliver the same user experience at a lower cost
 2. Visual Engineering
 
-This project is for practicing #2. Based on published content, I made 9 pieces this year. Taking things apart and running them to build these let me figure out why I find certain things "polished," and what kind of effort goes into creating that polish.
+This project exists to practice #2. Counting only what's published, I made 9 pieces this year. Taking things apart and rebuilding them from scratch taught me why I find certain things "polished" in the first place, and what kind of work goes into making something feel that way.
 
-Just like with the blog, I sometimes feel like revamping the craft platform itself rather than the content, but for now I plan to focus on building up the content I've been meaning to make.
+Same as with the blog, I sometimes want to redo the craft platform itself more than I want to make new content on it, but for now I'm going to keep my head down and just make what's on my list.
 
 ### Design
 
 ![craft-design.png](./images/2023_retro/craft-design.png)
 
-None of the content in craft was made completely from scratch, but most of it went through some amount of tweaking. The process of layering on this and that in search of the "right" answer for that tweaking was hard. I could tell something was off, but it wasn't easy to get a feel for how to make it better.
+Nothing on craft was built completely from scratch, but almost everything got tweaked in some way. Finding the right version of that "small" tweak, trying this, trying that, was the hard part. I could always tell something was off, but figuring out how to fix it was a different story.
 
-It took quite a lot of time to reach a point I considered good enough, through looking at more references, taking screenshots, analyzing, and sketching things out. I don't have formal expertise, but I've been writing up notes as I go through this inefficient process... I'm not sure when I'll be able to publish it, though.
+It took a lot of looking, screenshotting, analyzing, and sketching before I got to something I'd call good enough. I don't have any formal training in this, but I've been writing up notes as I stumble through this inefficient process... no idea when I'll actually publish it, though.
 
 ## 3D and Blender
 
-As part of the Visual Engineering domain, I wanted to study 3D. Along the way, it seemed like having an understanding of 3D models would let me do a lot more, so I've been learning a tool called [blender](https://www.blender.org/).
+I wanted to explore 3D as part of Visual Engineering. Along the way it became clear that understanding 3D models would open up a lot more possibilities, so I've been picking up [blender](https://www.blender.org/).
 
 ![blender-donut.jpeg](./images/2023_retro/blender-donut.jpeg)
 
-This is the first model I made, following a [tutorial video](https://www.youtube.com/watch?v=nIoXOplUvAw). At work, I've started a small club where we work for an hour over lunch on Tuesdays, Wednesdays, and Thursdays and share our results; looking back at the records, I made this donut on June 22nd.
+This is the first model I ever made, following along with a [tutorial video](https://www.youtube.com/watch?v=nIoXOplUvAw). At work, a few of us started a little club that meets over lunch on Tuesdays, Wednesdays, and Thursdays to work for an hour and share what we made. Checking my records, I made this donut on June 22nd.
 
 <video controls style="width: 100%;" src="/media/essay/images/2023_retro/blender-room-720.mov" type="video/quicktime" poster="/media/essay/images/2023_retro/blender-room-720.png">
    Sorry, your browser doesn't support embedded videos,
 </video>
 
-After the donut, I started building a workshop scene in July. Now all that's left is putting it on the web... but the process of getting it onto the web has turned out to be less smooth than I expected.
+After the donut, I started building a little studio scene in July. All that's left is putting it on the web... except getting it onto the web has turned out to be way less straightforward than I expected.
 
-At first, I'd search YouTube for the same object and learn by copying along exactly, but once I got somewhat comfortable, I became able to figure out on my own how to make certain objects. Working with Blender reminded me once again of things like, "Nothing beats consistency. The fastest way to learn is by applying it in practice."
+At first I'd search YouTube for the same object and copy along step by step, but once I got comfortable enough, I started being able to figure out how to build certain objects on my own. Working through Blender reminded me of something I already knew but kept forgetting: nothing beats just showing up consistently, and the fastest way to learn anything is to actually use it.
 
-The hardest part of doing craft was that when designing something, I could tell it was off but had a hard time getting a feel for how to improve it, whereas with Blender, having a real-world object as a clear target gave me a stronger sense of accomplishment.
+The hardest part of craft was knowing something looked off without being able to tell how to fix it. Blender was different: having a real-world object as a clear target made every improvement feel like an actual win.
 
-My original goal was to get the workshop project onto the web before the year was out, so I modeled hard, but it turned out that the moment the modeling was done was really just the beginning. Maybe I can finish it up in the first half of next year.
+My original goal was to get the studio scene online before the year ended, so I modeled like crazy, only to realize that finishing the model was really just the starting line. Maybe I can wrap it up in the first half of next year.
 
 ## Scuba Diving
 
-This August, I tried scuba diving and did about 40 dives. In fact, I've already planned out my diving schedule all the way through next year's Chuseok.
+I picked up scuba diving this August and logged around 40 dives. I've already mapped out my diving schedule all the way through next year's Chuseok.
 
-For someone whose job, programming, was also my hobby, and who spent even my free time doing something on a laptop, ending up this deeply into a hobby is a pretty encouraging development.
+For someone whose hobby used to be her actual job, programming, and who spent free time on a laptop doing more of the same, falling this hard for something else entirely feels like a pretty big deal.
 
-People around me often ask, "Why do you like diving so much?" Everyone's reasons are probably different, but for me,
+People around me often ask, "What's so great about diving?" Everyone probably has their own reasons, but for me it comes down to
 
-- The feeling of jumping into a whole new world the moment I enter the water
-- Seeing other living creatures
-- Being fully focused on my own movement and breathing.
+- That feeling, the moment you go under, of dropping into a whole new world
+- Getting to see other creatures living their lives
+- Being completely focused on your own movement and breath
 
-those are roughly the three big reasons. Wanting to get better at it, I ended up buying personal gear piece by piece, and before I knew it, I had a full set of basic equipment.
+roughly these three things. Wanting to get better at it, I kept buying bits of personal gear here and there, and before I knew it I owned a full set.
 
 ## 2024 Goals
 
-This was a year that broadened me, both as a developer and as a person. Aiming for consistency even if it's slow, next year I want to focus on filling in the areas I've expanded into.
+This was a year that widened me, as a developer and as a person. Next year I want to aim for steady, even if slow, and focus on filling in everything I've stretched into.
 
 - Next year's goals
-  - Being a teammate who sees the forest
-  - Strengthening my abilities in new areas (3D, design)
+  - Being the kind of teammate who sees the whole forest
+  - Building real strength in the new areas (3D, design)
 
-This year marks five full years since I became a developer. Seeing that this retrospective holds more than the first one I wrote makes me feel like I'm filling each year with new experiences. I hope that next year, too, I can keep having lots of experiences, making decisions, and filling in new stories.
+This year marks five full years since I became a developer. Looking at how much more this retrospective holds compared to my very first one, it seems like I really am filling each year with new experience. Here's hoping next year brings plenty more of it, more decisions to make, and new stories to fill in.

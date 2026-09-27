@@ -7,25 +7,25 @@ thumbnail: './images/thumbnail-good-code.png'
 
 ![image-thumbnail](./images/thumbnail-good-code.png)
 
-In a [talk](https://speakerdeck.com/soyoung210/jeolmang-deuribeun-seongjang-hamgge-ilhago-sipeun-gaebaljaga-doegiggaji?slide=58) I gave last year, I said, "Having a lot of knowledge doesn't necessarily mean you can write good code." Of course, knowing more can raise the odds that you'll write good code.
+In a [talk](https://speakerdeck.com/soyoung210/jeolmang-deuribeun-seongjang-hamgge-ilhago-sipeun-gaebaljaga-doegiggaji?slide=58) I gave last year, I said knowing a lot doesn't automatically mean you write good code. And sure, knowing more probably does raise your odds.
 
-But the phrase **"good code"** carries a lot of things worth considering beyond just knowledge.  
-This post introduces the good code I've thought through for myself.
-As the word "good" makes clear, this is just a subjective opinion. Since it's an opinion that could change as time passes, I'm presenting it as the "2020 version."
+But there's a lot more to **"good code"** than knowledge.  
+In this post I want to share what good code means to me.
+"Good" is subjective, of course, and my take will probably change over time, so think of this as the "2020 version."
 
 ## Just Enough Abstraction
 
-Whenever I write a new function, I run into these kinds of thoughts.
+Every time I sit down to write a new function, the same doubts creep in.
 
-- 🤔 Might I end up reusing this function somewhere else?
-- 🤓 If I turn it into a util once, won't it stay convenient wherever it's used?
-- 😈 Is there a more concise way to express this?
+- 🤔 Might I need this function again somewhere else?
+- 🤓 If I turn it into a util now, won't it just be there whenever I need it?
+- 😈 Isn't there a more concise way to write this?
 
-How meaningful is each of these worries, really?
+How much does each of these actually matter?
 
-### 🤔 Might I End Up Reusing This Function Somewhere Else?
+### 🤔 Might I Need This Function Again Somewhere Else?
 
-To cut to the conclusion first: **you shouldn't mistake a one-off util for a general-purpose one.** The more a util deals with basic data, the higher the chance it'll be reused; the more a util was created because a specific component needed it, the higher the chance it's a one-off.
+Short answer: don't confuse a one-off util with a general-purpose one. A util that works on basic data is more likely to get reused; a util you built because one specific component needed it is more likely a one-off.
 
 ```ts
 export const padZero = (num: number, width: number) => {
@@ -38,9 +38,9 @@ export const padZero = (num: number, width: number) => {
 }
 ```
 
-Used like `padZero(2, 4)`, this function returns '0002.'
-What domain would this kind of functionality get used in?  
-It's not easy to predict. Padding numbers is something that can come up a lot, even outside whatever part you're currently working on.
+Call it like `padZero(2, 4)` and it returns '0002'.
+Where would something like this actually get used?  
+Hard to say in advance. Padding a number is the kind of thing that comes up all over a codebase, not just in whatever you're working on right now.
 
 ```js
 let Directions = {
@@ -59,21 +59,21 @@ let Directions = {
 };
 ```
 
-The example above is taken from Dan Abramov's [Goodbye, Clean Code](https://overreacted.io/goodbye-clean-code).  
-`Directions.top` is a function built for "letting you resize a shape by dragging its edge." Right now there are only four directions, but what happens if more get added later?
+This example is from Dan Abramov's [Goodbye, Clean Code](https://overreacted.io/goodbye-clean-code).  
+`Directions.top` exists to let you resize a shape by dragging its edge. Right now there are only four directions — what happens once more get added?
 
-Goodbye, Clean Code puts it this way:  
-"Let's say the requirements change and several edge cases pop up for each shape and each action. My code would need to grow **an even deeper abstraction**, whereas the original, 'messy' (pre-abstraction) version of the code could absorb the change very easily."
+Here's what Goodbye, Clean Code says about that:  
+"Let's say the requirements change, and each shape, each action, now needs several exceptions handled. My code would need to reach for **an even deeper abstraction**, while the old 'messy' pre-abstraction version could absorb the change without much trouble."
 
-A premature abstraction born from the hope that "maybe this will get used someday" forces the colleague reviewing this feature right now to spend extra time puzzling through and understanding it. Push it further, and in the effort to fit a higher level of abstraction, the very cleanliness that abstraction was supposed to buy you in the first place can vanish entirely.
+A premature abstraction built on the hope that "maybe I'll need this someday" just makes whoever reviews it stop and puzzle over something that didn't need puzzling over. Push it far enough, and the very cleanliness that abstraction was supposed to buy you can disappear entirely.
 
-**Premature abstraction is something to guard against.**
+**Watch out for premature abstraction.**
 
-### 🤓 If I Turn It Into a Util Once, Won't It Stay Convenient Wherever It's Used?
+### 🤓 If I Turn It Into a Util Now, Won't It Just Be There Whenever I Need It?
 
-This is something I thought a lot while building redux-middleware-related utils. Each middleware handling asynchronous logic differed only in the action's type, while almost everything else looked nearly identical. Writing out all that duplicated code every single time got pretty tedious.
+This is the trap I kept falling into with redux-middleware utils. Every middleware handling async logic looked almost identical — only the action type ever changed. Writing out the same boilerplate every single time got old fast.
 
-So I built a util named `fetchMiddleware`.
+So I built a util called `fetchMiddleware`.
 
 ```ts
 // fetchMiddleware.ts
@@ -82,34 +82,34 @@ const fetchMiddleware = (action, fn?: (...args: any) => any) => {
 }
 ```
 
-And I announced it to the team: "I've made it so the middleware logic can be used as a single function — just grab it and use it! It's a little complex inside since it handles a bunch of different cases."
+Then I told the team: "Just grab this — the whole middleware logic is now one function. It's a bit tangled inside since it handles a bunch of different cases, but you don't need to worry about that part."
 
-The moment this util first gets handed off, everyone might be happy.  
-**But what happens if the person responsible for the project changes entirely?** If debugging an error or touching the fundamental structure ever becomes necessary, my colleague will inevitably have to dig into the `fetchMiddleware` I built too.
+Everyone's happy the moment I hand it over.  
+**But what happens once someone else ends up owning the project?** The moment they need to debug an error or touch the underlying structure, they'll inevitably end up reading through the `fetchMiddleware` I wrote too.
 
-Needing a long stretch of time just to understand this util means grasping the project as a whole will take that much longer too. From the standpoint that **a product's code has to belong to the whole team,** this code and this project aren't healthy.
+If a util takes that long to understand, understanding the whole project takes that much longer too. **A product's code is supposed to belong to the whole team** — and by that measure, this code, and this project, weren't in good shape.
 
-"It's a little complex inside, but convenient to use" is just a rationalization for code that's hard to read.
+"A bit messy inside, but easy to use" is just an excuse for code nobody can read.
 
-### 😈 Is There a More Concise Way to Express This?
+### 😈 Isn't There a More Concise Way to Write This?
 
-This is a thought worth always keeping in mind, but also one to be wary of.
-The thrill of squeezing ten lines of code into one is a trap that's easy to fall into. Put a bit more extremely: if you're judging purely by readability, just listing the data out plainly can sometimes beat solving it with map or forEach.
+This is a question worth asking constantly, and also one worth being suspicious of.
+The thrill of squeezing ten lines into one is an easy trap to fall into. Put a bit bluntly: if readability is all you're judging by, just laying the data out plainly can beat solving it cleverly with `map` or `forEach`.
 
-If you focus solely on shrinking code down in pursuit of extreme conciseness, you'll easily give up on readability. **Being concise doesn't automatically make code good.**
-You should aim for a middle ground — code that "even a fool could understand, while still cutting down on the tedious duplication that wears developers out."
+Chase extreme brevity hard enough, and readability is the first thing you give up. **Concise doesn't automatically mean good.**
+Aim for the middle ground instead — code simple enough that anyone can follow, while still cutting the repetitive boilerplate that wears developers down.
 
 ## Just Enough Function Composition
 
-Instead of always treating a function's computed result as a plain value, handling it through composition can also be a good way to express things.
+A function's result doesn't always have to be handled as a plain value — composing functions together can be a better way to express the same thing.
 
-As an example to walk through, let's think about a situation where we generate a Slack message Block.
+Take generating a Slack message block as an example.
 
-- An Image Message is only needed when a particular API's result is an error (`sendSlackForError`).
-- The function that generates the Slack Message is `createSlackMessage`.
-  - This function is used for both success and error API results.
+- An Image Message is only needed when a particular API call comes back as an error (`sendSlackForError`).
+- `createSlackMessage` is the function that builds the Slack message.
+  - It's used for both the success and the error case.
 
-The code I first wrote looked like this.
+Here's what I wrote first.
 
 ```ts
 const createSlackMessage = (
@@ -127,11 +127,11 @@ const createSlackMessage = (
 }
 ```
 
-Both cases of generating the slack Message are being handled inside a single function. That means the function is doing more than one job, and its responsibilities need to be split apart.
+One function is handling both cases of building the Slack message. That means it's doing more than one job, and its responsibilities need to be split apart.
 
-> Worth pointing out here: splitting responsibilities apart isn't premature abstraction, nor is it chasing extreme conciseness. It's **a search for a better pattern.**
+> Worth noting here: splitting up responsibilities isn't premature abstraction, and it isn't chasing extreme brevity either. It's **a search for a better pattern.**
 
-Adding an ImageBlock is optional, and in that situation `title` and `message` aren't used. I split out the function that handles the ImageBlock and refactored `createSlackMessage` to handle it internally with a ternary.
+Adding an ImageBlock is optional, and in that case `title` and `message` go unused. So I pulled the ImageBlock logic into its own function and refactored `createSlackMessage` to call it through a ternary.
 
 ```ts {8}
 const createSlackMessage = (
@@ -145,10 +145,9 @@ const createSlackMessage = (
 }
 ```
 
-Splitting out the part that concats the ImageBlock made the `createSlackMessage` function more readable. But a problem still remained.
+Splitting off the ImageBlock concat made `createSlackMessage` more readable. But one problem was still left.
 
-Even when it doesn't need `imageUrl`, the `createSlackMessage` function still declares it as an optional parameter and handles it with a branch internally. That means the separation of responsibilities still wasn't complete.
-I changed it so unnecessary information isn't passed in at all, moving the branching logic for the ImageBlock that `createSlackMessage` used to handle up into a function one level higher.
+Even when `imageUrl` isn't needed, `createSlackMessage` still declares it as an optional parameter and branches on it internally — meaning the split wasn't actually complete. So I stopped passing unnecessary data in at all, and moved the ImageBlock branching that used to live inside `createSlackMessage` up one level, into the caller.
 
 ```ts
 export const sendSlackForError = async () =>
@@ -163,19 +162,19 @@ export const sendSlackForError = async () =>
   }
 ```
 
-It's a pattern I didn't use well when I wasn't consciously thinking about it. I could have stored `createSlackMessage`'s value in a separate constant and handled it that way, but I felt handling it through composition like this was cleaner.
+It's a pattern I never reached for before I started paying attention to it. I could have stashed `createSlackMessage`'s result in a separate constant instead, but composing the calls this way felt cleaner.
 
 ## Just Enough Data Shape
 
-Maybe the single most important thing in writing a good function is **handling your data shape well.**
+Maybe the single most important thing in writing a good function is **picking the right data shape.**
 
-Let's assume the following situation.
+Say we have the following situation.
 
-- It takes an array called `fileList`, and using the `answers` value, substitutes in the values needed from `fileList`'s contents.
-- The substitution is carried out through `convertTemplateString`.
-- The result of `generateFiles` ultimately gets written out to a file, one by one.
+- It takes an array called `fileList`, and using `answers`, fills in the values needed inside each entry.
+- `convertTemplateString` does the substitution.
+- Each result from `generateFiles` ultimately gets written to its own file.
 
-At first, I wrote it so that it returned a single object.
+My first version returned a single object.
 
 ```js
 const generateFiles = (fileList, answers) => {
@@ -206,7 +205,7 @@ const fn = {
 }
 ```
 
-On the consuming side, `fileList` had to be handled like this.
+On the consuming side, you'd have to write it like this.
 
 ```js
 const fileList = generateFiles(['FILE1', 'FILE2'], answers)
@@ -216,12 +215,12 @@ Object.keys(fileList).forEach(fileName => {
 })
 ```
 
-This is code with a lot to keep track of. I used `Object.keys` to iterate over the object, and needed an expression like `fn[fileName](USER..)` just to run the right function out of `fn`.
+That's a lot to keep track of. `Object.keys` just to walk the object, then `fn[fileName](USER..)` just to call the right function out of `fn`.
 
-**You don't have to write it this hard a way.**
-If you treat `fileList` as an array instead of an object, you can iterate directly without `Object.keys`.
+**None of that is necessary.**
+Treat `fileList` as an array instead of an object, and you can iterate it directly, no `Object.keys` required.
 
-When I first wrote `generateFiles`, I hadn't thought enough about the data shape, and by focusing only on being able to flexibly accept files, I missed everything else.
+When I first wrote `generateFiles`, I hadn't thought enough about the data's shape — I was so focused on accepting files flexibly that I missed everything else.
 
 ```js
 const generateFiles = (fileList, answers) =>
@@ -234,7 +233,7 @@ const generateFiles = (fileList, answers) =>
   }))
 ```
 
-I changed it so the final data shape ends up as an array of objects with `name` and `body`.
+So I changed it to return an array of objects, each with a `name` and a `body`.
 
 ```js
 const fileListResult = [
@@ -248,15 +247,15 @@ fileList.forEach(file => {
 })
 ```
 
-Just switching to a data shape that fits the purpose makes the code far easier to read.
-You need to write with an eye toward how the value a function returns will ultimately be handled at its point of use.
+Just picking the right data shape for the job makes the code far easier to read.
+Write with an eye toward how the value a function returns will actually be used at the other end.
 
 ## Wrapping Up This Post
 
-There's no single right answer for "good code." Every sentence covered in this post is just what I currently think good code looks like. There can easily be other, different answers, and my own answer can change too.
+There's no single right answer for "good code." Everything in this post is just what good code looks like to me right now. Plenty of other answers are just as valid, and mine will keep changing too.
 
-If there's one answer that doesn't change, maybe it's this: code written by someone who's always thinking about what good code even is has a better chance of getting even better going forward.
+If there's one thing that doesn't change, maybe it's this: code written by someone who never stops asking what good code even is has a better shot at getting better over time.
 
 ## Special Thanks to
 
-Thank you to [joeun](http://joeun.dev/), who helped with various refactors, and to [Jbee](https://jbee.io/), who helped throughout this whole post.
+Thanks to [joeun](http://joeun.dev/) for helping with several refactors, and to [Jbee](https://jbee.io/) for helping shape this whole post.

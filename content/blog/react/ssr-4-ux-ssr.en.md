@@ -7,65 +7,65 @@ thumbnail: './images/thumbnail.png'
 
 ![image-thumbnail](./images/thumbnail.png)
 
-We implemented two different situations using SSR. I think the second post was a bit harder than the first — but did that extra difficulty actually buy us better UX?
+We've now built two different setups using SSR. The second one was probably harder to pull off than the first — but did all that extra effort actually buy us better UX?
 
-My answer is `no.`
+My answer: `not really.`
 
-## From the user's perspective
+## The user's perspective
 
 ### Fetching data on the server
 
-Let's look at a diagram of what happens when you make a request using the approach from [3. SSR - Data Fetch](https://so-so.dev/react/ssr-3-ssr-data-fetch/).
+Here's a diagram of what actually happens on a request, using the approach from [3. SSR - Data Fetch](https://so-so.dev/react/ssr-3-ssr-data-fetch/).
 
 ![user-ssr-data-fetch](./images/user-ssr-data-fetch.png)
-The user's request goes to express, and until it fetches the api and sends the client an html with the content already drawn, **the user just sees a blank screen.**
+The request hits express, and until the api call resolves and an html with the content already drawn reaches the client, **the user is staring at a blank screen. That's it.**
 
-If the api call takes a long time, the time the user spends staring at a blank screen grows right along with it. That's hard to call good UX.
+The longer the api call takes, the longer that blank screen sticks around. Hard to call that good UX.
 
-> Caching the html that already has the content baked in would speed this up and is likely to have a real, positive effect on UX.
-> But this tutorial won't get into that.
+> Cache the content-filled html itself, and this gets faster — that would likely help UX in a real way.
+> This tutorial won't get into that, though.
 
 ### Delivering quickly from the server
 
-Let's switch to the approach from [2. SSR - Basic](https://so-so.dev/react/ssr-2-ssr---basic/).
-On the server, instead of making the api call, we just render the client's `Loader` or `header` area and deliver it quickly. The rest of the logic gets handed off to the client.
+Now switch to the approach from [2. SSR - Basic](https://so-so.dev/react/ssr-2-ssr---basic/).
+The server skips the api call entirely, renders just the client's `Loader` or `header`, and ships that down fast. Everything after that gets handed off to the client.
 
 ![user-ssr-no-data-fetch](./images/user-ssr-no-data-fetch.png)
 
-Now the user gets to see content quickly. In the diagram I represented this with a big `Loading` label, but using something like a skeleton UI would push the UX even further.
+Now the user sees something fast. The diagram just shows a big `Loading` label, but swap in a skeleton UI and the UX gets even better.
 
 ### Fetching data on the server - WebView
 
-And this approach has an even bigger advantage in a webview context.
+This approach also loses a real advantage once you're inside a webview.
 
 ![user—no-cache](./images/user-ssr-no-cache.png)
 
-When you implement this by handling the api request on the server, what the client receives is the finished html, so caching doesn't apply.
+When the server handles the api request itself, what the client gets back is a finished html document, so none of it can be cached.
 
 ### Delivering quickly from the server - WebView
 
 ![user—cache](./images/user--cache.png)
 
-With the second approach, some of the bundle needed for client rendering can end up cached. Naturally, that can proceed faster than receiving the bundle from express.
+With the second approach, at least part of the bundle needed for client-side rendering can be cached. Naturally, that beats fetching the bundle from express every single time.
 
-## It's not all downsides
+## It's not all downside
 
-That said, it's not all downsides either. Put another way, the client ends up **always depending on however express is doing.** Let's imagine a `low-tier device` scenario for a moment.
+That said, this isn't purely a downside either. Flip it around, and the real story is that the client **always ends up at the mercy of whatever express is doing.** Let's walk through a `low-tier device` scenario.
 
 **_Downloading the full contents_**
 
-Since every request and api call happens on express, the only variables affecting how fast the user gets content are the `network environment` and express's specs (server CPU, etc).
-On a device with a weaker CPU than express's, content can end up loading faster than the previous approach.
+Every request and every api call happens on express, so the only variables affecting how fast the user gets content are the `network` and express's own specs (server CPU, and so on).
+On a device whose CPU is worse than express's, content can actually load faster this way than through the other approach.
 
 **_SSR + CSR_**
 
-The factors that matter for content-download speed here are the user's network environment and their device specs.
-On a low-spec device, both of those factors are working against you, so content loading ends up very slow. In this case, it's better to have express deliver all of the content.
+Here, what matters for download speed is the user's own network and their device specs.
+On a low-end device, both of those are working against you, so content loads painfully slowly. In that case, you're better off letting express deliver everything.
 
-## Wrapping up this tutorial
+## Closing out this tutorial
 
-That wraps up the SSR tutorial.
-Along the way to implementing SSR without a framework, I ran into a lot of bugs and rough patches, and I hope this has been helpful to anyone out there running into the same struggles.
+And that's the SSR tutorial, done.
+Building SSR without a framework threw a lot of bugs and rough edges at me along the way, and I hope walking through it helps anyone else stuck on the same problems.
 
-You can find the code used in this tutorial [here](https://github.com/SoYoung210/react-ssr-code-splitting).
-I'd appreciate any feedback, whether in the comments or as a GitHub issue. 🙂
+You can find all the code from this tutorial [here](https://github.com/SoYoung210/react-ssr-code-splitting).
+I'd really appreciate any feedback, whether that's a comment or a GitHub issue. 🙂

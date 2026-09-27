@@ -7,55 +7,55 @@ thumbnail: './images/service-worker/thumbnail.png'
 
 ![image-thumbnail](./images/service-worker/thumbnail.png)
 
-ServiceWorker is a tool that lets web services support things like background sync and push notifications.
+ServiceWorker is what lets a web app do things normally reserved for native apps: syncing in the background, pushing notifications, and so on.
 
-This post introduces service workers and takes a simple look at how to apply cache settings on top of CRA.
+Below: what a service worker actually is, and a quick walkthrough of setting up cache config on top of CRA.
 
-## What is a Service Worker?
+## What Is a Service Worker?
 
-A service worker is a script the browser runs in the background. It operates independently of the web page and only provides functionality that doesn't require the page or user interaction.
+A service worker is a script the browser runs in the background, completely separate from the page itself. It only handles work that doesn't need the page or the user around.
 
-The service worker's lifecycle is **completely separate** from the web page's. It acts as a proxy server between the web service, the browser, and the network, and it lets the service keep working even while offline.
+Its lifecycle has **nothing to do with the page's.** It sits between your web app, the browser, and the network like a proxy server, which is what lets the app keep working even offline.
 
-Because it exists separately from the web page, it comes with the following constraints:
+That independence comes with a few constraints, though.
 
-1. A service worker is effectively nonexistent unless it's requested. There's no `.terminate()` command like the one in [Web Worker](https://developer.mozilla.org/ko/docs/Web/API/Web_Workers_API).
-2. It doesn't follow the web page's life cycle. A service worker doesn't automatically deactivate just because the web page closes.
-3. Since it exists separately from the web page, it can't access the DOM or window.
+1. Until something requests it, a service worker might as well not exist. Unlike a [Web Worker](https://developer.mozilla.org/ko/docs/Web/API/Web_Workers_API), there's no `.terminate()` command for it.
+2. It doesn't follow the page's life cycle. Closing the page doesn't automatically shut it down.
+3. Since it lives outside the page, it has no access to the DOM or the window object.
 
-Given these constraints, a service worker can be put to use in the following ways:
+Given those constraints, here's what a service worker is actually good for.
 
-### 1. Interacting with the cache
+### 1. Working with the cache
 
 ![interaction-with-cache](./images/service-worker/interaction-with-cache.png)
 
-It can act as an intermediary for `fetch` events. In this case, the service worker delivers data from its own cache instead of requesting information over HTTP. As long as the cache isn't cleared, the browser can show information even without an internet connection.
+It can sit in the middle of every `fetch` event. Instead of going out over HTTP, it can hand back data straight from its own cache. As long as that cache stays intact, the browser can show content with zero internet connection.
 
 ### 2. Push notifications
 
 ![push-notification](./images/service-worker/push-notification.png)
 
-Since it works even while the browser window is closed, it can be used to implement push notifications.
+Since it keeps running even with the browser window closed, it's what makes push notifications possible at all.
 
 ### 3. Background sync
 
 ![background-sync](./images/service-worker/background-sync.png)
 
-If the computer goes offline in the middle of an action like sending a chat message or uploading a photo, that action can be completed once the computer comes back online.
+Say you go offline mid-task — sending a chat message, uploading a photo, whatever. The service worker can pick that task back up and finish it the moment you're back online.
 
 ![background-sync-example1](./images/service-worker/background-sync-example1.png)
 
-If you send a '🐱🐱🐱' message while offline, it doesn't fail — instead, it completes once you're connected to the internet again, as shown below.
+Send '🐱🐱🐱' while offline and it doesn't just fail. It waits, and completes the moment the connection comes back, like this:
 
 ![background-sync-example2](./images/service-worker/background-sync-example2.png)
 
-## Example: Cache setup (with CRA)
+## Example: Setting Up Cache (with CRA)
 
-Let's take a simple look at how cache-related settings are applied in a service worker, and then see how this can be applied in a React project built on [CRA](https://create-react-app.dev/).
+Here's a quick look at wiring up cache settings in a service worker, plus what that looks like in a React project built with [CRA](https://create-react-app.dev/).
 
 ### Using a service worker
 
-Before you can use a service worker, you first need to **register** it.
+First step, always: **register** the service worker.
 
 ```jsx
 if('serviceWorker' in navigator) {
@@ -63,7 +63,7 @@ if('serviceWorker' in navigator) {
 };
 ```
 
-Once registration is complete, you can initialize the cache in the `install` event listener. First, create a variable to hold the cache name, and put the files you want to cache into a single array.
+Once it's registered, you can set up the cache inside the `install` event listener. Start with a variable to hold the cache's name, and an array listing every file you want cached.
 
 ```jsx
 const cacheName = 'helloCache'
@@ -74,7 +74,7 @@ const contentToChache = [
 ];
 ```
 
-You just need to write the caching setup inside the `install` event handler.
+Then just write the caching logic inside the `install` event handler.
 
 ```jsx
 self.addEventListener('install', (e) => {
@@ -90,15 +90,15 @@ self.addEventListener('install', (e) => {
 });
 ```
 
-A service worker isn't installed until the code inside `waitUntil` finishes running. Since installing a service worker can take some time, a callback function is defined so this can be handled asynchronously.
+The service worker won't finish installing until whatever's inside `waitUntil` actually runs. Since installation can take a while, that callback is what lets it happen asynchronously instead of blocking.
 
-`caches` is an object available within the service worker's code scope for storing data. [Web Storage](https://developer.mozilla.org/ko/docs/Web/API/Web_Storage_API) is synchronous, so this data can't be stored there. Instead, the Cache API is used.
+`caches` is an object available anywhere inside the service worker's scope, and it's what actually stores the data. [Web Storage](https://developer.mozilla.org/ko/docs/Web/API/Web_Storage_API) is synchronous, so it's off the table here; the Cache API takes its place instead.
 
-On the next request, if a cached file exists, it's returned instead of making an additional request.
+From then on, if a requested file is already cached, it gets served straight from the cache instead of going out for another request.
 
 ### Using cached files
 
-When an HTTP request occurs in the service, the service worker can detect and handle that request.
+Whenever the app fires off an HTTP request, the service worker can intercept it and handle it directly.
 
 ```jsx
 self.addEventListener('fetch', (e) => {
@@ -106,7 +106,7 @@ self.addEventListener('fetch', (e) => {
 });
 ```
 
-The code below serves the cached file if the requested resource is actually cached, and adds it to the cache if it isn't.
+The code below serves the cached version of a resource if one exists, and adds it to the cache if it doesn't.
 
 ```jsx {5,7,16,18}
 self.addEventListener('fetch', (e) => {
@@ -135,14 +135,14 @@ self.addEventListener('fetch', (e) => {
 }
 ```
 
-It looks for the cached resource first, and if the resource doesn't exist, it makes an additional request, fetches it, and then stores the response in the cache.
+It checks the cache first. If nothing's there, it fetches the resource over the network and stores that response in the cache for next time.
 
 ### CRA's service worker setup
 
-Projects created with CRA come with [service worker support](https://github.com/facebook/create-react-app/blob/c87ab79559e98a5dae2cd0b02477c38ff6113e6a/packages/react-scripts/config/webpack.config.js#L694) built in by default, through [Workbox](https://developers.google.com/web/tools/workbox).
-> A [PR that adds options to allow for overrides to workbox-webpack-plugin](https://github.com/facebook/create-react-app/pull/5369) is in progress, but hasn't shipped yet, and given that it's a PR from 2018, it doesn't seem likely to be usable any time soon. So if you want to customize Workbox, you can configure it using [@craco/craco](https://www.npmjs.com/package/@craco/craco).
+A project scaffolded with CRA comes with [service worker support built in](https://github.com/facebook/create-react-app/blob/c87ab79559e98a5dae2cd0b02477c38ff6113e6a/packages/react-scripts/config/webpack.config.js#L694), courtesy of [Workbox](https://developers.google.com/web/tools/workbox).
+> There's [a PR that adds options for overriding workbox-webpack-plugin](https://github.com/facebook/create-react-app/pull/5369), but it hasn't landed yet, and given it's been open since 2018, I wouldn't count on it shipping any time soon. If you need to customize Workbox in the meantime, [@craco/craco](https://www.npmjs.com/package/@craco/craco) can get you there.
 
-The `register` function checks things like whether the current environment is production, and runs service worker registration through a `load` event listener, as shown below.
+The `register` function checks whether the current environment is production, among other things, then registers the service worker through a `load` event listener, like this.
 
 ```jsx
 export function register(config?: Config) {
@@ -174,12 +174,12 @@ export function register(config?: Config) {
 }
 ```
 
-The `swUrl` this function references is the path to the `service-worker.js` file generated at build time.
+The `swUrl` this function references points at the `service-worker.js` file generated during the build.
 ![swUrl-build](./images/service-worker/swUrl-build.png)
 
-A project created through CRA already has basic service worker settings in place.
+A CRA-generated project already ships with the basic service worker config in place.
 
-`registerValidSW` in `src/serviceWorker` determines the service worker's run conditions and then executes it.
+`registerValidSW`, inside `src/serviceWorker`, checks whether it's safe to run the service worker and then runs it.
 
 ```ts {3,11,12,13,14,15}
 function registerValidSW(swUrl: string, config?: Config) {
@@ -227,19 +227,19 @@ function registerValidSW(swUrl: string, config?: Config) {
 }
 ```
 
-When the service worker's state is `installed`, if a service worker already exists on the [navigator object](https://developer.mozilla.org/ko/docs/Web/API/Navigator), it's stated that **the newly cached content will only be served once the current tab is closed and a new tab is opened — that is, once the runtime environment has been fully reset.** The reason is that Workbox doesn't refresh the cache manifest's `revision` value until a new tab is opened.
+When the service worker's state hits `installed` and the [navigator object](https://developer.mozilla.org/ko/docs/Web/API/Navigator) already has one registered, the comment says **the newly cached content will only show up once the current tab closes and a fresh one opens — that is, once the whole runtime resets.** That's because Workbox doesn't bump the cache manifest's `revision` value until a new tab opens.
 
 ![precache-build](images/service-worker/precache-build.png)
-Workbox composes the precache manifest by combining the `revision` value with `url` information. Since this information isn't refreshed until the tab is reopened, a simple page refresh alone can't show newly deployed content.
-> You can find more details in the [Workbox Guide](https://developers.google.com/web/tools/workbox).
+Workbox builds the precache manifest by combining `revision` values with `url` info. Since none of that refreshes until a tab reopens, a plain page reload after a deploy won't surface the new content.
+> See the [Workbox Guide](https://developers.google.com/web/tools/workbox) for the full details.
 
-So, `index.html` should be excluded from the service worker's cached file list, so that new content can be picked up immediately even right after a deployment.
+So `index.html` needs to be excluded from the service worker's cached file list, so a fresh deploy actually shows up right away.
 
-There's a [PR about custom Workbox configuration on the CRA GitHub repository](https://github.com/facebook/create-react-app/pull/5369), but it still hasn't been merged. You'll need to either change the [Workbox Webpack Plugin](https://developers.google.com/web/tools/workbox/modules/workbox-webpack-plugin) settings using an option that lets you modify CRA's webpack config, such as [craco](https://www.npmjs.com/package/@craco/craco), or override the service-worker-related file settings using workbox-cli.
+There's [a PR for custom Workbox configuration sitting on the CRA GitHub repository](https://github.com/facebook/create-react-app/pull/5369), still unmerged. Until it lands, you either need something like [craco](https://www.npmjs.com/package/@craco/craco) that lets you touch CRA's webpack config and adjust the [Workbox Webpack Plugin](https://developers.google.com/web/tools/workbox/modules/workbox-webpack-plugin) directly, or override the service worker settings yourself using workbox-cli.
 
 ## Summary
 
-We've taken a quick look at service workers and a cache example. If you add a Web App Manifest on top of your service worker setup, you can put together a simple [PWA](https://developer.mozilla.org/en-US/docs/Web/Progressive_web_apps). I think making good use of this can help overcome some of the limitations web apps currently have.
+That covers the basics of a service worker and a cache example. Add a Web App Manifest on top of the service worker config and you've got yourself a simple [PWA](https://developer.mozilla.org/en-US/docs/Web/Progressive_web_apps). Get this right, and it starts closing the gap between what a web app can do and what a native app can.
 
 ## Ref
 

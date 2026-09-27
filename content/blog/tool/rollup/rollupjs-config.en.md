@@ -7,9 +7,9 @@ thumbnail: './images/rollupjs-config/thumbnail.png'
 
 ![image-thumbnail](./images/rollupjs-config/thumbnail.png)
 
-This post covers [rollup.js](https://rollupjs.org/) and its library configuration while setting up a design system's development environment. It's not a full configuration tutorial though, so it doesn't cover everything you'd need.
+While setting up the dev environment for a design system, I ended up digging deep into [rollup.js](https://rollupjs.org/) and how to configure it for a library. This isn't a step-by-step setup tutorial, so it won't cover everything you might need.
 
-If you just want to see the environment setup covered in this post, you can find it at [@soyoung/design-system-config](https://github.com/SoYoung210/design-system-config).
+If you just want to see the finished setup, it's all at [@soyoung/design-system-config](https://github.com/SoYoung210/design-system-config).
 
 ## Table Of Contents
 
@@ -27,11 +27,11 @@ If you just want to see the environment setup covered in this post, you can find
 
 ## Rollup.js
 
-Rollup.js is a bundler like [webpack](https://webpack.js.org/) or [parcel](https://parceljs.org/) that turns large, complex modules (files) of code into a library or an application.
+Rollup.js is a bundler, same category as [webpack](https://webpack.js.org/) or [parcel](https://parceljs.org/): it takes a pile of large, interconnected modules (files) and turns them into a library or an application.
 
 ### Config
 
-rollup.js lets you configure many plugins and options. A `rollup.config.js` that supports both `es` (ES module) and `cjs` (Common JS) formats can be structured as follows.
+rollup.js supports a long list of plugins and options. Here's a `rollup.config.js` that outputs both `es` (ES module) and `cjs` (Common JS) formats:
 
 ```jsx
 // rollup.config.js
@@ -53,7 +53,7 @@ export default inputSrc
   });
 ```
 
-Add the **required plugins**.
+Now add the **plugins you actually need**.
 
 ```jsx
 import babel from '@rollup/plugin-babel';
@@ -99,13 +99,13 @@ export default inputSrc
   });
 ```
 
-- [@rollup/plugin-babel](https://www.npmjs.com/package/@rollup/plugin-babel): a plugin that lets you use babel in rollup.
-- [@rollup/plugin-node-resolve](https://www.npmjs.com/package/@rollup/plugin-node-resolve): used to consume third-party modules within the library (dependencies in package.json), and also used to load files with extensions other than js (ts, tsx). It also supports Tree Shaking for external modules.
-- [@rollup/plugin-commonjs](https://www.npmjs.com/package/@rollup/plugin-commonjs): converts modules written in CommonJS form to ES6 so they can be included in the output. If you exclude the `commonjs` plugin in the example project and build, you'll see the following error.
+- [@rollup/plugin-babel](https://www.npmjs.com/package/@rollup/plugin-babel): lets rollup run your code through babel.
+- [@rollup/plugin-node-resolve](https://www.npmjs.com/package/@rollup/plugin-node-resolve): resolves third-party modules (the dependencies in package.json) from inside your library, and also lets you import files with extensions other than js, like ts and tsx. It supports Tree Shaking for external modules too.
+- [@rollup/plugin-commonjs](https://www.npmjs.com/package/@rollup/plugin-commonjs): converts CommonJS modules to ES6 so they can actually make it into your bundle output. Drop the `commonjs` plugin from the example project and build, and you'll hit an error like this:
 
   ![cjs-error](./images/rollupjs-config/cjs-error.png)
 
-- [rollup-plugin-peer-deps-external](https://www.npmjs.com/package/rollup-plugin-peer-deps-external): excludes the `peerDependency` modules specified in package.json from the library bundle output.
+- [rollup-plugin-peer-deps-external](https://www.npmjs.com/package/rollup-plugin-peer-deps-external): keeps any `peerDependency` listed in package.json out of your library's bundle output.
 
   ```jsx
   // module reference in the bundle without peer-deps-external
@@ -119,14 +119,14 @@ export default inputSrc
 
 ### preserveModules
 
-Setting rollup.js's `preserveModules` option to `true` preserves the bundle output's folder structure.
+Set rollup.js's `preserveModules` option to `true`, and your bundle output keeps the same folder structure as your source.
 
-- With the default value of false, the output is generated as a single file
+- With the default, `false`, everything gets bundled into a single file
 
-According to the official docs, **this value doesn't affect Tree Shaking support.** The difference is that when only certain elements are used in a `cjs` or `amd` format, not all the code gets imported.
+According to the docs, **this setting has no effect on Tree Shaking support.** The real difference shows up in `cjs` or `amd` formats: if you only use one piece of the library, you no longer end up importing all of it.
 
-> ⚠️ The official docs state that '**the `preserveModule: true` setting also** supports tree shaking.'  
-> However, since setting `preserveModules: true` minimizes the blast radius so that even if treeshaking fails in one file, it doesn't cause failures in other files, I recommend testing it in the actual bundle. (related issue: [webpack - tree shaking not working es module library](https://github.com/webpack/webpack/issues/9337))
+> ⚠️ The docs state outright that '**`preserveModule: true`** also supports tree shaking.'  
+> That said, setting `preserveModules: true` at least contains the blast radius, so a tree-shake failure in one file doesn't take down the rest. I'd still recommend testing it against a real bundle. (Related issue: [webpack - tree shaking not working es module library](https://github.com/webpack/webpack/issues/9337))
 
 ```jsx
 // Before
@@ -139,13 +139,13 @@ const Card = require('@soyoung210/design-system-config/dist/cjs/react/card/card3
 render(Card);
 ```
 
-Since cjs doesn't support separate tree shaking, if a single file contains all the code, the application's bundle size can grow.
+cjs has no tree shaking of its own, so if a single file holds everything, your app's bundle can balloon.
 
-> 📝 This option originally came about to support tree shaking in applications using "Ember.js". ([related PR](https://github.com/rollup/rollup/pull/1878))
+> 📝 This option exists in the first place to support tree shaking in apps built with "Ember.js". ([related PR](https://github.com/rollup/rollup/pull/1878))
 
 ### babel
 
-I configured babel in rollup.config.js as follows.
+Here's how babel is configured in rollup.config.js.
 
 ```jsx
 babel({
@@ -155,18 +155,18 @@ babel({
 }),
 ```
 
-Among [@rollup/plugin-babel](https://www.npmjs.com/package/@rollup/plugin-babel)'s options, `babelHelpers` can take 4 values.
+[@rollup/plugin-babel](https://www.npmjs.com/package/@rollup/plugin-babel)'s `babelHelpers` option takes one of four values.
 
-- **runtime:** the option recommended by the official docs 'when building a library'. It must be used together with [@babel/plugin-transform-runtime](https://www.npmjs.com/package/@babel/plugin-transform-runtime), and @babel/runtime must be declared as a dependency of the library.  
-If you're curious about @babel/plugin-transform-runtime, check out the [official docs](https://babeljs.io/docs/en/babel-plugin-transform-runtime) and the ["you don't know polyfill - babel/plugin-transform-runtime"](https://so-so.dev/web/you-dont-know-polyfill/#babelplugin-transform-runtime) post.
-  > ⚠️ If you use this option, you need to add `external: [/@babel\/runtime/]`.
-- **bundled:** an option that includes the babel helper functions in the bundle output. Mainly used when developing an application.
-- **external:** this option comes with a caution to use it carefully. Instead of automatically generating internal helper functions, it's an option you can customize yourself. For more details on this option, see [this post](https://brunoscopelliti.com/a-simple-babel-optimization-i-recently-learned/).
-- **inline:** this option isn't recommended. That's because the helper function ends up duplicated in each file.
+- **runtime:** the docs recommend this one specifically 'when building a library'. It has to be paired with [@babel/plugin-transform-runtime](https://www.npmjs.com/package/@babel/plugin-transform-runtime), and @babel/runtime needs to be listed as a dependency of your library.  
+For more on @babel/plugin-transform-runtime, see the [official docs](https://babeljs.io/docs/en/babel-plugin-transform-runtime) and ["you don't know polyfill - babel/plugin-transform-runtime"](https://so-so.dev/web/you-dont-know-polyfill/#babelplugin-transform-runtime).
+  > ⚠️ If you use this option, you also need to add `external: [/@babel\/runtime/]`.
+- **bundled:** bakes babel's helper functions right into the bundle output. Mostly used when building an application.
+- **external:** the docs warn you to use this carefully. Instead of auto-generating the internal helper functions, it lets you configure them yourself. For the details, see [this post](https://brunoscopelliti.com/a-simple-babel-optimization-i-recently-learned/).
+- **inline:** not recommended. The helper function ends up duplicated across every file that needs it.
 
-Of the 4 options, let's look at `runtime` and `bundled` in more detail.
+Of these four, `runtime` and `bundled` are worth walking through in detail.
 
-The [example code](https://github.com/SoYoung210/design-system-config) used for the build test consists of a `Button1` component built with just react and css, and a `Card` component that uses `react-spring`.
+The [example code](https://github.com/SoYoung210/design-system-config) used for these build tests has two components: `Button1`, built with just react and css, and `Card`, which uses `react-spring`.
 
 #### babelHelpers: bundled
 
@@ -183,7 +183,7 @@ export default [
 ]
 ```
 
-With this setting, the babel helper function is included in the bundle output. The bundle output looks like this.
+With this setting, babel's helper functions end up baked into the bundle output. Here's what that looks like.
 
 ```jsx
 function _objectWithoutPropertiesLoose(source, excluded) {
@@ -197,7 +197,7 @@ const Button1 = (_ref) => {
       props = _objectWithoutPropertiesLoose(_ref, ["children"]);
 ```
 
-You can see that the `_objectWithoutPropertiesLoose` function is included in the file.
+You can see `_objectWithoutPropertiesLoose` sitting right there in the file.
 
 #### babelHelpers: bundled + external: [/@babel\/runtime/]
 
@@ -214,7 +214,7 @@ export default [
   ]
 ```
 
-What happens if you use this option together?
+What happens if you combine the two?
 
 ```jsx
 import _extends$1 from '@babel/runtime/helpers/esm/extends';
@@ -229,11 +229,11 @@ function _objectWithoutPropertiesLoose(source, excluded) {
 }
 ```
 
-`_objectWithoutPropertiesLoose$1` was changed to reference the `@babel/runtime` module, while `_objectWithoutPropertiesLoose` was generated internally.
+`_objectWithoutPropertiesLoose$1` now points at the `@babel/runtime` module, while a separate `_objectWithoutPropertiesLoose` got generated locally.
 
-`_objectWithoutPropertiesLoose$1` is referenced by `node_modules/react-spring`. The `@babel/runtime` referenced by the external module (react-spring, included in this post's example project) was kept 'external'.
+`node_modules/react-spring` is what's referencing `_objectWithoutPropertiesLoose$1`. So the `@babel/runtime` reference coming from an external module (react-spring, in this example project) stayed external.
 
-Meanwhile, the `@babel/runtime` module needed by `Button1` was generated inside the bundle.
+Meanwhile, the `@babel/runtime` code `Button1` needed got generated right inside the bundle.
 
 #### babelHelpers: runtime + external: [/@babel\/runtime/]
 
@@ -251,7 +251,7 @@ export default [
 ]
 ```
 
-**All** references to `@babel/runtime` get changed to **external**. `@babel/transform-runtime` must be included in the babel config.
+**Every single reference** to `@babel/runtime` becomes **external**. Your babel config needs `@babel/transform-runtime` in it for this to work.
 
 ```jsx
 import _objectWithoutPropertiesLoose from '@babel/runtime/helpers/objectWithoutPropertiesLoose';
@@ -263,7 +263,7 @@ const Button1 = (_ref) => {
       props = _objectWithoutPropertiesLoose(_ref, ["children"]);
 ```
 
-Instead of the `_objectWithoutPropertiesLoose` function's implementation being generated internally, it was changed to reference the external module.
+`_objectWithoutPropertiesLoose` no longer gets its implementation generated locally; it just points at the external module instead.
 
 #### babelHelpers: runtime
 
@@ -281,7 +281,7 @@ export default [
 ]
 ```
 
-If you build without the `external: [/@babel\/runtime/]` setting that the official docs guide you toward, you'll find the result is the same as with `babelHelpers: 'bundled'`.
+Skip the `external: [/@babel\/runtime/]` setting the docs tell you to add, and you'll get the exact same result as `babelHelpers: 'bundled'`.
 
 ```jsx
 function _objectWithoutPropertiesLoose(source, excluded) {
@@ -297,50 +297,50 @@ const Button1 = (_ref) => {
       props = _objectWithoutPropertiesLoose(_ref, ["children"]);
 ```
 
-So, when applying the runtime option, you must always set up the external option as well.
+So if you're using the `runtime` option, setting `external` isn't optional.
 
 ## Tree Shaking Result
 
-One of the important things in a library is Tree Shaking. If a user only uses part of a library's code, but the entire thing gets included in the bundle output and unnecessarily inflates the size, then even a well-made library becomes hard to reach for.
+Tree Shaking is one of the things that really matters for a library. If a user only touches a fraction of your code but the whole thing lands in their bundle anyway, bloating it for no reason, that's a hard sell no matter how well the library is built otherwise.
 
-When everything is bundled into a single file, it's hard to check the result in a Bundle Analyzer. In that case, you can check whether Tree Shaking was applied by looking at the application's final bundle output.
+When everything bundles into one file, a Bundle Analyzer alone won't tell you much. Checking the application's final bundle output directly is a better way to confirm whether Tree Shaking actually kicked in.
 
-I checked the result by installing `@soyoung210/design-system-config`.
+So I installed `@soyoung210/design-system-config` and checked the result myself.
 
-### When the Card component is included
+### With the Card component included
 
 ![include_card.png](./images/rollupjs-config/include_card.png)
 
-The onMouseMove and related code that makes up the `Card` component (function) was included in the final bundle.
+The `onMouseMove` logic and everything else that makes up the `Card` component (function) ended up in the final bundle.
 
-### When the Card component is not included
+### With the Card component left out
 
 ![no_card.png](./images/rollupjs-config/no_card.png)
 
-The code making up the `Card` component disappeared, but the `react-spring`-related code used by the `Card` component was still included. This looks like it could be a [react-spring issue](https://github.com/pmndrs/react-spring/issues/1158), but it's also an example of the situation mentioned in [preserveModules](https://so-so.dev/tool/rollup/rollupjs-config/#preservemodules), where a tree shake failure in one file affects the whole.
+`Card`'s own code disappeared as expected, but the `react-spring` code it depends on stuck around. That might just be a [react-spring issue](https://github.com/pmndrs/react-spring/issues/1158), but it's also a textbook case of what I mentioned under [preserveModules](https://so-so.dev/tool/rollup/rollupjs-config/#preservemodules): one file's tree-shake failure dragging the whole bundle down with it.
 
-If you're curious about the details of Tree Shaking, I recommend reading [this post](https://medium.com/@craigmiller160/how-to-fully-optimize-webpack-4-tree-shaking-405e1c76038).
+If you want to go deeper on Tree Shaking, [this post](https://medium.com/@craigmiller160/how-to-fully-optimize-webpack-4-tree-shaking-405e1c76038) is worth a read.
 
 ## Why not Webpack?
 
-webpack is also a JavaScript Bundler. Since it basically does the same job, you could use webpack as well, but there are a few reasons to choose rollup over webpack as a library bundler.
+webpack is a JavaScript bundler too, and does basically the same job, so you could reach for it here as well. But there are a few reasons I'd pick rollup over webpack specifically for bundling a library.
 
-**webpack can't bundle in ESM form.**
+**webpack can't bundle into ESM format.**
 
-The condition for Tree Shaking is that the bundled output must be in ESM form, but Webpack can't bundle in ESM form. Rollup, on the other hand, is capable of bundling in ESM form.
-🔔  Webpack5 is [planning support for ESM form, but as of 2021.01.10 it's still experimental](https://webpack.js.org/configuration/output/#outputmodule).
+Tree Shaking requires the bundled output to be in ESM format, but Webpack simply can't produce that. Rollup can.
+🔔  Webpack5 [has ESM support on its roadmap, but as of 2021.01.10 it's still experimental](https://webpack.js.org/configuration/output/#outputmodule).
 
-Also, when bundling the same output, Rollup.js comes out to 22KB while Webpack comes out to 29KB — the file size is larger when bundled with webpack.
-If you'd like to know more about this, see [Migrating from Webpack to Rollup](https://medium.com/naver-fe-platform/webpack%EC%97%90%EC%84%9C-rollup%EC%A0%84%ED%99%98%EA%B8%B0-137dc45cbc38).
+Bundling the exact same output, Rollup.js comes out to 22KB versus Webpack's 29KB — webpack's file size is just bigger.
+For more on this, see [Migrating from Webpack to Rollup](https://medium.com/naver-fe-platform/webpack%EC%97%90%EC%84%9C-rollup%EC%A0%84%ED%99%98%EA%B8%B0-137dc45cbc38).
 
 ## Why not babel cli?
 
-You could also configure things so that modules aren't bundled and are only transpiled by [babel](https://babeljs.io/). This is the approach used by many open source projects, such as [chakra-ui](https://github.com/chakra-ui/chakra-ui/blob/develop/packages/switch/package.json) and [react-query](https://react-query.tanstack.com/) (esm).
+You could also skip bundling entirely and just run everything through [babel](https://babeljs.io/) as a transpiler. Plenty of open source projects do exactly this, including [chakra-ui](https://github.com/chakra-ui/chakra-ui/blob/develop/packages/switch/package.json) and [react-query](https://react-query.tanstack.com/) (esm).
 
-- Pros: no bundler-related configuration is needed, and react-query keeps this non-bundling setup for [this reason](https://github.com/tannerlinsley/react-query/pull/994).
-- Cons: since babel isn't a bundler, it can't perform tasks beyond transpiling, and it can't handle the following situations.
+- Upside: no bundler config to maintain, and react-query specifically sticks with this no-bundling setup for [reasons of its own](https://github.com/tannerlinsley/react-query/pull/994).
+- Downside: babel isn't a bundler, so it can't do anything beyond transpiling, and it falls short in the situations below.
 
-### Situation 1: when using internal dependencies
+### Situation 1: using an internal dependency
 
 ```jsx
 // babel cli
@@ -354,11 +354,11 @@ export function Card() {
 import { useSpring, animated as extendedAnimated } from '../../../node_modules/react-spring/web.js';
 ```
 
-If you want `react-spring` to be treated as an internal dependency of the library, this is hard to handle. Since a transformation through babel doesn't separately transform the `import { .. } from 'react-spring'` syntax, any external dependency you use has to be handled as a `peerDependencies`.
+If you want `react-spring` treated as an internal dependency of your library, babel alone can't get you there. It doesn't touch the `import { .. } from 'react-spring'` syntax at all, so every external dependency you use has to be declared as `peerDependencies` instead.
 
 ### Situation 2: custom style sheet
 
-When a component uses a style sheet. A bundler interprets and transforms the style file appropriately, but babel doesn't.
+Say a component imports its own style sheet. A bundler knows how to parse and transform that style file. babel doesn't.
 
 ```jsx
 // babel cli
@@ -380,24 +380,24 @@ export default css_248z;
 
 ## package.json
 
-If a bundler supports various formats such as `cjs (or umd)` and `esm`, you need to wire up `package.json` to match the right format.
+If your bundler outputs multiple formats — `cjs` (or `umd`), `esm`, whatever — you need to wire `package.json` up to point at the right one.
 
-- [module](https://github.com/rollup/rollup/wiki/pkg.module): the `module` field is the entry point location for the ES6 module.
-- main: the location of the file that gets returned when you run `require('foo')` after installing the package.
+- [module](https://github.com/rollup/rollup/wiki/pkg.module): the `module` field points at the ES6 module's entry point.
+- main: the file you get back when you run `require('foo')` after installing the package.
 
-If you specify both options together, bundlers like rollup and webpack will reference the `module` field, while environments that can't use ES6, such as Jest, will reference the file in the `main` field.
+Declare both, and bundlers like rollup or webpack will read the `module` field, while environments that can't handle ES6, Jest being the obvious one, fall back to whatever `main` points at.
 
 ## TypeScript
 
-When dealing with TypeScript code, you need to add a JS conversion step and also generate a type definition file.
+TypeScript code needs one extra step beyond converting to JS: you also have to generate type definition files.
 
-The JS conversion can be done via `@rollup/plugin-babel`, configured earlier, or `rollup-plugin-typescript2`, and the type definition file can be simply generated via `tsc`. Let's first look at generating type definitions via `tsc`.
+You can handle the JS conversion with `@rollup/plugin-babel`, the one already configured above, or with `rollup-plugin-typescript2`. Generating type definitions is simplest through `tsc`, so that's where I'll start.
 
-> 💡 The officially supported TypeScript plugin for rollup is [@rollup/plugin-typescript](https://www.npmjs.com/package/@rollup/plugin-typescript), but due to an issue introduced below, this post covers rollup-plugin-typescript2 instead.
+> 💡 rollup's own officially supported TypeScript plugin is [@rollup/plugin-typescirpt](https://www.npmjs.com/package/@rollup/plugin-typescript). This post covers rollup-plugin-typescript2 instead, for a reason I'll get to below.
 
 ### tsc
 
-First, configure `tsconfig` as follows. (It doesn't necessarily have to match this exactly.)
+Start with a `tsconfig` like this. (It doesn't have to match exactly.)
 
 ```json
 {
@@ -421,7 +421,7 @@ First, configure `tsconfig` as follows. (It doesn't necessarily have to match th
 }
 ```
 
-Modify `package.json` a bit so that the type definition file is also generated during `build`.
+Then tweak `package.json` a bit so type definitions get generated as part of `build`.
 
 ```json
 "scripts": {
@@ -432,19 +432,19 @@ Modify `package.json` a bit so that the type definition file is also generated d
 
 ### [rollup-plugin-typescript2](https://www.npmjs.com/package/rollup-plugin-typescript2)
 
-When using Rollup and TypeScript together, you can use `rollup-plugin-typescript2` or `@babel/preset-typescript` (w. @rollup/plugin-babel).
+When you're pairing Rollup with TypeScript, you've basically got two options: `rollup-plugin-typescript2`, or `@babel/preset-typescript` (alongside @rollup/plugin-babel).
 
-The main difference between these two approaches is **how they handle TypeScript resolution**.
+The real difference between them comes down to **how each one actually resolves TypeScript**.
 
-- rollup-plugin-typescript2: fully supports `tsc` internally.
-- @babel/preset-env: transpiles TypeScript to JavaScript, but doesn't perform type checking. (see - [@babel/plugin-transform-typescript official docs](https://babeljs.io/docs/en/babel-plugin-transform-typescript))
+- rollup-plugin-typescript2: wraps `tsc` fully, so you get everything tsc gives you.
+- @babel/preset-env: transpiles TypeScript to JavaScript, but it doesn't type-check at all. (see - [@babel/plugin-transform-typescript official docs](https://babeljs.io/docs/en/babel-plugin-transform-typescript))
 
-There isn't a big difference either way you choose. The project covered in this post uses babel as the transpiler and takes the strategy of only using `tsc` to generate the type definition file, so I only used `@rollup/plugin-babel`.
+Either one works fine. The project in this post uses babel purely as a transpiler and leans on `tsc` only for generating the type definition file, so it only needed `@rollup/plugin-babel`.
 
-> 📝: rollup-plugin-typescript2 is a library forked from rollup's official TypeScript tool, `@rollup/plugin-typescript`, in order to include TypeScript compile error functionality. You can use TypeScript's powerful features, but there's [an issue where the build speed is very slow](https://github.com/ezolenko/rollup-plugin-typescript2/issues/148).
+> 📝: rollup-plugin-typescript2 started as a fork of rollup's official TypeScript tool, `@rollup/plugin-typescript`, built specifically to surface TypeScript compile errors. You get all of TypeScript's power, but there's a known [issue with build speed being very slow](https://github.com/ezolenko/rollup-plugin-typescript2/issues/148).
 
-> ⚠️  During Tree Shaking, if there's a `/*#__PURE__ */` annotation, it's judged to have no sideEffect and gets removed. [babel has supported pure annotations since v7](https://babeljs.io/blog/2018/08/27/7.0.0#pure-annotation-support), but TypeScript doesn't support it yet. It's a good idea to also check whether pure annotations are included in the bundle output.
+> ⚠️  During Tree Shaking, a `/*#__PURE__ */` annotation tells the bundler a piece of code has no side effects and can be dropped. [babel has supported pure annotations since v7](https://babeljs.io/blog/2018/08/27/7.0.0#pure-annotation-support), but TypeScript still doesn't. It's worth checking whether pure annotations actually made it into your bundle output.
 
 ## Wrapping Up
 
-I looked into and organized the parts I was curious about while putting together the Rollup.js configuration file. I hope this post was helpful if you weren't familiar with Rollup.js, and if anything is lacking or needs correcting, please leave a comment — I'd appreciate it.
+That's everything I dug into and worked out while putting together this Rollup.js config file. I hope it helps if Rollup.js was still new to you, and if anything here is missing or needs fixing, I'd really appreciate a comment pointing it out.

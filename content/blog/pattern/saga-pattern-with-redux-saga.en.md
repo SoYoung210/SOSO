@@ -7,111 +7,111 @@ thumbnail: './images/thumbnail.png'
 
 ![image-thumbnail](./images/thumbnail.png)
 
-Have you ever used [redux-saga](https://redux-saga.js.org/) to handle asynchronous work in [redux](https://redux.js.org/)?
+Have you ever reached for [redux-saga](https://redux-saga.js.org/) to handle async work in [redux](https://redux.js.org/)?
 
 > "The mental model is that a saga is like a separate thread in your application that's solely responsible for side effects. redux-saga is a redux middleware, which means this thread can be started, paused and cancelled from the main application with normal redux actions, it has access to the full redux application state and it can dispatch redux actions as well."  
 > _Source: [the redux-saga official docs](https://redux-saga.js.org/)_
 
-In other words, redux-saga's mental model is that a saga takes full responsibility for handling effects. You can start, pause, or cancel work through ordinary Redux actions, it can access the store state that Redux manages, and it can dispatch actions of its own.
+Put simply, redux-saga's whole model comes down to this: a saga owns every effect. You can start, pause, or cancel work through ordinary Redux actions, it can read the state Redux manages, and it can dispatch actions of its own.
 
-To fully understand this, you need to understand the [Saga Pattern](https://blog.couchbase.com/saga-pattern-implement-business-transactions-using-microservices-part/).
+To really understand what that means, you first need to understand the [Saga Pattern](https://blog.couchbase.com/saga-pattern-implement-business-transactions-using-microservices-part/) itself.
 
 ## Saga
 
-The Saga Pattern started gaining attention alongside the rise of microservices. There are various interpretations of the Saga Pattern — [MSDN](https://docs.microsoft.com/en-us/previous-versions/msp-n-p/jj591569(v=pandp.10)?redirectedfrom=MSDN), for instance, treats Saga as the Process Manager of the [CQRS](https://justhackem.wordpress.com/2016/09/17/what-is-cqrs/) pattern. The core idea behind Saga is to eliminate the need for distributed transactions by defining a [compensating transaction](https://en.wikipedia.org/wiki/Compensating_transaction) for every transaction.
+The Saga Pattern started getting attention alongside the rise of microservices. People read it a few different ways: [MSDN](https://docs.microsoft.com/en-us/previous-versions/msp-n-p/jj591569(v=pandp.10)?redirectedfrom=MSDN), for one, treats Saga as the Process Manager inside the [CQRS](https://justhackem.wordpress.com/2016/09/17/what-is-cqrs/) pattern. But the core idea is simple: eliminate the need for distributed transactions by giving every transaction its own [compensating transaction](https://en.wikipedia.org/wiki/Compensating_transaction).
 
-> A compensating transaction is a transaction that runs when an error occurs in another transaction.
+> A compensating transaction is the transaction that runs whenever another transaction fails.
 
-Let's assume, for example, that we have a service like the one below.
+Say we have a service that looks like this.
 
 ![sample_service.png](./images/sample_service.png)
 
-It takes an order from the user and processes payment, inventory management, and delivery. Each stage is managed by its own service.
+It takes an order from a user, then handles payment, inventory, and delivery, each stage owned by its own service.
 
 ![sample_service_sequence.png](./images/sample_service_sequence.png)
 
-A `Saga` is a sequence of local transactions, where each transaction updates data within its own service. The first transaction is triggered by an external request, and each subsequent transaction starts only after the previous one completes.
+A `Saga` is just a chain of local transactions, each one updating data inside its own service. The first transaction fires from an outside request, and every transaction after that only starts once the one before it finishes.
 
-There are two representative ways to implement a Saga transaction.
+There are two common ways to implement a Saga transaction.
 
-- **Events/Choreography:** There's no manager governing the event flow; each service creates and listens for events, and decides on its own whether to act.
-- **Command/Orchestration:** There's a manager that governs the event flow, and this manager centralizes and handles the business logic.
+- **Events/Choreography:** No manager governs the event flow. Each service creates and listens for events on its own, deciding for itself whether to act.
+- **Command/Orchestration:** A manager governs the event flow, centralizing all the business logic in one place.
 
 ### Events/Choreography
 
 ![saga_event](./images/saga_event.png)
 
-In the example above, the event flow looks like this.
+In the example above, the events flow like this.
 
-1. The Order Service receives a new order and changes its status to *pending*. It then fires the **ORDER\_CREATED\_EVENT** event.
-2. When the **ORDER\_CREATED\_EVENT** event fires, the Payment Service charges the customer and fires the **BILLED\_ORDER\_EVENT** event.
-3. When the **BILLED\_ORDER\_EVENT** event fires, the Stock Service updates inventory, prepares the ordered items, and then fires the **ORDER\_PREPARED\_EVENT** event.
-4. When the **ORDER\_PREPARED\_EVENT** event fires, the Delivery Service ships the product and fires the **ORDER\_DELIVERED\_EVENT** event.
-5. Finally, when the **ORDER\_DELIVERED\_EVENT** event fires, the Order Service changes the order's status to *concluded*.
+1. The Order Service takes the new order, sets its status to *pending*, and fires **ORDER\_CREATED\_EVENT**.
+2. On **ORDER\_CREATED\_EVENT**, the Payment Service charges the customer and fires **BILLED\_ORDER\_EVENT**.
+3. On **BILLED\_ORDER\_EVENT**, the Stock Service updates inventory, sets the ordered items aside, and fires **ORDER\_PREPARED\_EVENT**.
+4. On **ORDER\_PREPARED\_EVENT**, the Delivery Service ships the product and fires **ORDER\_DELIVERED\_EVENT**.
+5. Finally, on **ORDER\_DELIVERED\_EVENT**, the Order Service marks the order *concluded*.
 
 ### [Rollback] Events/Choreography
 
 ![saga_event_rollback](./images/saga_event_rollback.png)
 
-In the `Events/Choreography` approach, rollback proceeds through the following steps.
+Here's how a rollback plays out under `Events/Choreography`.
 
 1. The Stock Service fires **PRODUCT\_OUT\_OF\_STOCK\_EVENT**.
-2. The Order Service and Payment Service each carry out an action:
-    - The Payment Service refunds the order that was being processed.
-    - The Order Service changes the order's status to 'failed.'
+2. Both the Order Service and Payment Service react:
+    - The Payment Service refunds the order that was in progress.
+    - The Order Service marks the order as 'failed.'
 
-> Note. Every transaction carries an id, so all listeners can immediately recognize which transaction occurred.
+> Note. Every transaction carries an id, so every listener can tell immediately which transaction just fired.
 
 ### Command/Orchestration
 
-The `Command/Orchestration` approach introduces a separate Orchestrator that manages when each service should act and what it should do. The Saga Orchestrator communicates with each service in a `command/reply` form to hand off the work to be done.
+`Command/Orchestration` introduces a dedicated Orchestrator that decides when each service acts and what it does. The Saga Orchestrator talks to each service through a `command/reply` pattern, handing off the work.
 
-Let's look at this through the example below.
+Here's what that looks like.
 
 ![saga_orchestration](./images/saga_orchestration.png)
 
-1. The Order Service saves the order and asks the Order Saga Orchestrator (hereafter OSO) to create the order transaction.
-2. The OSO sends the **Execute Payment** command to the Payment Service, and the Payment Service replies with **Payment Executed**.
-3. It sends the **Prepare Order** command to the Stock Service, and the Stock Service replies with **Order Prepared**.
-4. Finally, it sends the **Deliver Order** command to the Delivery Service, and the Delivery Service replies with **Order Delivered**.
+1. The Order Service saves the order and asks the Order Saga Orchestrator (OSO from here on) to create the order's transaction.
+2. The OSO sends an **Execute Payment** command to the Payment Service, which replies **Payment Executed**.
+3. It sends a **Prepare Order** command to the Stock Service, which replies **Order Prepared**.
+4. Finally, it sends a **Deliver Order** command to the Delivery Service, which replies **Order Delivered**.
 
-The OSO **manages every transaction needed to process the order.** If a problem occurs, it sends a command to each service so that they perform a rollback.
+The OSO **owns every transaction the order needs.** If something goes wrong, it sends commands out to each service telling them to roll back.
 
-The Saga Orchestrator is implemented as a `State Machine` that manages commands and the state that corresponds to each one.
+In practice, the Saga Orchestrator is built as a `State Machine` that tracks each command alongside the state it maps to.
 
 ### [Rollback] Command/Orchestration
 
 ![saga_orchestration_rollback](./images/saga_orchestration_rollback.png)
 
-1. The Stock Service sends an **Out-Of-Stock** response to the OSO.
-2. The OSO recognizes that the transaction has failed and performs a rollback.
-     - In this case, since one command (Payment Executed) had already succeeded before the failure, it sends the **Refund Client** command to the Payment Service. It then changes the state's status to 'failed.'
+1. The Stock Service replies to the OSO with **Out-Of-Stock**.
+2. The OSO recognizes the transaction has failed and rolls it back.
+     - Since one command (Payment Executed) already succeeded before the failure, it sends a **Refund Client** command to the Payment Service, then marks the state as 'failed.'
 
-### Wrapping Up Command/Orchestration
+### Command/Orchestration, Summed Up
 
-The Orchestration Saga has the following advantages.
+The Orchestration Saga has a few clear advantages.
 
-- Since only the Orchestrator Saga can call other services — a one-directional structure — you can avoid creating dependencies between services.
-- Because things are managed in a command/reply form, complexity within each service goes down.
-  - In the Event/Choreography pattern, complexity is higher because every service has to identify and subscribe to the events it needs.
-- When multiple requests try to change the same value, the Orchestrator can judge and handle the priority of those requests.
+- Only the Orchestrator Saga ever calls out to other services, a one-way structure, so you avoid creating dependencies between services.
+- Because everything runs through command/reply, each service stays simpler.
+  - Under Event/Choreography, every service has to work out and subscribe to whatever events it needs, which pushes complexity up.
+- When multiple requests try to change the same value, the Orchestrator can decide which one takes priority.
 
-However, there are downsides too.
+It has downsides too.
 
-- Too much logic ends up handled inside the Orchestrator. It can grow bloated and become hard to manage.
-- Unlike the Event/Choreography model, you have to manage an additional Orchestrator service, which increases infrastructure complexity.
+- Too much logic ends up crammed into the Orchestrator, which can bloat it and make it hard to manage.
+- Unlike the Event/Choreography model, you now have an extra Orchestrator service to run, which adds infrastructure complexity.
 
 ### Command/Orchestration VS Events/Choreography
 
-The `Command/Orchestration` structure works well when services share a lot of events or context, and when Event Routing is complex.
+`Command/Orchestration` works well when services share a lot of events or context, or when Event Routing gets complicated.
 
-> **Event Routing** refers to which service an event needs to be delivered to, and which event should follow after it.
+> **Event Routing** is just which service an event needs to reach, and which event should follow it.
 
-`Events/Choreography` carries no management burden for an Orchestrator, so it's a good choice when the overall service footprint is small and there isn't much dependency between events.
+`Events/Choreography` skips the overhead of managing an Orchestrator entirely, so it's the better pick when the overall service footprint is small and events don't depend heavily on each other.
 
 ## redux-saga
 
-How does the `Saga` we've looked at so far connect to redux-saga? redux-saga exists as the **Orchestrator** that manages the flow between the actions that occur and the state being managed.
+So how does the `Saga` we just covered connect to redux-saga? redux-saga is the **Orchestrator** sitting between the actions that fire and the state Redux manages.
 
 ```js {8,9}
 function sagaMiddleware({ getState, dispatch }) {
@@ -129,11 +129,11 @@ function sagaMiddleware({ getState, dispatch }) {
 }
 ```
 
-Every action that passes through a saga is dispatched to the reducer first, and then the saga is notified that the action was dispatched through a communication channel called a [channel](https://redux-saga.js.org/docs/advanced/Channels.html).
+Every action that passes through a saga hits the reducer first. Only after that does a communication channel called a [channel](https://redux-saga.js.org/docs/advanced/Channels.html) let the saga know the action went out.
 
-Let's take a closer look through the example below.
+Let's dig into this with an example.
 
-> This is code from [redux-saga's Beginner Tutorial](https://redux-saga.js.org/docs/introduction/BeginnerTutorial.html).
+> Code from [redux-saga's Beginner Tutorial](https://redux-saga.js.org/docs/introduction/BeginnerTutorial.html).
 
 ```js
 import { put, takeEvery, delay } from 'redux-saga/effects'
@@ -150,21 +150,21 @@ export function* watchIncrementAsync() {
 }
 ```
 
-If we include redux as well, this can be expressed as the flow below.
+Bring redux into the picture too, and the whole flow looks like this.
 
 ![redux-saga-flow](./images/redux_saga_flow.png)
 
-The `Saga` listens for the INCREMENT\_ASYNC action and yields the delay and put effects. A saga yields effects, and **what it returns is a JavaScript object.**
+The `Saga` listens for the INCREMENT\_ASYNC action and yields the delay and put effects. What a saga yields, and what it actually returns, **is a plain JavaScript object.**
 
-The middleware receives this effect and processes it. In the example above, the first `yield delay` suspends execution and waits until one second has passed.
+The middleware picks up that effect and acts on it. In the example above, the first `yield delay` pauses execution and waits out the full second.
 
-> **Note.** redux-saga's effects are split into blocking effects and non-blocking effects.
-A blocking effect waits until it finishes processing, while a non-blocking effect moves on without waiting for it to finish.
-A representative blocking effect is call, and a representative non-blocking effect is fork.
+> **Note.** redux-saga splits effects into blocking and non-blocking ones.
+A blocking effect waits for the work to finish; a non-blocking one moves on without waiting.
+`call` is the classic blocking effect, and `fork` is the classic non-blocking one.
 
 ### Effect
 
-As mentioned above, **a saga yields effects, and what comes back is a JavaScript object.** The code below is redux-saga's internal effect code.
+As mentioned, **a saga yields effects, and what it returns is a JavaScript object.** Here's the code redux-saga uses internally to build those effects.
 
 ```js {14,20,24}
 // redux-saga/internal/effect.js
@@ -194,11 +194,11 @@ export function race(effects) {
 }
 ```
 
-Much like an [action creator function](https://redux.js.org/basics/actions/#action-creators), redux-saga's effects return an object created as the result of the `makeEffect(...)` function. Once you return an effect object that carries **information about what work should be done** this way, the middleware is the one that actually carries out the logic.
+Much like an [action creator function](https://redux.js.org/basics/actions/#action-creators), each of redux-saga's effects is just an object built by `makeEffect(...)`. Once you return an effect object carrying **the description of what work needs to happen,** the middleware is what actually goes and does it.
 
 ### Cancel
 
-When the same event keeps coming in repeatedly, how can a saga orchestrate those events? redux-saga provides the [takeLatest](https://redux-saga.js.org/docs/api/#takelatestpattern-saga-args) API for this.
+What happens when the same event keeps firing back to back? How does a saga orchestrate that? redux-saga hands you the [takeLatest](https://redux-saga.js.org/docs/api/#takelatestpattern-saga-args) API for exactly this.
 
 ```js {9,12,17}
 export default function takeLatest(patternOrChannel, worker, ...args) {
@@ -227,13 +227,13 @@ export default function takeLatest(patternOrChannel, worker, ...args) {
 }
 ```
 
-Starting from `q1`, whenever the same event occurs, it cancels (_yCancel_) the previous event and passes a fork to the next state. Just as the Orchestrator Pattern implemented rollback through commands, a saga manages effects through cancellation.
+Starting from `q1`, every time the same event fires again, it cancels (_yCancel_) whatever was running before and forks into the next state. Just as the Orchestrator Pattern rolls back through commands, a saga manages its effects through cancellation.
 
 ### Test
 
-Because redux-saga manages side effects through effect objects, writing test code is easy. You can write test code almost as if **you were walking through each step one at a time.**
+Because redux-saga manages side effects as plain effect objects, testing it is easy. You end up writing tests that basically **walk through the saga one step at a time.**
 
-Let's take the code below as an example.
+Take the code below as an example.
 
 ```js
 export function* fetchHelloWorld() {
@@ -253,7 +253,7 @@ export function* fetchHelloWorld() {
 }
 ```
 
-Let's treat each place in the code where there's a `yield` as a `Step`, and write test code accordingly.
+Let's treat every `yield` in this code as its own `Step` and write a test around that.
 
 ```js {11}
 describe('HelloWorldsaga', () => {
@@ -280,19 +280,19 @@ describe('HelloWorldsaga', () => {
 });
 ```
 
-- **Step 0.** We defined the `fetchHelloWorld` saga as `gen`.
-- **Step 1.** We check whether the `select(helloSelector.text)` effect matches the next step of `gen`.
-- **Step 2.** The next yield step is where `call` runs. Since `call` is set up to take `fn` and `args`, we pass the `testRequest` value along with `gen.next(the call step)`, and then compare whether the result actually equals `call(getHello, testRequest)`.
-- **Step 3.** This is the part where the result produced by `call` gets dispatched as a success action. Here too, we pass the pre-mocked `testResult` as the argument to `gen.next`.
-- **Step 4.** Since there are no more yields left in the `fetchHelloWorld` saga, the value of `next()` at this step is `done`.
+- **Step 0.** We assign the `fetchHelloWorld` saga to `gen`.
+- **Step 1.** Check that `gen`'s next step matches the `select(helloSelector.text)` effect.
+- **Step 2.** The next yield is the `call`. Since `call` takes `fn` and `args`, we pass `testRequest` into `gen.next(the call step)`, then check the result actually matches `call(getHello, testRequest)`.
+- **Step 3.** This is where the result of that `call` gets dispatched as a success action. Again, we pass the pre-mocked `testResult` in as the argument to `gen.next`.
+- **Step 4.** There are no more yields left in `fetchHelloWorld`, so `next()` comes back `done` at this step.
 
-> For more detail, please refer to [redux-saga: testing](https://redux-saga.js.org/docs/advanced/Testing.html) and Jbee's post [Testing the Store and Business Logic](https://jbee.io/react/testing-3-react-testing/).
+> For more, check out [redux-saga: testing](https://redux-saga.js.org/docs/advanced/Testing.html) and Jbee's post [Testing the Store and Business Logic](https://jbee.io/react/testing-3-react-testing/).
 
-## Summary
+## Wrapping Up
 
-In this post, I've walked through the Saga Pattern and redux-saga. A saga only plays the role of issuing commands, while the middleware handles the actual, direct work — a `Command/Orchestration` structure that can be a good choice for managing lots of events or context between services, and complex event routing.
+That covers the Saga Pattern and redux-saga. A saga only issues commands; the middleware is what actually carries out the work. That `Command/Orchestration` shape can be a great fit for managing lots of events or context between services, and complex event routing.
 
-Also, because the middleware's structure is simply to receive a `yield`ed value from the saga and carry out the corresponding action, writing tests is easy, as mentioned in the [Test](https://so-so.dev/pattern/saga-pattern-with-redux-saga/#test) section.
+And because the middleware's whole job is taking whatever value a saga `yield`s and acting on it, testing turns out to be easy too, as covered in the [Test](https://so-so.dev/pattern/saga-pattern-with-redux-saga/#test) section.
 
 ## Reference
 

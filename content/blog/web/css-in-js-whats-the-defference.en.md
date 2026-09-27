@@ -24,13 +24,13 @@ thumbnail: './images/css-in-js/thumbnail2.png'
   <sup><a href="https://css-tricks.com/a-thorough-analysis-of-css-in-js" target="_blank">https://css-tricks.com/a-thorough-analysis-of-css-in-js</a></sup>
 </div>
 
-**CSS-in-JS** literally refers to the approach of writing CSS inside JavaScript code. It was introduced in a [talk by Facebook engineer Christopher Chedeau, aka Vjeux](http://blog.vjeux.com/2014/javascript/react-css-in-js-nationjs.html) in 2014, which presented Facebook's case study of solving the difficulties of traditional CSS management. As the concept evolved after this talk, many libraries emerged.
+**CSS-in-JS** is exactly what it sounds like: writing CSS inside your JavaScript. Facebook engineer [Christopher Chedeau, aka Vjeux, introduced the idea in a 2014 talk](http://blog.vjeux.com/2014/javascript/react-css-in-js-nationjs.html), walking through how Facebook solved its own CSS management headaches. The idea kept evolving after that talk, and a wave of libraries followed.
 
-The most important differentiator between libraries is **'how dynamically styles can be written'** — whether JS variables can be used, and if so, what their scope is. Based on this characteristic, CSS-in-JS can be organized into 4 generations + a.
+What really separates these libraries is **how dynamic the styling can get**: can you use JS variables at all, and if so, how far does that reach? Using that one axis, you can sort CSS-in-JS into roughly four generations, plus one more.
 
 ### 1st Generation
 
-CSS wasn't usable from JS files from the very start. Files were created as `*.(module).css` and used in the form of a `css module` via a CSS pre-processor.
+CSS wasn't always something you touched from a JS file. Early on, you'd write `*.(module).css` files and run them through a CSS pre-processor as `css module`s.
 
 ```jsx
 import styles from './Button.module.css'
@@ -40,11 +40,11 @@ const Button = () => {
 }
 ```
 
-The approach above statically analyzes the CSS and extracts it into a separate CSS file. Since there's no 'runtime behavior' — which will be explained later — it has the characteristics of **zero runtime css-in-js**.
+This approach statically analyzes the CSS and pulls it out into its own file at build time. Since none of it runs at runtime (more on that shortly), it counts as **zero runtime css-in-js**.
 
 ### 2nd Generation
 
-Libraries like [Radium](https://formidable.com/open-source/radium/), which let you write CSS using JS variables, emerged. It was a form where components could control their own styles, but because it used inline styles, **not all CSS specs could be used** — for example, pseudo selectors like `:before` and `:nth-child` weren't available.
+Then came libraries like [Radium](https://formidable.com/open-source/radium/), which let you write CSS using JS variables. Components could finally control their own styles, but since it worked through inline styles, **you lost access to a chunk of the CSS spec** — no `:before`, no `:nth-child`, no pseudo selectors at all.
 
 ```jsx
 // Radium: https://formidable.com/open-source/radium
@@ -72,13 +72,13 @@ return (
 
 ### 3rd Generation
 
-To overcome the 'limited CSS syntax' constraint that came from choosing the inline-style approach in the 2nd generation, libraries like [aphrodite](https://github.com/Khan/aphrodite/blob/master/src/inject.js#L35-L39) and [glamor](https://github.com/threepointone/glamor) generate styles a different way. When CSS is written as a JavaScript template, it's injected during the build process by [generating a `<style>` tag](https://github.com/Khan/aphrodite/blob/225f43c5802259a9e042b384a1f4f2e5b48094ea/src/inject.js#L35-L39).
+To get around the syntax limits that came with inline styles, libraries like [aphrodite](https://github.com/Khan/aphrodite/blob/master/src/inject.js#L35-L39) and [glamor](https://github.com/threepointone/glamor) took a different approach. You write CSS as a JavaScript template, and at build time it [generates a `<style>` tag](https://github.com/Khan/aphrodite/blob/225f43c5802259a9e042b384a1f4f2e5b48094ea/src/inject.js#L35-L39) and injects it.
 
-This started to support CSS specs that had been missing, such as pseudo elements and media queries, but **dynamically changing styles were tricky to define.**
+This finally brought back pseudo elements, media queries, and the rest of the spec that had been missing. The catch: **dynamically changing styles were still awkward to define.**
 
 ### 4th Generation
 
-The 4th generation solved the 3rd generation's limitation — 'dynamic styling controlled by JavaScript code' — by introducing the concept of runtime.
+The 4th generation fixed the 3rd generation's real limitation — letting JavaScript code drive dynamic styling directly — by adding a runtime.
 
 #### Runtime CSS-in-JS
 
@@ -92,19 +92,19 @@ templateFunction.attrs = <Props = OuterProps>(attrs: Attrs<Props>) =>
   });
 ```
 
-The code above is part of [styled-components](https://styled-components.com/). Every time a `prop` changes, it **dynamically generates** styles, making dynamic styling via JavaScript code possible. In other words, instead of generating all styles at build time, it makes use of the runtime.
+That snippet is from [styled-components](https://styled-components.com/). Every time a `prop` changes, it **generates the style on the spot**, so your styling can respond to actual JavaScript logic. Not every style gets baked in at build time; some of it only exists once the app is running.
 
-Generating styles at runtime usually isn't a problem, but because the style computation cost grows, a difference shows up in components with complex styles. (Reference: [necolas/react-native-web#benchmark](https://necolas.github.io/react-native-web/benchmarks/))
+Generating styles at runtime is fine most of the time, but the cost of computing them adds up, and it starts to show once a component's styles get complicated. (See: [necolas/react-native-web#benchmark](https://necolas.github.io/react-native-web/benchmarks/).)
 
 ### Next Generation
 
-Libraries advocating **zero-runtime** emerged to solve the runtime overhead caused by complex style computation. (Runtime was introduced because build time couldn't provide dynamic styling — and now zero runtime shows up again(!))
+To kill the runtime overhead that comes with complex style computation, a new wave of libraries showed up pushing **zero-runtime**. (We added a runtime in the first place because build time couldn't handle dynamic styling — and now here comes zero-runtime again(!))
 
 #### zero-runtime css-in-js
 
-zero-runtime literally means there's no runtime behavior like the one described earlier. In other words, it doesn't generate styles dynamically.
+zero-runtime means exactly what it says: none of the runtime behavior described above. Nothing gets generated dynamically.
 
-[Linaria](https://linaria.dev/) is a CSS-in-JS library inspired by styled-components with a similar API, and it operates with zero-runtime. As explained in [linaria - how it works](https://github.com/callstack/linaria/blob/master/docs/HOW_IT_WORKS.md), it extracts the css code used via a babel plugin and webpack loader to generate a **static stylesheet**.
+[Linaria](https://linaria.dev/) is a CSS-in-JS library with an API modeled on styled-components, but it runs zero-runtime. As [linaria's "how it works" doc](https://github.com/callstack/linaria/blob/master/docs/HOW_IT_WORKS.md) explains, a babel plugin and webpack loader pull out the css you actually used and turn it into a **static stylesheet**.
 
 ```tsx
 import { styled } from '@linaria/react';
@@ -129,7 +129,7 @@ const Container = styled.div`
 `;
 ```
 
-Build result:
+Here's the build output:
 
 ```css
 .Title_t1ugh8t9 {
@@ -149,11 +149,11 @@ Build result:
 }
 ```
 
-It makes possible the dynamic styling based on prop and state that wasn't possible with 1st-generation zero-runtime css-in-js.
+This gets you the prop- and state-driven dynamic styling that 1st-generation zero-runtime css-in-js couldn't pull off.
 
-The reason this is possible is that linaria internally uses [css variables](https://developer.mozilla.org/ko/docs/Web/CSS/var()) — instead of creating a new style sheet, it only modifies the css variable to apply different styles for different conditions.
+The trick is [css variables](https://developer.mozilla.org/ko/docs/Web/CSS/var()). Linaria uses them internally, so instead of regenerating the whole stylesheet, it just updates a variable, and the style changes to match whatever condition triggered it.
 
-(Unfortunately, 'that browser' doesn't support this.)
+(Unfortunately, "that browser" doesn't support this.)
 
 <video style="width:100%;" poster="/media/web/images/css-in-js/linaria-dynamic-style-poster.png" controls="true" allowfullscreen="true">
   <source src="/media/web/images/css-in-js/linaria-dynamic-style.mp4" type="video/mp4">
@@ -162,27 +162,27 @@ The reason this is possible is that linaria internally uses [css variables](http
 
 ## Critical CSS and CSS-in-JS
 
-For initial render optimization, **efficiently loading only the CSS needed for the current screen first** also needs to be considered. How does each library determine Critical CSS?
+There's another piece to optimizing the first render: **loading only the CSS the current screen actually needs, and doing it efficiently.** So how does each library decide what counts as critical CSS?
 
-Let's look at how this problem is solved by styled-components and [emotion](https://emotion.sh/docs/introduction), representative runtime css-in-js libraries, and by linaria, a zero-runtime css-in-js library.
+Here's how two runtime css-in-js libraries, styled-components and [emotion](https://emotion.sh/docs/introduction), handle this, alongside linaria on the zero-runtime side.
 
 ### styled-components
 
 ![styled-components-critical-css-result](./images/css-in-js/styled-components-critical-css-result.png)
 
-When testing according to the [official Next.js example](https://github.com/vercel/next.js/tree/master/examples/with-styled-components), you can confirm that only the css used on the page is inserted into the head as a style tag. ([Demo project](https://stackblitz.com/edit/github-zmyryx?file=pages%2Fabout.js))
+Test it against the [official Next.js example](https://github.com/vercel/next.js/tree/master/examples/with-styled-components) and you'll see that only the css a given page actually uses gets inserted into the head as a style tag. ([Demo project](https://stackblitz.com/edit/github-zmyryx?file=pages%2Fabout.js))
 
-Through the [collectStyles](https://github.com/styled-components/styled-components/blob/30dab74acedfd26d227eebccdcd18c92a1b3bd9b/packages/styled-components/src/models/ServerStyleSheet.tsx#L37) API, only the styles currently being used on the page are generated into a separate stylesheet.
+The [collectStyles](https://github.com/styled-components/styled-components/blob/30dab74acedfd26d227eebccdcd18c92a1b3bd9b/packages/styled-components/src/models/ServerStyleSheet.tsx#L37) API generates a separate stylesheet containing only the styles the current page is using.
 
 <video style="width:100%;" poster="/media/web/images/css-in-js/styled-components-dynamic-style-poster.png" controls="true" allowfullscreen="true">
   <source src="/media/web/images/css-in-js/styled-components-dynamic-style.mp4" type="video/mp4">
 </video>
 
-After the initial render, styles that change due to prop or state are dynamically inserted into the style tag. (The DOM tree only changes during a development mode build.)
+After the initial render, any style that changes because of a prop or state update gets injected into the style tag dynamically. (The DOM tree only changes like this in a development-mode build.)
 
 ### emotion
 
-It provides [extractCritical](https://emotion.sh/docs/ssr#extractcritical).
+emotion ships [extractCritical](https://emotion.sh/docs/ssr#extractcritical) for this.
 
 ```tsx
 import { renderToString } from 'react-dom/server'
@@ -192,13 +192,13 @@ import App from './App'
 const { html, ids, css } = extractCritical(renderToString(<App />))
 ```
 
-Similar to styled-components, it extracts the critical css needed for the initial page render, and generates any subsequent dynamic styles at runtime.
+Same idea as styled-components: pull out the critical css the initial render needs, and generate everything dynamic afterward at runtime.
 
 ### Linaria
 
-linaria, which operates with zero-runtime, extracts critical css at build time using plugins like [mini-css-extract-plugin](https://github.com/webpack-contrib/mini-css-extract-plugin).
+Since linaria runs zero-runtime, it extracts critical css at build time instead, using a plugin like [mini-css-extract-plugin](https://github.com/webpack-contrib/mini-css-extract-plugin).
 
-If code splitting isn't used, or if the initial css chunk isn't the css needed for the initial load — in other words, if critical css can't be determined by mini-css-extract-plugin — you can use `collect`, provided by linaria.
+If you're not using code splitting, or the initial css chunk doesn't actually match what the initial load needs, mini-css-extract-plugin can't figure out critical css on its own. That's where linaria's own `collect` comes in.
 
 ```tsx
 import { collect } from '@linaria/server';
@@ -206,21 +206,21 @@ import { collect } from '@linaria/server';
 const { critical, other }  = collect(html, css);
 ```
 
-The `collect` API provided by the `linaria/server` module takes HTML and CSS strings respectively, and separates the CSS that's actually used in the HTML into `critical`, with the rest as `other`.
+The `collect` API from the `linaria/server` module takes an HTML string and a CSS string, then splits the CSS into `critical` (whatever the HTML actually uses) and `other` (everything else).
 
-Since the extracted Critical CSS is used in the critical rendering path, it's injected at the top of the document, and the rest can be loaded asynchronously via a `<link>` tag without blocking rendering.
+Since the critical CSS sits on the main rendering path, you inject it at the top of the document. Everything else loads through a `<link>` tag asynchronously, without blocking the render.
 
-For stylesheet optimization in a Gatsby environment that doesn't use an SSR runtime, see Hyeseong Kim's ["How to Optimize Stylesheets in Jamstack"](https://blog.cometkim.kr/posts/css-optimization-in-jamstack/).
+If you're on Gatsby, where there's no SSR runtime, Hyeseong Kim's ["How to Optimize Stylesheets in Jamstack"](https://blog.cometkim.kr/posts/css-optimization-in-jamstack/) covers stylesheet optimization for that setup.
 
 ## Performance
 
-As summarized above, the way css-in-js operates is broadly divided into runtime / zero-runtime.
+So, css-in-js splits broadly into two camps: runtime and zero-runtime.
 
-Before summarizing the performance of each, note that **runtime doesn't necessarily cause performance degradation** — it can vary depending on the project's scale and situation, so I recommend always **measuring before optimizing**.
+Before getting into the performance of each: **runtime doesn't automatically mean worse performance.** It depends heavily on your project's scale and situation, so always **measure before you optimize**.
 
 ### runtime
 
-Assume there's a component with complex styles like the one below.
+Say you have a component with styles this complicated:
 
 ```tsx
 const ButtonView = styled('buton')(props => {
@@ -245,32 +245,32 @@ const ButtonView = styled('buton')(props => {
   <sup><a href="https://itnext.io/how-to-increase-css-in-js-performance-by-175x-f30ddeac6bce" target="_blank">https://itnext.io/how-to-increase-css-in-js-performance-by-175x-f30ddeac6bce</a></sup>
 </div>
 
-Analyzing the `emotion` code took 36 seconds.
+Analyzing this with `emotion` took 36 seconds.
 
 ![emotion-benchmark-result-1](./images/css-in-js/emotion-benchmark-result-1.png)
 
-In emotion, when a Tooltip is rendered on Button hover, a re-render occurs, causing it to **re-parse the css.**
+When hovering the Button renders a Tooltip, emotion re-renders, and that means it has to **re-parse the css from scratch.**
 
-If a component modifies its styles at runtime, css needs to be parsed each time, and rendering is blocked for that duration. And since this time comes from emotion's own operation (runtime), it isn't easy to optimize.
+Every time a component updates its styles at runtime, that css has to get parsed again, and rendering blocks for however long that takes. And since that delay comes from emotion's own runtime behavior, it's not easy to optimize away.
 
 #### How runtime CSS-in-JS injects styles
 
-Effort was needed to minimize the time blocked by css parsing. The browser combines the DOM and CSSOM trees to form a render tree, calculates the layout, and then renders — so **by choosing to modify the CSSOM instead of the DOM tree**, the time spent parsing the DOM tree is reduced. (Reference: [render-tree construction, layout and paint](https://developers.google.com/web/fundamentals/performance/critical-rendering-path/render-tree-construction))
+So libraries had to find ways to shrink that css-parsing block as much as possible. The browser combines the DOM and CSSOM trees into a render tree, computes layout, and then paints — so **by touching only the CSSOM and leaving the DOM tree alone**, you skip the cost of re-parsing the DOM. (See: [render-tree construction, layout and paint](https://developers.google.com/web/fundamentals/performance/critical-rendering-path/render-tree-construction).)
 
-Both emotion and styled-components choose to modify the CSSOM in production builds, but choose to modify the DOM in development mode. For an easy comparison, let's look at the difference with [stitches.js](https://stitches.dev/), which uses the CSSOM-modifying approach even in development mode.
+Both emotion and styled-components modify the CSSOM in production builds, but fall back to modifying the DOM in development mode. For an easy comparison, here's the difference against [stitches.js](https://stitches.dev/), which sticks with the CSSOM approach even in development mode.
 
 ![stitches-css-inject](./images/css-in-js/stitches-css-inject.png)
 
-In the [demo project using styled-components and stitches.js](https://yrhkm.csb.app/), if you trace where the `.c-bvsTsv` style applied to `StitchesButton` is used, you can see it's represented as an empty tag.
+Open the [demo project using styled-components and stitches.js](https://yrhkm.csb.app/) and trace where `.c-bvsTsv`, the style applied to `StitchesButton`, actually lives. You'll find it points at an empty tag.
 
-Right below it, you can see the content of the style generated by styled-components directly, whereas the style applied by stitches can't be seen. As mentioned above, the two libraries differ in how they generate the stylesheet.
+Right below it, you can read the content styled-components generated directly, but stitches' style is nowhere to be found. That's because, as mentioned above, the two libraries generate their stylesheets in fundamentally different ways.
 
-1. **DOM injection (styled-components):**  
-  This approach adds a `<style>` tag to the DOM (somewhere in `<head>` or `<body>`) and adds the style node via [appendChild](https://developer.mozilla.org/en-US/docs/Web/API/Node/appendChild). It updates the stylesheet by adding [textContent](https://developer.mozilla.org/ko/docs/Web/API/Node/textContent) or [innerHTML](https://developer.mozilla.org/ko/docs/Web/API/Element/innerHTML).
+1. **DOM injection (styled-components:)**  
+  It adds a `<style>` tag somewhere in the DOM (`<head>` or `<body>`), attaching the style node with [appendChild](https://developer.mozilla.org/en-US/docs/Web/API/Node/appendChild). It updates the stylesheet by setting [textContent](https://developer.mozilla.org/ko/docs/Web/API/Node/textContent) or [innerHTML](https://developer.mozilla.org/ko/docs/Web/API/Element/innerHTML).
 
 2. **CSSStyleSheet API (stitches.js)**  
   It inserts directly into the CSSOM using [CSSStylesSheet.insertRule](https://developer.mozilla.org/en-US/docs/Web/API/CSSStyleSheet/insertRule).  
-  With this approach, the `<style>` tag appears empty, and you can only see the result by selecting the rule directly in DevTools.  
+  The `<style>` tag looks empty from the outside; you have to select the rule directly in DevTools to actually see it.  
 
   ![cssom-result](./images/css-in-js/cssom-result.png)
 
@@ -278,7 +278,7 @@ Right below it, you can see the content of the style generated by styled-compone
 
 ### zero-runtime
 
-To remove runtime overhead, you can consider zero-runtime css-in-js like linaria or [compiled](https://compiledcssinjs.com/). However, since pivoting the tech stack on an ongoing project can be difficult, you can also improve things by **partially introducing the zero-runtime concept only to the parts that cause a performance bottleneck**.
+One way to kill runtime overhead entirely is switching to a zero-runtime library like linaria or [compiled](https://compiledcssinjs.com/). But pivoting your whole tech stack mid-project isn't always realistic, so it can also help to **apply the zero-runtime idea only where it's actually causing a bottleneck**.
 
 ```tsx
 const composedStyle = {
@@ -306,23 +306,23 @@ const ButtonView = styled.button`
 
 ```
 
-The existing emotion code was changed to use CSS Variables.
+Here, the existing emotion code got rewritten to use CSS Variables instead.
 
 ![emotion-to-cssvar](./images/css-in-js/emotion-to-cssvar.png)
 
-You can see that the css parsing time, which used to take 36 seconds, was reduced to around 200ms.
+The css parsing time that used to take 36 seconds dropped to around 200ms.
 
 ![linaria-sc-performance](./images/css-in-js/linaria-sc-performance.png)
 
-As you can also confirm in the [performance comparison between styled-components and linaria](https://pustelto.com/blog/css-vs-css-in-js-perf/), linaria clearly leads on several metrics, but since the tool's limitations are also clear, choosing it at the production level requires a decision that weighs the trade-offs.
+As this [performance comparison between styled-components and linaria](https://pustelto.com/blog/css-vs-css-in-js-perf/) shows, linaria clearly wins on several metrics. But its limitations are just as clear, so putting it in production still comes down to weighing the trade-offs.
 
 ### +) near-zero runtime(stitches.js)
 
-Besides runtime and zero-runtime, libraries advocating near-zero runtime have emerged. Let me introduce [stitches.js](https://stitches.dev/), one of them.
+Beyond runtime and zero-runtime, there's a third camp claiming near-zero runtime. Here's [stitches.js](https://stitches.dev/), one of the libraries in that camp.
 
-stitches.js is a css-in-js library with an API similar to styled-components, but it advocates **near-zero runtime**. As the word implies, it doesn't have zero runtime at all, but it provides an API designed to minimize interpolation driven by component props.
+stitches.js's API looks a lot like styled-components, but it markets itself as **near-zero runtime**. It doesn't literally have zero runtime, but its API is built to minimize interpolation driven by component props.
 
-For example, styled-components allows fully dynamic styling via props, whereas stitches only allows styling via predefined [variants](https://stitches.dev/docs/variants).
+For example, styled-components lets props drive fully dynamic styling. stitches only lets you style through [variants](https://stitches.dev/docs/variants) you've defined ahead of time.
 
 ```jsx
 /* 💅  styled-components */
@@ -350,17 +350,17 @@ const Button = styled('button', {
 () => <Button color="violet">Button</Button>;
 ```
 
-This could be seen as a downside, but personally I think it's a reasonable compromise for addressing runtime overhead and the constraints of zero-runtime. Being able to pass a fully dynamic value to a component is, in the same vein, a situation that can't be predefined — which means it becomes an area that can't be optimized in advance.
+You could read that as a limitation, but I'd call it a reasonable middle ground between runtime overhead and zero-runtime's constraints. Being able to pass a component a fully dynamic value is really just another way of saying that value couldn't be predefined, which means it's an area you can never optimize ahead of time in the first place.
 
 #### Critical CSS
 
-stitches.js also provides [getCssString](https://stitches.dev/docs/api#getcssstring), which plays a similar role to emotion's extractCritical. It generates the style sheet by [analyzing the root's styleSheet](https://github.com/modulz/stitches/blob/ce8e61e25fb26492e53c39d8bd396e899a32fdbe/packages/core/src/sheet.js#L32-L35).
+stitches.js has its own version of emotion's extractCritical, called [getCssString](https://stitches.dev/docs/api#getcssstring). It [analyzes the root's styleSheet](https://github.com/modulz/stitches/blob/ce8e61e25fb26492e53c39d8bd396e899a32fdbe/packages/core/src/sheet.js#L32-L35) to build the stylesheet.
 
-This post doesn't cover every feature of stitches.js, so if you'd like to know more, I recommend checking the [official docs](https://stitches.dev/) and [this article](https://www.javascript.christmas/2020/15).
+That's not everything stitches.js does. For more, check the [official docs](https://stitches.dev/) and [this post](https://www.javascript.christmas/2020/15).
 
 ## Atomic CSS
 
-Both runtime and zero-runtime css-in-js are options with trade-offs. Since css-in-js isn't necessarily the right answer, other approaches to css optimization can also be considered. As one example, [Facebook reduced its style sheet size by 80% by adopting Atomic CSS](https://engineering.fb.com/2020/05/08/web/facebook-redesign/).
+Both runtime and zero-runtime css-in-js come with trade-offs. css-in-js isn't the only answer for optimizing CSS, either. As one example, [Facebook cut its stylesheet size by 80% by switching to Atomic CSS](https://engineering.fb.com/2020/05/08/web/facebook-redesign/).
 
 ```tsx
 const styles = stylex.create({
@@ -378,7 +378,7 @@ function MyComponent(props) {
 }
 ```
 
-Build result:
+Build output:
 
 ```css
 .c0 { font-weight: bold; }
@@ -394,7 +394,7 @@ function MyComponent(props) {
 
 ### tailwindcss
 
-A representative atomic css is [tailwindcss](https://tailwindcss.com/). It's an approach of styling by combining predefined `className`s, and the basic usage is as follows.
+[tailwindcss](https://tailwindcss.com/) is probably the best-known example of atomic css. You style things by combining predefined `className`s. Basic usage looks like this:
 
 ```jsx
 <p class="text-lg text-black font-semibold">
@@ -402,11 +402,11 @@ A representative atomic css is [tailwindcss](https://tailwindcss.com/). It's an 
 </p>
 ```
 
-Among the many utility classes tailwindcss provides, unused styles shouldn't be included in the build output. Through the `purge` setting described in the [tailwindcss - optimization for production](https://tailwindcss.com/docs/optimizing-for-production) docs, unused styles can be excluded from the output, but it can't determine Critical CSS.
+Out of all the utility classes tailwindcss ships, whatever you don't use shouldn't make it into your build output. The `purge` setting described in the [tailwindcss - optimization for production](https://tailwindcss.com/docs/optimizing-for-production) docs strips unused styles from the output, but it still can't tell you what counts as critical CSS.
 
 ### tailwind + twin.macro
 
-[twin.macro](https://github.com/ben-rogerson/twin.macro) is a tool that passes styles written in tailwind css over to css-in-js. Since it acts as an intermediary, it's used together with styled-components, emotion, and so on.
+[twin.macro](https://github.com/ben-rogerson/twin.macro) hands off styles written in tailwind css to css-in-js. Since it's just a middleman, you always use it alongside something like styled-components or emotion.
 
 ```jsx
 import "twin.macro"
@@ -427,20 +427,20 @@ import "styled-components/macro"
 />
 ```
 
-Because the styles are dynamically generated at runtime, only the needed styles are loaded initially, but the runtime overhead mentioned above still applies.
+Because the styles get generated dynamically at runtime, you only load what you need on the initial pass. But you're still paying the same runtime overhead discussed above.
 
-- Using atomic css as-is: the size of the CSS loaded initially is large, but no runtime overhead occurs afterward.
-- Using it in the twin.macro form: the size of the CSS loaded initially is small, but runtime overhead occurs afterward
+- Using atomic css as-is: the initial CSS payload is bigger, but no runtime overhead afterward.
+- Using it through twin.macro: the initial CSS payload is smaller, but runtime overhead shows up afterward.
 
-Since each approach has clear pros and cons, which one to choose should be decided after measuring.
+Each approach has a clear trade-off, so which one to pick should come down to what you actually measure.
 
 ### stitches.js
 
-stitches.js, introduced above, also optimizes repeated styles by converting them into atomic classes so the same class can be reused.
+stitches.js, covered above, does something similar: it converts repeated styles into atomic classes so they can share the same class.
 
 ```tsx
 const StitchesDiv = styled("div", {
-  // shared styles
+  // shared area
   border: "none",
   borderRadius: "9999px",
   padding: "10px 15px",
@@ -448,13 +448,13 @@ const StitchesDiv = styled("div", {
 });
 
 const StitchesButton = styled("button", {
-  // shared styles
+  // shared area
   border: "none",
   borderRadius: "9999px",
   fontSize: "13px",
   padding: "10px 15px",
 
-  // custom styles
+  // custom area
   "&:hover": {
     backgroundColor: "lightgray"
   },
@@ -471,19 +471,19 @@ const StitchesButton = styled("button", {
 });
 ```
 
-The styles corresponding to the 'shared area' between `StitchesDiv` and `StitchesButton` are extracted into a separate class and reused.
+Whatever `StitchesDiv` and `StitchesButton` share in their "shared area" gets pulled into a separate class and reused.
 
 ![stitches-atomic-class](./images/css-in-js/stitches-atomic-class.png)
 
-However, even with the same style, if the internal order changes, the same class won't be reused, so you need to apply style-lint or define things using [stitches - util](https://stitches.dev/docs/utils).
+The catch: if the internal order of an otherwise identical style changes, it stops sharing that class. You'll want style-lint in place, or to define shared pieces through [stitches - util](https://stitches.dev/docs/utils).
 
 ## Wrapping Up
 
-As the CSS ecosystem evolved, new tools that improved on the shortcomings of existing ones emerged, and many tools with entirely new concepts appeared as well.
+As the CSS ecosystem grew, some new tools patched the old ones' weak spots, and plenty of others showed up with entirely new ideas.
 
-It would be nice to be able to conclude which tool is the 'silver bullet' that's always the right answer in every situation, but so far my conclusion is that there isn't one. Each tool has its own chosen trade-offs, and it's necessary to set up an appropriate CSS strategy that takes into account the characteristics of the service being built.
+I'd love to say there's one silver-bullet tool that's right for every situation. So far, my conclusion is there isn't one. Every tool made its own trade-offs, and the right CSS strategy depends on the service you're actually building.
 
-If the service you're building only deals with components that don't need rendering optimization, runtime overhead may be at a negligible level, and you might even run into a situation where you have to solve problems separately precisely because runtime doesn't exist. For that reason, things can't simply be divided into 'good' or 'bad' — just as every improvement should be made after measuring, you'll need to choose the right CSS approach by taking the service's characteristics and plans into account.
+If your service only deals in components simple enough that rendering optimization never matters, runtime overhead might be negligible — and having no runtime at all could actually leave you solving, by hand, problems a runtime would've solved for you. So you can't just call one "good" and the other "bad." The same rule applies here as everywhere else: measure first, then improve, and pick your CSS approach based on what your service actually needs and where it's headed.
 
 ## References
 

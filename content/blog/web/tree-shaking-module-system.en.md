@@ -9,46 +9,46 @@ thumbnail: './images/tree-shaking-module-system/thumbnail.jpg'
 
 ## Introduction
 
-An application is made up of many different pieces of code: code the developer writes directly, external libraries, and so on. As an application grows more complex, bundle size becomes something you have to pay attention to, and that requires a process — commonly called Tree Shaking — to keep only the **code you actually need**.
+Any application is a mix of code: what the developer writes by hand, external libraries, and everything in between. As it grows more complex, bundle size starts to matter, and that's where Tree Shaking comes in: the process of trimming everything down to **just the code you need**.
 
-This article covers the basic concept of Tree Shaking and the conditions that make it possible.
+Here I'll go over what Tree Shaking actually is, and what has to be true for it to work at all.
 
 ## What Is Tree Shaking?
 
-What we commonly call Tree Shaking, from the perspective of the final bundle output, can be described as the process by which unnecessary code disappears.
+Look at the final bundle, and Tree Shaking is really just the disappearance of code nobody uses.
 
 > It relies on the import and export statements in ES2015 to detect if code modules are exported and imported for use between JavaScript files.
 <sup style="top: 0px;">
   <a href="https://developer.mozilla.org/en-US/docs/Glossary/Tree_shaking" target="_blank" rel="noreferer">mdn/glossary/tree-shaking</a>
 </sup>
 
-According to MDN, Tree Shaking relies on ES2015 (ES6)'s import/export statements to determine whether there's a reference between JavaScript files.
+MDN puts it this way: Tree Shaking leans on ES2015 (ES6)'s import/export statements to figure out whether one JavaScript file actually references another.
 
-Tree Shaking depends on the module system introduced in ES6 called ES Modules (ESM) — in other words, of the many module formats we know, it's the `ESM` format that makes Tree Shaking possible.
+It depends on the module system ES6 introduced, ES Modules (ESM). Of all the module formats out there, `ESM` is the one that makes Tree Shaking possible in the first place.
 
-Let's look at how ESM makes Tree Shaking possible, and what sets it apart from other module systems.
+So how does ESM pull that off, and what sets it apart from the other module systems?
 
 ## Modules
 
-Before getting into the specifics of `ESM`, let's briefly introduce the concept of a module and other module systems.
+Before getting into `ESM` specifics, here's a quick primer on modules and the other module systems out there.
 
 ### What Is a Module?
 
-A module can be described as a **'reusable unit of code.'** Being **reusable** means its behavior is guaranteed to be consistent no matter where it's used, and **unit of code** means an application is made up of a set of N modules.
+A module is essentially **'a reusable unit of code.'** **Reusable** means it behaves the same no matter where you drop it in; **unit of code** means an application is really just a collection of N modules.
 
-Modules provide a better way to organize variables and functions. You manage functions and variables within a module's scope, and you can also share variables between modules through that scope.
+Modules give you a better way to organize variables and functions. You keep them inside a module's own scope, and that same scope lets you share variables across modules when you need to.
 
-## A Closer Look at JavaScript's Module Systems
+## A Look Under the Hood of JavaScript's Module Systems
 
 ![module-global-variable-sharing](./images/tree-shaking-module-system/global_share.png)
 
-Before the concept of a module was introduced to JavaScript, the easiest way for `foo.js` and `bar.js` to share a common variable `foo` was to hoist the variable into global scope.
+Before JavaScript had modules, the easiest way for `foo.js` and `bar.js` to share a variable called `foo` was to hoist it into the global scope.
 
-This kind of solution makes it impossible to control the state of a globally declared variable or when it gets assigned, so it becomes dependent on JS load order, and dependency management around variable references gets harder.
+That approach gives you no control over a global variable's state or when it gets assigned, so everything ends up hostage to JS load order, and tracking dependencies between variable references turns into a mess.
 
-As the push to bring a module system to JavaScript began, module systems were considered separately for the client side and the server side, and out of that situation came the proposals for [CommonJS](http://www.commonjs.org/) and [AMD (Asynchronous Module Definition)](https://github.com/amdjs/amdjs-api/wiki/AMD).
+Once people started pushing for a real module system, the client side and server side went their separate ways, and that split produced two proposals: [CommonJS](http://www.commonjs.org/) and [AMD (Asynchronous Module Definition)](https://github.com/amdjs/amdjs-api/wiki/AMD).
 
-JavaScript modularization largely split into the `CommonJS` and `AMD` camps, and to use modules in the browser you had to use a module loader library that implemented CommonJS or AMD.
+JavaScript modularization split into the `CommonJS` and `AMD` camps, and if you wanted modules in the browser, you needed a loader library that implemented one or the other.
 
 ### CJS (CommonJS)
 
@@ -62,11 +62,11 @@ module.exports = function doSomething(n) {
 }
 ```
 
-Node.js, the server-side JavaScript environment, adopted `CommonJS`. Its defining traits are **static binding and synchronous import.**
+Node.js, the server-side JavaScript runtime, went with `CommonJS`. Its two defining traits: **static binding and synchronous imports.**
 
-> **Static binding:** provides a copy of the value obtained through `require`. This means that even if the side doing `module.exports` changes the value later, the side that already did `require` can't use that changed value.
+> **Static binding:** `require` hands you a copy of the value. So even if `module.exports` changes the value later, whoever already did the `require` is stuck with the old one.
 
-> Aside: [ECMAScript module support was added in Node.js 17](https://nodejs.org/api/esm.html#modules-ecmascript-modules).
+> Side note: [ECMAScript module support landed in Node.js 17](https://nodejs.org/api/esm.html#modules-ecmascript-modules).
 
 ### AMD (Asynchronous Module Definition)
 
@@ -77,13 +77,13 @@ define(['dep1', 'dep2'], function (dep1, dep2) {
 });
 ```
 
-`CommonJS` assumes a situation where every file is local and can be loaded immediately when needed. In other words, it assumes a server-side JavaScript environment where synchronous behavior is possible.
+`CommonJS` assumes every file already sits on disk, ready to load the instant you need it. In other words, it assumes a server-side environment where synchronous behavior is fine.
 
-In a browser, loading modules the CommonJS way can leave the main thread unable to do anything **(blocking)** until every module has finished loading, and that can be seen as a fatal downside of CommonJS.
+Load modules the CommonJS way in a browser, though, and the main thread can freeze **(blocking)** until every module finishes loading. That's a fatal flaw for CommonJS in that setting.
 
-The AMD group split off after failing to reach an agreement with the CommonJS group over how to handle asynchronous processing of JavaScript modules. CommonJS is the group that came about to take JavaScript outside the browser, while AMD is the group that focused on the browser.
+AMD actually broke off from CommonJS after the two groups couldn't agree on how to handle asynchronous module loading. CommonJS set out to take JavaScript beyond the browser; AMD stayed focused on the browser itself.
 
-As the name 'Asynchronous Module Definition' suggests, AMD deals with a standard for asynchronous modules (letting a needed module be downloaded over the network).
+As the name 'Asynchronous Module Definition' suggests, AMD standardizes asynchronous modules: modules you can pull down over the network as you need them.
 
 ### UMD (Universal Module Definition)
 
@@ -105,7 +105,7 @@ As the name 'Asynchronous Module Definition' suggests, AMD deals with a standard
 }));
 ```
 
-Because the AMD and CJS camps split apart, they ended up incompatible with each other, and UMD was proposed as a pattern to solve that. UMD, in practice, is closer to **a form that defines a different implementation depending on the module system.**
+AMD and CJS splitting apart meant they no longer played nicely together, so UMD showed up as a pattern to paper over that. In practice, UMD is really just **a shape that defines a different implementation for each module system.**
 
 ### ESM
 
@@ -119,41 +119,41 @@ export const function1() {...};
 export const function2() {...};
 ```
 
-ESM is the official JavaScript module system supported by ECMAScript, and it's the format supported by most modern browsers. ('That browser' ~~IE11~~ does not support it.)
+ESM is JavaScript's official module system, baked right into ECMAScript, and every modern browser supports it. (Except 'that browser' ~~IE11~~, of course.)
 
-## Characteristics of ESM
+## What Makes ESM Different
 
 ### How It Works
 
-The ESM system consists of three stages: **construction, instantiation, and evaluation.**
+ESM runs through three stages: **construction, instantiation, and evaluation.**
 
 #### 1. Construction
 
-As the very first stage, a dependency tree is built to figure out which modules need to be loaded.
+First, it builds a dependency tree to figure out which modules even need loading.
 
-You specify the file that will be the starting point of the graph, then follow the `import` statements from that starting point to build the dependency tree.
+You point to a file as the graph's starting point, then follow every `import` from there to build out that tree.
 
 ![module_record](./images/tree-shaking-module-system/module_record.png)
 
-The files connected by `import` can't be used by the browser as they are, so they need to be converted into a [Module Record](https://262.ecma-international.org/6.0/#sec-source-text-module-records) structure (data holding export/import information). In this process, every file is found and loaded, and parsing is performed to convert it into a module record.
+The browser can't actually use the raw files an `import` points to, so each one gets converted into a [Module Record](https://262.ecma-international.org/6.0/#sec-source-text-module-records), a data structure holding its export/import info. That means finding every file, loading it, and parsing it into a module record.
 
 #### 2. Instantiation
 
-Next, module records are converted into module instances. This is the process of finding a memory location to allocate for every value that will be imported, so that both `export` and `import` point to that same memory.
+Next, module records turn into module instances. This is where memory gets set aside for every value that's going to be imported, so that both `export` and `import` end up pointing at the same spot.
 
-> **Module instance:** a form that combines two things — 'code' and 'state.'
+> **Module instance:** 'code' and 'state,' bundled together.
 
 #### 3. Evaluation
 
-This is the process of running the code to fill that memory with the actual values of the variables.
+This is where the code actually runs and fills that memory with real values.
 
-'Code' on its own can be thought of as a set of instructions, or a 'recipe' for making something. But by itself it can't do anything — it needs 'values' to work together with.
+On its own, 'code' is just a set of instructions, or a 'recipe' for building something. It can't do anything by itself; it needs 'values' to work with.
 
-State becomes the actual 'value' of a variable at a given point in time. (I've said 'state,' but it's more accurate to call it memory.) The 'evaluation' step is what fills in this value.
+State is just a variable's actual 'value' at a given moment. (I keep calling it 'state,' though 'memory' is really the more accurate word.) 'Evaluation' is the step that fills that value in.
 
-**Construction, instantiation, and evaluation** can each happen individually, and asynchronously.
+**Construction, instantiation, and evaluation** can each run on their own, asynchronously.
 
-### Characteristic 1. Static Structure
+### Trait 1: Static Structure
 
 ```jsx
 var foo = 'foo';
@@ -161,16 +161,16 @@ var lib = require(`lib/${foo}`);
 lib.someFunc(); // property lookup
 ```
 
-When you access `lib` through `lib.someFunc`, since `lib` is a dynamic value, a property lookup has to be performed.
+Access `lib` via `lib.someFunc`, and because `lib` is a dynamic value, you're stuck doing a property lookup.
 
 ```jsx
 import * as lib from 'lib';
 lib.someFunc(); // static analysis possible
 ```
 
-ESM, by contrast, can determine information about `lib` statically at import time, which means access can be optimized.
+ESM flips that: it knows everything about `lib` statically at import time, so it can optimize access.
 
-Unlike `CommonJS`, `export` statements can only appear at the top level of ESM. This is a restriction meant to make it easier for compilers to parse ESM, but it's also a good restriction, since there aren't many cases where you need to dynamically define and `export` an API based on a method call.
+Unlike `CommonJS`, an `export` statement can only live at ESM's top level. That's a constraint meant to make ESM easier for compilers to parse, and it's a fair trade, since you rarely need to dynamically define and `export` an API from inside a method call anyway.
 
 ```jsx
 function foo () {
@@ -184,13 +184,13 @@ foo()
 import foo from `lib/${foo}`;
 ```
 
-### Characteristic 2. Bindings, Not Values
+### Trait 2: Bindings, Not Values
 
-As mentioned in the [ESM's evaluation step](#평가) section, `import` and `export` both point to the same memory address.
+As I mentioned back in [ESM's evaluation step](#평가), `import` and `export` both point at the exact same memory address.
 
 ![esm_binding](./images/tree-shaking-module-system/esm_binding.png)
 
-If you change a value at the place where it's `export`ed, that change is reflected wherever it's `import`ed too. The module doing the `export`ing can change the value, but the side doing the `import`ing cannot.
+Change a value where it's `export`ed, and that change shows up wherever it's `import`ed too. The exporting module can change the value; the importing side can't.
 
 ![esm_binding_update](./images/tree-shaking-module-system/esm_binding_update.png)
 
@@ -205,55 +205,55 @@ console.log('a', a); // AAA
 setTimeout(() => console.log('a', a), 1000); // ABC
 ```
 
-In the example above, the variable `a` is `AAA` for 0.5 seconds, but changes to `ABC` after 1 second, and wherever this module is used, that same change is reflected too.
+In the example above, `a` stays `AAA` for half a second, then flips to `ABC` a second in, and anywhere this module gets used sees that same change.
 
-In `CommonJS`, you use the **value** of the module loaded through `require`. Since they aren't pointing at the same memory, even if the exporting side changes the value, the side that did `require` can't use the changed value.
+`CommonJS` works with the **value** of whatever module you loaded through `require`. Since the two sides aren't looking at the same memory, changing the value on the exporting side does nothing for whoever already did the `require`.
 
 ![cjs_binding](./images/tree-shaking-module-system/cjs_binding.png)
 
-When using a module system, the work of resolving reference relationships between modules and allocating memory as above — in other words, building a dependency tree — is carried out. So how does a module with a circular reference get evaluated?
+Using a module system means resolving how modules reference each other and assigning memory like this, in other words, building that dependency tree. So what happens when two modules end up in a circular reference?
 
 ![circular_reference](./images/tree-shaking-module-system/circular_reference.png)
 
-First, let's look at how `CommonJS` behaves.
+Let's start with how `CommonJS` handles it.
 
-`main.js` runs, and the first line of code, `require("./counter.js")`, executes. This loads the `counter` module.
+`main.js` runs, and its first line, `require("./counter.js")`, fires, loading the `counter` module.
 
-The counter module tries to access the `message` variable brought in from main, but **since the main module hasn't finished executing yet, the value of message is undefined.**
+The counter module tries to read the `message` variable it got from main, but **since main hasn't finished running yet, message comes back undefined.**
 
-Since `export`/`require` in CJS don't point to the same memory address, even after the value gets updated in the main module, the counter module will keep printing an undefined value.
+Because `export`/`require` in CJS never share a memory address, counter keeps printing undefined even after main's value gets updated.
 
-ESM, on the other hand, has `export`/`import` pointing to the same memory address, so the `message` variable in `counter.js` will change from undefined to the value 'main complete.'
+ESM works the opposite way. Since `export`/`import` share a memory address, `message` in `counter.js` actually flips from undefined to 'main complete.'
 
-### Summary
+### Recap
 
-We've gone over several characteristics of ESM, and the most important one is that ESM has a **static structure.**
+That's a lot of ESM traits to take in, but the one that matters most is its **static structure.**
 
-Because of that static structure, relationships between modules can be determined at build time, and based on that, it also becomes possible to remove code that isn't used.
+That static structure is exactly what lets tooling map out relationships between modules at build time, and from there, strip out whatever code nobody's using.
 
-In the next section, let's go over the relationship between this characteristic and Tree Shaking, and how webpack and rollup approach Tree Shaking.
+Next, let's connect that trait to Tree Shaking itself, and look at how webpack and rollup each approach it.
 
 ## Tree Shaking
 
-Generally, the term Tree Shaking refers to the process of removing nodes (methods/variables) that aren't connected to the root node.
+Generally, Tree Shaking just means stripping out any node, a method or a variable, that isn't connected to the root.
 
 ![node_tree](./images/tree-shaking-module-system/node_tree.png)
 
-### Supported Modules
+### Which Modules Support It
 
-Tree Shaking is fundamentally applicable to ESM, which allows the module structure to be analyzed statically.
+Tree Shaking, at its core, only works on module structures you can analyze statically, which means ESM.
 
 ```jsx
 module.exports[localStorage.getItem(Math.random())] = () => { … };
 ```
 
-In CommonJS, since you can decide at runtime which module to load, as shown above, the bundler can't easily decide at the build stage which modules to include or exclude.
+CommonJS can decide which module to load at runtime, as above, so a bundler has no easy way to tell at build time what should or shouldn't make the cut.
 
-The internal workings of Tree Shaking can differ slightly from bundler to bundler, but the fact that **'structures that allow static analysis can be better supported'** stays the same.
+The internals differ from bundler to bundler, but one thing holds everywhere: **structures you can statically analyze always get better support.**
 
 ### [webpack] ModuleConcatenationPlugin
 
-Looking at how [webpack's ModuleConcatenationPlugin](https://webpack.js.org/plugins/module-concatenation-plugin/) works helps you understand a bit more about how the CJS and ESM forms affect the final bundle output.
+Looking at how [webpack's ModuleConcatenationPlugin](https://webpack.js.org/plugins/module-concatenation-plugin/) works makes it a lot clearer how CJS and ESM each shape the final bundle.
 
 ```jsx
 // utils.js
@@ -267,7 +267,7 @@ const subtract = (a, b) => a - b;
 console.log(add(1, 2));
 ```
 
-If you build the code above with [optimization.minimize](https://webpack.js.org/configuration/optimization/#optimizationminimize) set to `false`, you get output like this.
+Build the code above with [optimization.minimize](https://webpack.js.org/configuration/optimization/#optimizationminimize) set to `false`, and here's what comes out.
 
 ```jsx
 /******/ (() => { // webpackBootstrap
@@ -284,7 +284,7 @@ console.log(add(1, 2));**
 /******/ })();
 ```
 
-When `minimize` is set to true, work like removing unreferenced functions and stripping comments/whitespace is performed on the output above, and here you can interpret **"the result with unreferenced functions removed"** as the Tree Shaken result.
+Flip `minimize` to true, and unreferenced functions get stripped along with comments and whitespace. That **"result with the unreferenced functions gone"** is what you'd call the Tree Shaken output.
 
 ```jsx
 const { maxBy } = require('lodash-es');
@@ -311,19 +311,19 @@ console.log((0,_utils__WEBPACK_IMPORTED_MODULE_0__/* .add */ .IH)(1, 2));
 })();
 ```
 
-When you build CJS code, `__webpack_require__` ends up included in the bundle output. This is code for using a module dynamically, and it ultimately includes every module defined inside `fns`. (See [this article](https://ui.toast.com/weekly-pick/ko_20190418) for more detail on `__webpack_require__` and related topics.)
+Build CJS code, though, and `__webpack_require__` shows up in the bundle. It's there to let modules load dynamically, which means everything defined inside `fns` gets pulled in, no exceptions. (For more on `__webpack_require__` and the rest, see [this post](https://ui.toast.com/weekly-pick/ko_20190418).)
 
-### [Rollup] AST Analysis
+### [Rollup] Reading the AST
 
 #### TL;DR
 
-`rollup`'s bundling process consists of figuring out dependency relationships to build a graph, converting that graph into an AST (Abstract Syntax Tree) to parse it, and then producing an output that matches the given options.
+`rollup` bundles in three moves: map out dependencies into a graph, turn that graph into an AST (Abstract Syntax Tree) and parse it, then produce output that matches whatever options you gave it.
 
-Rather than removing unnecessary bundles, it works by including whichever modules are judged to belong in the final bundle file.
+It's not subtracting what's unnecessary so much as adding whatever's judged to belong in the final bundle.
 
 #### Step 1. Parsing
 
-Through the AST conversion result, you can determine the module request paths for `import`, `export`, and `re-export` statements.
+The AST conversion is what reveals the module paths behind every `import`, `export`, and `re-export` statement.
 
 ```ts
 function createResolveId(preserveSymlinks: boolean) {
@@ -338,7 +338,7 @@ function createResolveId(preserveSymlinks: boolean) {
 }
 ```
 
-Based on the module path obtained through this process, `rollup` creates the module instance it uses internally.
+Rollup uses whatever module path comes out of that to create the module instance it works with internally.
 
 ```ts
 const module: Module = new Module(
@@ -350,15 +350,15 @@ const module: Module = new Module(
 );
 ```
 
-#### Step 2. Determining the `included` Value
+#### Step 2. Deciding the `included` Value
 
-Depending on the AST syntax, [getNodeConstructor](https://github.com/rollup/rollup/blob/ce3de491b8ff0f61789c1ab61287ca06c9d19382/src/ast/nodes/shared/Node.ts#L216) is called to handle each construct appropriately.
+Depending on the AST syntax, [getNodeConstructor](https://github.com/rollup/rollup/blob/ce3de491b8ff0f61789c1ab61287ca06c9d19382/src/ast/nodes/shared/Node.ts#L216) gets called to handle each construct the right way.
 
-Each of [rollup's AST modules](https://github.com/rollup/rollup/tree/ca86df280288656c66a948e122c36ccee7e06aca/src/ast) commonly contains an `include` method and a `this.included = true;` statement.
+Every one of [rollup's AST modules](https://github.com/rollup/rollup/tree/ca86df280288656c66a948e122c36ccee7e06aca/src/ast) shares an `include` method and a `this.included = true;` line.
 
-This is the act of flipping [ExpressionEntity's `included` value — false the moment the class, its topmost superclass, is created](https://github.com/rollup/rollup/blob/ce3de491b8ff0f61789c1ab61287ca06c9d19382/src/ast/nodes/shared/Expression.ts#L16) — to `true`.
+That's just flipping [`ExpressionEntity`'s `included` value, false the moment its class gets created since it sits at the top of the hierarchy](https://github.com/rollup/rollup/blob/ce3de491b8ff0f61789c1ab61287ca06c9d19382/src/ast/nodes/shared/Expression.ts#L16), over to `true`.
 
-Each AST module commonly implements code that, when a code block is included, sets its `included` value to true and walks every ES node in the current code block to decide the `included` value based on the necessary conditions.
+Every AST module has the same pattern built in: when a code block gets included, set `included` to true, then walk every ES node in that block to decide `included` based on whatever conditions apply.
 
 ```ts
 // example: ast/nodes/LabelStatement.ts
@@ -390,11 +390,11 @@ function render(code: MagicString, options: RenderOptions) {
 }
 ```
 
-In the process of generating the bundle file, the decision is made based on the `included` value determined in Step 2.
+When it's time to generate the bundle file, everything hinges on the `included` value Step 2 settled on.
 
 #### +) @rollup/plugin-commonjs
 
-According to a rollup [issue](https://github.com/rollup/rollup-plugin-commonjs/issues/362), converting to ES6 with [rollup/plugin-commonjs](https://github.com/rollup/plugins/tree/master/packages/commonjs) can make code eligible for Tree Shaking, but whether it's actually supported depends on how `module.exports` is used.
+According to a rollup [issue](https://github.com/rollup/rollup-plugin-commonjs/issues/362), converting to ES6 via [rollup/plugin-commonjs](https://github.com/rollup/plugins/tree/master/packages/commonjs) can make code eligible for Tree Shaking, but whether it actually works depends on how you use `module.exports`.
 
 ```jsx
 // ✅ Tree Shaking possible
@@ -410,55 +410,55 @@ const foo = require('./foo');
 module.exports = foo
 ```
 
-## Wrap-up
+## Wrapping Up
 
-ESM support has recently been added to [Next.js](https://nextjs.org/blog/next-12#es-modules-support-and-url-imports) and [Node.js](https://nodejs.org/api/esm.html#modules-ecmascript-modules), and [most modern browsers already support ESM](https://caniuse.com/es6-module).
+[Next.js](https://nextjs.org/blog/next-12#es-modules-support-and-url-imports) and [Node.js](https://nodejs.org/api/esm.html#modules-ecmascript-modules) have both recently added ESM support, and [most modern browsers already support it](https://caniuse.com/es6-module).
 
-This article was written to help explain why the news of ESM support in the JavaScript ecosystem matters and what impact it has — questions and feedback are always welcome!
+I wrote this to work out why ESM support matters so much across the JavaScript ecosystem, and what kind of impact it actually has. Questions and feedback are always welcome!
 
 ## Appendix
 
-### 1. Supporting Tree Shaking in a Library
+### 1. Making a Library Tree-Shakable
 
-According to the [webpack docs](https://webpack.js.org/guides/tree-shaking/#mark-the-file-as-side-effect-free), tree shaking can be applied through two options.
+According to the [webpack docs](https://webpack.js.org/guides/tree-shaking/#mark-the-file-as-side-effect-free), tree shaking comes down to two options.
 
-- **usedExports:** exports of a module that are actually used
-- **sideEffects:** a module that isn't used and has no sideEffects is skipped
+- **usedExports:** exports a module actually uses
+- **sideEffects:** skip a module that isn't used and has no sideEffects
 
-> A module's sideEffects refer to a specific kind of 'code' — code that runs simply by being imported.
+> A module's sideEffects are a specific kind of 'code': code that runs the moment you import it, nothing more required.
 
 ```jsx
 import 'fooPolyfill';
 import 'bar.css'
 ```
 
-The modules above clearly have side effects, since they affect the application the moment they're imported. From a bundler's point of view, though, since `fooPolyfill` and `bar.css` are only declared as imports and are never directly used or re-exported, they'd be seen as modules that should be Tree Shaken.
+Both modules above clearly have side effects, since importing them affects the app right away. But from a bundler's point of view, `fooPolyfill` and `bar.css` are just declared as imports, never used directly or re-exported, so it would flag them as fair game for Tree Shaking.
 
-But if these two modules disappeared, the application wouldn't work correctly. So, to guarantee the application runs safely, bundlers like webpack and rollup assume by default that **"every module in a library has side effects."**
+But if those two modules actually vanished, the app would break. So to keep things safe by default, bundlers like webpack and rollup assume **every module in a library has side effects.**
 
-The one who can most accurately judge sideEffects still isn't the bundler — it's the developer. That's why telling the bundler about sideEffects is what makes effective Tree Shaking possible. Developers can specify this property as `true / false / an array of files ([foo.js, bar.css])`.
+The bundler still can't judge sideEffects as well as the developer can. That's exactly why telling it about them yourself is what unlocks effective Tree Shaking. You get to set this property to `true`, `false`, or an array of files (`[foo.js, bar.css]`).
 
-Most bundlers determine this by reading the `sideEffects` field in `package.json`, and treat it as true (every module has sideEffects) when it isn't specified.
+Most bundlers read the `sideEffects` field in `package.json` to decide, and treat it as true (every module has side effects) whenever it isn't set.
 
 > "sideEffects is much more effective since it allows to skip whole modules/files and the complete subtree."
 <sup style="top: 0px;">
   <a href="https://webpack.js.org/guides/tree-shaking/#clarifying-tree-shaking-and-sideeffects" target="_blank" rel="noreferer">webpack/tree-shaking#clarifying-tree-shaking-and-sideeffects</a>
 </sup>
 
-sideEffects is **effective** because it can skip entire modules/files and their whole subtree. To sum up, once more, the two factors that affect webpack's Tree Shaking:
+sideEffects is **effective precisely because** it can skip a whole module, file, or subtree at once. To recap the two levers behind webpack's Tree Shaking:
 
-- **sideEffects:** skip if a module that's used elsewhere isn't actually used
-- **usedExports:** remove modules that aren't used by anything
+- **sideEffects:** skip a module that isn't actually used elsewhere
+- **usedExports:** remove a module nothing else uses
 
-If the `usedExports` result were perfectly accurate, the code included in the final bundle would be identical regardless of how `sideEffects` is judged. But figuring out which modules an application actually uses becomes a complicated task the moment the application grows even a little, and that judgment may not be accurate.
+If `usedExports` were always perfectly accurate, `sideEffects` wouldn't even need to weigh in: the final bundle would come out the same either way. But figuring out exactly which modules an app uses gets complicated fast as the app grows, and it isn't always right.
 
-That's why judging `sideEffects` is far more efficient and effective, and combining both results gets you the best possible Tree Shaking outcome. (See Appendix 2.)
+That's why leaning on `sideEffects` is so much more efficient and effective, and combining both gets you the best Tree Shaking result there is. (See Appendix 2.)
 
 #### Keeping the Module Tree Intact
 
-To make good use of the benefits of sideEffects optimization, modules need to keep their tree structure rather than being bundled into a single file.
+To actually get the benefit of sideEffects optimization, modules need to keep their tree structure instead of getting flattened into one file.
 
-If everything is bundled into a single file, then even without sideEffects, there's no module left to skip, so the benefit of sideEffects optimization disappears.
+Bundle everything into a single file, and there's no module left to skip even if sideEffects say you could, so the whole optimization loses its point.
 
 ```jsx
 // userAccount.js
@@ -471,7 +471,7 @@ export const userAccount = {
 };
 ```
 
-If you bundle `userAccount.js`, which uses lodash, together with other modules into a single file, it gets bundled like this.
+Bundle `userAccount.js`, which pulls in lodash, together with everything else into a single file, and here's what comes out.
 
 ```jsx
 // userAccount.js
@@ -495,7 +495,7 @@ const getUserName = () => "John Doe";
 export { checkExistance, getUserName, getUserPhoneNumber, getUserAccount };
 ```
 
-Even if `checkExistance` is judged to be unused, the code that imports lodash doesn't go away.
+Even once `checkExistance` gets flagged as unused, the code importing lodash sticks around.
 
 ```jsx
 /***/ "./node_modules/user-library/dist/index.js":
@@ -534,25 +534,25 @@ var __WEBPACK_AMD_DEFINE_RESULT__;/**
 // ...
 ```
 
-Looking at the bundle output, the modules are judged unused, as shown by `unused harmony exports checkExistance, ...`, but since lodash is in CJS format, it can't be included as a Tree Shaking target.
+Look at the bundle output and you'll see `unused harmony exports checkExistance, ...`, meaning the module got flagged as unused, but lodash is CJS, so it never qualifies for Tree Shaking.
 
-If the module structure had been preserved, `userAccount.js`, which contains lodash, would have been split off into its own file, and **since that module is judged unused, the userAccount.js file itself wouldn't be included — meaning lodash wouldn't be included in the final bundle output either.**
+Keep the module structure intact, though, and `userAccount.js` (lodash and all) would live in its own file. **Flag that module as unused, and the whole userAccount.js file gets dropped, taking lodash with it.**
 
-You can preserve the module structure in rollup with [the preserveModules: true setting](https://rollupjs.org/guide/en/#outputpreservemodules), and other bundlers offer similar features. See [How To Make Tree Shakable Libraries](https://blog.theodo.com/2021/04/library-tree-shaking/) for more detail.
+You can preserve the module structure in rollup with [the preserveModules: true setting](https://rollupjs.org/guide/en/#outputpreservemodules), and other bundlers offer something similar. See [How To Make Tree Shakable Libraries](https://blog.theodo.com/2021/04/library-tree-shaking/) for more detail.
 
 ### 2. Dead Code Elimination vs. Tree Shaking
 
-In the [Tree Shaking](#tree-shaking) section, I explained that 'the term Tree Shaking refers to the process of removing nodes (methods/variables) not connected to the root node,' but Rollup, which first introduced this concept, actually uses a different definition of Tree Shaking.
+Back in [Tree Shaking](#tree-shaking) I said the term means stripping out nodes not connected to the root, but Rollup, the project that coined it, actually defines it differently.
 
 ![dead-code-elimination-vs-tree-shaking](./images/tree-shaking-module-system/dead-code-elimination-vs-tree-shaking.png)
 
-"The process of removing nodes (methods/variables) not connected to the root node" is Dead code elimination, but Rollup's Tree Shaking is live code inclusion (building up only the code that's actually needed).
+"Removing nodes not connected to the root" is actually Dead code elimination, but Rollup's Tree Shaking is live code inclusion: building up only the code you actually need.
 
-In other words, from Rollup's perspective, Tree Shaking is 'the process of evaluating which modules are needed.'
+So from rollup's angle, Tree Shaking is really just 'figuring out which modules are needed.'
 
-Dead code elimination simply determines what code isn't needed in the live bundle; Tree Shaking, conversely, determines what code is needed.
+Dead code elimination asks what's unnecessary in a live bundle; Tree Shaking flips that around and asks what's actually needed.
 
-You'd expect the final result (the JS bundle file) of both processes to be the same, but because of the limits of JavaScript's static analysis, that's actually not the case. Both processes are necessary, and running Tree Shaking with a bundler and then dead code elimination through the terser plugin gets you the best result in terms of bundle size. Since webpack 5 ships with terser-webpack-plugin by default, you could say these two processes are now basically always performed together by default.
+You'd expect both to land on the same final JS bundle, but the limits of JavaScript's static analysis mean they don't. You need both: Tree Shake through the bundler, then run dead code elimination through the terser plugin, and you get the smallest bundle possible. Since webpack 5 bundles terser-webpack-plugin by default, the two effectively always run together now anyway.
 
 ## References
 

@@ -7,162 +7,162 @@ thumbnail: './images/2021_turnover/thumbnail.png'
 
 ![image-thumbnail](./images/2021_turnover/thumbnail.png)
 
-Now that my job search has wrapped up, I want to put together everything I prepared for and experienced along the way. Personally, I want to look back on this roughly two-month journey, and I'm writing this hoping it can be a useful account for anyone who's considering, or currently going through, a job change.
+My job search just wrapped up, so I want to write down everything I prepared and lived through along the way. Partly this is for me, to look back on the last two months. But I'm also hoping it's useful to anyone weighing a move, or already in the middle of one.
 
 ## Why change jobs?
 
-Before starting the job-search journey, finding an answer to this question matters a lot.
+Before you do anything else, answer this question.
 
-The answer confirms how satisfying working at the new team is likely to be, and it becomes the fuel that gets you through a job search that takes a lot of time and effort.
+Your answer tells you how happy you're likely to be on the new team, and it's what carries you through a search that eats up a huge amount of time and energy.
 
-Changing jobs means joining a new organization, but it also means saying goodbye to the one you're currently part of. If your reason for leaving is really a craving for something your current organization could provide, it's worth having a thorough conversation about it first. Every team has its own strengths and weaknesses, so it's not too late to start the job search after taking some time to reflect on whether you might just be running away prematurely.
+Changing jobs means joining somewhere new, but it also means leaving somewhere behind. If what's really driving you is wanting more from your current team, have that conversation first. Every team has its trade-offs, and it's worth honestly asking yourself whether you're solving a real problem or just running from one. You lose nothing by taking that time before you actually start looking.
 
-After weighing a lot of factors, I decided a change was necessary, and I started preparing in earnest starting in November.
+After weighing all of that, I decided a move made sense, and I started preparing in earnest in November.
 
-## Which companies should I apply to?
+## Which companies to apply to?
 
-The kind of company you want depends on why you're changing jobs. Since this is a team I might be with for n+ years, it's worth gathering as much information as possible through every channel available.
+What you're looking for in a company depends entirely on why you're leaving. You might spend years on this next team, so it's worth pulling information from every channel you can find.
 
-The first thing I looked at was whether a company's vision and culture aligned with the direction I wanted to go. At this stage, I relied on public material — the company's product, job descriptions, culture write-ups, and so on. I figured there was no way to know for certain without actually working there, and that I could resolve anything uncertain, or anything I was more curious about, well enough through interviews or by requesting a coffee chat.
+First, I checked whether a company's vision and culture actually matched the direction I wanted to go. At this stage that meant public sources: the product itself, job descriptions, culture pages. There's no way to know for sure without actually working there, so I figured interviews and coffee chats could handle whatever was still unclear.
 
-I wanted to join **"a team that was solving the problems I personally felt mattered, with an organizational culture built around autonomy and responsibility."**
+What I wanted was **"a team solving problems I actually cared about, with a culture built on autonomy and responsibility."**
 
-## Keeping records
+## Keeping a record
 
 ![turnover_notion](./images/2021_turnover/turnover_notion.png)
 
-How long a job search takes varies from person to person, but it usually runs more than two to three months, and carving out separate time for it while still doing your current job isn't easy — which is why **scheduling and keeping records** matters so much.
+How long a search takes varies, but two to three months is typical, and carving out time for it on top of a full-time job is honestly hard. That's exactly why **staying organized and keeping records** matters so much.
 
-I managed everything in Notion, from interview prep to a timeline for each company I applied to, and it turned out to be the single most reliable asset throughout the whole process, start to finish. Even at the final offer-decision stage, I was able to think it through carefully by going back over notes on the questions I'd been asked and how each interview had felt.
+I tracked everything in Notion, from interview prep to a timeline for every company, and it ended up being the one thing I could count on from start to finish. Even when it came time to weigh the final offers, going back through my notes on each interview's questions and how it felt let me think it through properly.
 
-In particular, while putting my resume together, the process of listing out questions I might get asked and drafting answers for them was extremely useful. Even for things I already knew well, hearing the question live in an interview can make the answer come out unstructured, so I tried to think of as many questions as possible and prepare answers ahead of time. **Almost everything I'd be curious about if I were the interviewer ended up actually getting asked by real companies.**
+Writing up my resume was where this paid off most: listing out the questions it might invite, and drafting answers ahead of time. Even things I knew cold could come out garbled the moment an interviewer actually asked, so I tried to anticipate as many questions as I could and write answers in advance. **Almost every question I'd have asked, if I were the one interviewing, came up in a real interview somewhere.**
 
 ## Resume
 
-I leaned heavily on Jbee's [Turnover journal 2: Resume](https://jbee.io/career/2020-turnover-2/) while preparing mine. I built on what that post described, summarized the content from [my public resume](https://so-so.dev/about), and wrote it up on the Wanted resume platform.
+I leaned heavily on Jbee's [Turnover journal 2: Resume](https://jbee.io/career/2020-turnover-2/) while putting mine together, then condensed my [public resume](https://so-so.dev/about) into something I could post on Wanted's resume platform.
 
 ## Technical interviews
 
 ![tech_notion](./images/2021_turnover/tech_notion.png)
 
-After the resume screening, some companies move on to a take-home assignment or a live coding test. Others went straight to an in-person interview.
+After the resume screen, some companies move straight to a take-home assignment or a live coding round. Others skip that and go directly to an in-person interview.
 
-Among the companies I applied to, two ran a live coding test and two ran a take-home assignment. The rest skipped this stage entirely and went straight into the in-person interview process.
+Out of everywhere I applied, two ran a live coding test and two ran a take-home assignment. Everyone else skipped straight to the in-person process.
 
 ### Take-home assignment
 
-Personally, the interview process at the companies that used a take-home assignment was enjoyable and even gave me a bit of growth. The deadlines were seven days and three days respectively, and neither spec was unreasonable for the timeline.
+I actually enjoyed the process at both companies that used a take-home assignment, and I grew a bit from it too. The deadlines were seven days and three days, and neither spec was more than the timeline allowed for.
 
-**While working on the assignment, I rethought everything from scratch, and made sure every part of the code had a reason behind it.** If I'd just carried over a function I'd written in the "past" as-is, both the interviewer looking at that code "now," and I myself, could end up questioning it.
+**Doing the assignment, I rethought everything from zero and made sure every piece of code had a reason behind it.** Copy over a function I wrote in the "past" without a second thought, and both the interviewer reading it "now," and I myself, might end up questioning why it's there.
 
-I'd already worked on plenty of projects at my job, but I rethought things like building highly extensible components, how to handle business logic, layers of responsibility, and folder structure — and as a result, I think I grew a little through doing the assignment.
+I'd already shipped plenty of projects at work, but this pushed me to rethink things like building extensible components, handling business logic, layering responsibility, and organizing folders. I came out of it a little better for it.
 
-> Maybe it was thanks to all that rethinking, but I ended up with a good outcome at both companies.
+> Maybe it was all that rethinking, but both companies came back with good news.
 
-After implementing all the requirements, I went through two or three rounds of self code review. Looking at it again, I ended up refactoring a lot — everything from function naming to the underlying logic.
+Once everything was implemented, I put myself through two or three rounds of self-review, and each pass turned up more to refactor, from function names down to the underlying logic.
 
 ### Live coding test
 
-One company ran an algorithm test, and another had me implement a simple set of requirements in [CodeSandbox](https://codesandbox.io/). This probably varies by person, but both formats were pretty tough for me.
+One company ran an algorithm test; another had me build a small feature live in [CodeSandbox](https://codesandbox.io/). This probably depends on the person, but both wore me out.
 
-Personally, I think that unless algorithms are core to the product's actual domain, they're not a great way to fully assess a candidate's practical ability. With that mindset, I hadn't set aside dedicated time to study algorithms since my very first job search, and the whole live session was rough because of it.
+My honest take: unless algorithms are actually core to the product, they're a shaky way to judge how someone performs on the job. I hadn't specifically studied algorithms since my very first job hunt, so the whole live round was rough.
 
-The CodeSandbox live coding spec was small, but doing it live meant things that normally work just didn't (tunnel vision, basically), and I made a bunch of mistakes I normally wouldn't. The pressure of a tight one-hour window turned out to be pretty significant.
+The CodeSandbox spec itself was small, but going live somehow broke things that normally just work (tunnel vision does that), and I made mistakes I never would otherwise. A one-hour clock hanging over the whole thing added a lot of pressure.
 
-I did get a good outcome from this format too, but I wasn't satisfied with how I performed during it. Looking back, it might have been better to lean toward applying to companies whose process **lets you show your full self.**
+The outcome was fine here too, but I wasn't happy with how I performed in the moment. Looking back, I might have done better leaning toward **companies whose process actually lets you show who you are.**
 
 ### In-person interview
 
-I started preparing for in-person interviews pretty much as soon as I started the job search overall. Some questions were pure knowledge checks, and others asked about experiences based on my resume. The split felt roughly 50/50, so I prepared along those same two tracks.
+I started prepping for in-person interviews almost the moment I started the whole search. Some questions were plain knowledge checks; others dug into experience straight off my resume, roughly an even split. So I prepared along those same two tracks.
 
 **Resume-based**
 
-I looked at my own resume with an interviewer's mindset and worked out questions from it. For example, if I used redux-saga on Project A and then swr on Project B, **of course the interviewer would want to know why the stack changed.**
+I read my own resume like an interviewer and worked out what I'd ask. Say Project A used redux-saga and Project B used swr; **of course someone's going to want to know why the stack changed.**
 
-Beyond that, they'd probably ask about the pros and cons of redux-saga versus swr, and might also be curious how each approach would play out on a much larger or much smaller project.
+From there they'd probably push into the trade-offs between redux-saga and swr, or how each would hold up on a much bigger or much smaller project.
 
-> Even if it wasn't a decision you made yourself, I think it's a fine answer to say, honestly, "this is why it ended up being chosen, and as the project went on, XYZ turned out to be really good (or disappointing)."
+> Even if the decision wasn't yours to make, it's a fine answer to just be honest: here's the reasoning behind it, and here's what turned out great (or disappointing) once the project was underway.
 
-Starting from the keywords in my resume's experience section, I kept chaining follow-up questions and organizing my answers until I genuinely understood them myself.
+Starting from a keyword on my resume, I kept chasing every follow-up question it could lead to, and kept writing until it actually made sense to me.
 
-This was something I started purely for interview prep, but it ended up surfacing gaps in the technical decisions I'd made up to that point, and the process of filling those gaps in felt worthwhile regardless of whether I was ever actually asked about them.
+I only started this exercise to prep for interviews, but it ended up exposing gaps in my own past technical decisions, and filling those in was worth it whether or not anyone ever actually asked.
 
 **Knowledge-based**
 
-I guess the interviews were exhausting enough (...) that I never got around to writing these questions down properly, but knowledge-based questions were mostly short back-and-forth checks, and here are the ones that stuck with me:
+I was apparently too drained after each interview (...) to write these down properly at the time, but the knowledge questions were mostly quick back-and-forth checks. Here are the ones that stuck:
 
-- What are the `async` and `defer` keywords on a script tag?
-- What are the different modes of DOM event propagation? What happens when you call a given event method?
-- Explain the differences between var, let, and const.
-- Explain the iterable and iterator protocols. (I think this came up because my experience section mentioned working with redux-saga.)
+- What do the `async` and `defer` keywords do on a script tag?
+- What are the ways DOM events propagate, and what happens when you call a given event method?
+- Explain the difference between var, let, and const.
+- Explain the iterable and iterator protocols. (Probably came up because my experience section mentioned redux-saga.)
 - Explain reflow, repaint, and layout thrashing.
 
 ### Reverse Interview
 
-Every interview ended with "do you have any questions for us?" Back when I was interviewing as a new grad, I agonized over asking "good questions," but this time around I went in believing an interview isn't just a venue for getting "accepted," so I asked about things I was genuinely curious about, or things that would help me gauge the company's culture.
+Every single interview ended the same way: "anything you'd like to ask us?" As a new grad I used to agonize over sounding smart. This time around I went in believing an interview isn't just a gate you pass through, so I asked whatever I was actually curious about, or whatever would tell me something real about the culture.
 
-I could never fully understand a team's situation from the outside, but these conversations at least let me get a partial read on where my own direction overlapped with theirs, and where it diverged.
+I could never fully read a team from the outside, but these conversations at least showed me, in small ways, where my own priorities lined up with theirs, and where they didn't.
 
 ### Culture interview
 
-I got asked a lot about why I wanted to change jobs, and why I'd applied to this particular team. For culture-interview prep, I leaned a lot on Jbee's [Turnover journal 5: Culture Interview](https://jbee.io/career/2020-turnover-5/).
+I got asked, over and over, why I was leaving and why this particular team. For this one I again leaned on Jbee's [Turnover journal 5: Culture Interview](https://jbee.io/career/2020-turnover-5/).
 
-Since I'm currently on a leave of absence from school, I got asked a lot about my plans around that too. I completely understood the curiosity, but a few interviewers stated a different opinion (that I should finish school as fast as possible) as if it were simply the correct answer, and it was pretty disappointing to feel like I was being pushed to accept the interviewer's opinion as gospel.
+Since I'm on a leave of absence from school, I also got a lot of questions about my plans there. Fair enough. But a few interviewers stated their own opinion (that I should finish school as fast as possible) like it was simply correct, and being nudged to accept someone else's answer as the only right one was disappointing every time.
 
-The culture interview also ended with a chance to ask my own questions, and among the several I asked, there was one whose answer really stuck with me.
+The culture interview also ended with a chance for me to ask questions, and one answer in particular has stayed with me.
 
-**"If the organization starts growing really fast, alignment could start to weaken — how do you think about that?"**
+**"If the org starts growing really fast, doesn't alignment start to break down? How do you think about that?"**
 
-I was already thinking a lot about organizational culture at the time, so the answer gave me a lot of insight. Beyond that, I also asked several questions about the product vision and the kind of team they wanted to build going forward.
+I happened to be thinking a lot about org culture around then, so the answer gave me a lot to chew on. I also asked around the product vision, and what kind of team they wanted to build going forward.
 
 ## Compensation negotiation
 
 ![timeline_notion](./images/2021_turnover/timeline_notion.png)
 
-Thankfully, I got good news from several of the companies I'd applied to, and moved on to compensation negotiations. Unlike interview prep, this wasn't something I could really prepare for ahead of time, and it ended up being the hardest part of the whole process.
+A number of companies came back with good news, and from there it moved into compensation talks. Unlike interview prep, there wasn't much I could rehearse ahead of time, and this ended up being the hardest part of the whole thing.
 
-Every single company asked for my **desired salary** first, and since I didn't know much about their internal situation, I didn't share a number at first. But since the negotiation itself couldn't move forward without one, I thought it over and eventually gave them a figure.
+Every company opened by asking my **desired salary**. I held off at first since I had no read on their budget, but the negotiation just doesn't move without a number, so eventually I thought it over and gave one.
 
-After spending the whole interview process talking about the company's vision and culture, suddenly having to talk money made it hard to organize my thoughts. Whatever number I landed on, I couldn't shake the worry of "is it okay to ask for this much?"
+After spending the whole interview process talking vision and culture, switching to money mid-conversation scrambled my thinking more than I expected. Whatever number I landed on, "is it okay to ask for this much?" wouldn't leave me alone.
 
-Looking back now, I think I spent way too long agonizing over it alone. Wanting a billion won doesn't mean the company is obligated to just hand it over, and stating a billion won as my desired salary doesn't mean everything I demonstrated throughout the interview process just vanishes and only the number "a billion" remains.
+Looking back, I spent way more time on this alone than it deserved. Asking for a billion won doesn't obligate anyone to hand it over, and naming a billion won as my number doesn't erase everything I showed them in the interviews and leave just "a billion" behind.
 
-> Granted, based on my actual experience, if I really did ask for a billion won, there's probably a version of events where everything I showed during the interviews does get overshadowed. The "billion won" in this post is just an example figure. 😉
+> Granted, in real life, actually asking for a billion won probably would make everything you showed in the interviews vanish behind that number. "A billion won" here is just a stand-in figure. 😉
 
-There's no need to always aim high, and no need to lowball yourself out of over-thinking it either. Salary is obviously a pretty important factor in any job search. I'd recommend laying out a bunch of scenarios and thinking through them — how much you'd want if you did move, whether you'd rather just stay at a company you're already well-adjusted to if the gap isn't big enough, and so on. Working through enough scenarios will gradually narrow the number down.
+There's no need to always aim high, and no need to talk yourself down out of second-guessing either. Salary obviously matters a lot in any job search. I'd lay out every scenario you can think of: what you'd want if you moved, whether you'd rather just stay somewhere you're already settled if the gap isn't big enough, and so on. Work through enough of these and the number narrows itself.
 
-I'm honestly not sure that thinking about it longer gets you a better answer. So I generally mulled it over for about a day and then replied. I figured that moving the process forward meant getting back to the HR contact quickly to keep the conversation going, rather than sitting alone with the question for too long.
+I honestly don't know if agonizing longer gets you a better number. So I generally gave myself about a day and then replied. Getting back to the recruiter quickly and moving the conversation along seemed like a better use of time than sitting with the question alone.
 
-### When having the conversation
+### When you're actually negotiating
 
-⚠️ This isn't know-how for "negotiating" the offer itself. Since an offer negotiation is really just another kind of work conversation, this is closer to how I think that conversation can be carried out a little more efficiently.
+⚠️ This isn't a trick for squeezing a better number out of an offer. An offer negotiation is really just another work conversation, so this is more about running that conversation efficiently.
 
-- If you feel pressured, or find yourself struggling with an answer, **just honestly ask for time to think it over.** Changing jobs is not a small decision, and it's even less of one to rush. If a company can't even spare you a single day, doesn't that say something about how little slack they have? 🤔
-- Most offer letters are meant to stay confidential in principle, so it's fine to only share whatever's necessary during the negotiation.
-- Think through **the basis for your desired salary** ahead of time. It could be another company's offer letter, or it could be that you have exactly the experience this company needs. Handing over your reasoning along with your desired terms can make the conversation go a lot more smoothly.
+- If you feel cornered, or you're not sure how to answer, **just say so and ask for time to think it over.** Changing jobs isn't small, and it's the last thing you should rush. And if a company can't spare you even a day, what does that tell you about how much room they actually have? 🤔
+- Most offer letters are supposed to stay confidential, so it's fine to only share what's actually necessary as you go.
+- Work out **your reasoning for the number** ahead of time. Maybe it's another offer letter, maybe it's experience the company specifically needs. Handing over your reasoning along with the number tends to make the whole conversation easier.
 
 ### Stock options
 
-If you're joining a startup, stock options can come up as well, and it's worth thinking in advance about the split between cash compensation and stock options. Whether you weight things more toward stock options or more toward cash is a personal choice — there's no objectively better option or correct answer.
+If you're joining a startup, stock options usually come up too, so it's worth thinking beforehand about how you want cash and equity to split. Leaning more toward stock or more toward cash is a personal call. Neither one is objectively better.
 
 ### Other Story
 
-At one company, my offer got rescinded right after I stated my desired salary, and it left me pretty confused. I never expected stating a desired salary to end up being the "final interview," but that's basically how it played out, which was disappointing. I get that this can happen when the gap between two sides' expectations is too wide, but it was jarring that things went so differently from how it started — right after the final offer, they'd told me, at the very first stage of the negotiation, "let's keep talking this through together."
+One company rescinded my offer right after I named a number, and it threw me. I never expected stating a desired salary to function as a "final interview," but that's basically what happened, and it stung. I get that a wide enough gap in expectations can do that, but it was still jarring: right after they told me I'd passed, the first thing they said going into negotiations was, "let's keep talking this through together."
 
-I'm sharing this story to say that it's okay not to be too shaken even if something like this happens to you. You'll have no regrets if you speak according to your own convictions. Everyone has their own convictions, and I don't think any of them are "wrong."
+I'm including this to say: if something like this happens to you, it's fine to not let it shake you too badly. Speak from your own convictions and you won't have regrets. Everyone's convictions are different, and none of them are wrong.
 
 ## Rest plans
 
 ![vacation_notion](./images/2021_turnover/vacation_notion.png)
 
-After leaving my job, I ended up with a fairly long stretch of time off. With COVID making it impossible to meet people or travel, I've been thinking about how to make the most of a break like this that I probably won't get again. There's no "right" way to rest, but I still want to fill it with things that feel meaningful to me.
+After leaving, I ended up with a real stretch of time off. With COVID ruling out meeting people or traveling, I've been thinking about how to spend a break like this well, one I probably won't get again. There's no such thing as resting "well," really, but I still want to fill it with things that feel worthwhile to me.
 
-I made a list of things I've wanted to do and things I think I need, and sketched out a rough daily routine ahead of time.
+I made a list of things I've wanted to try and things I figured I needed, and sketched out a rough daily routine in advance.
 
 ![lifecycle_notion](./images/2021_turnover/lifecycle_notion.png)
 
-I've been getting my flipped sleep schedule back on track, and reading the books people gave me through "Chaek-Santa" — a Secret-Santa-style book gift exchange — when I left the company. There's a nagging worry that stepping away from development for too long isn't great, so I'm also chipping away at the side projects I'd kept putting off, trying not to lose my feel(?) for coding.
+I've been fixing my flipped sleep schedule, and reading the books people gave me through "Chaek-Santa," a Secret-Santa-style book swap, when I left the company. There's a nagging fear that stepping away from code for too long is a bad idea, so I'm also chipping away at side projects I'd kept putting off, trying not to lose my feel(?) for development.
 
-Looking back at these roughly two months of job searching, I remember it as a period that had plenty of hard moments, but also taught me a lot in many different ways. I'm grateful to everyone who shared so much with me along the way.
+Looking back on these two months, there was plenty that was hard, but I'll remember it as a stretch that taught me a lot, in more ways than one. I'm grateful to everyone who talked me through it.
 
-The job search wrapped up well. I hope to write this next chapter of my career into just as good a story.
+The search ended well. Here's hoping the next chapter of my career turns out to be just as good a story.
