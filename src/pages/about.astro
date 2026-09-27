@@ -1,16 +1,5 @@
 ---
-import { getEntry, render } from 'astro:content'
-import BaseLayout from '../layouts/BaseLayout.astro'
-import { SITE } from '../site.config'
-import '../styles/resume.css'
-
-const resume = await getEntry('about', 'resume-ko')
-if (!resume) throw new Error('content/__about/resume-ko.md is missing')
-const { Content } = await render(resume)
+import AboutView from '../views/AboutView.astro'
 ---
 
-<BaseLayout title={SITE.resume.title} description={SITE.resume.description} image={SITE.resume.thumbnail}>
-  <div class="about">
-    <Content />
-  </div>
-</BaseLayout>
+<AboutView lang="en" />

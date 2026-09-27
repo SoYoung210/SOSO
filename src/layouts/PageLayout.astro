@@ -2,21 +2,28 @@
 import BaseLayout from './BaseLayout.astro'
 import Top from '../components/Top.astro'
 import ThemeSwitch from '../components/ThemeSwitch.astro'
+import LangSwitch from '../components/LangSwitch.astro'
 import Footer from '../components/Footer.astro'
+import { homeUrl } from '../lib/posts'
 import { SITE } from '../site.config'
 
 type Props = import('astro/types').ComponentProps<typeof BaseLayout>
 
-const isRoot = Astro.url.pathname === '/'
+const { lang, alternates = {} } = Astro.props
+const home = homeUrl(lang)
+const isHome = Astro.url.pathname === home
 ---
 
 <BaseLayout {...Astro.props}>
-  <Top isRoot={isRoot} />
+  <Top home={home} isHome={isHome} />
   <div class="container">
-    <ThemeSwitch />
-    {isRoot && (
+    <div class="switch-container">
+      <LangSwitch lang={lang} alternates={alternates} />
+      <ThemeSwitch />
+    </div>
+    {isHome && (
       <h1 class="home-header">
-        <a href="/" class="link">
+        <a href={home} class="link">
           {SITE.title}
         </a>
       </h1>

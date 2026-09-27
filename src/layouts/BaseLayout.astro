@@ -11,19 +11,14 @@ import '../styles/theme.css'
 
 import BaseHead from '../components/BaseHead.astro'
 import Integrations from '../components/Integrations.astro'
-import { SITE } from '../site.config'
 import { THEME_KEY } from '../lib/theme'
+import { LANG_META } from '../i18n/ui'
 
-interface Props {
-  title: string
-  description?: string
-  image?: string
-  keywords?: readonly string[]
-}
+type Props = import('astro/types').ComponentProps<typeof BaseHead>
 ---
 
 <!doctype html>
-<html lang={SITE.lang}>
+<html lang={LANG_META[Astro.props.lang].htmlLang}>
   <head>
     <BaseHead {...Astro.props} />
     <script is:inline>

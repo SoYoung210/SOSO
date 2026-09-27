@@ -2,14 +2,15 @@
 import { SITE } from '../site.config'
 
 interface Props {
-  isRoot: boolean
+  home: string
+  isHome: boolean
 }
-const { isRoot } = Astro.props
+const { home, isHome } = Astro.props
 ---
 
 <div class="top">
-  {!isRoot && (
-    <a href="/" class="link">
+  {!isHome && (
+    <a href={home} class="link">
       {SITE.title}
     </a>
   )}

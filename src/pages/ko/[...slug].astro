@@ -1,0 +1,12 @@
+---
+import PostView from '../../views/PostView.astro'
+import { missingTranslationRedirects, postPaths } from '../../lib/posts'
+
+export const getStaticPaths = async () => [...(await postPaths('ko')), ...(await missingTranslationRedirects('ko'))]
+
+type Props = import('astro/types').ComponentProps<typeof PostView> | { redirectTo: string }
+
+if ('redirectTo' in Astro.props) return Astro.redirect(Astro.props.redirectTo, 308)
+---
+
+<PostView {...Astro.props} />

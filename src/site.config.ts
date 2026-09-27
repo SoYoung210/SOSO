@@ -1,10 +1,7 @@
 export const SITE = {
   title: 'SOSOLOG',
-  description: 'Blog posted about ...',
   author: 'SO_YOUNG',
-  introduction: '📝 소소하게 끄적이는 개발로그',
   siteUrl: 'https://so-so.dev',
-  lang: 'ko',
   social: {
     x: 'soyoung__ee',
     github: 'SoYoung210',

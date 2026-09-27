@@ -1,5 +1,11 @@
 @import url('https://cdn.jsdelivr.net/gh/tonsky/FiraCode@1.206/distr/fira_code.css');
 
+.translation-note {
+  margin-top: -0.4rem;
+  font-size: 13px;
+  color: var(--muted);
+}
+
 .post-container {
   margin-bottom: 3em;
   word-break: keep-all;

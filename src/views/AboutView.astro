@@ -1,0 +1,34 @@
+---
+import { getCollection, render } from 'astro:content'
+import { getRelativeLocaleUrl } from 'astro:i18n'
+import BaseLayout from '../layouts/BaseLayout.astro'
+import LangSwitch from '../components/LangSwitch.astro'
+import { LANGS, type Alternates, type Lang } from '../i18n/ui'
+import { SITE } from '../site.config'
+import '../styles/resume.css'
+
+interface Props {
+  lang: Lang
+}
+
+const { lang } = Astro.props
+const [resume] = await getCollection('about', (entry) => entry.data.lang === lang)
+if (!resume) throw new Error(`No resume with lang: '${lang}' in content/__about`)
+const { Content } = await render(resume)
+const alternates: Alternates = Object.fromEntries(LANGS.map((code) => [code, getRelativeLocaleUrl(code, 'about')]))
+---
+
+<BaseLayout
+  lang={lang}
+  title={SITE.resume.title}
+  description={SITE.resume.description}
+  image={SITE.resume.thumbnail}
+  alternates={alternates}
+>
+  <div class="about">
+    <div class="switch-container">
+      <LangSwitch lang={lang} alternates={alternates} />
+    </div>
+    <Content />
+  </div>
+</BaseLayout>

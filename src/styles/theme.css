@@ -136,9 +136,42 @@ summary {
   }
 }
 
-/* theme switch */
+/* language + theme switches */
 .switch-container {
-  text-align: right;
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  gap: 14px;
+}
+
+.lang-switch {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-family: 'Catamaran', sans-serif;
+  font-size: 14px;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  line-height: 24px;
+
+  .current {
+    color: var(--heading);
+  }
+
+  a {
+    color: var(--subtle);
+    transition: color 0.2s;
+
+    &:hover,
+    &:focus-visible {
+      color: var(--heading);
+    }
+  }
+
+  .divider {
+    color: var(--subtle);
+    font-weight: 400;
+  }
 }
 
 .theme-switch {

@@ -44,6 +44,7 @@ try {
   await fs.writeFile(dest, contents, { flag: 'wx' })
 
   console.log(`\nCreated ${path.relative(process.cwd(), dest)}`)
+  console.log(`Add the English version next to it as ${toFileName(title)}.en.md (see scripts/translation-guide.md).`)
 } finally {
   rl.close()
 }

@@ -3,6 +3,7 @@ title: '[번역] Kubernetes Services simply visually explained'
 date: 2020-01-02 18:12:43
 category: k8s
 thumbnail: './images/thumbnail.jpeg'
+translate: false
 ---
 
 ![image-thumbnail](./images/thumbnail.jpeg)

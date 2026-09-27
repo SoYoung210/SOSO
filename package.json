@@ -12,7 +12,8 @@
     "preview": "astro preview",
     "check": "astro check",
     "format": "prettier --write .",
-    "post": "node scripts/new-post.ts"
+    "post": "node scripts/new-post.ts",
+    "check:translations": "node scripts/check-translations.ts"
   },
   "engines": {
     "node": ">=22.12"

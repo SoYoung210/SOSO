@@ -1,8 +1,17 @@
 ---
 import { SITE } from '../site.config'
+
+interface Props {
+  /** Language-independent post path, e.g. `react/scoped-context`. */
+  slug: string
+}
+
+// Both language versions share one issue. Its title is the Gatsby-era pathname without the leading
+// slash (percent-encoded, e.g. `react/scoped-context/`), which is what `issue-term="pathname"` created.
+const issueTerm = `${encodeURI(Astro.props.slug)}/`
 ---
 
-<div class="utterances-root" data-repo={SITE.utterancesRepo}></div>
+<div class="utterances-root" data-repo={SITE.utterancesRepo} data-issue-term={issueTerm}></div>
 
 <script>
   const root = document.querySelector<HTMLElement>('.utterances-root')
@@ -13,9 +22,8 @@ import { SITE } from '../site.config'
     Object.entries({
       src: 'https://utteranc.es/client.js',
       repo: root.dataset.repo!,
-      branch: 'master',
-      // Comments are matched by pathname: URLs must stay identical to the Gatsby site.
-      'issue-term': 'pathname',
+      branch: 'main',
+      'issue-term': root.dataset.issueTerm!,
       theme: themeFor(document.body.classList.contains('dark')),
       crossorigin: 'anonymous',
     }).forEach(([key, value]) => script.setAttribute(key, value))

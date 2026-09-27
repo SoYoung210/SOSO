@@ -13,10 +13,15 @@ import { rehypeLegacyHeadingIds } from './src/lib/rehype-legacy-heading-ids.ts'
 
 export default defineConfig({
   site: 'https://so-so.dev',
-  // Gatsby served every page as `/<path>/`. Utterances maps comments by pathname,
-  // so this must never change.
+  // Gatsby served every page as `/<path>/`; keep it so existing links keep working.
   trailingSlash: 'always',
   build: { format: 'directory' },
+  // English lives at the root, Korean under /ko/.
+  i18n: {
+    locales: ['en', 'ko'],
+    defaultLocale: 'en',
+    routing: { prefixDefaultLocale: false },
+  },
   integrations: [
     expressiveCode({
       themes: [sosoCodeTheme],
@@ -32,7 +37,7 @@ export default defineConfig({
       defaultProps: { wrap: false },
     }),
     react(),
-    sitemap(),
+    sitemap({ i18n: { defaultLocale: 'en', locales: { en: 'en-US', ko: 'ko-KR' } } }),
   ],
   markdown: {
     processor: unified({

@@ -1,8 +1,9 @@
 ---
 import PageLayout from '../layouts/PageLayout.astro'
+import { t } from '../i18n/ui'
 ---
 
-<PageLayout title="404: Not Found">
-  <h1>Not Found</h1>
-  <p>You just hit a route that doesn&#39;t exist... the sadness.</p>
+<PageLayout lang="en" title={t('en', 'notFoundTitle')}>
+  <h1>{t('en', 'notFoundHeading')}</h1>
+  <p>{t('en', 'notFoundBody')}</p>
 </PageLayout>

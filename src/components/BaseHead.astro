@@ -1,16 +1,21 @@
 ---
+import { LANG_META, t, type Alternates, type Lang } from '../i18n/ui'
 import { SITE } from '../site.config'
 
 interface Props {
+  lang: Lang
   title: string
+  alternates?: Alternates
   description?: string
   image?: string
   keywords?: readonly string[]
 }
 
-const { title, description = SITE.description, image, keywords = [] } = Astro.props
+const { lang, title, alternates = {}, description = t(lang, 'description'), image, keywords = [] } = Astro.props
 const fullTitle = `${title} | ${SITE.title}`
 const canonical = new URL(Astro.url.pathname, Astro.site)
+const absolute = (path: string) => new URL(path, Astro.site).href
+const rss = lang === 'en' ? '/rss.xml' : `/${lang}/rss.xml`
 ---
 
 <meta charset="utf-8" />
@@ -19,12 +24,17 @@ const canonical = new URL(Astro.url.pathname, Astro.site)
 <meta name="description" content={description} />
 {keywords.length > 0 && <meta name="keywords" content={keywords.join(', ')} />}
 <link rel="canonical" href={canonical} />
+{Object.entries(alternates).map(([code, href]) => (
+  <link rel="alternate" hreflang={LANG_META[code as Lang].htmlLang} href={absolute(href)} />
+))}
+{alternates.en && <link rel="alternate" hreflang="x-default" href={absolute(alternates.en)} />}
 <link rel="icon" href="/favicon.ico" sizes="any" />
 <link rel="apple-touch-icon" href="/favicon.png" />
-<link rel="alternate" type="application/rss+xml" title={SITE.title} href="/rss.xml" />
+<link rel="alternate" type="application/rss+xml" title={SITE.title} href={rss} />
 <link rel="sitemap" href="/sitemap-index.xml" />
 
 <meta property="og:type" content="website" />
+<meta property="og:locale" content={LANG_META[lang].ogLocale} />
 <meta property="og:title" content={title} />
 <meta property="og:description" content={description} />
 <meta property="og:url" content={canonical} />

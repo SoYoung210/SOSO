@@ -1,7 +1,14 @@
 ---
+import { getRelativeLocaleUrl } from 'astro:i18n'
 import { Image } from 'astro:assets'
 import profile from '../../content/assets/profile.png'
+import { t, type Lang } from '../i18n/ui'
 import { SITE } from '../site.config'
+
+interface Props {
+  lang: Lang
+}
+const { lang } = Astro.props
 ---
 
 <div class="bio">
@@ -10,10 +17,10 @@ import { SITE } from '../site.config'
       <Image class="author-image" src={profile} alt={SITE.author} width={72} height={72} />
       <div class="author-name">
         <span class="author-name-prefix">👋</span>
-        <a href="/about/" class="author-name-content">
+        <a href={getRelativeLocaleUrl(lang, 'about')} class="author-name-content">
           <span>@{SITE.author}</span>
         </a>
-        <div class="author-introduction">{SITE.introduction}</div>
+        <div class="author-introduction">{t(lang, 'introduction')}</div>
         <p class="author-socials">
           <a href={`https://github.com/${SITE.social.github}`}>GitHub</a>
           <a href={`https://x.com/${SITE.social.x}`}>X (Twitter)</a>

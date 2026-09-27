@@ -1,0 +1,102 @@
+---
+import { getImage } from 'astro:assets'
+import { render } from 'astro:content'
+import PageLayout from '../layouts/PageLayout.astro'
+import Bio from '../components/Bio.astro'
+import Utterances from '../components/Utterances.astro'
+import { formatDate, LANG_META, t } from '../i18n/ui'
+import { excerpt, getTranslation, postAlternates, postLang, postSlug, postUrl, type Post } from '../lib/posts'
+import '../styles/post.css'
+
+interface Props {
+  post: Post
+  previous: Post | null
+  next: Post | null
+}
+
+const { post, previous, next } = Astro.props
+const lang = postLang(post)
+const { Content, headings } = await render(post)
+const alternates = await postAlternates(post)
+const thumbnail = post.data.thumbnail
+  ? new URL((await getImage({ src: post.data.thumbnail, width: 800, format: 'jpg' })).src, Astro.site).href
+  : undefined
+
+// English pages live at the URLs the Korean posts used to have, so old links may carry Korean heading
+// anchors (e.g. `#정의`). Translations keep the same headings in the same order: map them by position.
+const original = lang === 'en' ? await getTranslation(post, 'ko') : undefined
+let anchorAliases: Record<string, string> = {}
+if (original) {
+  const originalHeadings = (await render(original)).headings
+  if (originalHeadings.length === headings.length) {
+    anchorAliases = Object.fromEntries(
+      originalHeadings.map((heading, i) => [heading.slug, headings[i].slug]).filter(([from, to]) => from !== to),
+    )
+  }
+}
+---
+
+<PageLayout
+  lang={lang}
+  title={post.data.title}
+  description={excerpt(post.body, 283)}
+  image={thumbnail}
+  alternates={alternates}
+>
+  <h1>{post.data.title}</h1>
+  <p class="post-date">{formatDate(post.data.date, lang)}</p>
+  {original && (
+    <p class="translation-note">
+      {t(lang, 'translatedFrom')}{' '}
+      <a href={postUrl(original)} hreflang={LANG_META.ko.htmlLang}>
+        {t(lang, 'koreanOriginal')}
+      </a>
+      .
+    </p>
+  )}
+  <div class="post-container">
+    <Content />
+  </div>
+  <hr class="custom-hr" />
+  <Bio lang={lang} />
+  <ul class="navigator">
+    <li>
+      {previous && (
+        <a href={postUrl(previous)} rel="prev">
+          ← {previous.data.title}
+        </a>
+      )}
+    </li>
+    <li>
+      {next && (
+        <a href={postUrl(next)} rel="next">
+          {next.data.title} →
+        </a>
+      )}
+    </li>
+  </ul>
+  <Utterances slug={postSlug(post)} />
+  {Object.keys(anchorAliases).length > 0 && (
+    <script type="application/json" id="anchor-aliases" set:html={JSON.stringify(anchorAliases)} />
+  )}
+</PageLayout>
+
+<script>
+  import mediumZoom from 'medium-zoom'
+
+  mediumZoom('.post-container img:not(a img)', { margin: 36 })
+
+  const aliasData = document.getElementById('anchor-aliases')
+  if (aliasData) {
+    const aliases: Record<string, string> = JSON.parse(aliasData.textContent ?? '{}')
+    const followAlias = () => {
+      const id = decodeURIComponent(location.hash.slice(1))
+      const target = aliases[id]
+      if (!id || document.getElementById(id) || !target) return
+      history.replaceState(null, '', `#${encodeURIComponent(target)}`)
+      document.getElementById(target)?.scrollIntoView()
+    }
+    followAlias()
+    window.addEventListener('hashchange', followAlias)
+  }
+</script>

@@ -17,3 +17,6 @@ pnpm-debug.log*
 
 # macOS
 .DS_Store
+
+# private Claude notes
+CLAUDE.local.md

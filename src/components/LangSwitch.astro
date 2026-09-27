@@ -1,0 +1,37 @@
+---
+import { LANG_META, LANGS, t, type Alternates, type Lang } from '../i18n/ui'
+import { homeUrl } from '../lib/posts'
+
+interface Props {
+  lang: Lang
+  alternates: Alternates
+}
+
+const { lang, alternates } = Astro.props
+---
+
+<nav class="lang-switch" aria-label={t(lang, 'switchLanguage')}>
+  {LANGS.map((code, index) => (
+    <>
+      {index > 0 && (
+        <span class="divider" aria-hidden="true">
+          |
+        </span>
+      )}
+      {code === lang ? (
+        <span class="current" aria-current="true" title={LANG_META[code].name}>
+          {LANG_META[code].label}
+        </span>
+      ) : (
+        <a
+          href={alternates[code] ?? homeUrl(code)}
+          hreflang={LANG_META[code].htmlLang}
+          lang={LANG_META[code].htmlLang}
+          title={LANG_META[code].name}
+        >
+          {LANG_META[code].label}
+        </a>
+      )}
+    </>
+  ))}
+</nav>
