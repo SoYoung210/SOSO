@@ -11,7 +11,7 @@ Babel은  ES6+ 코드를 ES5로 변환하는 도구이다. 이 문장만 읽으�
 
 예를 들어 `Promise`, `Object.assign`, `Array.from` 등은 ES5로 대체할 Syntax가 없기 때문에 변환되지 않는다.
 
-```jsx{2,7,13,18}
+```jsx {2,7,13,18}
 // Yes! I can Do!
 // Before
 const helloBabel = () => {
@@ -71,7 +71,7 @@ import "regenerator-runtime/runtime";
 
 > @babel/plugin-transform-runtime에서도 `corejs: 2 | 3 | false`를 적용할 수 있다. 이 내용은 [하단](https://so-so.dev/web/you-dont-know-polyfill#babel-plugin-transform-runtime)에서 자세히 다룬다.
 
-```jsx{6,9}
+```jsx {6,9}
 // https://github.com/zloirock/core-js/blob/v2/modules/_export.js
 
 var $export = function (type, name, source) {
@@ -149,7 +149,7 @@ new Promise(resolve => resolve(1))
 
 위 코드는 transpile 과정을 거치면 다음과 같이 변한다. `Promise` 전역 객체를 직접 수정하지 않고 내부 객체를 생성하는 방식이다.
 
-```jsx{3}
+```jsx {3}
 var _promise = require("babel-runtime/core-js/promise");
 
 var _promise2 = _interopRequireDefault(_promise);
@@ -169,7 +169,7 @@ class Circle {}
 
 `@babel/plugin-transform-runtime`이 없을 때는 아래와 같이 변환된다.
 
-```js{1,6}
+```js {1,6}
 function _classCallCheck(instance, Constructor) {
   //...
 }
@@ -183,7 +183,7 @@ var Circle = function Circle() {
 
 `@babel/plugin-transform-runtime`을 사용하면 매번 helper 함수를 생성하지 않고 `@babel/runtime`, 혹은 `corejs`를 참조하는 방식으로 변경된다.
 
-```js{1,9}
+```js {1,9}
 var _classCallCheck2 = require("@babel/runtime/helpers/classCallCheck");
 
 var _classCallCheck3 = _interopRequireDefault(_classCallCheck2);
@@ -240,7 +240,7 @@ import 'core-js';
 
 transpile 하는 시작점에 import된 `core-js`모듈과 `regenerator-runtime`모듈을 babelrc에서 지정한 `target`에 맞게 변경한다.
 
-```js{1,14}
+```js {1,14}
 // modern browser
 module.exports = {
   "presets": [
@@ -349,7 +349,7 @@ User-Agent는 [polyfill-useragent-normaliser](https://github.com/Financial-Times
 
 polyfill-library는 전역 객체를 수정하는 방식이다.
 
-```jsx{2,15}
+```jsx {2,15}
 // https://github.com/Financial-Times/polyfill-library/blob/master/polyfills/Array/isArray/polyfill.js
 CreateMethodProperty(Array, 'isArray', function isArray(arg) {
   return IsArray(arg);
@@ -388,7 +388,7 @@ https://polyfill.io/v3/polyfill.min.js?features=default
 
 특정 기능만 사용하고 싶다면 **feature** 파라미터로, 제외하고 싶은 polyfill이 있다면 **excludes**로 명시해 주면 된다.
 
-```md{2,3}
+```md {2,3}
 https://cdn.polyfill.io/v3/polyfill.min.js
 ?features=fetch,IntersectionObserver
 &excludes=Document
@@ -396,7 +396,7 @@ https://cdn.polyfill.io/v3/polyfill.min.js
 
 polyfill을 load 할 때 User Agent 값과 관계없이 항상 load 하도록 설정하고 싶다면 `flags=always` 옵션을 활성화하면 된다. flags=always로 요청할 때, 사용하고자 하는 polyfill이 브라우저에 구현되어 있는지 확인하는 옵션은 `flags=always, gated`이다.
 
-```md{3}
+```md {3}
 https://cdn.polyfill.io/v2/polyfill.min.js
 ?features=fetch,IntersectionObserver&
 flags=always,gated

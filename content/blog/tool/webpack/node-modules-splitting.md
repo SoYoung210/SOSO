@@ -41,7 +41,7 @@ cacheGroups: {
 
 위 규칙을 담은 config는 다음과 같습니다.
 
-```js{7, 14}
+```js {7, 14}
 cacheGroups: {
   default: false,
   vendors: false,

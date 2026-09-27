@@ -69,7 +69,7 @@ webpack mode에 따라 bundle된 JS파일의 이름을 해시값으로 할지, r
 
 여러 webpack build를 서로 공유할 수 있는 기능이며 다른 webpack build결과물을  component혹은 라이브러리처럼 사용할 수 있습니다.
 
-```js{14,15,18,20}
+```js {14,15,18,20}
 // Header컴포넌트를 공유하는 App1의 webpack.config.js
 
 const { ModuleFederationPlugin } = require("webpack").container;
@@ -103,7 +103,7 @@ Module Federation의 옵션은 다음과 같습니다.
 - `exposes`: 다른 앱에서 사용될 때 쓰이는 이름과 대상 파일
 - `shared`: 공유할 module이름(위 예시에서 react와 react-dom을 중복호출하지 않습니다.)
 
-```jsx{16}
+```jsx {16}
 // Header컴포넌트를 사용하는 App2의 webpack.config.js
 
 const { ModuleFederationPlugin } = require("webpack").container;
@@ -134,7 +134,7 @@ module.exports = {
 
 App2의 HTML파일에 `App1`에서 Expose된 `remoteEntry.js`파일을 가져오는 스크립트를 추가합니다.
 
-```html{4}
+```html {4}
 // App2 index.html
 <html>
   <head>
@@ -148,7 +148,7 @@ App2의 HTML파일에 `App1`에서 Expose된 `remoteEntry.js`파일을 가져오
 
 이제 App2에서 app1의 Header컴포넌트를 사용할 수 있습니다.
 
-```jsx{3}
+```jsx {3}
 import React from 'react';
 
 const Header = React.lazy(() => import('app1/Header'));
@@ -194,7 +194,7 @@ package.json에서의 `exports` 와 `imports` field를 사용할 수 있으�
 
 중첩된 속성에 대한 내용까지 파악하여 tree-shaking을 지원합니다.
 
-```jsx{2,3,11}
+```jsx {2,3,11}
 // inner.js
 export const a = 1;
 export const b = 2;
@@ -212,7 +212,7 @@ console.log(module.inner.a);
 
 ### Inner-module tree-shaking
 
-```jsx{1,7}
+```jsx {1,7}
 import { something } from './something';
 
 function usingSomething() {

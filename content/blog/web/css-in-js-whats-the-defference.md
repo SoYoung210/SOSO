@@ -155,8 +155,8 @@ const Container = styled.div`
 
 (아쉽게도 '그 브라우저'는 지원하지 않네요.)
 
-<video style="width:100%;" poster="./images/css-in-js/linaria-dynamic-style-poster.png" controls="true" allowfullscreen="true">
-  <source src="./images/css-in-js/linaria-dynamic-style.mp4" type="video/mp4">
+<video style="width:100%;" poster="/media/web/images/css-in-js/linaria-dynamic-style-poster.png" controls="true" allowfullscreen="true">
+  <source src="/media/web/images/css-in-js/linaria-dynamic-style.mp4" type="video/mp4">
 </video>
 
 
@@ -174,8 +174,8 @@ const Container = styled.div`
 
 [collectStyles](https://github.com/styled-components/styled-components/blob/30dab74acedfd26d227eebccdcd18c92a1b3bd9b/packages/styled-components/src/models/ServerStyleSheet.tsx#L37) api를 통해 현재 페이지에서 사용되고 있는 스타일만 별도의 스타일 시트로 생성합니다.
 
-<video style="width:100%;" poster="./images/css-in-js/styled-components-dynamic-style-poster.png" controls="true" allowfullscreen="true">
-  <source src="./images/css-in-js/styled-components-dynamic-style.mp4" type="video/mp4">
+<video style="width:100%;" poster="/media/web/images/css-in-js/styled-components-dynamic-style-poster.png" controls="true" allowfullscreen="true">
+  <source src="/media/web/images/css-in-js/styled-components-dynamic-style.mp4" type="video/mp4">
 </video>
 
 최초 렌더링 이후 prop이나 state에 의해 변경되는 스타일은 style tag에 동적으로 삽입됩니다. (development mode빌드일 때만 DOM Tree변경)

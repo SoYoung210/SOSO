@@ -93,7 +93,7 @@ Visual Engineering의 영역으로 3D를 공부 해보고 싶었다. 하다 보�
 
 [튜토리얼 강의](https://www.youtube.com/watch?v=nIoXOplUvAw)를 보며 처음으로 만들어본 모델이다. 회사에서 화수목 점심 한 시간마다 작업하고 결과물을 공유하는 소모임을 만들어 해보고 있는데, 기록을 살펴보니 이 도넛을 만든것이 6월 22일이다.
 
-<video controls style="width: 100%;" src="./images/2023_retro/blender-room-720.mov" type="video/mp4" poster="./images/2023_retro/blender-room-720.png">
+<video controls style="width: 100%;" src="/media/essay/images/2023_retro/blender-room-720.mov" type="video/quicktime" poster="/media/essay/images/2023_retro/blender-room-720.png">
    Sorry, your browser doesn't support embedded videos,
 </video>
 

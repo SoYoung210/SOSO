@@ -113,7 +113,7 @@ Orchestration Saga는 다음과 같은 장점이 있습니다.
 
 앞서 살펴본 `Saga`는 redux-saga와 어떻게 이어질까요? redux-saga는 발생하는 Action과 관리되는 State사이에서 흐름을 관리하는 **Orchestrator** 로서 존재합니다.
 
-```js{8,9}
+```js {8,9}
 function sagaMiddleware({ getState, dispatch }) {
   // Initialize Saga
 
@@ -166,7 +166,7 @@ Blocking Effect는 처리가 완료될 때까지 기다리며 Non-blocking Effec
 
 위에서 언급한 것처럼, **Saga는 Effect를 yield하고 JavaScript객체를 반환합니다.** 아래 코드는 redux-saga의 internal effect 코드입니다.
 
-```js{14,20,24}
+```js {14,20,24}
 // redux-saga/internal/effect.js
 const makeEffect = (type, payload) => ({
   [IO]: true,
@@ -200,7 +200,7 @@ redux-saga의 effect들은 마치 [액션 생성 함수(action creator function)
 
 같은 이벤트가 연속적으로 올 때, Saga는 Event를 어떻게 Orchestration할 수 있을까요? redux-saga에서는 [takeLatest](https://redux-saga.js.org/docs/api/#takelatestpattern-saga-args) API를 제공합니다.
 
-```js{9,12,17}
+```js {9,12,17}
 export default function takeLatest(patternOrChannel, worker, ...args) {
   const yTake = { done: false, value: take(patternOrChannel) }
   const yFork = ac => ({ done: false, value: fork(worker, ...args, ac) })
@@ -255,7 +255,7 @@ export function* fetchHelloWorld() {
 
 코드에서 `yield`부분이 있는 곳을 `Step`으로 바라보고, 테스트 코드를 작성하겠습니다.
 
-```js{11}
+```js {11}
 describe('HelloWorldsaga', () => {
   it('should dispatch success action', async () => {
     // Given

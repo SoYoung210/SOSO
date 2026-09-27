@@ -33,7 +33,7 @@ thumbnail: './images/what-i-learn-150/first_title.png'
 30명이 넘는 기술부문, 5명의 웹팀을 만나면서 추상적으로 중요하다고 생각했던 **협업** 에 대해 많은 생각을 할 수 있었다.
 
 <div>
-<img src="./images/what-i-learn-150/my-github.png" />
+<img src="/media/essay/images/what-i-learn-150/my-github.png" />
 </div>
 
 ### 🍌 협업에는 스킬이 필요하다.

@@ -42,7 +42,7 @@ Code Splitting을 한다는 것은 bundle이 나눠진다는 뜻인데, 어떤 �
 ### HtmlWebpackPlugin
 [HtmlWebpackPlugin](https://webpack.js.org/plugins/html-webpack-plugin/)은 번들 js파일을 가지고 있는 html 파일을 자동으로 생성해 주는 plugin입니다. 설정에 따라 새로운 html 파일을 생성할 수도 있고 기존의 html을 템플릿으로 하여 내용이 추가 된 html 파일을 생성 할 수도 있습니다.
 이 프로젝트에서는 `server/views/index.pug` 파일을 기본 template으로 사용하고 있습니다. 
-```js{3,6}
+```js {3,6}
 // 🌏 webpack.config.js
 new HtmlWebpackPlugin({
   template: pathResolve(__dirname,'../server/views/index.pug'),
@@ -75,7 +75,7 @@ npm i -D @types/loadable__component
 ```bash
 npm install --save-dev @babel/plugin-syntax-dynamic-import
 ```
-```js{6}
+```js {6}
 {
   "presets": [
     //🍱 preset들 
@@ -89,7 +89,7 @@ npm install --save-dev @babel/plugin-syntax-dynamic-import
 
 #### 3. Chunk Name 설정하기
 CodeSplitting으로 chunk될 bundle JS에 우리가 알아보기 쉬운 이름이 붙으면 좋으니, webpack설정도 살짝 추가해 줍니다. 
-```js{7}
+```js {7}
 // 🌏 webpack.config.js
 module.exports = (env, options) => {
   const config = {

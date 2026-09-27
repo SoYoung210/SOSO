@@ -197,7 +197,7 @@ document.body.addEventListener('touchstart', event => {
 
 브라우저 관점에서 보면 document, 즉 웹 페이지 모든 영역이 고속 스크롤 불가 영역으로 표시된다. 컴포지터 스레드는 입력 이벤트가 발생할 때마다 메인 스레드와 통신해야 하고 메인 스레드의 작업을 기다려야하기 때문에 스크롤을 부드럽게 처리할 수 없다.
 
-```jsx{5}
+```jsx {5}
 document.body.addEventListener('touchstart', event => {
   if (event.target === area) {
     event.preventDefault()

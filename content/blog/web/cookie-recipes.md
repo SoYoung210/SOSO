@@ -182,7 +182,7 @@ Set-cookie: 3pcookie=value; SameSite=None; Secure
 Safari 13.1업데이트에 Intelligent Tracking Prevention (ITP)에 중요한 변경사항이 있었습니다. WebKit 엔지니어 인 Apple의 John Wilander에 따르면 이제 Safari에서 **Third Party 쿠키는 차단**됩니다.  (구글의 SameSite 정책과 유사하지만, 구글은 2020년까지 단계적 배포인 데 반해 Safari는 13.1에서 100% 배포했습니다.)
 
 <a href="https://twitter.com/johnwilander/status/1242513313507860480?ref_src=twsrc^tfw|twcamp^tweetembed|twterm^1242513313507860480&ref_url=https%3A%2F%2Fwww.theverge.com%2F2020%2F3%2F24%2F21192830%2Fapple-safari-intelligent-tracking-privacy-full-third-party-cookie-blocking">
-  <img src="./images/cookie/twitter.png"/>
+  <img src="/media/web/images/cookie/twitter.png"/>
 </a>
 
 ## Ref

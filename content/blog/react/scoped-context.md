@@ -93,7 +93,7 @@ Context간에 Scope가 필요하다는 문제를 해결한 두 가지 라이브�
 
 구현의 컨셉은 Context를 생성하는 컴포넌트의 prop으로 어떤 Context를 참조해야 하는지 직접 전달하는 것이다. 단순하게 아래와 같이 구현할 수도 있다.
 
-```tsx{6,11,22}
+```tsx {6,11,22}
 /* -------------------------------------------------------------------------- */
 /*                                 Dialog                                     */
 /* -------------------------------------------------------------------------- */
@@ -160,7 +160,7 @@ function App() {
 
 radix-ui의 [AlertDialog](https://github.com/radix-ui/primitives/blob/285aa0837f2405a05e983fc8fffd55f4cc368b5e/packages/react/alert-dialog/src/AlertDialog.tsx#L19)와 [Dialog구현](https://github.com/radix-ui/primitives/blob/285aa0837f2405a05e983fc8fffd55f4cc368b5e/packages/react/dialog/src/Dialog.tsx#L27)을 살펴보면서 동작 방식을 정리해보자.
 
-```tsx{10,24,27}
+```tsx {10,24,27}
 // Dialog
 const [createDialogContext, createDialogScope] = createContextScope('Dialog');
 const [DialogProvider, useDialogContext] = createDialogContext('Dialog');
@@ -225,7 +225,7 @@ function createContextScope(scopeName: string, createContextScopeDeps: CreateSco
 
 #### 1. createContext
 
-```tsx{11,17}
+```tsx {11,17}
 function createContext<ContextValueType extends object | null>(
   rootComponentName: string,
   defaultContext?: ContextValueType
@@ -293,7 +293,7 @@ const AlertDialogRoot = (props) => {
 
 #### 2. createScope / composeContextScopes
 
-```tsx{3,11,34}
+```tsx {3,11,34}
 function createContextScope(scopeName: string, createContextScopeDeps: CreateScope[] = []) {
   /* ... */
   return [createContext, composeContextScopes(createScope, ...createContextScopeDeps)] as const;
@@ -379,7 +379,7 @@ const LibraryRoot = ({ children }) => (
 
 동작 방식은 첫 번째 예시와 유사하다.
 
-```tsx{4,18}
+```tsx {4,18}
 // https://github.com/pmndrs/jotai/blob/main/src/core/Provider.ts
 
 export const Provider = () => {

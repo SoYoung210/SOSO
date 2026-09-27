@@ -510,14 +510,14 @@ function useListNavigation() {
 
 ## 번외 3) 기본 element는 중요하다
 
-<video controls style="width: 100%;" src="./images/make-select/select_autofill.mp4" type="video/mp4" poster="./images/make-select/select_autofill.png">
+<video controls style="width: 100%;" src="/media/react/images/make-select/select_autofill.mp4" type="video/mp4" poster="/media/react/images/make-select/select_autofill.png">
    Sorry, your browser doesn't support embedded videos,
 </video>
 
 로그인 정보를 autofill했을 때 select의 값이 Student에서 Developer로 autoFill되고 있다. (1password의 섹션 > 라벨을 select의 name과 값을 저장한 후 [코드샌드박스 링크](https://codesandbox.io/s/autocomplete-example-bvqnwp?file=/src/App.tsx:189-229)에서 직접 테스트 해볼수 있다.)
 
 <details style="margin-bottom: 10px;"><summary>1password 저장정보</summary>
-  <img src="./images/make-select/1pw_info.png" />
+  <img src="/media/react/images/make-select/1pw_info.png" />
 </details>
 
 이러한 autoFill을 커스텀 UI로 구현된 Select에서도 지원하려면 화면에서는 보여지지 않더라도 기본 select element요소를 가지고 있어야 한다.

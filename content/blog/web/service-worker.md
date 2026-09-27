@@ -108,7 +108,7 @@ self.addEventListener('fetch', (e) => {
 
 아래 코드는 요청한 리소스가 실제로 캐싱되어 있다면 캐싱파일을 제공하고, 없으면 캐시에 추가하는 코드입니다.
 
-```jsx{5,7,16,18}
+```jsx {5,7,16,18}
 self.addEventListener('fetch', (e) => {
   e.respondWith(
     caches.match(e.request).then((r) => {
@@ -181,7 +181,7 @@ CRA를 통해 생성한 프로젝트에는 서비스워커에 관한 기본적�
 
 `src/serviceWorker`의 `registerValidSW`에서는 서비스워커의 실행 조건을 판단한 뒤 이를 실행합니다.
 
-```ts{3,11,12,13,14,15}
+```ts {3,11,12,13,14,15}
 function registerValidSW(swUrl: string, config?: Config) {
   navigator.serviceWorker
     .register(swUrl)

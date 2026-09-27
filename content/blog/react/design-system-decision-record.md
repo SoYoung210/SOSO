@@ -332,7 +332,7 @@ toast.success(<div>이 부분이 content입니다.</div>);
 
 컴포넌트를 사용하지 않겠다고 선언하는 가장 자연스러운 방법은 boolean prop이 아니라 실제로 사용하지 않는 것이다. 즉, CloseIconButton을 기본 기능으로 정의하지 않는 것이다.
 
-```jsx{7,24}
+```jsx {7,24}
 // CloseIconButton을 사용하는 경우
 function MySidePeekWithCloseIconButton() {
   return (
@@ -551,7 +551,7 @@ function TimePickerNewOptionContent(props) {
 
 collection을 통해 TimePicker에서 렌더링한 전체 시간 목록을 알 수 있고, 새로운 옵션을 보여줄 때 최소/최대 시간 범위내의 시간만 렌더링할 수 있도록 처리해줄 수 있다.
 
-```jsx{9,10,11,12}
+```jsx {9,10,11,12}
 function MyTimePickerWithNewOption() {
   return (
     <TimePicker>

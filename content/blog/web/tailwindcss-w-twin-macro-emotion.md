@@ -35,7 +35,7 @@ utility-first CSS라는 이름이 생소할 수 있지만, 이미 많이 사용�
 <details>
 <summary><b>결과:</b></summary>
 <ul>
-  <img src="./images/tailwind/bootstrap_example.png" alt='bootstrap 예시'/>
+  <img src="/media/web/images/tailwind/bootstrap_example.png" alt='bootstrap 예시'/>
 </ul>
 </details>
 <br/>
@@ -62,7 +62,7 @@ class 이름은 다음과 같은 형태로 짓습니다.
 
 하지만, utility-first CSS에서는 다음과 같이 표현할 수 있습니다.
 
-```html{2}
+```html {2}
 <div class="card">
     <div class="card-body p-20">
     ...
@@ -111,7 +111,7 @@ module.exports = {
 
 padding옵션을 직접 적용하지 않고, spacing 속성을 통해 적용되도록 하는 것입니다.
 
-```jsx{17,19}
+```jsx {17,19}
 // tailwind.config.js
 module.exports = {
   spacing: {
@@ -175,7 +175,7 @@ variants를 커스텀하게 적용하는 경우 기본 값과 자동으로 마�
 
 **❌ 추가 속성만 정의하면, 기본 속성을 사용할 수 없게 됩니다.**
 
-```jsx{4}
+```jsx {4}
 // tailwind.config.js
 module.exports = {
   variants: {
@@ -186,7 +186,7 @@ module.exports = {
 
 ✅ **활성화 하고 싶은 모든 속성을 적어주어야 합니다.**
 
-```jsx{4}
+```jsx {4}
 // tailwind.config.js
 module.exports = {
   variants: {
@@ -210,7 +210,7 @@ TailwindCSS에는 screen 크기에 따라 기본적으로 4개의 break point가
 
 tailwind.config.js의 `screens` 속성을 변경하여 breakpoints를 추가로 정의할 수 있습니다.
 
-```jsx{5,8,11}
+```jsx {5,8,11}
 // tailwind.config.js
 module.exports = {
   theme: {
@@ -232,7 +232,7 @@ module.exports = {
 
 Tailwindcss에서는 필요한 plugin을 추가로 생성할 수 있습니다.
 
-```jsx{16}
+```jsx {16}
 // tailwind.config.js
 const plugin = require('tailwindcss/plugin')
 
@@ -300,7 +300,7 @@ module.exports = {
 
 TailwindCSS는 [👩‍🎤 emotion](https://emotion.sh/docs/introduction)이나 [💅 styled-components](https://styled-components.com/)와 같은 CSS-in-JS 라이브러리와 함께 사용할 수 있습니다.  이 경우 **[twin.macro](https://www.npmjs.com/package/twin.macro)**와 함께 사용하면 더 깔끔한 코드를 작성할 수 있습니다.
 
-```jsx{2,7}
+```jsx {2,7}
 import React from 'react'
 import tw from 'twin.macro'
 import styled from '@emotion/styled/macro'
@@ -324,7 +324,7 @@ export default () => <Input hasDarkHover />
 
 몇 가지 간단한 설정만 해주면 쉽게 사용할 수 있습니다.
 
-```jsx{4}
+```jsx {4}
 // .babelrc
 {
   "plugins": [

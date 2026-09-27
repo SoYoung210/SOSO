@@ -54,7 +54,7 @@ server와 client에게 각각의 webpack file을 만들어주도록 하겠습니
 
 [첫 번째 튜토리얼](https://so-so.dev/react/ssr-1-codesplitting/)에서 만들었던 `server/webpack.config.js` 의 내용을 기반으로 `/webpack.server.js`를 만들어 봅시다.
 
-```js{2,9,22,35}
+```js {2,9,22,35}
 const pathResolve = require('path').resolve
 const babelConfig = require('./babelrc.server')
 const nodeExternals = require('webpack-node-externals')
@@ -99,7 +99,7 @@ module.exports = {
 
 SSR에 필요한 설정을 담은 `/babelrc.server.js`를 만들어 봅시다.
 
-```js{3}
+```js {3}
 module.exports = {
   presets: ['@babel/typescript', '@babel/react'],
   plugins: ['@loadable/babel-plugin'],
@@ -113,7 +113,7 @@ module.exports = {
 
 이 부분이 기존에 비해 가장 많이 변화하는 부분 입니다.
 
-```js{28,29,59}
+```js {28,29,59}
 const webpack = require('webpack')
 const LoadablePlugin = require('@loadable/webpack-plugin')
 const pathResolve = require('path').resolve
@@ -213,7 +213,7 @@ libraryTarget은 `target: node`일 경우 `commonjs2`로 설정해 줍니다. no
 
 ## server/app.ts => server/app.tsx 수정
 
-```tsx{8,10,13,17,20}
+```tsx {8,10,13,17,20}
 import React from 'react'
 import { ChunkExtractor } from '@loadable/server'
 // import other library

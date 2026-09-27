@@ -150,7 +150,7 @@ root에 있는 config파일과 각 패키지를 이어주기 위해 환경변수
 
 rollup.config.js에서 input의 경로를 환경변수로 사용하도록 변경합니다.
 
-```jsx{1,18}
+```jsx {1,18}
 const input = process.env.INPUT_FILE;
 
 function buildJS(input, output, format) {
@@ -212,7 +212,7 @@ const config = {
 
 `lerna build`를 수행하여 프로젝트를 빌드하면 다음과 같은 결과를 확인할 수 있습니다.
 
-```markdown{3,7}
+```markdown {3,7}
 packages/sample-one
 +-- dist
 |   +-- esm
@@ -234,7 +234,7 @@ esm과 cjs폴더를 만들어 분리해둔 형태입니다. `dist/`경로에 ES 
 
 `tsconfig.json`의 경우 모든 패키지에서 type definition 설정을 공유할 수 없는 문제가 있습니다.
 
-```json{4}
+```json {4}
 // packages/sample-one/package.json
 "scripts": {
   "build": "npm run build:typings && NODE_ENV=production INPUT_FILE=./index.ts rollup -c ../../rollup.config.js",
@@ -244,7 +244,7 @@ esm과 cjs폴더를 만들어 분리해둔 형태입니다. `dist/`경로에 ES 
 
 위와 같이 root의 tsconfig.json을 사용하도록 한 경우 아래와 같이 `packages`하위의 모든 패키지에 대한 type build가 수행됩니다.
 
-```markdown{10,13}
+```markdown {10,13}
 packages/sample-one
 +-- dist
 |   +-- esm
@@ -369,7 +369,7 @@ GitHub Actions를 사용해 master merge시 GitHub Package Registry로 배포되
 
 그다음, `.github/workflows`에 `release.yml`파일을 생성합니다.
 
-```yaml{6,19,29,30,31}
+```yaml {6,19,29,30,31}
 name: Release
 
 on:

@@ -21,7 +21,7 @@ React17은 2020년 10월 20일에 릴리즈되었다. 이 글이 릴리즈 이�
 
 **“React17부터는 `import React from ‘react’` 를 안 해도 된다.”**라는 막연한 기억이 있었고, 작성한 코드에서도 React import관련 에러는 없었다. 하지만 빌드 결과물을 보면 에러는 당연한 결과이다.
 
-```jsx{5}
+```jsx {5}
 // 빌드된 js
 // React를 참조하지만 React import는 없음
 function y(V) {

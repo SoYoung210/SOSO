@@ -98,7 +98,7 @@ spec:
 
 이제 ClusterIP service를 외부에서 사용가능 하게 하기 위해 NodePort로 변경할 것입니다. 이 예제에서는 yaml 파일에서 두 가지를 변경하여서 `service-python`을 변경해보겠습니다.
 
-```yaml{10,13}
+```yaml {10,13}
 apiVersion: v1
 kind: Service
 metadata:
@@ -145,7 +145,7 @@ NodePort의 port번호를 지정하지 않으면, 30000-32767 대역에서 적�
 
 LoadBalancer service가 ClusterIP service를 생성하는 NodePort service를 생성한다고 이해하시면 됩니다. 이 설정(ClusterIP → LoadBalancer)의 변경된 yaml은 다음과 같습니다.
 
-```yaml{13}
+```yaml {13}
 apiVersion: v1
 kind: Service
 metadata:

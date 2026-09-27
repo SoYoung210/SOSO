@@ -133,7 +133,7 @@ slack Message를 생성하는 두 가지 경우가 하나의 함수에서 처리
 
 ImageBlock을 추가하는 것은 optional이고, 이 상황에는 title과 message가 사용되지 않는다. ImageBlock을 다루는 함수를 분리하고, `createSlackMessage`내부에서 삼항연산자로 처리하도록 리팩토링했다.
 
-```ts{8}
+```ts {8}
 const createSlackMessage = (
   title: string,
   message: string,
