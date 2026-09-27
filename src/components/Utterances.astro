@@ -1,0 +1,32 @@
+---
+import { SITE } from '../site.config'
+---
+
+<div class="utterances-root" data-repo={SITE.utterancesRepo}></div>
+
+<script>
+  const root = document.querySelector<HTMLElement>('.utterances-root')
+  const themeFor = (dark: boolean) => (dark ? 'github-dark' : 'github-light')
+
+  if (root) {
+    const script = document.createElement('script')
+    Object.entries({
+      src: 'https://utteranc.es/client.js',
+      repo: root.dataset.repo!,
+      branch: 'master',
+      // Comments are matched by pathname: URLs must stay identical to the Gatsby site.
+      'issue-term': 'pathname',
+      theme: themeFor(document.body.classList.contains('dark')),
+      crossorigin: 'anonymous',
+    }).forEach(([key, value]) => script.setAttribute(key, value))
+    script.async = true
+    root.appendChild(script)
+
+    document.addEventListener('themechange', (event) => {
+      const { dark } = (event as CustomEvent<{ dark: boolean }>).detail
+      root
+        .querySelector<HTMLIFrameElement>('iframe.utterances-frame')
+        ?.contentWindow?.postMessage({ type: 'set-theme', theme: themeFor(dark) }, 'https://utteranc.es')
+    })
+  }
+</script>

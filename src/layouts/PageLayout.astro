@@ -1,0 +1,27 @@
+---
+import BaseLayout from './BaseLayout.astro'
+import Top from '../components/Top.astro'
+import ThemeSwitch from '../components/ThemeSwitch.astro'
+import Footer from '../components/Footer.astro'
+import { SITE } from '../site.config'
+
+type Props = import('astro/types').ComponentProps<typeof BaseLayout>
+
+const isRoot = Astro.url.pathname === '/'
+---
+
+<BaseLayout {...Astro.props}>
+  <Top isRoot={isRoot} />
+  <div class="container">
+    <ThemeSwitch />
+    {isRoot && (
+      <h1 class="home-header">
+        <a href="/" class="link">
+          {SITE.title}
+        </a>
+      </h1>
+    )}
+    <slot />
+    <Footer />
+  </div>
+</BaseLayout>

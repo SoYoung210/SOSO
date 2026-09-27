@@ -1,0 +1,101 @@
+@import url('https://cdn.jsdelivr.net/gh/tonsky/FiraCode@1.206/distr/fira_code.css');
+
+.post-container {
+  margin-bottom: 3em;
+  word-break: keep-all;
+
+  /* heading permalinks (was gatsby-remark-autolink-headers) */
+  :is(h1, h2, h3, h4, h5, h6) {
+    position: relative;
+
+    .anchor.before {
+      position: absolute;
+      top: 0;
+      left: 0;
+      transform: translateX(-100%);
+      padding-right: 4px;
+      line-height: inherit;
+    }
+
+    .anchor svg {
+      visibility: hidden;
+      fill: currentColor;
+      vertical-align: middle;
+    }
+
+    &:hover .anchor svg,
+    .anchor:focus svg {
+      visibility: visible;
+    }
+  }
+
+  img {
+    height: auto;
+  }
+
+  /* was gatsby-remark-responsive-iframe */
+  iframe {
+    width: 100%;
+    max-width: 100%;
+  }
+
+  iframe:not([height]) {
+    aspect-ratio: 16 / 9;
+    height: auto;
+  }
+
+  video {
+    max-width: 100%;
+  }
+
+  blockquote {
+    position: relative;
+    margin-top: 12px;
+    padding: 12px 8px 0 36px;
+    border-left: none;
+    font-weight: 300;
+    color: var(--blockquote-color);
+
+    &::before {
+      position: absolute;
+      top: 16px;
+      left: 4px;
+      display: inline-block;
+      background-image: var(--blockquote-image);
+      background-size: contain;
+      opacity: 0.2;
+      width: 22px;
+      height: 22px;
+      z-index: 1;
+      content: '';
+    }
+  }
+
+  :not(pre) > code {
+    padding: 0.11em 0.3em;
+    margin: 0 0.1em;
+    border-radius: 0.3em;
+    white-space: normal;
+    font-weight: 500;
+    font-family: 'Fira Code', Consolas, Monaco, 'Andale Mono', 'Ubuntu Mono', monospace;
+    font-size: 0.85em;
+    background: var(--inline-code-bg);
+    color: var(--inline-code-text);
+  }
+
+  .expressive-code {
+    margin: 1.5em -2.5em;
+  }
+}
+
+@media screen and (max-width: 730px) {
+  .post-container .expressive-code {
+    margin: 1.5em calc(-1 * var(--gutter));
+    --ec-brdRad: 0;
+  }
+}
+
+.medium-zoom-overlay,
+.medium-zoom-image--opened {
+  z-index: 10;
+}

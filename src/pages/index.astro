@@ -1,0 +1,24 @@
+---
+import PageLayout from '../layouts/PageLayout.astro'
+import Bio from '../components/Bio.astro'
+import PostList, { type PostSummary } from '../components/PostList'
+import { excerpt, getPublishedPosts, postUrl } from '../lib/posts'
+import { SITE } from '../site.config'
+
+const now = Date.now()
+const posts: PostSummary[] = (await getPublishedPosts())
+  .filter((post) => post.data.date.valueOf() <= now)
+  .map((post) => ({
+    url: postUrl(post),
+    title: post.data.title,
+    category: post.data.category!,
+    date: post.data.date.toISOString(),
+    excerpt: excerpt(post.body, 200),
+  }))
+const categories = [...new Set(posts.map((post) => post.category))]
+---
+
+<PageLayout title="Home" keywords={SITE.keywords}>
+  <Bio />
+  <PostList client:load posts={posts} categories={categories} countOfInitialPost={SITE.countOfInitialPost} />
+</PageLayout>

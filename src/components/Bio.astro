@@ -1,0 +1,24 @@
+---
+import { Image } from 'astro:assets'
+import profile from '../../content/assets/profile.png'
+import { SITE } from '../site.config'
+---
+
+<div class="bio">
+  <div class="author">
+    <div class="author-description">
+      <Image class="author-image" src={profile} alt={SITE.author} width={72} height={72} />
+      <div class="author-name">
+        <span class="author-name-prefix">👋</span>
+        <a href="/about/" class="author-name-content">
+          <span>@{SITE.author}</span>
+        </a>
+        <div class="author-introduction">{SITE.introduction}</div>
+        <p class="author-socials">
+          <a href={`https://github.com/${SITE.social.github}`}>GitHub</a>
+          <a href={`https://x.com/${SITE.social.x}`}>X (Twitter)</a>
+        </p>
+      </div>
+    </div>
+  </div>
+</div>

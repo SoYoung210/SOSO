@@ -1,6 +1,8 @@
 {
-  "trailingComma": "es5",
+  "trailingComma": "all",
   "semi": false,
   "singleQuote": true,
-  "useTabs": false
+  "printWidth": 120,
+  "plugins": ["prettier-plugin-astro"],
+  "overrides": [{ "files": "*.astro", "options": { "parser": "astro" } }]
 }

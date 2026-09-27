@@ -1,0 +1,66 @@
+---
+import { getImage } from 'astro:assets'
+import { render } from 'astro:content'
+import PageLayout from '../layouts/PageLayout.astro'
+import Bio from '../components/Bio.astro'
+import Utterances from '../components/Utterances.astro'
+import { excerpt, formatDate, getPublishedPosts, postUrl, type Post } from '../lib/posts'
+import '../styles/post.css'
+
+export async function getStaticPaths() {
+  const posts = await getPublishedPosts()
+  return posts.map((post, index) => ({
+    params: { slug: post.id },
+    props: {
+      post,
+      previous: posts[index + 1] ?? null,
+      next: posts[index - 1] ?? null,
+    },
+  }))
+}
+
+interface Props {
+  post: Post
+  previous: Post | null
+  next: Post | null
+}
+
+const { post, previous, next } = Astro.props
+const { Content } = await render(post)
+const thumbnail = post.data.thumbnail
+  ? new URL((await getImage({ src: post.data.thumbnail, width: 800, format: 'jpg' })).src, Astro.site).href
+  : undefined
+---
+
+<PageLayout title={post.data.title} description={excerpt(post.body, 283)} image={thumbnail}>
+  <h1>{post.data.title}</h1>
+  <p class="post-date">{formatDate(post.data.date)}</p>
+  <div class="post-container">
+    <Content />
+  </div>
+  <hr class="custom-hr" />
+  <Bio />
+  <ul class="navigator">
+    <li>
+      {previous && (
+        <a href={postUrl(previous)} rel="prev">
+          ← {previous.data.title}
+        </a>
+      )}
+    </li>
+    <li>
+      {next && (
+        <a href={postUrl(next)} rel="next">
+          {next.data.title} →
+        </a>
+      )}
+    </li>
+  </ul>
+  <Utterances />
+</PageLayout>
+
+<script>
+  import mediumZoom from 'medium-zoom'
+
+  mediumZoom('.post-container img:not(a img)', { margin: 36 })
+</script>

@@ -1,0 +1,6 @@
+dist
+.astro
+public
+content
+pnpm-lock.yaml
+src/styles/base.css

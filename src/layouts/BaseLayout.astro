@@ -1,0 +1,46 @@
+---
+import '@fontsource/noto-sans-kr/300.css'
+import '@fontsource/noto-sans-kr/400.css'
+import '@fontsource/noto-sans-kr/500.css'
+import '@fontsource/noto-sans-kr/700.css'
+import '@fontsource/catamaran/700.css'
+import '@fontsource/catamaran/800.css'
+import '@fontsource/catamaran/900.css'
+import '../styles/base.css'
+import '../styles/theme.css'
+
+import BaseHead from '../components/BaseHead.astro'
+import Integrations from '../components/Integrations.astro'
+import { SITE } from '../site.config'
+import { THEME_KEY } from '../lib/theme'
+
+interface Props {
+  title: string
+  description?: string
+  image?: string
+  keywords?: readonly string[]
+}
+---
+
+<!doctype html>
+<html lang={SITE.lang}>
+  <head>
+    <BaseHead {...Astro.props} />
+    <script is:inline>
+      document.documentElement.classList.add('js')
+    </script>
+    <Integrations />
+  </head>
+  <body>
+    <script is:inline define:vars={{ themeKey: THEME_KEY }}>
+      // Set the theme before first paint so there is no flash.
+      let dark
+      try {
+        dark = JSON.parse(localStorage.getItem(themeKey))
+      } catch {}
+      if (typeof dark !== 'boolean') dark = matchMedia('(prefers-color-scheme: dark)').matches
+      document.body.classList.add(dark ? 'dark' : 'light')
+    </script>
+    <slot />
+  </body>
+</html>

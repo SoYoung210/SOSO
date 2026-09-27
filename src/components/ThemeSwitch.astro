@@ -1,0 +1,27 @@
+<div class="switch-container">
+  <button type="button" class="theme-switch" role="switch" aria-checked="false" aria-label="Dark mode">
+    <span class="icon icon-dark" aria-hidden="true">
+      D
+    </span>
+    <span class="icon icon-light" aria-hidden="true">
+      L
+    </span>
+    <span class="handle"></span>
+  </button>
+</div>
+
+<script>
+  import { THEME_KEY, applyTheme } from '../lib/theme'
+
+  document.querySelectorAll<HTMLButtonElement>('.theme-switch').forEach((button) => {
+    button.setAttribute('aria-checked', String(document.body.classList.contains('dark')))
+    button.addEventListener('click', () => {
+      const dark = !document.body.classList.contains('dark')
+      try {
+        localStorage.setItem(THEME_KEY, JSON.stringify(dark))
+      } catch {}
+      applyTheme(dark)
+      button.setAttribute('aria-checked', String(dark))
+    })
+  })
+</script>
