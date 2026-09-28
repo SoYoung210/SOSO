@@ -1,5 +1,5 @@
 ---
-title: 'Improving Rendering Performance (2) — Using Composited Animations'
+title: 'Improving Rendering Performance (2): Using Composited Animations'
 date: 2023-02-08 08:00:09
 category: web
 thumbnail: './images/browser-rendering-performance/thumbnail2.png'
